@@ -1,10 +1,9 @@
 from kivy.lang import Builder
 from kivy.properties import VariableListProperty
 
+from examples.common_app import CommonApp
 from kivymd.app import MDApp
 from kivymd.uix.imagelist import MDSmartTile
-
-from examples.common_app import CommonApp
 
 KV = """
 <SmartTile>
@@ -72,8 +71,7 @@ class Example(MDApp, CommonApp):
         self.theme_cls.theme_style = "Dark"
         return Builder.load_string(KV)
 
-    def disabled_widgets(self):
-        ...
+    def disabled_widgets(self): ...
 
 
 Example().run()

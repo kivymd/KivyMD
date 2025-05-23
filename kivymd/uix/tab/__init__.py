@@ -1,10 +1,10 @@
-from .tab import (
+from .tab import (  # NOQA F401
+    MDTabsBadge,
+    MDTabsCarousel,
+    MDTabsItem,
+    MDTabsItemIcon,
+    MDTabsItemSecondary,
+    MDTabsItemText,
     MDTabsPrimary,
     MDTabsSecondary,
-    MDTabsItem,
-    MDTabsItemSecondary,
-    MDTabsItemIcon,
-    MDTabsItemText,
-    MDTabsCarousel,
-    MDTabsBadge,
-)  # NOQA F401
+)

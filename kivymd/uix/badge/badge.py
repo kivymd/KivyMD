@@ -18,31 +18,64 @@ Components/Badge
 Example
 -------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Imperative python style with KV
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDIcon:
-            icon: "gmail"
-            pos_hint: {'center_x': .5, 'center_y': .5}
+            from kivymd.app import MDApp
 
-            MDBadge:
-                text: "12"
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDIcon:
+                    icon: "gmail"
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+
+                    MDBadge:
+                        text: "12"
+            '''
 
 
-    class Example(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
+            class Example(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
 
 
-    Example().run()
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.badge import MDBadge
+            from kivymd.uix.label import MDIcon
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDIcon(
+                                MDBadge(
+                                    text="12",
+                                ),
+                                icon="gmail",
+                                pos_hint={'center_x': 0.5, 'center_y': 0.5},
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/badges-example.png
     :align: center
@@ -54,8 +87,8 @@ import os
 
 from kivy.lang import Builder
 
-from kivymd.uix.label import MDLabel
 from kivymd import uix_path
+from kivymd.uix.label import MDLabel
 
 with open(
     os.path.join(uix_path, "badge", "badge.kv"), encoding="utf-8"

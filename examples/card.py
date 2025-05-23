@@ -1,10 +1,9 @@
 from kivy.lang import Builder
 from kivy.properties import StringProperty
 
+from examples.common_app import KV, CommonApp
 from kivymd.app import MDApp
 from kivymd.uix.card import MDCard
-
-from examples.common_app import CommonApp, KV
 
 Builder.load_string(
     """

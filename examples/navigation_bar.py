@@ -1,15 +1,14 @@
 from kivy.lang import Builder
 from kivy.metrics import dp
 
+from examples.common_app import KV, CommonApp
+from kivymd.app import MDApp
 from kivymd.uix.navigationbar import (
     MDNavigationBar,
     MDNavigationItem,
-    MDNavigationItemLabel,
     MDNavigationItemIcon,
+    MDNavigationItemLabel,
 )
-from kivymd.app import MDApp
-
-from examples.common_app import CommonApp, KV
 
 
 class Example(MDApp, CommonApp):
@@ -22,8 +21,7 @@ class Example(MDApp, CommonApp):
         item: MDNavigationItem,
         item_icon: str,
         item_text: str,
-    ):
-        ...
+    ): ...
 
     def on_start(self):
         self.root.ids.widget_box.height = dp(80)

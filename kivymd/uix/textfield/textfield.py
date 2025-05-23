@@ -260,7 +260,7 @@ from kivy.uix.textinput import TextInput
 from kivymd import uix_path
 from kivymd.font_definitions import theme_font_styles
 from kivymd.theming import ThemableBehavior, ThemeManager
-from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
+from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
 from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
 from kivymd.uix.label import MDIcon, MDLabel
 
@@ -521,7 +521,7 @@ class BaseTextFieldLabel(MDLabel):
 
         MDTextField:
             mode: "filled"
-    
+
             MDTextFieldHintText:
                 text: "Hint text color normal"
                 text_color_normal: "brown"
@@ -716,12 +716,12 @@ class BaseTextFieldIcon(MDIcon):
 
         MDTextField:
             mode: "filled"
-    
+
             MDTextFieldLeadingIcon:
                 icon: "phone"
                 theme_icon_color: "Custom"
                 icon_color_normal: "lightgreen"
-    
+
             MDTextFieldHintText:
                 text: "Leading icon color normal"
 
@@ -748,12 +748,12 @@ class BaseTextFieldIcon(MDIcon):
 
         MDTextField:
             mode: "filled"
-    
+
             MDTextFieldLeadingIcon:
                 icon: "phone"
                 theme_icon_color: "Custom"
                 icon_color_focus: "lightgreen"
-    
+
             MDTextFieldHintText:
                 text: "Leading icon color focus"
 
@@ -958,7 +958,7 @@ class MDTextField(
             mode: "filled"
             theme_line_color: "Custom"
             line_color_normal: "green"
-    
+
             MDTextFieldHelperText:
                 text: "Line color normal"
                 mode: "persistent"
@@ -980,7 +980,7 @@ class MDTextField(
             mode: "filled"
             theme_line_color: "Custom"
             line_color_focus: "green"
-    
+
             MDTextFieldHelperText:
                 text: "Line color focus"
                 mode: "persistent"
@@ -1003,7 +1003,7 @@ class MDTextField(
             mode: "filled"
             theme_bg_color: "Custom"
             fill_color_normal: 0, 1, 0, .2
-    
+
             MDTextFieldHelperText:
                 text: "Fill color normal"
                 mode: "persistent"
@@ -1026,7 +1026,7 @@ class MDTextField(
             mode: "filled"
             theme_bg_color: "Custom"
             fill_color_focus: 0, 1, 0, .2
-    
+
             MDTextFieldHelperText:
                 text: "Fill color focus"
                 mode: "persistent"
@@ -1050,7 +1050,7 @@ class MDTextField(
             mode: "filled"
             max_height: "200dp"
             multiline: True
-    
+
             MDTextFieldHelperText:
                 text: "multiline=True"
                 mode: "persistent"
@@ -1087,10 +1087,10 @@ class MDTextField(
         MDTextField:
             mode: "filled"
             validator: "email"
-    
+
             MDTextFieldHintText:
                 text: "Email"
-    
+
             MDTextFieldHelperText:
                 text: "user@gmail.com"
                 mode: "persistent"
@@ -1222,6 +1222,7 @@ class MDTextField(
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.bind(text=self.set_text)
+        self.bind(_lines=self.adjust_height)
         self.theme_cls.bind(
             primary_palette=self.update_colors,
             theme_style=self.update_colors,
@@ -1244,14 +1245,19 @@ class MDTextField(
     def add_widget(self, widget, index=0, canvas=None):
         if isinstance(widget, MDTextFieldHelperText):
             self._helper_text_label = widget
+            self._set_texture_helper_text_color(text_color_focus=False)
         if isinstance(widget, MDTextFieldHintText):
             self._hint_text_label = widget
+            self._set_texture_hint_text_color(text_color_focus=False)
         if isinstance(widget, MDTextFieldLeadingIcon):
             self._leading_icon = widget
+            self._set_texture_leading_icons_color(icon_color_focus=False)
         if isinstance(widget, MDTextFieldTrailingIcon):
             self._trailing_icon = widget
+            self._set_texture_trailing_icons_color(icon_color_focus=False)
         if isinstance(widget, MDTextFieldMaxLengthText):
             self._max_length_label = widget
+            self._set_texture_max_length_color(text_color_focus=False)
         else:
             return super().add_widget(widget)
 
@@ -1262,6 +1268,28 @@ class MDTextField(
         Animates the color of the
         leading/trailing icons/hint/helper/max length text.
         """
+
+        def update_texture(grop_name, instance):
+            rectangle = self.canvas.before.get_group(grop_name)[0]
+            rectangle.texture = instance.texture
+            rectangle.size = instance.texture_size
+            if instance is self._helper_text_label:
+                rectangle.pos = self.get_adjusted_pos_helper_text_label()
+            elif instance is self._leading_icon:
+                if self._hint_text_label:
+                    rectangle_hint = self.canvas.after.get_group(
+                        "hint-text-rectangle"
+                    )[0]
+                    rectangle_hint.texture = self._hint_text_label.texture
+                    rectangle_hint.size = self._hint_text_label.texture_size
+                    rectangle_hint.pos = self.get_adjusted_pos_hint_text_label()
+                    self._hint_text_label.texture_update()
+                rectangle.pos = self.get_adjusted_pos_leading_icon()
+            elif instance is self._trailing_icon:
+                rectangle.pos = self.get_adjusted_pos_trailing_icon()
+            elif instance is self._max_length_label:
+                rectangle.pos = self.get_adjusted_pos_max_length_label()
+            instance.texture_update()
 
         def update_hint_text_rectangle(*args):
             hint_text_rectangle = self.canvas.after.get_group(
@@ -1274,9 +1302,129 @@ class MDTextField(
         if texture:
             Animation(rgba=color, d=0).start(canvas_group)
             a = Animation(color=color, d=0)
+
             if texture is self._hint_text_label:
                 a.bind(on_complete=update_hint_text_rectangle)
+            elif texture is self._helper_text_label:
+                update_texture("helper-text-rectangle", self._helper_text_label)
+            elif texture is self._leading_icon:
+                update_texture("leading-icon-rectangle", self._leading_icon)
+            elif texture is self._trailing_icon:
+                update_texture("trailing-icon-rectangle", self._trailing_icon)
+            elif texture is self._max_length_label:
+                update_texture("max-length-rect", self._max_length_label)
+
             a.start(texture)
+
+    def get_adjusted_pos_max_length_label(self) -> tuple:
+        """
+        Calculates the position of the max length label.
+
+        Returns:
+            tuple: (x, y) coordinates for positioning the max length label.
+        """
+
+        return (
+            (self.x + self.width)
+            - (self._max_length_label.texture_size[0] + dp(16)),
+            self.y - dp(18),
+        )
+
+    def get_adjusted_pos_helper_text_label(self) -> tuple:
+        """
+        Calculates the position of the helper text label based on the
+        textfield mode.
+
+        Returns:
+            tuple: (x, y) coordinates for positioning the helper text label.
+        """
+
+        return (
+            self.x
+            + (
+                dp(16)
+                if self.mode == "filled"
+                else (0 if self.mode == "filled" else dp(12))
+            ),
+            self.y + dp(-18),
+        )
+
+    def get_adjusted_pos_trailing_icon(self) -> tuple:
+        """
+        Calculates the adjusted position of the trailing icon.
+
+        Returns:
+            tuple: (x, y) coordinates for positioning the trailing icon.
+        """
+
+        return (
+            (self.width + self.x)
+            - (self._trailing_icon.texture_size[1])
+            - dp(14),
+            self.center_y - self._trailing_icon.texture_size[1] / 2,
+        )
+
+    def get_adjusted_pos_leading_icon(self) -> tuple:
+        """
+        Calculates the adjusted position of the leading icon based on the
+        textfield mode and icon size.
+
+        Returns:
+            tuple: (x, y) coordinates for positioning the leading icon.
+        """
+
+        return (
+            self.x
+            + (
+                dp(12)
+                if self.mode != "outlined"
+                else (
+                    dp(12)
+                    if self.mode != "filled"
+                    else (dp(4) if not self._leading_icon else dp(16))
+                )
+            ),
+            self.center_y - self._leading_icon.texture_size[1] / 2,
+        )
+
+    def get_adjusted_pos_hint_text_label(self) -> tuple:
+        """
+        Calculates the adjusted position of the hint text label based on the
+        presence of a leading icon and whether the textfield is multiline.
+
+        Returns:
+            tuple: (x, y) position coordinates for the hint text label.
+        """
+
+        return (
+            self.x
+            + (
+                dp(16)
+                if not self._leading_icon
+                else self._leading_icon.texture_size[0] + dp(28) + self._hint_x
+            ),
+            (
+                (
+                    self.y
+                    + self.height
+                    + (self._hint_text_label.texture_size[1] / 2)
+                    - (self.height / 2)
+                    - self._hint_y
+                )
+                if not self.multiline
+                else (
+                    self.top - self._hint_text_label.texture_size[1] + dp(8)
+                    if self.text
+                    else (
+                        self.y
+                        + self.height
+                        + (self._hint_text_label.texture_size[1] / 2)
+                        - (self.height / 2)
+                        - self._hint_y
+                    )
+                )
+            ),
+        )
 
     def set_pos_hint_text(self, y: float, x: float) -> None:
         """Animates the x-axis width and y-axis height of the hint text."""
@@ -1325,6 +1473,19 @@ class MDTextField(
                 self.y - dp(18),
             )
 
+    def adjust_height(self, *args) -> None:
+        """Adjusts the height of the text field in multiline mode."""
+
+        if self.multiline:
+            line_height = self.line_height
+            line_count = max(1, len(self._lines))
+            padding_top, padding_bottom = (
+                self.padding[1] + dp(18),
+                self.padding[3],
+            )
+            new_height = line_height * line_count + padding_top + padding_bottom
+            self.height = max(new_height, dp(56))
+
     def set_text(self, instance, text: str) -> None:
         """Fired when text is entered into a text field."""
 
@@ -1352,6 +1513,9 @@ class MDTextField(
             ):
                 self.on_focus(instance, False)
 
+            if self.multiline:
+                self.adjust_height()
+
         set_text()
 
     def on_focus(self, instance, focus: bool) -> None:
@@ -1364,59 +1528,17 @@ class MDTextField(
                 Animation(_outline_height=dp(1.25), d=0).start(self)
 
             if self._trailing_icon:
-                Clock.schedule_once(
-                    lambda x: self.set_texture_color(
-                        self._trailing_icon,
-                        self.canvas.before.get_group("trailing-icons-color")[0],
-                        (
-                            self.theme_cls.onSurfaceVariantColor
-                            if self._trailing_icon.theme_icon_color == "Primary"
-                            or not self._trailing_icon.icon_color_focus
-                            else self._trailing_icon.icon_color_focus
-                        )
-                        if not self.error
-                        else self._get_error_color(),
-                    )
-                )
+                self._set_texture_trailing_icons_color(icon_color_focus=True)
             if self._leading_icon:
-                Clock.schedule_once(
-                    lambda x: self.set_texture_color(
-                        self._leading_icon,
-                        self.canvas.before.get_group("leading-icons-color")[0],
-                        self.theme_cls.onSurfaceVariantColor
-                        if self._leading_icon.theme_icon_color == "Primary"
-                        or not self._leading_icon.icon_color_focus
-                        else self._leading_icon.icon_color_focus,
-                    )
-                )
+                self._set_texture_leading_icons_color(icon_color_focus=True)
             if self._max_length_label and not self.error:
-                Clock.schedule_once(
-                    lambda x: self.set_texture_color(
-                        self._max_length_label,
-                        self.canvas.before.get_group("max-length-color")[0],
-                        self.theme_cls.onSurfaceVariantColor
-                        if not self._max_length_label.text_color_focus
-                        else self._max_length_label.text_color_focus,
-                    )
-                )
+                self._set_texture_max_length_color(text_color_focus=True)
 
             if self._helper_text_label and self._helper_text_label.mode in (
                 "on_focus",
                 "persistent",
             ):
-                Clock.schedule_once(
-                    lambda x: self.set_texture_color(
-                        self._helper_text_label,
-                        self.canvas.before.get_group("helper-text-color")[0],
-                        (
-                            self.theme_cls.onSurfaceVariantColor
-                            if not self._helper_text_label.text_color_focus
-                            else self._helper_text_label.text_color_focus
-                        )
-                        if not self.error
-                        else self._get_error_color(),
-                    )
-                )
+                self._set_texture_helper_text_color(text_color_focus=True)
             if (
                 self._helper_text_label
                 and self._helper_text_label.mode == "on_error"
@@ -1430,41 +1552,31 @@ class MDTextField(
                     )
                 )
             if self._hint_text_label:
-                Clock.schedule_once(
-                    lambda x: self.set_texture_color(
-                        self._hint_text_label,
-                        self.canvas.after.get_group("hint-text-color")[0],
-                        (
-                            self.theme_cls.primaryColor
-                            if not self._hint_text_label.text_color_focus
-                            else self._hint_text_label.text_color_focus
-                        )
-                        if not self.error
-                        else self._get_error_color(),
-                    )
-                )
+                self._set_texture_hint_text_color(text_color_focus=True)
                 self.set_pos_hint_text(
                     0 if self.mode != "outlined" else dp(-14),
                     (
-                        -(
+                        (
+                            -(
+                                (
+                                    self._leading_icon.texture_size[0]
+                                    if self._leading_icon
+                                    else 0
+                                )
+                                + dp(12)
+                            )
+                            if self._leading_icon
+                            else 0
+                        )
+                        if self.mode == "outlined"
+                        else -(
                             (
                                 self._leading_icon.texture_size[0]
                                 if self._leading_icon
                                 else 0
                             )
-                            + dp(12)
+                            - dp(24)
                         )
-                        if self._leading_icon
-                        else 0
-                    )
-                    if self.mode == "outlined"
-                    else -(
-                        (
-                            self._leading_icon.texture_size[0]
-                            if self._leading_icon
-                            else 0
-                        )
-                        - dp(24)
                     ),
                 )
                 self._hint_text_label.font_size = theme_font_styles[
@@ -1483,44 +1595,17 @@ class MDTextField(
                 Animation(_outline_height=dp(1), d=0).start(self)
 
             if self._leading_icon:
-                Clock.schedule_once(
-                    lambda x: self.set_texture_color(
-                        self._leading_icon,
-                        self.canvas.before.get_group("leading-icons-color")[0],
-                        self.theme_cls.onSurfaceVariantColor
-                        if self._leading_icon.theme_icon_color == "Primary"
-                        or not self._leading_icon.icon_color_normal
-                        else self._leading_icon.icon_color_normal,
-                    )
-                )
+                self._set_texture_leading_icons_color(icon_color_focus=False)
             if self._trailing_icon:
-                Clock.schedule_once(
-                    lambda x: self.set_texture_color(
-                        self._trailing_icon,
-                        self.canvas.before.get_group("trailing-icons-color")[0],
-                        (
-                            self.theme_cls.onSurfaceVariantColor
-                            if self._trailing_icon.theme_icon_color == "Primary"
-                            or not self._trailing_icon.icon_color_normal
-                            else self._trailing_icon.icon_color_normal
-                        )
-                        if not self.error
-                        else self._get_error_color(),
-                    )
-                )
+                self._set_texture_trailing_icons_color(icon_color_focus=False)
             if self._max_length_label and not self.error:
-                Clock.schedule_once(
-                    lambda x: self.set_texture_color(
-                        self._max_length_label,
-                        self.canvas.before.get_group("max-length-color")[0],
-                        self.theme_cls.onSurfaceVariantColor
-                        if not self._max_length_label.text_color_normal
-                        else self._max_length_label.text_color_normal,
-                    )
-                )
+                self._set_texture_max_length_color(text_color_focus=False)
             if (
                 self._helper_text_label
-                and self._helper_text_label.mode == "on_focus"
+                and self._helper_text_label.mode in ["on_focus", "on_error"]
+                and (
+                    self._helper_text_label.mode == "on_focus" or not self.error
+                )
             ):
                 Clock.schedule_once(
                     lambda x: self.set_texture_color(
@@ -1533,19 +1618,7 @@ class MDTextField(
                 self._helper_text_label
                 and self._helper_text_label.mode == "persistent"
             ):
-                Clock.schedule_once(
-                    lambda x: self.set_texture_color(
-                        self._helper_text_label,
-                        self.canvas.before.get_group("helper-text-color")[0],
-                        (
-                            self.theme_cls.onSurfaceVariantColor
-                            if not self._helper_text_label.text_color_normal
-                            else self._helper_text_label.text_color_normal
-                        )
-                        if not self.error
-                        else self._get_error_color(),
-                    )
-                )
+                self._set_texture_helper_text_color(text_color_focus=False)
 
             if not self.text:
                 if self._hint_text_label:
@@ -1571,42 +1644,32 @@ class MDTextField(
                     self.set_pos_hint_text(
                         0 if self.mode != "outlined" else dp(-14),
                         (
-                            -(
+                            (
+                                -(
+                                    (
+                                        self._leading_icon.texture_size[0]
+                                        if self._leading_icon
+                                        else 0
+                                    )
+                                    + dp(12)
+                                )
+                                if self._leading_icon
+                                else 0
+                            )
+                            if self.mode == "outlined"
+                            else -(
                                 (
                                     self._leading_icon.texture_size[0]
                                     if self._leading_icon
                                     else 0
                                 )
-                                + dp(12)
+                                - dp(24)
                             )
-                            if self._leading_icon
-                            else 0
-                        )
-                        if self.mode == "outlined"
-                        else -(
-                            (
-                                self._leading_icon.texture_size[0]
-                                if self._leading_icon
-                                else 0
-                            )
-                            - dp(24)
                         ),
                     )
 
             if self._hint_text_label:
-                Clock.schedule_once(
-                    lambda x: self.set_texture_color(
-                        self._hint_text_label,
-                        self.canvas.after.get_group("hint-text-color")[0],
-                        (
-                            self.theme_cls.onSurfaceVariantColor
-                            if not self._hint_text_label.text_color_normal
-                            else self._hint_text_label.text_color_normal
-                        )
-                        if not self.error
-                        else self._get_error_color(),
-                    ),
-                )
+                self._set_texture_hint_text_color(text_color_focus=False)
 
     def on_disabled(self, instance, disabled: bool) -> None:
         """Fired when the `disabled` value changes."""
@@ -1670,6 +1733,106 @@ class MDTextField(
         if value_height >= self.max_height and self.max_height:
             self.height = self.max_height
 
+    def _set_texture_max_length_color(self, text_color_focus=False):
+        label = self._max_length_label
+        color = (
+            label.text_color_focus
+            if text_color_focus
+            else label.text_color_normal
+        ) or self.theme_cls.onSurfaceVariantColor
+
+        Clock.schedule_once(
+            lambda x: self.set_texture_color(
+                label,
+                self.canvas.before.get_group("max-length-color")[0],
+                color,
+            )
+        )
+
+    def _set_texture_hint_text_color(self, text_color_focus=False):
+        label = self._hint_text_label
+        if self.error:
+            color = self._get_error_color()
+        else:
+            base_color = (
+                label.text_color_focus
+                if text_color_focus
+                else label.text_color_normal
+            )
+            color = base_color or self.theme_cls.primaryColor
+
+        Clock.schedule_once(
+            lambda dt: self.set_texture_color(
+                label,
+                self.canvas.after.get_group("hint-text-color")[0],
+                color,
+            )
+        )
+
+    def _set_texture_helper_text_color(self, text_color_focus=False):
+        label = self._helper_text_label
+
+        if self.error:
+            color = self._get_error_color()
+        else:
+            color = (
+                label.text_color_focus
+                if text_color_focus
+                else label.text_color_normal
+            ) or self.theme_cls.onSurfaceVariantColor
+
+        Clock.schedule_once(
+            lambda x: self.set_texture_color(
+                label,
+                self.canvas.before.get_group("helper-text-color")[0],
+                color,
+            )
+        )
+
+    def _set_texture_leading_icons_color(self, icon_color_focus=False):
+        icon = self._leading_icon
+
+        if icon.theme_icon_color == "Primary":
+            color = self.theme_cls.onSurfaceVariantColor
+        else:
+            color = (
+                icon.icon_color_focus
+                if icon_color_focus
+                else icon.icon_color_normal
+            ) or self.theme_cls.onSurfaceVariantColor
+
+        Clock.schedule_once(
+            lambda x: self.set_texture_color(
+                icon,
+                self.canvas.before.get_group("leading-icons-color")[0],
+                color,
+            )
+        )
+
+    def _set_texture_trailing_icons_color(self, icon_color_focus=False):
+        icon = self._trailing_icon
+
+        if self.error:
+            color = self._get_error_color()
+        elif icon.theme_icon_color == "Primary":
+            color = self.theme_cls.onSurfaceVariantColor
+        else:
+            color = (
+                icon.icon_color_focus
+                if icon_color_focus
+                else icon.icon_color_normal
+            )
+            if not color:
+                color = self.theme_cls.onSurfaceVariantColor
+
+        Clock.schedule_once(
+            lambda x: self.set_texture_color(
+                icon,
+                self.canvas.before.get_group("trailing-icons-color")[0],
+                color,
+            )
+        )
+
     def _set_enabled_colors(self):
         def schedule_set_texture_color(widget, group_name, color):
             Clock.schedule_once(
@@ -1695,49 +1858,65 @@ class MDTextField(
             schedule_set_texture_color(
                 self._max_length_label,
                 max_length_label_group[0],
-                self._max_length_label.color[:-1] + [1]
-                if not self.error
-                else error_color,
+                (
+                    self._max_length_label.color[:-1] + [1]
+                    if not self.error
+                    else error_color
+                ),
             )
         if self._helper_text_label:
             schedule_set_texture_color(
                 self._helper_text_label,
                 helper_text_label_group[0],
-                on_surface_variant_color
-                if not self._helper_text_label.text_color_focus
-                else self._helper_text_label.text_color_focus
-                if not self.error
-                else error_color,
+                (
+                    on_surface_variant_color
+                    if not self._helper_text_label.text_color_focus
+                    else (
+                        self._helper_text_label.text_color_focus
+                        if not self.error
+                        else error_color
+                    )
+                ),
             )
-        if self._hint_text_label:   
+        if self._hint_text_label:
             schedule_set_texture_color(
                 self._hint_text_label,
                 hint_text_label_group[0],
-                on_surface_variant_color
-                if not self._hint_text_label.text_color_normal
-                else self._hint_text_label.text_color_normal
-                if not self.error
-                else error_color,
+                (
+                    on_surface_variant_color
+                    if not self._hint_text_label.text_color_normal
+                    else (
+                        self._hint_text_label.text_color_normal
+                        if not self.error
+                        else error_color
+                    )
+                ),
             )
         if self._leading_icon:
             schedule_set_texture_color(
                 self._leading_icon,
                 leading_icon_group[0],
-                on_surface_variant_color
-                if self._leading_icon.theme_icon_color == "Primary"
-                or not self._leading_icon.icon_color_normal
-                else self._leading_icon.icon_color_normal,
+                (
+                    on_surface_variant_color
+                    if self._leading_icon.theme_icon_color == "Primary"
+                    or not self._leading_icon.icon_color_normal
+                    else self._leading_icon.icon_color_normal
+                ),
             )
         if self._trailing_icon:
             schedule_set_texture_color(
                 self._trailing_icon,
                 trailing_icon_group[0],
-                on_surface_variant_color
-                if self._trailing_icon.theme_icon_color == "Primary"
-                or not self._trailing_icon.icon_color_normal
-                else self._trailing_icon.icon_color_normal
-                if not self.error
-                else error_color,
+                (
+                    on_surface_variant_color
+                    if self._trailing_icon.theme_icon_color == "Primary"
+                    or not self._trailing_icon.icon_color_normal
+                    else (
+                        self._trailing_icon.icon_color_normal
+                        if not self.error
+                        else error_color
+                    )
+                ),
             )
 
     def _set_disabled_colors(self):
@@ -1814,6 +1993,7 @@ class MDTextField(
             return has_error
         if (
             self._max_length_label
+            and self._max_length_label.max_text_length is not None
             and len(self.text) > self._max_length_label.max_text_length
         ):
             has_error = True

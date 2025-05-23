@@ -1,19 +1,18 @@
 from kivy.clock import Clock
 from kivy.lang import Builder
 
+from examples.common_app import CommonApp
 from kivymd.app import MDApp
 from kivymd.uix.button import (
-    MDIconButton,
     MDButton,
-    MDFabButton,
-    MDButtonText,
     MDButtonIcon,
+    MDButtonText,
     MDExtendedFabButton,
     MDExtendedFabButtonIcon,
     MDExtendedFabButtonText,
+    MDFabButton,
+    MDIconButton,
 )
-
-from examples.common_app import CommonApp
 
 KV = """
 MDScreen:
@@ -286,9 +285,9 @@ class Example(MDApp, CommonApp):
                     ),
                     style=style,
                     theme_bg_color="Custom",
-                    theme_line_color="Custom"
-                    if style == "outlined"
-                    else "Primary",
+                    theme_line_color=(
+                        "Custom" if style == "outlined" else "Primary"
+                    ),
                     md_bg_color={
                         "filled": "brown",
                         "tonal": "brown",

@@ -8,33 +8,131 @@ with some widget properties. For example:
 Screen
 ------
 
-.. code-block:: kv
+.. tabs::
 
-    Screen:
-        canvas:
-            Color:
-                rgba: app.theme_cls.primaryColor
-            RoundedRectangle:
-                pos: self.pos
-                size: self.size
-                radius: [25, 0, 0, 0]
+    .. tab:: KV
+
+        .. code-block:: kv
+
+            Screen:
+                canvas:
+                    Color:
+                        rgba: app.theme_cls.primaryColor
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+    .. tab:: Python
+
+        .. code-block:: python
+
+            from kivy.uix.screenmanager import Screen
+            from kivy.graphics import Color, Rectangle
+            from kivy.app import App
+
+            class MyApp(App):
+                def build(self):
+                    layout = Screen()
+
+                    with layout.canvas:
+                        Color(*self.theme_cls.primary_color)
+                        self.rect = Rectangle(pos=layout.pos, size=layout.size)
+
+                    return layout
+
+            MyApp().run()
 
 MDScreen
 --------
 
+.. tabs::
+
+    .. tab:: Imperative python style with KV
+
+        .. code-block:: kv
+
+            MDScreen:
+                md_bg_color: app.theme_cls.primaryColor
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.screen import MDScreen
+            from kivymd.app import MDApp
+
+            class MyApp(App):
+                def build(self):
+                    return MDScreen(
+                        md_bg_color=self.theme_cls.primaryColor
+                    )
+
+            MyApp().run()
+
+Available options are:
+----------------------
+
+- adaptive_height_
+- adaptive_width_
+- adaptive_size_
+
+.. adaptive_height:
+
+adaptive_height
+---------------
+
 .. code-block:: kv
 
-    MDScreen:
-        radius: [25, 0, 0, 0]
-        md_bg_color: self.theme_cls.primaryColor
+    adaptive_height: True
+
+Equivalent
+
+.. code-block:: kv
+
+    size_hint_y: None
+    height: self.minimum_height
+
+.. adaptive_width:
+
+adaptive_width
+--------------
+
+.. code-block:: kv
+
+    adaptive_width: True
+
+Equivalent
+
+.. code-block:: kv
+
+    size_hint_x: None
+    height: self.minimum_width
+
+.. adaptive_size:
+
+adaptive_size
+-------------
+
+.. code-block:: kv
+
+    adaptive_size: True
+
+Equivalent
+
+.. code-block:: kv
+
+    size_hint: None, None
+    size: self.minimum_size
 """
+
+__all__ = ("MDScreen",)
 
 from kivy.properties import ListProperty, ObjectProperty
 from kivy.uix.screenmanager import Screen
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
+from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
 from kivymd.uix.hero import MDHeroTo
 
 

@@ -274,16 +274,16 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
+    ColorProperty,
     ListProperty,
     NumericProperty,
-    ColorProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 
 from kivymd import uix_path
-from kivymd.uix.behaviors import MotionShackBehavior, DeclarativeBehavior
-from kivymd.uix.button import MDButton, MDIconButton, MDButtonText
+from kivymd.uix.behaviors import DeclarativeBehavior, MotionShackBehavior
+from kivymd.uix.button import MDButton, MDButtonText, MDIconButton
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
 
@@ -395,10 +395,10 @@ class MDSnackbar(MotionShackBehavior, MDCard):
     and defaults to `None`.
     """
 
+    __events__ = ("on_open", "on_dismiss")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_open")
-        self.register_event_type("on_dismiss")
         self.opacity = 0
 
     def dismiss(self, *args) -> None:

@@ -14,19 +14,41 @@ Components/Navigation bar
 Usage
 -----
 
-.. code-block:: kv
+.. tabs::
 
-    <Root>
+    .. tab:: Declarative KV style
 
-        MDNavigationBar:
+        .. code-block:: kv
 
-            MDNavigationItem:
+            <Root>
 
-                MDNavigationItemIcon:
+                MDNavigationBar:
 
-                MDNavigationItemLabel:
+                    MDNavigationItem:
 
-            [...]
+                        MDNavigationItemIcon:
+
+                        MDNavigationItemLabel:
+
+                    [...]
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            Root(
+                MDNavigationBar(
+                    MDNavigationItem(
+                        MDNavigationItemIcon(
+                            ...
+                        ),
+                        MDNavigationItemLabel(
+                            ...
+                        ),
+                    ),
+                    ...
+                ),
+            )
 
 Anatomy
 =======
@@ -284,85 +306,186 @@ content placement. You have to implement it yourself. This is due to the fact
 that when using MDNavigationBar and MDTabs widgets at the same time, there
 were conflicts between their screen managers.
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.properties import StringProperty
+    .. tab:: Declarative Python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.navigationbar import MDNavigationBar, MDNavigationItem
-    from kivymd.uix.screen import MDScreen
+        .. code-block:: python
 
+            from kivy.lang import Builder
+            from kivy.properties import StringProperty
 
-    class BaseMDNavigationItem(MDNavigationItem):
-        icon = StringProperty()
-        text = StringProperty()
-
-
-    class BaseScreen(MDScreen):
-        ...
+            from kivymd.app import MDApp
+            from kivymd.uix.navigationbar import MDNavigationBar, MDNavigationItem
+            from kivymd.uix.screen import MDScreen
 
 
-    KV = '''
-    <BaseMDNavigationItem>
-
-        MDNavigationItemIcon:
-            icon: root.icon
-
-        MDNavigationItemLabel:
-            text: root.text
+            class BaseMDNavigationItem(MDNavigationItem):
+                icon = StringProperty()
+                text = StringProperty()
 
 
-    <BaseScreen>
-
-        MDLabel:
-            text: root.name
-            halign: "center"
+            class BaseScreen(MDScreen):
+                ...
 
 
-    MDBoxLayout:
-        orientation: "vertical"
-        md_bg_color: self.theme_cls.backgroundColor
+            KV = '''
+            <BaseMDNavigationItem>
 
-        MDScreenManager:
-            id: screen_manager
+                MDNavigationItemIcon:
+                    icon: root.icon
 
-            BaseScreen:
-                name: "Screen 1"
-
-            BaseScreen:
-                name: "Screen 2"
+                MDNavigationItemLabel:
+                    text: root.text
 
 
-        MDNavigationBar:
-            on_switch_tabs: app.on_switch_tabs(*args)
+            <BaseScreen>
 
-            BaseMDNavigationItem
-                icon: "gmail"
-                text: "Screen 1"
-                active: True
-
-            BaseMDNavigationItem
-                icon: "twitter"
-                text: "Screen 2"
-    '''
+                MDLabel:
+                    text: root.name
+                    halign: "center"
 
 
-    class Example(MDApp):
-        def on_switch_tabs(
-            self,
-            bar: MDNavigationBar,
-            item: MDNavigationItem,
-            item_icon: str,
-            item_text: str,
-        ):
-            self.root.ids.screen_manager.current = item_text
+            MDBoxLayout:
+                orientation: "vertical"
+                md_bg_color: self.theme_cls.backgroundColor
 
-        def build(self):
-            return Builder.load_string(KV)
+                MDScreenManager:
+                    id: screen_manager
+
+                    BaseScreen:
+                        name: "Screen 1"
+
+                    BaseScreen:
+                        name: "Screen 2"
 
 
-    Example().run()
+                MDNavigationBar:
+                    on_switch_tabs: app.on_switch_tabs(*args)
+
+                    BaseMDNavigationItem
+                        icon: "gmail"
+                        text: "Screen 1"
+                        active: True
+
+                    BaseMDNavigationItem
+                        icon: "twitter"
+                        text: "Screen 2"
+            '''
+
+
+            class Example(MDApp):
+                def on_switch_tabs(
+                    self,
+                    bar: MDNavigationBar,
+                    item: MDNavigationItem,
+                    item_icon: str,
+                    item_text: str,
+                ):
+                    self.root.ids.screen_manager.current = item_text
+
+                def build(self):
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.properties import StringProperty
+            from kivy.clock import Clock
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.navigationbar import (
+                MDNavigationBar,
+                MDNavigationItem,
+                MDNavigationItemIcon,
+                MDNavigationItemLabel,
+            )
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.screenmanager import MDScreenManager
+
+
+            class BaseMDNavigationItem(MDNavigationItem):
+                icon = StringProperty()
+                text = StringProperty()
+
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    Clock.schedule_once(self.builds)
+
+                def builds(self, *args):
+                    self.add_widget(
+                        MDNavigationItemIcon(
+                            icon=self.icon
+                        )
+                    )
+                    self.add_widget(
+                        MDNavigationItemLabel(
+                            text=self.text
+                        )
+                    )
+
+
+            class BaseScreen(MDScreen):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    Clock.schedule_once(self.builds)
+
+                def builds(self, *args):
+                    self.add_widget(
+                        MDLabel(
+                            text=self.name,
+                            halign="center",
+                        )
+                    )
+
+
+            class Example(MDApp):
+                def on_switch_tabs(
+                    self,
+                    bar: MDNavigationBar,
+                    item: MDNavigationItem,
+                    item_icon: str,
+                    item_text: str,
+                ):
+                    self.root.get_ids().screen_manager.current = item_text
+
+                def build(self):
+                    return (
+                        MDBoxLayout(
+                            MDScreenManager(
+                                BaseScreen(
+                                    name="Screen 1"
+                                ),
+                                BaseScreen(
+                                    name="Screen 2"
+                                ),
+                                id="screen_manager"
+                            ),
+                            MDNavigationBar(
+                                BaseMDNavigationItem(
+                                    icon="gmail",
+                                    text="Screen 1",
+                                    active=True,
+                                ),
+                                BaseMDNavigationItem(
+                                    icon="twitter",
+                                    text="Screen 2",
+                                ),
+                                on_switch_tabs=lambda *args: self.on_switch_tabs(*args)
+                            ),
+                            orientation="vertical",
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+
+            Example().run()
 """
 
 from __future__ import annotations
@@ -390,14 +513,14 @@ from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.relativelayout import RelativeLayout
 
-from kivymd.uix.label import MDLabel, MDIcon
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd import uix_path
 from kivymd.uix.behaviors import (
-    DeclarativeBehavior,
     CommonElevationBehavior,
+    DeclarativeBehavior,
     RectangularRippleBehavior,
 )
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.label import MDIcon, MDLabel
 from kivymd.utils.set_bars_colors import set_bars_colors
 
 with open(
@@ -580,10 +703,20 @@ class MDNavigationBar(CommonElevationBehavior, MDBoxLayout):
     and defaults to `False`.
     """
 
+    __events__ = ("on_switch_tabs",)
+
     def __init__(self, *args, **kwargs):
-        self.register_event_type("on_switch_tabs")
         super().__init__(*args, **kwargs)
         Clock.schedule_once(self.set_status_bar_color)
+
+    def get_active_item(self) -> MDNavigationItem | None:
+        """
+        Returns the currently active item in the navigation bar.
+
+        .. versionadded:: 2.0.0
+        """
+
+        return next((child for child in self.children if child.active), None)
 
     def set_active_item(self, item: MDNavigationItem) -> None:
         """Sets the currently active element on the panel."""
@@ -594,12 +727,16 @@ class MDNavigationBar(CommonElevationBehavior, MDBoxLayout):
                 self.dispatch(
                     "on_switch_tabs",
                     widget,
-                    widget.ids.icon_container.children[0].icon
-                    if len(widget.ids.icon_container.children)
-                    else "",
-                    widget.ids.label_container.children[0].text
-                    if len(widget.ids.label_container.children)
-                    else "",
+                    (
+                        widget.ids.icon_container.children[0].icon
+                        if len(widget.ids.icon_container.children)
+                        else ""
+                    ),
+                    (
+                        widget.ids.label_container.children[0].text
+                        if len(widget.ids.label_container.children)
+                        else ""
+                    ),
                 )
             else:
                 widget.active = False

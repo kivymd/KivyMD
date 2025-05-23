@@ -41,83 +41,167 @@ Or with ``preview`` mode:
 Example
 -------
 
-.. code-block:: python
+.. tabs::
 
-    import os
+    .. tab:: Declarative Python style with KV
 
-    from kivy.core.window import Window
-    from kivy.lang import Builder
-    from kivy.metrics import dp
+        .. code-block:: python
 
-    from kivymd.app import MDApp
-    from kivymd.uix.filemanager import MDFileManager
-    from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
+            import os
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.core.window import Window
+            from kivy.lang import Builder
+            from kivy.metrics import dp
 
-        MDButton:
-            pos_hint: {"center_x": .5, "center_y": .5}
-            on_release: app.file_manager_open()
+            from kivymd.app import MDApp
+            from kivymd.uix.filemanager import MDFileManager
+            from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 
-            MDButtonText:
-                text: "Open manager"
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
+                MDButton:
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    on_release: app.file_manager_open()
 
-    class Example(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            Window.bind(on_keyboard=self.events)
-            self.manager_open = False
-            self.file_manager = MDFileManager(
-                exit_manager=self.exit_manager, select_path=self.select_path
-            )
-
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
-
-        def file_manager_open(self):
-            self.file_manager.show(
-                os.path.expanduser("~"))  # output manager to the screen
-            self.manager_open = True
-
-        def select_path(self, path: str):
-            '''
-            It will be called when you click on the file name
-            or the catalog selection button.
-
-            :param path: path to the selected directory or file;
+                    MDButtonText:
+                        text: "Open manager"
             '''
 
-            self.exit_manager()
-            MDSnackbar(
-                MDSnackbarText(
-                    text=path,
-                ),
-                y=dp(24),
-                pos_hint={"center_x": 0.5},
-                size_hint_x=0.8,
-            ).open()
 
-        def exit_manager(self, *args):
-            '''Called when the user reaches the root of the directory tree.'''
+            class Example(MDApp):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    Window.bind(on_keyboard=self.events)
+                    self.manager_open = False
+                    self.file_manager = MDFileManager(
+                        exit_manager=self.exit_manager, select_path=self.select_path
+                    )
 
-            self.manager_open = False
-            self.file_manager.close()
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
 
-        def events(self, instance, keyboard, keycode, text, modifiers):
-            '''Called when buttons are pressed on the mobile device.'''
+                def file_manager_open(self):
+                    self.file_manager.show(
+                        os.path.expanduser("~"))  # output manager to the screen
+                    self.manager_open = True
 
-            if keyboard in (1001, 27):
-                if self.manager_open:
-                    self.file_manager.back()
-            return True
+                def select_path(self, path: str):
+                    '''
+                    It will be called when you click on the file name
+                    or the catalog selection button.
+
+                    :param path: path to the selected directory or file;
+                    '''
+
+                    self.exit_manager()
+                    MDSnackbar(
+                        MDSnackbarText(
+                            text=path,
+                        ),
+                        y=dp(24),
+                        pos_hint={"center_x": 0.5},
+                        size_hint_x=0.8,
+                    ).open()
+
+                def exit_manager(self, *args):
+                    '''Called when the user reaches the root of the directory tree.'''
+
+                    self.manager_open = False
+                    self.file_manager.close()
+
+                def events(self, instance, keyboard, keycode, text, modifiers):
+                    '''Called when buttons are pressed on the mobile device.'''
+
+                    if keyboard in (1001, 27):
+                        if self.manager_open:
+                            self.file_manager.back()
+                    return True
 
 
-    Example().run()
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            import os
+
+            from kivy.core.window import Window
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.filemanager import MDFileManager
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
+
+
+            class Example(MDApp):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    Window.bind(on_keyboard=self.events)
+                    self.manager_open = False
+                    self.file_manager = MDFileManager(
+                        exit_manager=self.exit_manager, select_path=self.select_path
+                    )
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDButton(
+                                MDButtonText(
+                                    text="Open manager"
+                                ),
+                                pos_hint={"center_x": .5, "center_y": .5},
+                                on_release=self.file_manager_open,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+                def file_manager_open(self, *args):
+                    self.file_manager.show(
+                        os.path.expanduser("~"))  # output manager to the screen
+                    self.manager_open = True
+
+                def select_path(self, path: str):
+                    '''
+                    It will be called when you click on the file name
+                    or the catalog selection button.
+
+                    :param path: path to the selected directory or file;
+                    '''
+
+                    self.exit_manager()
+                    MDSnackbar(
+                        MDSnackbarText(
+                            text=path,
+                        ),
+                        y=dp(24),
+                        pos_hint={"center_x": 0.5},
+                        size_hint_x=0.8,
+                    ).open()
+
+                def exit_manager(self, *args):
+                    '''Called when the user reaches the root of the directory tree.'''
+
+                    self.manager_open = False
+                    self.file_manager.close()
+
+                def events(self, instance, keyboard, keycode, text, modifiers):
+                    '''Called when buttons are pressed on the mobile device.'''
+
+                    if keyboard in (1001, 27):
+                        if self.manager_open:
+                            self.file_manager.back()
+                    return True
+
+
+            Example().run()
 
 .. versionadded:: 1.0.0
 
@@ -422,7 +506,7 @@ class MDFileManager(ThemableBehavior, RelativeLayout):
     )
     """
     It can take the values 'nothing' 'name' 'date' 'size' 'type' - sorts files
-    by option. By default, sort by name. 
+    by option. By default, sort by name.
     Available options are: `'nothing'`, `'name'`, `'date'`, `'size'`, `'type'`.
 
     :attr:`sort_by` is an :class:`~kivy.properties.OptionProperty`
@@ -468,12 +552,10 @@ class MDFileManager(ThemableBehavior, RelativeLayout):
     _window_manager = None
     _window_manager_open = False
 
+    __events__ = ("on_pre_open", "on_open", "on_pre_dismiss", "on_dismiss")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_pre_open")
-        self.register_event_type("on_open")
-        self.register_event_type("on_pre_dismiss")
-        self.register_event_type("on_dismiss")
         Clock.schedule_once(self._create_selection_button)
 
         if self.preview:
@@ -593,9 +675,11 @@ class MDFileManager(ThemableBehavior, RelativeLayout):
                         "icon": icon,
                         "dir_or_file_name": name,
                         "events_callback": self.select_dir_or_file,
-                        "icon_color": self.theme_cls.primaryColor
-                        if not self.icon_color
-                        else self.icon_color,
+                        "icon_color": (
+                            self.theme_cls.primaryColor
+                            if not self.icon_color
+                            else self.icon_color
+                        ),
                         "_selected": False,
                     }
                 )
@@ -610,9 +694,11 @@ class MDFileManager(ThemableBehavior, RelativeLayout):
                         "icon": "file-outline",
                         "dir_or_file_name": os.path.split(name)[1],
                         "events_callback": self.select_dir_or_file,
-                        "icon_color": self.theme_cls.primaryColor
-                        if not self.icon_color
-                        else self.icon_color,
+                        "icon_color": (
+                            self.theme_cls.primaryColor
+                            if not self.icon_color
+                            else self.icon_color
+                        ),
                         "_selected": False,
                     }
                 )
@@ -798,9 +884,11 @@ class MDFileManager(ThemableBehavior, RelativeLayout):
             self.selection_button = MDFabButton(
                 on_release=self.select_directory_on_press_button,
                 theme_bg_color="Custom",
-                md_bg_color=self.theme_cls.primaryColor
-                if not self.background_color_selection_button
-                else self.background_color_selection_button,
+                md_bg_color=(
+                    self.theme_cls.primaryColor
+                    if not self.background_color_selection_button
+                    else self.background_color_selection_button
+                ),
                 icon=self.icon_selection_button,
                 pos_hint={"right": 0.99},
                 y=dp(12),

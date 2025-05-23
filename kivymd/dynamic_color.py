@@ -153,12 +153,11 @@ Example of dynamic color from the list of standard color schemes
 
         def generate_cards(self, *args):
             self.root.ids.card_list.data = []
-            for color in self.theme_cls.schemes_name_colors:
-                value = f"{color}Color"
+            for color in self.theme_cls.dynamic_color_names:
                 self.root.ids.card_list.data.append(
                     {
-                        "bg_color": getattr(self.theme_cls, value),
-                        "text": value,
+                        "bg_color": getattr(self.theme_cls, color),
+                        "text": color,
                     }
                 )
 
@@ -256,12 +255,11 @@ Example of a dynamic color from an image
 
         def generate_cards(self, *args):
             self.root.ids.card_list.data = []
-            for color in self.theme_cls.schemes_name_colors:
-                value = f"{color}Color"
+            for color in self.theme_cls.dynamic_color_names:
                 self.root.ids.card_list.data.append(
                     {
-                        "bg_color": getattr(self.theme_cls, value),
-                        "text": value,
+                        "bg_color": getattr(self.theme_cls, color),
+                        "text": color,
                     }
                 )
 

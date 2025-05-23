@@ -125,93 +125,213 @@ and consistently.
 Example of assist
 -----------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Imperative python style with KV
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    <CommonLabel@MDLabel>
-        adaptive_size: True
-        theme_text_color: "Custom"
-        text_color: "#e6e9df"
+            from kivy.lang import Builder
 
+            from kivymd.app import MDApp
 
-    <CommonAssistChip@MDChip>
-        # Custom attribute.
-        text: ""
-        icon: ""
-
-        # Chip attribute.
-        type: "assist"
-        md_bg_color: "#2a3127"
-        line_color: "grey"
-        elevation: 1
-        shadow_softness: 2
-
-        MDChipLeadingIcon:
-            icon: root.icon
-            theme_text_color: "Custom"
-            text_color: "#68896c"
-
-        MDChipText:
-            text: root.text
-            theme_text_color: "Custom"
-            text_color: "#e6e9df"
-
-
-    MDScreen:
-
-        FitImage:
-            source: "bg.png"
-
-        MDBoxLayout:
-            orientation: "vertical"
-            adaptive_size: True
-            pos_hint: {"center_y": .6, "center_x": .5}
-
-            CommonLabel:
-                text: "in 10 mins"
-                bold: True
-                pos_hint: {"center_x": .5}
-
-            CommonLabel:
-                text: "Therapy with Thea"
-                font_style: "H3"
-                padding_y: "12dp"
-
-            CommonLabel:
-                text: "Video call"
-                font_style: "H5"
-                pos_hint: {"center_x": .5}
-
-            MDBoxLayout:
+            KV = '''
+            <CommonLabel@MDLabel>
                 adaptive_size: True
-                pos_hint: {"center_x": .5}
-                spacing: "12dp"
-                padding: 0, "24dp", 0, 0
-
-                CommonAssistChip:
-                    text: "Home office"
-                    icon: "map-marker"
-
-                CommonAssistChip:
-                    text: "Chat"
-                    icon: "message"
-
-            MDWidget:
-    '''
+                theme_text_color: "Custom"
+                text_color: "#e6e9df"
 
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.primary_palette = "Teal"
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+            <CommonAssistChip@MDChip>
+                # Custom attribute.
+                text: ""
+                icon: ""
+
+                # Chip attribute.
+                type: "assist"
+                theme_bg_color: "Custom"
+                md_bg_color: "#2a3127"
+                theme_line_color: "Custom"
+                line_color: "grey"
+                theme_elevation_level: "Custom"
+                elevation_level: 1
+                theme_shadow_softness: "Custom"
+                shadow_softness: 2
+
+                MDChipLeadingIcon:
+                    icon: root.icon
+                    theme_text_color: "Custom"
+                    text_color: "#68896c"
+
+                MDChipText:
+                    text: root.text
+                    theme_text_color: "Custom"
+                    text_color: "#e6e9df"
 
 
-    Example().run()
+            MDScreen:
+
+                FitImage:
+                    source: "bg.png"
+
+                MDBoxLayout:
+                    orientation: "vertical"
+                    adaptive_size: True
+                    pos_hint: {"center_y": .6, "center_x": .5}
+
+                    CommonLabel:
+                        text: "in 10 mins"
+                        bold: True
+                        pos_hint: {"center_x": .5}
+
+                    CommonLabel:
+                        text: "Therapy with Thea"
+                        font_style: "Display"
+                        role: "large"
+                        padding_y: "12dp"
+
+                    CommonLabel:
+                        text: "Video call"
+                        font_style: "Display"
+                        role: "small"
+                        pos_hint: {"center_x": .5}
+
+                    MDBoxLayout:
+                        adaptive_size: True
+                        pos_hint: {"center_x": .5}
+                        spacing: "12dp"
+                        padding: 0, "24dp", 0, 0
+
+                        CommonAssistChip:
+                            text: "Home office"
+                            icon: "map-marker"
+
+                        CommonAssistChip:
+                            text: "Chat"
+                            icon: "message"
+
+                    MDWidget:
+            '''
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Teal"
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.properties import StringProperty
+            from kivy.clock import Clock
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.chip import MDChip, MDChipLeadingIcon, MDChipText
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.widget import MDWidget
+
+
+            class CommonAssistChip(MDChip):
+                text = StringProperty()
+                icon = StringProperty()
+
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.type = "assist"
+                    self.theme_bg_color = "Custom"
+                    self.md_bg_color = "#2a3127"
+                    self.theme_line_color = "Custom"
+                    self.line_color = "grey"
+                    self.theme_elevation_level = "Custom"
+                    self.elevation_level = 1
+                    self.theme_shadow_softness = "Custom"
+                    self.shadow_softness = 2
+                    Clock.schedule_once(self._add_widget)
+
+                def _add_widget(self, *args):
+                    self.add_widget(
+                        MDChipLeadingIcon(
+                            icon=self.icon,
+                            theme_text_color="Custom",
+                            text_color="#68896c",
+                        )
+                    )
+                    self.add_widget(
+                        MDChipText(
+                            text=self.text,
+                            theme_text_color="Custom",
+                            text_color="#68896c",
+                        )
+                    )
+
+
+            class CommonLabel(MDLabel):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.adaptive_size=True
+                    self.theme_text_color="Custom"
+                    self.text_color="#e6e9df"
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Teal"
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            FitImage(
+                                source="bg.png"
+                            ),
+                            MDBoxLayout(
+                                CommonLabel(
+                                    text="in 10 mins",
+                                    bold=True,
+                                    pos_hint={"center_x": 0.5},
+                                ),
+                                CommonLabel(
+                                    text="Therapy with Thea",
+                                    font_style="Display",
+                                    role="large",
+                                    padding_y="12dp",
+                                ),
+                                CommonLabel(
+                                    text="Video call",
+                                    font_style="Display",
+                                    role="small",
+                                    pos_hint={"center_x": 0.5},
+                                ),
+                                MDBoxLayout(
+                                    CommonAssistChip(
+                                        text="Home office",
+                                        icon="map-marker",
+                                    ),
+                                    CommonAssistChip(
+                                        text="Chat",
+                                        icon="message",
+                                    ),
+                                    adaptive_size=True,
+                                    pos_hint={"center_x": 0.5},
+                                    spacing="12dp",
+                                    padding=(0, "24dp", 0, 0),
+                                ),
+                                MDWidget(),
+                                orientation="vertical",
+                                adaptive_size=True,
+                                pos_hint={"center_y": 0.6, "center_x": 0.5},
+                            ),
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/example-assist-chip.png
     :align: center
@@ -234,225 +354,461 @@ the starting edge of the chip label.
 Example of filtering
 --------------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.properties import StringProperty, ListProperty
+    .. tab:: Imperative python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.chip import MDChip, MDChipText
-    from kivymd.uix.list import MDListItem
-    from kivymd.icon_definitions import md_icons
-    from kivymd.uix.screen import MDScreen
+        .. code-block:: python
 
-    import asynckivy
+            from kivy.lang import Builder
+            from kivy.properties import StringProperty, ListProperty
 
-    Builder.load_string(
-        '''
-    <CustomOneLineIconListItem>
+            from kivymd.app import MDApp
+            from kivymd.uix.chip import MDChip, MDChipText
+            from kivymd.uix.list import MDListItem
+            from kivymd.icon_definitions import md_icons
+            from kivymd.uix.screen import MDScreen
 
-        MDListItemLeadingIcon:
-            icon: root.icon
+            import asynckivy
 
-        MDListItemHeadlineText:
-            text: root.text
+            Builder.load_string(
+                '''
+            <CustomOneLineIconListItem>
+
+                MDListItemLeadingIcon:
+                    icon: root.icon
+
+                MDListItemHeadlineText:
+                    text: root.text
 
 
-    <PreviewIconsScreen>
+            <PreviewIconsScreen>
 
-        MDBoxLayout:
-            orientation: "vertical"
-            spacing: "14dp"
-            padding: "20dp"
-
-            MDTextField:
-                id: search_field
-                mode: "outlined"
-                on_text: root.set_list_md_icons(self.text, True)
-
-                MDTextFieldLeadingIcon:
-                    icon: "magnify"
-
-                MDTextFieldHintText:
-                    text: "Search icon"
-
-            MDBoxLayout:
-                id: chip_box
-                spacing: "12dp"
-                adaptive_height: True
-
-            RecycleView:
-                id: rv
-                viewclass: "CustomOneLineIconListItem"
-                key_size: "height"
-
-                RecycleBoxLayout:
-                    padding: dp(10)
-                    default_size: None, dp(48)
-                    default_size_hint: 1, None
-                    size_hint_y: None
-                    height: self.minimum_height
+                MDBoxLayout:
                     orientation: "vertical"
-        '''
-    )
+                    spacing: "14dp"
+                    padding: "20dp"
+
+                    MDTextField:
+                        id: search_field
+                        mode: "outlined"
+                        on_text: root.set_list_md_icons(self.text, True)
+
+                        MDTextFieldLeadingIcon:
+                            icon: "magnify"
+
+                        MDTextFieldHintText:
+                            text: "Search icon"
+
+                    MDBoxLayout:
+                        id: chip_box
+                        spacing: "12dp"
+                        adaptive_height: True
+
+                    RecycleView:
+                        id: rv
+                        viewclass: "CustomOneLineIconListItem"
+                        key_size: "height"
+
+                        RecycleBoxLayout:
+                            padding: dp(10)
+                            default_size: None, dp(48)
+                            default_size_hint: 1, None
+                            size_hint_y: None
+                            height: self.minimum_height
+                            orientation: "vertical"
+                '''
+            )
 
 
-    class CustomOneLineIconListItem(MDListItem):
-        icon = StringProperty()
-        text = StringProperty()
+            class CustomOneLineIconListItem(MDListItem):
+                icon = StringProperty()
+                text = StringProperty()
 
 
-    class PreviewIconsScreen(MDScreen):
-        filter = ListProperty()  # list of tags for filtering icons
+            class PreviewIconsScreen(MDScreen):
+                filter = ListProperty()  # list of tags for filtering icons
 
-        def set_filter_chips(self):
-            '''Asynchronously creates and adds chips to the container.'''
+                def set_filter_chips(self):
+                    '''Asynchronously creates and adds chips to the container.'''
 
-            async def set_filter_chips():
-                for tag in ["Outline", "Off", "On"]:
-                    await asynckivy.sleep(0)
-                    chip = MDChip(
-                        MDChipText(
-                            text=tag,
-                        ),
-                        type="filter",
-                        md_bg_color="#303A29",
-                    )
-                    chip.bind(active=lambda x, y, z=tag: self.set_filter(y, z))
-                    self.ids.chip_box.add_widget(chip)
+                    async def set_filter_chips():
+                        for tag in ["Outline", "Off", "On"]:
+                            await asynckivy.sleep(0)
+                            chip = MDChip(
+                                MDChipText(
+                                    text=tag,
+                                ),
+                                type="filter",
+                                selected_color="green",
+                                theme_bg_color="Custom",
+                                md_bg_color="#303A29",
+                            )
+                            chip.bind(active=lambda x, y, z=tag: self.set_filter(y, z))
+                            self.ids.chip_box.add_widget(chip)
 
-            asynckivy.start(set_filter_chips())
+                    asynckivy.start(set_filter_chips())
 
-        def set_filter(self, active: bool, tag: str) -> None:
-            '''Sets a list of tags for filtering icons.'''
+                def set_filter(self, active: bool, tag: str) -> None:
+                    '''Sets a list of tags for filtering icons.'''
 
-            if active:
-                self.filter.append(tag)
-            else:
-                self.filter.remove(tag)
+                    if active:
+                        self.filter.append(tag)
+                    else:
+                        self.filter.remove(tag)
 
-        def set_list_md_icons(self, text="", search=False) -> None:
-            '''Builds a list of icons.'''
+                def set_list_md_icons(self, text="", search=False) -> None:
+                    '''Builds a list of icons.'''
 
-            def add_icon_item(name_icon):
-                self.ids.rv.data.append(
-                    {
-                        "icon": name_icon,
-                        "text": name_icon,
-                    }
-                )
+                    def add_icon_item(name_icon):
+                        self.ids.rv.data.append(
+                            {
+                                "icon": name_icon,
+                                "text": name_icon,
+                            }
+                        )
 
-            self.ids.rv.data = []
-            for name_icon in md_icons.keys():
-                for tag in self.filter:
-                    if tag.lower() in name_icon:
-                        if search:
-                            if text in name_icon:
-                                add_icon_item(name_icon)
-                        else:
-                            add_icon_item(name_icon)
-
-
-    class Example(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            self.screen = PreviewIconsScreen()
-
-        def build(self) -> PreviewIconsScreen:
-            self.theme_cls.theme_style = "Dark"
-            return self.screen
-
-        def on_start(self) -> None:
-            self.screen.set_list_md_icons()
-            self.screen.set_filter_chips()
+                    self.ids.rv.data = []
+                    for name_icon in md_icons.keys():
+                        for tag in self.filter:
+                            if tag.lower() in name_icon:
+                                if search:
+                                    if text in name_icon:
+                                        add_icon_item(name_icon)
+                                else:
+                                    add_icon_item(name_icon)
 
 
-    Example().run()
+            class Example(MDApp):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    self.screen = PreviewIconsScreen()
+
+                def build(self) -> PreviewIconsScreen:
+                    self.theme_cls.theme_style = "Dark"
+                    return self.screen
+
+                def on_start(self) -> None:
+                    self.screen.set_list_md_icons()
+                    self.screen.set_filter_chips()
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/example-filtering-icons-chip.gif
     :align: center
 
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+            from kivy.lang import Builder
+            from kivy.properties import StringProperty, ListProperty
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.chip import MDChip, MDChipText
+            from kivymd.uix.list import MDListItem
+            from kivymd.icon_definitions import md_icons
+            from kivymd.uix.recycleboxlayout import MDRecycleBoxLayout
+            from kivymd.uix.recycleview import MDRecycleView
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.textfield import (
+                MDTextField, MDTextFieldLeadingIcon, MDTextFieldHintText
+            )
+
+            import asynckivy
+
+            Builder.load_string(
+                '''
+            <CustomOneLineIconListItem>
+
+                MDListItemLeadingIcon:
+                    icon: root.icon
+
+                MDListItemHeadlineText:
+                    text: root.text
+            '''
+            )
+
+
+            class CustomOneLineIconListItem(MDListItem):
+                icon = StringProperty()
+                text = StringProperty()
+
+
+            class PreviewIconsScreen(MDScreen):
+                filter = ListProperty()  # list of tags for filtering icons
+
+                def set_filter_chips(self):
+                    '''Asynchronously creates and adds chips to the container.'''
+
+                    async def set_filter_chips():
+                        for tag in ["Outline", "Off", "On"]:
+                            await asynckivy.sleep(0)
+                            chip = MDChip(
+                                MDChipText(
+                                    text=tag,
+                                ),
+                                type="filter",
+                                selected_color="green",
+                                theme_bg_color="Custom",
+                                md_bg_color="#303A29",
+                            )
+                            chip.bind(active=lambda x, y, z=tag: self.set_filter(y, z))
+                            self.get_ids().chip_box.add_widget(chip)
+
+                    asynckivy.start(set_filter_chips())
+
+                def set_filter(self, active: bool, tag: str) -> None:
+                    '''Sets a list of tags for filtering icons.'''
+
+                    if active:
+                        self.filter.append(tag)
+                    else:
+                        self.filter.remove(tag)
+
+                def set_list_md_icons(self, text="", search=False) -> None:
+                    '''Builds a list of icons.'''
+
+                    def add_icon_item(name_icon):
+                        self.get_ids().rv.data.append(
+                            {
+                                "icon": name_icon,
+                                "text": name_icon,
+                            }
+                        )
+
+                    self.get_ids().rv.data = []
+                    for name_icon in md_icons.keys():
+                        for tag in self.filter:
+                            if tag.lower() in name_icon:
+                                if search:
+                                    if text in name_icon:
+                                        add_icon_item(name_icon)
+                                else:
+                                    add_icon_item(name_icon)
+
+
+            class Example(MDApp):
+                def build(self) -> PreviewIconsScreen:
+                    self.theme_cls.theme_style = "Dark"
+                    self.screen = PreviewIconsScreen(
+                        MDBoxLayout(
+                            MDTextField(
+                                MDTextFieldLeadingIcon(
+                                    icon="magnify"
+                                ),
+                                MDTextFieldHintText(
+                                    text="Search icon"
+                                ),
+                                id="search_field",
+                                mode="outlined",
+                            ),
+                            MDBoxLayout(
+                                id="chip_box",
+                                spacing="12dp",
+                                adaptive_height=True,
+                            ),
+                            MDRecycleView(
+                                MDRecycleBoxLayout(
+                                    padding=dp(10),
+                                    default_size=(None, dp(48)),
+                                    default_size_hint=(1, None),
+                                    adaptive_height=True,
+                                    orientation="vertical",
+                                ),
+                                id="rv",
+                            ),
+                            orientation="vertical",
+                            spacing="14dp",
+                            padding="20dp",
+                        )
+                    )
+                    search_field = self.screen.get_ids().search_field
+                    search_field.bind(
+                        text=lambda *x: self.screen.set_list_md_icons(search_field.text, True)
+                    )
+                    self.screen.get_ids().rv.key_size = "height"
+                    self.screen.get_ids().rv.viewclass = "CustomOneLineIconListItem"
+                    return self.screen
+
+                def on_start(self) -> None:
+                    self.screen.set_list_md_icons()
+                    self.screen.set_filter_chips()
+
+
+            Example().run()
+
 Tap a chip to select it. Multiple chips can be selected or unselected:
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Imperative python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.chip import MDChip, MDChipText
-    from kivymd.uix.screen import MDScreen
+        .. code-block:: python
 
-    import asynckivy
+            from kivy.lang import Builder
 
-    Builder.load_string(
-        '''
-    <ChipScreen>
+            from kivymd.app import MDApp
+            from kivymd.uix.chip import MDChip, MDChipText
+            from kivymd.uix.screen import MDScreen
 
-        MDBoxLayout:
-            orientation: "vertical"
-            spacing: "14dp"
-            padding: "20dp"
+            import asynckivy
 
-            MDLabel:
-                adaptive_height: True
-                text: "Select Type"
+            Builder.load_string(
+                '''
+            <ChipScreen>
 
-            MDStackLayout:
-                id: chip_box
-                spacing: "12dp"
-                adaptive_height: True
+                MDBoxLayout:
+                    orientation: "vertical"
+                    spacing: "14dp"
+                    padding: "20dp"
 
-            MDWidget:
+                    MDLabel:
+                        adaptive_height: True
+                        text: "Select Type"
 
-        MDButton:
-            pos: "20dp", "20dp"
-            on_release: root.unchecks_chips()
+                    MDStackLayout:
+                        id: chip_box
+                        spacing: "12dp"
+                        adaptive_height: True
 
-            MDButtonText:
-                text: "Uncheck chips"
-        '''
-    )
+                    MDWidget:
+
+                MDButton:
+                    pos: "20dp", "20dp"
+                    on_release: root.unchecks_chips()
+
+                    MDButtonText:
+                        text: "Uncheck chips"
+                '''
+            )
 
 
-    class ChipScreen(MDScreen):
-        async def create_chips(self):
-            '''Asynchronously creates and adds chips to the container.'''
+            class ChipScreen(MDScreen):
+                async def create_chips(self):
+                    '''Asynchronously creates and adds chips to the container.'''
 
-            for tag in ["Extra Soft", "Soft", "Medium", "Hard"]:
-                await asynckivy.sleep(0)
-                self.ids.chip_box.add_widget(
-                    MDChip(
-                        MDChipText(
-                            text=tag,
+                    for tag in ["Extra Soft", "Soft", "Medium", "Hard"]:
+                        await asynckivy.sleep(0)
+                        self.ids.chip_box.add_widget(
+                            MDChip(
+                                MDChipText(
+                                    text=tag,
+                                ),
+                                type="filter",
+                                selected_color="green",
+                                theme_bg_color="Custom",
+                                md_bg_color="#303A29",
+                                active=True,
+                            )
+                        )
+
+                def unchecks_chips(self) -> None:
+                    '''Removes marks from all chips.'''
+
+                    for chip in self.ids.chip_box.children:
+                        if chip.active:
+                            chip.active = False
+
+
+            class Example(MDApp):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    self.screen = ChipScreen()
+
+                def build(self) -> ChipScreen:
+                    self.theme_cls.theme_style = "Dark"
+                    return self.screen
+
+                def on_start(self) -> None:
+                    asynckivy.start(self.screen.create_chips())
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.chip import MDChip, MDChipText
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.stacklayout import MDStackLayout
+            from kivymd.uix.widget import MDWidget
+
+            import asynckivy
+
+
+            class ChipScreen(MDScreen):
+                async def create_chips(self):
+                    '''Asynchronously creates and adds chips to the container.'''
+
+                    for tag in ["Extra Soft", "Soft", "Medium", "Hard"]:
+                        await asynckivy.sleep(0)
+                        self.get_ids().chip_box.add_widget(
+                            MDChip(
+                                MDChipText(
+                                    text=tag,
+                                ),
+                                type="filter",
+                                selected_color="green",
+                                theme_bg_color="Custom",
+                                md_bg_color="#303A29",
+                                active=True,
+                            )
+                        )
+
+                def unchecks_chips(self) -> None:
+                    '''Removes marks from all chips.'''
+
+                    for chip in self.get_ids().chip_box.children:
+                        if chip.active:
+                            chip.active = False
+
+
+            class Example(MDApp):
+                def build(self) -> ChipScreen:
+                    self.theme_cls.theme_style = "Dark"
+                    self.screen = ChipScreen(
+                        MDBoxLayout(
+                            MDLabel(
+                                adaptive_height=True,
+                                text="Select Type",
+                            ),
+                            MDStackLayout(
+                                id="chip_box",
+                                spacing="12dp",
+                                adaptive_height=True,
+                            ),
+                            MDWidget(),
+                            orientation="vertical",
+                            spacing="14dp",
+                            padding="20dp",
                         ),
-                        type="filter",
-                        md_bg_color="#303A29",
-                        active=True,
+                        MDButton(
+                            MDButtonText(
+                                text="Uncheck chips"
+                            ),
+                            id="button",
+                            pos=("20dp", "20dp"),
+                        )
                     )
-                )
+                    self.screen.get_ids().button.bind(
+                        on_release=lambda x: self.screen.unchecks_chips()
+                    )
+                    return self.screen
 
-        def unchecks_chips(self) -> None:
-            '''Removes marks from all chips.'''
-
-            for chip in self.ids.chip_box.children:
-                if chip.active:
-                    chip.active = False
-
-
-    class Example(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            self.screen = ChipScreen()
-
-        def build(self) -> ChipScreen:
-            self.theme_cls.theme_style = "Dark"
-            return self.screen
-
-        def on_start(self) -> None:
-            asynckivy.start(self.screen.create_chips())
+                def on_start(self) -> None:
+                    asynckivy.start(self.screen.create_chips())
 
 
-    Example().run()
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/example-filtering-icons-chip-2.gif
     :align: center
@@ -461,81 +817,159 @@ Alternatively, a single chip can be selected.
 This offers an alternative to toggle buttons, radio buttons, or single select
 menus:
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Imperative python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.chip import MDChip, MDChipText
-    from kivymd.uix.screen import MDScreen
+        .. code-block:: python
 
-    import asynckivy
+            from kivy.lang import Builder
 
-    Builder.load_string(
-        '''
-    <ChipScreen>
+            from kivymd.app import MDApp
+            from kivymd.uix.chip import MDChip, MDChipText
+            from kivymd.uix.screen import MDScreen
 
-        MDBoxLayout:
-            orientation: "vertical"
-            spacing: "14dp"
-            padding: "20dp"
+            import asynckivy
 
-            MDLabel:
-                adaptive_height: True
-                text: "Select Type"
+            Builder.load_string(
+                '''
+            <ChipScreen>
 
-            MDStackLayout:
-                id: chip_box
-                spacing: "12dp"
-                adaptive_height: True
+                MDBoxLayout:
+                    orientation: "vertical"
+                    spacing: "14dp"
+                    padding: "20dp"
 
-            MDWidget:
-        '''
-    )
+                    MDLabel:
+                        adaptive_height: True
+                        text: "Select Type"
 
+                    MDStackLayout:
+                        id: chip_box
+                        spacing: "12dp"
+                        adaptive_height: True
 
-    class ChipScreen(MDScreen):
-        async def create_chips(self):
-            '''Asynchronously creates and adds chips to the container.'''
-
-            for tag in ["Extra Soft", "Soft", "Medium", "Hard"]:
-                await asynckivy.sleep(0)
-                chip = MDChip(
-                    MDChipText(
-                        text=tag,
-                    ),
-                    type="filter",
-                    md_bg_color="#303A29",
-
-                )
-                chip.bind(active=self.uncheck_chip)
-                self.ids.chip_box.add_widget(chip)
-
-        def uncheck_chip(self, current_chip: MDChip, active: bool) -> None:
-            '''Removes a mark from an already marked chip.'''
-
-            if active:
-                for chip in self.ids.chip_box.children:
-                    if current_chip is not chip:
-                        if chip.active:
-                            chip.active = False
+                    MDWidget:
+                '''
+            )
 
 
-    class Example(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            self.screen = ChipScreen()
+            class ChipScreen(MDScreen):
+                async def create_chips(self):
+                    '''Asynchronously creates and adds chips to the container.'''
 
-        def build(self) -> ChipScreen:
-            self.theme_cls.theme_style = "Dark"
-            self.theme_cls.primary_palette = "LightGreen"
-            return self.screen
+                    for tag in ["Extra Soft", "Soft", "Medium", "Hard"]:
+                        await asynckivy.sleep(0)
+                        chip = MDChip(
+                            MDChipText(
+                                text=tag,
+                            ),
+                            type="filter",
+                            selected_color="green",
+                            theme_bg_color="Custom",
+                            md_bg_color="#303A29",
 
-        def on_start(self) -> None:
-            asynckivy.start(self.screen.create_chips())
+                        )
+                        chip.bind(active=self.uncheck_chip)
+                        self.ids.chip_box.add_widget(chip)
+
+                def uncheck_chip(self, current_chip: MDChip, active: bool) -> None:
+                    '''Removes a mark from an already marked chip.'''
+
+                    if active:
+                        for chip in self.ids.chip_box.children:
+                            if current_chip is not chip:
+                                if chip.active:
+                                    chip.active = False
 
 
-    Example().run()
+            class Example(MDApp):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    self.screen = ChipScreen()
+
+                def build(self) -> ChipScreen:
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Lightgreen"
+                    return self.screen
+
+                def on_start(self) -> None:
+                    asynckivy.start(self.screen.create_chips())
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.chip import MDChip, MDChipText
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.stacklayout import MDStackLayout
+            from kivymd.uix.widget import MDWidget
+
+            import asynckivy
+
+
+            class ChipScreen(MDScreen):
+                async def create_chips(self):
+                    '''Asynchronously creates and adds chips to the container.'''
+
+                    for tag in ["Extra Soft", "Soft", "Medium", "Hard"]:
+                        await asynckivy.sleep(0)
+                        chip = MDChip(
+                            MDChipText(
+                                text=tag,
+                            ),
+                            type="filter",
+                            selected_color="green",
+                            theme_bg_color="Custom",
+                            md_bg_color="#303A29",
+
+                        )
+                        chip.bind(active=self.uncheck_chip)
+                        self.get_ids().chip_box.add_widget(chip)
+
+                def uncheck_chip(self, current_chip: MDChip, active: bool) -> None:
+                    '''Removes a mark from an already marked chip.'''
+
+                    if active:
+                        for chip in self.get_ids().chip_box.children:
+                            if current_chip is not chip:
+                                if chip.active:
+                                    chip.active = False
+
+
+            class Example(MDApp):
+                def build(self) -> ChipScreen:
+                    self.theme_cls.theme_style = "Dark"
+                    self.screen = ChipScreen(
+                        MDBoxLayout(
+                            MDLabel(
+                                adaptive_height=True,
+                                text="Select Type",
+                            ),
+                            MDStackLayout(
+                                id="chip_box",
+                                spacing="12dp",
+                                adaptive_height=True,
+                            ),
+                            MDWidget(),
+                            orientation="vertical",
+                            spacing="14dp",
+                            padding="20dp",
+                        ),
+                    )
+                    return self.screen
+
+                def on_start(self) -> None:
+                    asynckivy.start(self.screen.create_chips())
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/example-filtering-single-select.gif
     :align: center
@@ -557,39 +991,84 @@ They enable user input and verify that input by converting text into chips.
 Example of input
 ----------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Imperative python style with KV
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
+            from kivy.lang import Builder
 
-        MDChip:
-            pos_hint: {"center_x": .5, "center_y": .5}
-            type: "input"
-            line_color: "grey"
-            _no_ripple_effect: True
+            from kivymd.app import MDApp
 
-            MDChipLeadingAvatar:
-                source: "data/logo/kivy-icon-128.png"
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-            MDChipText:
-                text: "MDChip"
+                MDChip:
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    type: "input"
+                    theme_line_color: "Custom"
+                    line_color: "grey"
+                    ripple_effect: False
 
-            MDChipTrailingIcon:
-                icon: "close"
-    '''
+                    MDChipLeadingAvatar:
+                        source: "data/logo/kivy-icon-128.png"
+
+                    MDChipText:
+                        text: "MDChip"
+
+                    MDChipTrailingIcon:
+                        icon: "close"
+            '''
 
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
 
 
-    Example().run()
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.chip import (
+                MDChipLeadingAvatar, MDChipText, MDChipTrailingIcon, MDChip
+            )
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDChip(
+                                MDChipLeadingAvatar(
+                                    source="data/logo/kivy-icon-128.png"
+                                ),
+                                MDChipText(
+                                    text="MDChip"
+                                ),
+                                MDChipTrailingIcon(
+                                    icon="close"
+                                ),
+                                pos_hint={"center_x": 0.5, "center_y": 0.5},
+                                type="input",
+                                theme_line_color="Custom",
+                                line_color="grey",
+                                ripple_effect=False,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/example-input-chip.png
     :align: center
@@ -609,32 +1088,67 @@ such as possible responses or search filters.
 Example of suggestion
 ---------------------
 
-.. code-block::
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Imperative python style with KV
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
+            from kivy.lang import Builder
 
-        MDChip:
-            pos_hint: {"center_x": .5, "center_y": .5}
-            type: "suggestion"
-            line_color: "grey"
+            from kivymd.app import MDApp
 
-            MDChipText:
-                text: "MDChip"
-    '''
+            KV = '''
+            MDScreen:
+
+                MDChip:
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    type: "suggestion"
+                    theme_line_color: "Custom"
+                    line_color: "grey"
+
+                    MDChipText:
+                        text: "MDChip"
+            '''
 
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
 
 
-    Example().run()
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.chip import MDChipText, MDChip
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDChip(
+                                MDChipText(
+                                    text="MDChip"
+                                ),
+                                pos_hint={"center_x": 0.5, "center_y": 0.5},
+                                type="suggestion",
+                                theme_line_color="Custom",
+                                line_color="grey",
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/example-suggestion.png
     :align: center
@@ -685,6 +1199,7 @@ API break
 
         MDChip:
             pos_hint: {"center_x": .5, "center_y": .5}
+            theme_line_color: "Custom"
             line_color: "grey"
             on_release: app.on_release_chip(self)
 
@@ -982,51 +1497,63 @@ class MDChip(
 
             self.padding = {
                 "input": (
-                    "12dp"
-                    if not self.ids.leading_icon_container.children
-                    else (
-                        "5dp"
-                        if not self.ids.leading_icon_container.children[
-                            0
-                        ].source
-                        else "16dp"
+                    (
+                        "12dp"
+                        if not self.ids.leading_icon_container.children
+                        else (
+                            "5dp"
+                            if not self.ids.leading_icon_container.children[
+                                0
+                            ].source
+                            else "16dp"
+                        )
                     ),
                     0,
                     "4dp",
                     0,
                 ),
                 "assist": (
-                    "16dp"
-                    if not self.ids.leading_icon_container.children
-                    else "8dp",
+                    (
+                        "16dp"
+                        if not self.ids.leading_icon_container.children
+                        else "8dp"
+                    ),
                     0,
-                    "16dp"
-                    if not self.ids.leading_icon_container.children
-                    else "8dp",
+                    (
+                        "16dp"
+                        if not self.ids.leading_icon_container.children
+                        else "8dp"
+                    ),
                     0,
                 ),
                 "suggestion": (
-                    "16dp"
-                    if not self.ids.leading_icon_container.children
-                    else "8dp",
+                    (
+                        "16dp"
+                        if not self.ids.leading_icon_container.children
+                        else "8dp"
+                    ),
                     0,
                     "16dp",
                     0,
                 ),
                 "filter": (
-                    "16dp"
-                    if not self.ids.leading_icon_container.children
-                    else (
-                        "8dp"
-                        if not self.ids.leading_icon_container.children[
-                            0
-                        ].source
-                        else "4dp"
+                    (
+                        "16dp"
+                        if not self.ids.leading_icon_container.children
+                        else (
+                            "8dp"
+                            if not self.ids.leading_icon_container.children[
+                                0
+                            ].source
+                            else "4dp"
+                        )
                     ),
                     0,
-                    "16dp"
-                    if not self.ids.trailing_icon_container.children
-                    else "8dp",
+                    (
+                        "16dp"
+                        if not self.ids.trailing_icon_container.children
+                        else "8dp"
+                    ),
                     0,
                 ),
             }[value]
@@ -1051,14 +1578,16 @@ class MDChip(
             self.set_chip_bg_color(
                 self.selected_color
                 if self.selected_color
-                else {
-                    "filter": self.theme_cls.surfaceContainerLowColor,
-                    "suggestion": self.theme_cls.surfaceContainerLowColor,
-                    "input": self.theme_cls.surfaceContainerLowColor,
-                    "assist": self.theme_cls.surfaceContainerLowColor,
-                }[self.type]
-                if self.theme_bg_color == "Primary"
-                else self.md_bg_color
+                else (
+                    {
+                        "filter": self.theme_cls.surfaceContainerLowColor,
+                        "suggestion": self.theme_cls.surfaceContainerLowColor,
+                        "input": self.theme_cls.surfaceContainerLowColor,
+                        "assist": self.theme_cls.surfaceContainerLowColor,
+                    }[self.type]
+                    if self.theme_bg_color == "Primary"
+                    else self.md_bg_color
+                )
             )
         else:
             if (

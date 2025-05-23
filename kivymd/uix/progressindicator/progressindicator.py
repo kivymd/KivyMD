@@ -22,57 +22,117 @@ Components/ProgressIndicator
 Usage
 -----
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative Python style with KV
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDLinearProgressIndicator:
-            size_hint_x: .5
-            value: 50
-            pos_hint: {'center_x': .5, 'center_y': .4}
-    '''
+            from kivymd.app import MDApp
+
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDLinearProgressIndicator:
+                    size_hint_x: .5
+                    value: 50
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+            '''
 
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
 
-Example().run()
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.progressindicator import MDLinearProgressIndicator
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDLinearProgressIndicator(
+                                size_hint_x=.5,
+                                value=50,
+                                pos_hint={'center_x': .5, 'center_y': .5},
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/linear-progress-indicator-usage.png
     :align: center
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative Python style with KV
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDCircularProgressIndicator:
-            size_hint: None, None
-            size: "48dp", "48dp"
-            pos_hint: {'center_x': .5, 'center_y': .5}
-    '''
+            from kivymd.app import MDApp
 
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+                MDCircularProgressIndicator:
+                    size_hint: None, None
+                    size: "48dp", "48dp"
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.progressindicator import MDCircularProgressIndicator
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDCircularProgressIndicator(
+                                size_hint=(None, None),
+                                size=("48dp", "48dp"),
+                                pos_hint={'center_x': .5, 'center_y': .5},
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-progress-indicator-usage.gif
     :align: center
@@ -85,34 +145,69 @@ Determinate linear progress indicator
 Determinate operations display the indicator increasing from 0 to 100% of the
 track, in sync with the process’s progress.
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative Python style with KV
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDLinearProgressIndicator:
-            id: progress
-            size_hint_x: .5
-            type: "determinate"
-            pos_hint: {'center_x': .5, 'center_y': .4}
-    '''
+            from kivymd.app import MDApp
 
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-    class Example(MDApp):
-        def on_start(self):
-            self.root.ids.progress.start()
-
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+                MDLinearProgressIndicator:
+                    id: progress
+                    size_hint_x: .5
+                    type: "determinate"
+                    pos_hint: {'center_x': .5, 'center_y': .4}
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def on_start(self):
+                    self.root.ids.progress.start()
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.progressindicator import MDLinearProgressIndicator
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def on_start(self):
+                    self.root.get_ids().progress.start()
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDLinearProgressIndicator(
+                                id="progress",
+                                type="determinate",
+                                size_hint_x=.5,
+                                value=50,
+                                pos_hint={'center_x': .5, 'center_y': .5},
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/determinate-linear-progress-indicator.gif
     :align: center
@@ -125,11 +220,24 @@ Indeterminate circular progress indicator
 Indeterminate operations display the indicator continually growing and
 shrinking along the track until the process is complete..
 
-.. code-block:: kv
+.. tabs::
 
-    MDCircularProgressIndicator:
-        size_hint: None, None
-        size: "48dp", "48dp"
+    .. tab:: Declarative KV style
+
+        .. code-block:: kv
+
+            MDCircularProgressIndicator:
+                size_hint: None, None
+                size: "48dp", "48dp"
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDCircularProgressIndicator(
+                size_hint=(None, None),
+                size=("48dp", "48dp"),
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/circular-progress-indicator-usage.gif
     :align: center
@@ -137,13 +245,28 @@ shrinking along the track until the process is complete..
 Determinate circular progress indicator
 ---------------------------------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDCircularProgressIndicator:
-        size_hint: None, None
-        size: "48dp", "48dp"
-        determinate: True
-        on_determinate_complete: print(args)
+    .. tab:: Declarative KV style
+
+        .. code-block:: kv
+
+            MDCircularProgressIndicator:
+                size_hint: None, None
+                size: "48dp", "48dp"
+                determinate: True
+                on_determinate_complete: print(args)
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+                MDCircularProgressIndicator(
+                    determinate=True,
+                    size_hint=(None, None),
+                    size=("48dp", "48dp"),
+                    on_determinate_complete=lambda *args: print(args),
+                )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/determinate-circular-progress-indicator.gif
     :align: center
@@ -169,17 +292,43 @@ API break
 2.0.0 version
 -------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDLinearProgressIndicator:
-        value: 50
-        indicator_color: app.theme_cls.errorColor
+    .. tab:: Declarative KV style
 
-.. code-block:: kv
+        .. code-block:: kv
 
-    MDCircularProgressIndicator:
-        size_hint: None, None
-        size: dp(48), dp(48)
+            MDLinearProgressIndicator:
+                value: 50
+                indicator_color: app.theme_cls.errorColor
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDLinearProgressIndicator(
+                value=50,
+                indicator_color=self.theme_cls.errorColor,
+            )
+
+.. tabs::
+
+    .. tab:: Declarative KV style
+
+        .. code-block:: kv
+
+            MDCircularProgressIndicator:
+                size_hint: None, None
+                size: dp(48), dp(48)
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+                MDCircularProgressIndicator(
+                    size_hint=(None, None),
+                    size=("48dp", "48dp"),
+                )
 """
 
 __all__ = ("MDCircularProgressIndicator", "MDLinearProgressIndicator")
@@ -195,9 +344,9 @@ from kivy.properties import (
     ColorProperty,
     ListProperty,
     NumericProperty,
-    VariableListProperty,
     OptionProperty,
     StringProperty,
+    VariableListProperty,
 )
 from kivy.uix.progressbar import ProgressBar
 from kivy.uix.widget import Widget
@@ -213,7 +362,9 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDLinearProgressIndicator(DeclarativeBehavior, ThemableBehavior, ProgressBar):
+class MDLinearProgressIndicator(
+    DeclarativeBehavior, ThemableBehavior, ProgressBar
+):
     """
     Implementation of the linear progress indicator.
 
@@ -534,6 +685,8 @@ class MDCircularProgressIndicator(ThemableBehavior, Widget):
     _angle_end = NumericProperty(0)
     _palette = []
 
+    __events__ = ("on_determinate_complete",)
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self._alpha_anim_in = Animation(_alpha=1, duration=0.8, t="out_quad")
@@ -542,7 +695,6 @@ class MDCircularProgressIndicator(ThemableBehavior, Widget):
             on_complete=self._reset,
             on_progress=self._on_determinate_progress,
         )
-        self.register_event_type("on_determinate_complete")
         Clock.schedule_once(self.check_determinate)
 
     def on__rotation_angle(self, *args):

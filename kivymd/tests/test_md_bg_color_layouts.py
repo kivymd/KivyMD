@@ -1,3 +1,4 @@
+import asynckivy
 from kivy.clock import Clock
 from kivy.graphics import Color
 
@@ -13,8 +14,6 @@ from kivymd.uix.screen import MDScreen
 from kivymd.uix.scrollview import MDScrollView
 from kivymd.uix.stacklayout import MDStackLayout
 from kivymd.uix.widget import MDWidget
-
-import asynckivy
 
 
 class TestMdBgColorLayouts(MDApp):

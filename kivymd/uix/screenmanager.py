@@ -22,7 +22,131 @@ transitions:
 You need to use the :class:`~kivymd.uix.screenmanager.MDScreenManager` class
 when you want to use hero animations on your screens. If you don't need hero
 animation use the :class:`~kivy.uix.screenmanager.ScreenManager` class.
+
+:class:`~kivy.uix.screenmanager.ScreenManager` class equivalent. Simplifies
+working with some widget properties. For example:
+
+ScreenManager
+-------------
+
+.. tabs::
+
+    .. tab:: KV
+
+        .. code-block:: kv
+
+            ScreenManager:
+                canvas:
+                    Color:
+                        rgba: app.theme_cls.primaryColor
+                    Rectangle:
+                        pos: self.pos
+                        size: self.size
+
+    .. tab:: Python
+
+        .. code-block:: python
+
+            from kivy.uix.screenmanager import ScreenManager
+            from kivy.graphics import Color, Rectangle
+            from kivy.app import App
+
+            class MyApp(App):
+                def build(self):
+                    layout = ScreenManager()
+
+                    with layout.canvas:
+                        Color(*self.theme_cls.primary_color)
+                        self.rect = Rectangle(pos=layout.pos, size=layout.size)
+
+                    return layout
+
+            MyApp().run()
+
+MDScreenManager
+---------------
+
+.. tabs::
+
+    .. tab:: Imperative python style with KV
+
+        .. code-block:: kv
+
+            MDScreenManager:
+                md_bg_color: app.theme_cls.primaryColor
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.sreenmanager import MDScreenManager
+            from kivymd.app import MDApp
+
+            class MyApp(App):
+                def build(self):
+                    return MDScreenManager(
+                        md_bg_color=self.theme_cls.primaryColor
+                    )
+
+            MyApp().run()
+
+Available options are:
+----------------------
+
+- adaptive_height_
+- adaptive_width_
+- adaptive_size_
+
+.. adaptive_height:
+
+adaptive_height
+---------------
+
+.. code-block:: kv
+
+    adaptive_height: True
+
+Equivalent
+
+.. code-block:: kv
+
+    size_hint_y: None
+    height: self.minimum_height
+
+.. adaptive_width:
+
+adaptive_width
+--------------
+
+.. code-block:: kv
+
+    adaptive_width: True
+
+Equivalent
+
+.. code-block:: kv
+
+    size_hint_x: None
+    height: self.minimum_width
+
+.. adaptive_size:
+
+adaptive_size
+-------------
+
+.. code-block:: kv
+
+    adaptive_size: True
+
+Equivalent
+
+.. code-block:: kv
+
+    size_hint: None, None
+    size: self.minimum_size
 """
+
+__all__ = ("MDScreenManager",)
 
 from kivy import Logger
 from kivy.clock import Clock
@@ -31,7 +155,7 @@ from kivy.uix.screenmanager import ScreenManager
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import DeclarativeBehavior, BackgroundColorBehavior
+from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
 from kivymd.uix.hero import MDHeroFrom
 
 
@@ -140,7 +264,7 @@ class MDScreenManager(
         super().add_widget(widget, *args, **kwargs)
         Clock.schedule_once(lambda x: self._create_heroes_data(widget))
 
-    # TODO: Add a method to delete an object from the arrt:`_heroes_data`
+    # TODO: Add a method to delete an object from the attr:`_heroes_data`
     #  collection when deleting an object using the `remove_widget` method.
 
     def _create_heroes_data(self, widget):

@@ -91,7 +91,8 @@ requirements = python3,
     materialyoucolor,
     exceptiongroup,
     asyncgui,
-    asynckivy
+    asynckivy,
+    android
 ```
 
 This will download latest release version of KivyMD from [PyPI](https://pypi.org/project/kivymd).
@@ -281,9 +282,10 @@ on OpenCollective and help us sustain our community.
 [Become a Gold Sponsor](https://opencollective.com/kivymd/contribute/gold-sponsor-16160)
 and get your logo on our Readme with a link to your website.
 
+| Peter Šurda | Route4Me Route Planner |
+:-------------------------:|:-------------------------:
+<a href="https://opencollective.com/peter-surda"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-1-1.png" title="Peter Šurda"></a> |  <a href="https://opencollective.com/route4me"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-1-2.png" title="Route4Me Route Planner"></a>
 <!-- FIXME: sponsors are not displayed -->
-
-<a href="https://opencollective.com/peter-surda?requireActive=false" target="_blank"><img src="https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/gold-sponsor-1.png?requireActive=false"></a>
 
 <a href="https://route4me.com" target="_blank" style="display: inline-block; text-align: center;">
     <div style="text-align: center;">

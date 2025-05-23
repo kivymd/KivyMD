@@ -4,7 +4,11 @@
             rgba:
                 app.theme_cls.outlineVariantColor \
                 if not self.color else \
-                self.color
+                ( \
+                self.color \
+                if self.theme_divider_color == "Custom" else \
+                app.theme_cls.outlineVariantColor \
+                )
         Rectangle:
             size: self.size
             pos: self.pos

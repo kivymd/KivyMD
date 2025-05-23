@@ -1,5 +1,5 @@
-from .timepicker import (
-    MDTimePickerDialVertical,
+from .timepicker import (  # NOQA F401
     MDTimePickerDialHorizontal,
+    MDTimePickerDialVertical,
     MDTimePickerInput,
-)  # NOQA F401
+)

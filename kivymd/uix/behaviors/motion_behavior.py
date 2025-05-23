@@ -27,7 +27,8 @@ from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.metrics import dp
-from kivy.properties import StringProperty, NumericProperty, ObjectProperty
+from kivy.properties import NumericProperty, ObjectProperty, StringProperty
+
 from kivymd.uix.behaviors.scale_behavior import ScaleBehavior
 
 
@@ -154,7 +155,7 @@ class MotionDropDownMenuBehavior(MotionBase):
         )
         anim &= Animation(
             _scale_x=1,
-            duration=self.show_duration - 0.3,
+            duration=max(self.show_duration - 0.3, 0.0),
             transition="out_quad",
         )
         anim.start(self)
@@ -257,9 +258,11 @@ class MotionExtendedFabButtonBehavior(MotionBase):
         if self._label:
             self._anim_opacity = Animation(
                 opacity=value,
-                d=self.show_duration * 16.666666666666668 / 100
-                if value
-                else self.show_duration * 1.6666666666666667 / 100,
+                d=(
+                    self.show_duration * 16.666666666666668 / 100
+                    if value
+                    else self.show_duration * 1.6666666666666667 / 100
+                ),
             )
             self._anim_opacity.bind(
                 on_complete=lambda *x: setattr(self, "_anim_opacity", None)

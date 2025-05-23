@@ -22,7 +22,7 @@ Example
 
 .. tabs::
 
-    .. tab:: Declarative KV style
+    .. tab:: Declarative Python style with KV
 
         .. code-block:: python
 
@@ -82,7 +82,7 @@ Example
 
             Example().run()
 
-    .. tab:: Declarative python style
+    .. tab:: Declarative Python style
 
         .. code-block:: python
 
@@ -155,27 +155,52 @@ Example
 Anatomy
 -------
 
-.. code-block:: kv
+.. tabs::
 
-    MDNavigationRail:
+    .. tab:: Declarative KV style
 
-        # Optional.
-        MDNavigationRailMenuButton:
-            icon: "menu"
+        .. code-block:: kv
 
-        # Optional.
-        MDNavigationRailFabButton:
-            icon: "home"
+            MDNavigationRail:
 
-        MDNavigationRailItem
+                # Optional.
+                MDNavigationRailMenuButton:
+                    icon: "menu"
 
-            MDNavigationRailItemIcon:
-                icon: icon
+                # Optional.
+                MDNavigationRailFabButton:
+                    icon: "home"
 
-            MDNavigationRailItemLabel:
-                text: text
+                MDNavigationRailItem
 
-        [...]
+                    MDNavigationRailItemIcon:
+                        icon: icon
+
+                    MDNavigationRailItemLabel:
+                        text: text
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDNavigationRail(
+                # Optional.
+                MDNavigationRailMenuButton(
+                    icon="menu"
+                ),
+                # Optional.
+                MDNavigationRailFabButton(
+                    icon="home"
+                ),
+                MDNavigationRailItem(
+                    MDNavigationRailItemIcon(
+                        icon=icon
+                    ),
+                    MDNavigationRailItemLabel(
+                        text=text
+                    ),
+                )
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-anatomy.png
     :align: center
@@ -183,15 +208,32 @@ Anatomy
 Anatomy item
 ------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDNavigationRailItem
+    .. tab:: Declarative KV style
 
-        MDNavigationRailItemIcon:
-            icon: icon
+        .. code-block:: kv
 
-        MDNavigationRailItemLabel:
-            text: text
+            MDNavigationRailItem
+
+                MDNavigationRailItemIcon:
+                    icon: icon
+
+                MDNavigationRailItemLabel:
+                    text: text
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDNavigationRailItem(
+                MDNavigationRailItemIcon(
+                    icon=icon
+                ),
+                MDNavigationRailItemLabel(
+                    text=text
+                ),
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-rail-anatomy-item.png
     :align: center
@@ -296,30 +338,55 @@ API break
             icon: icon
             text: text
 
-        [...]
-
 2.2.0 version
 -------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDNavigationRail:
+    .. tab:: Declarative KV style
 
-        MDNavigationRailMenuButton:
-            icon: "menu"
+        .. code-block:: kv
 
-        MDNavigationRailFabButton:
-            icon: "home"
+            MDNavigationRail:
 
-        MDNavigationRailItem
+                # Optional.
+                MDNavigationRailMenuButton:
+                    icon: "menu"
 
-            MDNavigationRailItemIcon:
-                icon: icon
+                # Optional.
+                MDNavigationRailFabButton:
+                    icon: "home"
 
-            MDNavigationRailItemLabel:
-                text: text
+                MDNavigationRailItem
 
-        [...]
+                    MDNavigationRailItemIcon:
+                        icon: icon
+
+                    MDNavigationRailItemLabel:
+                        text: text
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDNavigationRail(
+                # Optional.
+                MDNavigationRailMenuButton(
+                    icon="menu"
+                ),
+                # Optional.
+                MDNavigationRailFabButton(
+                    icon="home"
+                ),
+                MDNavigationRailItem(
+                    MDNavigationRailItemIcon(
+                        icon=icon
+                    ),
+                    MDNavigationRailItemLabel(
+                        text=text
+                    ),
+                )
+            )
 """
 
 __all__ = (
@@ -336,13 +403,13 @@ import os
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.graphics import (
-    StencilPush,
-    RoundedRectangle,
-    StencilUse,
     Color,
     Ellipse,
-    StencilUnUse,
+    RoundedRectangle,
     StencilPop,
+    StencilPush,
+    StencilUnUse,
+    StencilUse,
 )
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -350,9 +417,9 @@ from kivy.properties import (
     BooleanProperty,
     ColorProperty,
     NumericProperty,
+    ObjectProperty,
     OptionProperty,
     VariableListProperty,
-    ObjectProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -361,10 +428,10 @@ from kivy.uix.relativelayout import RelativeLayout
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
-    ScaleBehavior,
-    DeclarativeBehavior,
     BackgroundColorBehavior,
+    DeclarativeBehavior,
     RectangularRippleBehavior,
+    ScaleBehavior,
 )
 from kivymd.uix.behaviors.focus_behavior import FocusBehavior
 from kivymd.uix.button import MDFabButton, MDIconButton
@@ -453,7 +520,11 @@ class MDNavigationRailItemIcon(RectangularRippleBehavior, MDIcon):
             "navigation-rail-rounded-rectangle"
         )[0]
 
-        with self.canvas.after if self.ripple_canvas_after else self.canvas.before:
+        with (
+            self.canvas.after
+            if self.ripple_canvas_after
+            else self.canvas.before
+        ):
             if hasattr(self, "radius"):
                 self.radius = [
                     canvas_rectangle.radius[0][0],
@@ -676,9 +747,11 @@ class MDNavigationRail(
                         if self.type == "selected":
                             Animation(
                                 scale_value_y=1 if widget.active else 0,
-                                height=widget_item.texture_size[1]
-                                if widget.active
-                                else 0,
+                                height=(
+                                    widget_item.texture_size[1]
+                                    if widget.active
+                                    else 0
+                                ),
                                 d=0.2,
                             ).start(widget_item)
                     if isinstance(widget_item, MDNavigationRailItemIcon):
@@ -686,9 +759,11 @@ class MDNavigationRail(
                         widget_item._alpha = 1 if widget.active else 0
                         widget_item._selected_region_width = 0
                         Animation(
-                            _selected_region_width=widget_item.width + dp(32)
-                            if widget.active
-                            else 0,
+                            _selected_region_width=(
+                                widget_item.width + dp(32)
+                                if widget.active
+                                else 0
+                            ),
                             d=0.2,
                         ).start(widget_item)
             else:
@@ -755,11 +830,16 @@ class MDNavigationRail(
             elif self.menu_button and not self.fab_button:
                 anchor_button = self.menu_button
 
-            self.ids.box_items.y = (
-                anchor_button.y
-                - (len(self.ids.box_items.children) * dp(56))
-                - dp(56)
-            )
+            if anchor_button:
+                self.ids.box_items.y = (
+                    anchor_button.y
+                    - (len(self.ids.box_items.children) * dp(56))
+                    - dp(56)
+                )
+            else:
+                self.ids.box_items.y = self.height - (
+                    len(self.ids.box_items.children) * dp(48)
+                )
 
         if self.anchor == "center":
             self.ids.box_items.pos_hint = {"center_y": 0.5}

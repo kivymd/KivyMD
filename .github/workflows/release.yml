@@ -35,10 +35,10 @@ jobs:
         fetch-depth: 0
         persist-credentials: ${{ github.event_name != 'workflow_dispatch' }}  # Allow using PAT when making release
 
-    - name: Set up Python 3.10
-      uses: actions/setup-python@v2
+    - name: Set up Python 3.13
+      uses: actions/setup-python@v5
       with:
-        python-version: '3.10'
+        python-version: '3.13'
         architecture: x64
 
     - name: Set up environment

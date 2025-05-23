@@ -683,25 +683,26 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     ColorProperty,
+    DictProperty,
     NumericProperty,
+    ObjectProperty,
     OptionProperty,
     VariableListProperty,
-    ObjectProperty, DictProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.relativelayout import RelativeLayout
 
-from kivymd.uix.label import MDIcon, MDLabel
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
     CommonElevationBehavior,
     DeclarativeBehavior,
     RectangularRippleBehavior,
-    BackgroundColorBehavior,
 )
 from kivymd.uix.behaviors.motion_behavior import MotionExtendedFabButtonBehavior
 from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
+from kivymd.uix.label import MDIcon, MDLabel
 
 with open(
     os.path.join(uix_path, "button", "button.kv"), encoding="utf-8"
@@ -896,6 +897,19 @@ class BaseButton(
 
         self._on_release(args)
 
+    def on_touch_down(self, touch):
+        if self.collide_point(touch.x, touch.y) and not self.disabled:
+            return super().on_touch_down(touch)
+
+    def finish_ripple(self):
+        def reset_state(*args):
+            self.dispatch("on_leave")
+            self.hovering = False
+            self.hover_visible = False
+
+        super().finish_ripple()
+        Clock.schedule_once(reset_state, 0.2)
+
 
 class MDButton(BaseButton, CommonElevationBehavior, RelativeLayout):
     """
@@ -1037,6 +1051,18 @@ class MDButton(BaseButton, CommonElevationBehavior, RelativeLayout):
                         self.elevation_level = 1
                         self.shadow_softness = 0
 
+    def on_disabled(self, instance, value) -> None:
+        """Fired when the `disabled` value changes."""
+
+        for element in (
+            getattr(self, "_button_text", None),
+            getattr(self, "_button_icon", None),
+        ):
+            if element:
+                element.disabled = value
+
+        super().on_disabled(instance, value)
+
 
 class MDButtonText(MDLabel):
     """
@@ -1159,9 +1185,7 @@ class MDFabButton(
             )
 
         if not self.disabled:
-            if (
-                self._state == self.state_hover and self.focus_behavior
-            ):
+            if self._state == self.state_hover and self.focus_behavior:
                 self.elevation_level = 1
                 self.shadow_softness = 0
             elif self._state == self.state_press:
@@ -1244,10 +1268,10 @@ class MDExtendedFabButton(
     _icon = ObjectProperty()
     _label = ObjectProperty()
 
+    __events__ = ("on_collapse", "on_expand")
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.register_event_type("on_collapse")
-        self.register_event_type("on_expand")
         Clock.schedule_once(self._set_text_pos, 0.5)
 
     def add_widget(self, widget, *args, **kwargs):

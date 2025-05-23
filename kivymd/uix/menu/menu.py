@@ -18,47 +18,96 @@ Components/Menu
 Usage
 -----
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.metrics import dp
+    .. tab:: Declarative Python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.menu import MDDropdownMenu
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
+            from kivy.lang import Builder
+            from kivy.metrics import dp
 
-        MDRaisedButton:
-            id: button
-            text: "Press me"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            on_release: app.menu_open()
-    '''
+            from kivymd.app import MDApp
+            from kivymd.uix.menu import MDDropdownMenu
 
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-    class Test(MDApp):
-        def menu_open(self):
-            menu_items = [
-                {
-                    "text": f"Item {i}",
-                    "on_release": lambda x=f"Item {i}": self.menu_callback(x),
-                } for i in range(5)
-            ]
-            MDDropdownMenu(
-                caller=self.root.ids.button, items=menu_items
-            ).open()
+                MDButton:
+                    id: button
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    on_release: app.menu_open()
 
-        def menu_callback(self, text_item):
-            print(text_item)
-
-        def build(self):
-            self.theme_cls.primary_palette = "Orange"
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+                    MDButtonText:
+                        text: "Press me"
+            '''
 
 
-    Test().run()
+            class Example(MDApp):
+                def menu_open(self):
+                    menu_items = [
+                        {
+                            "text": f"Item {i}",
+                            "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                        } for i in range(5)
+                    ]
+                    MDDropdownMenu(
+                        caller=self.root.ids.button, items=menu_items
+                    ).open()
+
+                def menu_callback(self, text_item):
+                    print(text_item)
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Orange"
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.menu import MDDropdownMenu
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def menu_open(self, button_press_me):
+                    menu_items = [
+                        {
+                            "text": f"Item {i}",
+                            "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                        } for i in range(5)
+                    ]
+                    MDDropdownMenu(caller=button_press_me, items=menu_items).open()
+
+                def menu_callback(self, text_item):
+                    print(text_item)
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Orange"
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDButton(
+                                MDButtonText(
+                                    text="Press me"
+                                ),
+                                pos_hint={"center_x": .5, "center_y": .5},
+                                on_release=self.menu_open,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-usage.gif
     :align: center
@@ -209,71 +258,146 @@ You can use the following parameters to customize the menu items:
 Header
 ------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.metrics import dp
+    .. tab:: Declarative Python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.menu import MDDropdownMenu
-    from kivymd.uix.boxlayout import MDBoxLayout
+        .. code-block:: python
 
-    KV = '''
-    <MenuHeader>
-        spacing: "12dp"
-        padding: "4dp"
-        adaptive_height: True
+            from kivy.lang import Builder
+            from kivy.metrics import dp
 
-        MDIconButton:
-            icon: "gesture-tap-button"
-            pos_hint: {"center_y": .5}
+            from kivymd.app import MDApp
+            from kivymd.uix.menu import MDDropdownMenu
+            from kivymd.uix.boxlayout import MDBoxLayout
 
-        MDLabel:
-            text: "Actions"
-            adaptive_size: True
-            pos_hint: {"center_y": .5}
+            KV = '''
+            <MenuHeader>
+                spacing: "12dp"
+                padding: "4dp"
+                adaptive_height: True
 
+                MDIconButton:
+                    icon: "gesture-tap-button"
+                    pos_hint: {"center_y": .5}
 
-    MDScreen:
-
-        MDRaisedButton:
-            id: button
-            text: "PRESS ME"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            on_release: app.menu.open()
-    '''
+                MDLabel:
+                    text: "Actions"
+                    adaptive_size: True
+                    pos_hint: {"center_y": .5}
 
 
-    class MenuHeader(MDBoxLayout):
-        '''An instance of the class that will be added to the menu header.'''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDButton:
+                    id: button
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    on_release: app.menu.open()
+
+                    MDButtonText:
+                        text: "Press me"
+            '''
 
 
-    class Test(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            self.screen = Builder.load_string(KV)
-            menu_items = [
-                {
-                    "text": f"Item {i}",
-                    "on_release": lambda x=f"Item {i}": self.menu_callback(x),
-                } for i in range(5)
-            ]
-            self.menu = MDDropdownMenu(
-                header_cls=MenuHeader(),
-                caller=self.screen.ids.button,
-                items=menu_items,
-            )
-
-        def menu_callback(self, text_item):
-            print(text_item)
-
-        def build(self):
-            self.theme_cls.primary_palette = "Orange"
-            self.theme_cls.theme_style = "Dark"
-            return self.screen
+            class MenuHeader(MDBoxLayout):
+                '''An instance of the class that will be added to the menu header.'''
 
 
-    Test().run()
+            class Example(MDApp):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    self.screen = Builder.load_string(KV)
+                    menu_items = [
+                        {
+                            "text": f"Item {i}",
+                            "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                        } for i in range(5)
+                    ]
+                    self.menu = MDDropdownMenu(
+                        header_cls=MenuHeader(),
+                        caller=self.screen.ids.button,
+                        items=menu_items,
+                    )
+
+                def menu_callback(self, text_item):
+                    print(text_item)
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Orange"
+                    self.theme_cls.theme_style = "Dark"
+                    return self.screen
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButtonText, MDButton, MDIconButton
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.menu import MDDropdownMenu
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.screen import MDScreen
+
+
+            class MenuHeader(MDBoxLayout):
+                '''An instance of the class that will be added to the menu header.'''
+
+
+            class Example(MDApp):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    menu_items = [
+                        {
+                            "text": f"Item {i}",
+                            "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                        } for i in range(5)
+                    ]
+                    self.menu = MDDropdownMenu(
+                        header_cls=MenuHeader(
+                            MDIconButton(
+                                icon="gesture-tap-button",
+                                pos_hint={"center_y": .5},
+                            ),
+                            MDLabel(
+                                text="Actions",
+                                adaptive_size=True,
+                                pos_hint={"center_y": .5},
+                            ),
+                            spacing="12dp",
+                            padding="4dp",
+                            adaptive_height=True,
+                        ),
+                        items=menu_items,
+                    )
+                    self.screen = (
+                        MDScreen(
+                            MDButton(
+                                MDButtonText(
+                                    text="Press me"
+                                ),
+                                id="button_press_me",
+                                pos_hint={"center_x": .5, "center_y": .5},
+                                on_release=lambda x: self.menu.open(),
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+                    self.menu.caller = self.screen.get_ids().button_press_me
+
+                def menu_callback(self, text_item):
+                    print(text_item)
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Orange"
+                    self.theme_cls.theme_style = "Dark"
+                    return self.screen
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-header.png
     :align: center
@@ -287,53 +411,156 @@ by the MDTopAppBar component, it is necessary to pass the button as an argument 
 the callback using `lambda x: app.callback(x)`. This example uses drop down menus
 for both the righthand and lefthand menus.
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.metrics import dp
+    .. tab:: Declarative Python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.menu import MDDropdownMenu
-    from kivymd.uix.snackbar import Snackbar
+        .. code-block:: python
 
-    KV = '''
-    MDBoxLayout:
-        orientation: "vertical"
+            from kivy.lang import Builder
+            from kivy.metrics import dp
 
-        MDTopAppBar:
-            title: "MDTopAppBar"
-            left_action_items: [["menu", lambda x: app.callback(x)]]
-            right_action_items: [["dots-vertical", lambda x: app.callback(x)]]
+            from kivymd.app import MDApp
+            from kivymd.uix.menu import MDDropdownMenu
+            from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
 
-        MDLabel:
-            text: "Content"
-            halign: "center"
-    '''
+            KV = '''
+            MDBoxLayout:
+                orientation: "vertical"
+                md_bg_color: self.theme_cls.backgroundColor
 
+                MDTopAppBar:
 
-    class Test(MDApp):
-        def build(self):
-            self.theme_cls.primary_palette = "Orange"
-            self.theme_cls.theme_style = "Dark"
-            menu_items = [
-                {
-                    "text": f"Item {i}",
-                    "on_release": lambda x=f"Item {i}": self.menu_callback(x),
-                } for i in range(5)
-            ]
-            self.menu = MDDropdownMenu(items=menu_items)
-            return Builder.load_string(KV)
+                    MDTopAppBarLeadingButtonContainer:
 
-        def callback(self, button):
-            self.menu.caller = button
-            self.menu.open()
+                        MDActionTopAppBarButton:
+                            icon: "menu"
+                            on_release: app.callback(self)
 
-        def menu_callback(self, text_item):
-            self.menu.dismiss()
-            Snackbar(text=text_item).open()
+                    MDTopAppBarTitle:
+                        text: "MDTopAppBar"
+                        pos_hint: {"center_x": .5}
+
+                    MDTopAppBarTrailingButtonContainer:
+
+                        MDActionTopAppBarButton:
+                            icon: "dots-vertical"
+                            on_release: app.callback(self)
+
+                MDLabel:
+                    text: "Content"
+                    halign: "center"
+            '''
 
 
-    Test().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Orange"
+                    self.theme_cls.theme_style = "Dark"
+                    menu_items = [
+                        {
+                            "text": f"Item {i}",
+                            "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                        } for i in range(5)
+                    ]
+                    self.menu = MDDropdownMenu(items=menu_items)
+                    return Builder.load_string(KV)
+
+                def callback(self, button):
+                    self.menu.caller = button
+                    self.menu.open()
+
+                def menu_callback(self, text_item):
+                    self.menu.dismiss()
+                    MDSnackbar(
+                        MDSnackbarText(
+                            text=text_item,
+                        ),
+                        y=dp(24),
+                        pos_hint={"center_x": 0.5},
+                        size_hint_x=0.5,
+                    ).open()
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.appbar import (
+                MDTopAppBar,
+                MDTopAppBarLeadingButtonContainer,
+                MDActionTopAppBarButton,
+                MDTopAppBarTitle,
+                MDTopAppBarTrailingButtonContainer,
+            )
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.menu import MDDropdownMenu
+            from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Orange"
+                    self.theme_cls.theme_style = "Dark"
+                    menu_items = [
+                        {
+                            "text": f"Item {i}",
+                            "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                        } for i in range(5)
+                    ]
+                    self.menu = MDDropdownMenu(items=menu_items)
+                    return (
+                        MDBoxLayout(
+                            MDTopAppBar(
+                                MDTopAppBarLeadingButtonContainer(
+                                    MDActionTopAppBarButton(
+                                        icon="menu",
+                                        on_release=self.callback,
+                                    )
+                                ),
+                                MDTopAppBarTitle(
+                                    text="MDTopAppBar",
+                                    pos_hint={"center_x": .5},
+                                ),
+                                MDTopAppBarTrailingButtonContainer(
+                                    MDActionTopAppBarButton(
+                                        icon="dots-vertical",
+                                        on_release=self.callback,
+                                    )
+                                )
+                            ),
+                            MDLabel(
+                                text="Content",
+                                halign="center",
+                            ),
+                            orientation="vertical",
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+                def callback(self, button):
+                    self.menu.caller = button
+                    self.menu.open()
+
+                def menu_callback(self, text_item):
+                    self.menu.dismiss()
+                    MDSnackbar(
+                        MDSnackbarText(
+                            text=text_item,
+                        ),
+                        y=dp(24),
+                        pos_hint={"center_x": 0.5},
+                        size_hint_x=0.5,
+                    ).open()
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/toolbar-menu.png
     :align: center
@@ -350,53 +577,109 @@ Bottom position
 
     :attr:`~MDDropdownMenu.position`
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.metrics import dp
+    .. tab:: Declarative Python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.menu import MDDropdownMenu
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
+            from kivy.lang import Builder
+            from kivy.metrics import dp
 
-        MDTextField:
-            id: field
-            pos_hint: {'center_x': .5, 'center_y': .6}
-            size_hint_x: None
-            width: "200dp"
-            hint_text: "Password"
-            on_focus: if self.focus: app.menu.open()
-    '''
+            from kivymd.app import MDApp
+            from kivymd.uix.menu import MDDropdownMenu
 
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-    class Test(MDApp):
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            self.screen = Builder.load_string(KV)
-            menu_items = [
-                {
-                    "text": f"Item {i}",
-                    "on_release": lambda x=f"Item {i}": self.set_item(x),
-                } for i in range(5)]
-            self.menu = MDDropdownMenu(
-                caller=self.screen.ids.field,
-                items=menu_items,
-                position="bottom",
-            )
+                MDTextField:
+                    id: field
+                    pos_hint: {'center_x': .5, 'center_y': .6}
+                    size_hint_x: None
+                    width: "200dp"
+                    on_focus: if self.focus: app.menu.open()
 
-        def set_item(self, text_item):
-            self.screen.ids.field.text = text_item
-            self.menu.dismiss()
-
-        def build(self):
-            self.theme_cls.primary_palette = "Orange"
-            self.theme_cls.theme_style = "Dark"
-            return self.screen
+                    MDTextFieldHintText:
+                        text: "Password"
+            '''
 
 
-    Test().run()
+            class Example(MDApp):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    self.screen = Builder.load_string(KV)
+                    menu_items = [
+                        {
+                            "text": f"Item {i}",
+                            "on_release": lambda x=f"Item {i}": self.set_item(x),
+                        } for i in range(5)]
+                    self.menu = MDDropdownMenu(
+                        caller=self.screen.ids.field,
+                        items=menu_items,
+                        position="bottom",
+                    )
+
+                def set_item(self, text_item):
+                    self.screen.ids.field.text = text_item
+                    self.menu.dismiss()
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Orange"
+                    self.theme_cls.theme_style = "Dark"
+                    return self.screen
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.menu import MDDropdownMenu
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.textfield import MDTextField, MDTextFieldHintText
+
+
+            class Example(MDApp):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    menu_items = [
+                        {
+                            "text": f"Item {i}",
+                            "on_release": lambda x=f"Item {i}": self.set_item(x),
+                        }
+                        for i in range(5)
+                    ]
+                    self.menu = MDDropdownMenu(items=menu_items, position="bottom")
+                    self.screen = MDScreen(
+                        MDTextField(
+                            MDTextFieldHintText(text="Password"),
+                            id="field",
+                            pos_hint={"center_x": 0.5, "center_y": 0.6},
+                            size_hint_x=None,
+                            width="200dp",
+                        ),
+                        md_bg_color=self.theme_cls.backgroundColor,
+                    )
+                    field = self.screen.get_ids().field
+                    self.menu.caller = field
+                    field.bind(
+                        focus=lambda instance, value: self.menu.open() if value else None
+                    )
+
+                def set_item(self, text_item):
+                    self.screen.get_ids().field.text = text_item
+                    self.menu.dismiss()
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Orange"
+                    self.theme_cls.theme_style = "Dark"
+                    return self.screen
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-position.png
     :align: center
@@ -404,52 +687,104 @@ Bottom position
 Center position
 ---------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative Python style with KV
 
-    from kivymd.uix.menu import MDDropdownMenu
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreen
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDDropDownItem:
-            pos_hint: {"center_x": .5, "center_y": .5}
-            on_release: app.open_drop_item_menu(self)
+            from kivymd.uix.menu import MDDropdownMenu
+            from kivymd.app import MDApp
 
-            MDDropDownItemText:
-                id: drop_text
-                text: "Item"
-    '''
+            KV = '''
+            MDScreen
+                md_bg_color: self.theme_cls.backgroundColor
 
+                MDDropDownItem:
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    on_release: app.open_drop_item_menu(self)
 
-    class Example(MDApp, CommonApp):
-        drop_item_menu: MDDropdownMenu = None
-
-        def open_drop_item_menu(self, item):
-            menu_items = [
-                {
-                    "text": f"{i}",
-                    "on_release": lambda x=f"Item {i}": self.menu_callback(x),
-                } for i in range(5)
-            ]
-            if not self.drop_item_menu:
-                self.drop_item_menu = MDDropdownMenu(
-                    caller=item, items=menu_items, position="center"
-                )
-                self.drop_item_menu.open()
-
-        def menu_callback(self, text_item):
-            self.root.ids.drop_text.text = text_item
-            self.drop_item_menu.dismiss()
-
-        def build(self):
-            return Builder.load_string(KV)
+                    MDDropDownItemText:
+                        id: drop_text
+                        text: "Item"
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                drop_item_menu: MDDropdownMenu = None
+
+                def open_drop_item_menu(self, item):
+                    menu_items = [
+                        {
+                            "text": f"{i}",
+                            "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                        } for i in range(5)
+                    ]
+                    if not self.drop_item_menu:
+                        self.drop_item_menu = MDDropdownMenu(
+                            caller=item, items=menu_items, position="center"
+                        )
+                        self.drop_item_menu.open()
+
+                def menu_callback(self, text_item):
+                    self.root.ids.drop_text.text = text_item
+                    self.drop_item_menu.dismiss()
+
+                def build(self):
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.uix.dropdownitem import MDDropDownItemText, MDDropDownItem
+            from kivymd.uix.menu import MDDropdownMenu
+            from kivymd.app import MDApp
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                drop_item_menu: MDDropdownMenu = None
+
+                def open_drop_item_menu(self, item):
+                    menu_items = [
+                        {
+                            "text": f"{i}",
+                            "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                        } for i in range(5)
+                    ]
+                    if not self.drop_item_menu:
+                        self.drop_item_menu = MDDropdownMenu(
+                            caller=item, items=menu_items, position="center"
+                        )
+                        self.drop_item_menu.open()
+
+                def menu_callback(self, text_item):
+                    self.root.get_ids().drop_text.text = text_item
+                    self.drop_item_menu.dismiss()
+
+                def build(self):
+                    return (
+                        MDScreen(
+                            MDDropDownItem(
+                                MDDropDownItemText(
+                                    id="drop_text",
+                                    text="Item",
+                                ),
+                                pos_hint={"center_x": .5, "center_y": .5},
+                                on_release=self.open_drop_item_menu,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-position-center.gif
     :align: center
@@ -521,7 +856,7 @@ API break
         right_text = StringProperty()
 
 
-    class Test(MDApp):
+    class Example(MDApp):
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
             self.screen = Builder.load_string(KV)
@@ -550,7 +885,7 @@ API break
             return self.screen
 
 
-    Test().run()
+    Example().run()
 
 1.2.0 version
 -------------
@@ -574,7 +909,7 @@ API break
     '''
 
 
-    class Test(MDApp):
+    class Example(MDApp):
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
             self.screen = Builder.load_string(KV)
@@ -602,7 +937,101 @@ API break
             return self.screen
 
 
-    Test().run()
+    Example().run()
+
+2.0.0 version
+-------------
+
+.. tabs::
+
+    .. tab:: Declarative Python style with KV
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.menu import MDDropdownMenu
+
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDButton:
+                    id: button
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    on_release: app.menu_open()
+
+                    MDButtonText:
+                        text: "Press me"
+            '''
+
+
+            class Example(MDApp):
+                def menu_open(self):
+                    menu_items = [
+                        {
+                            "text": f"Item {i}",
+                            "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                        } for i in range(5)
+                    ]
+                    MDDropdownMenu(
+                        caller=self.root.ids.button, items=menu_items
+                    ).open()
+
+                def menu_callback(self, text_item):
+                    print(text_item)
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Orange"
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.menu import MDDropdownMenu
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def menu_open(self, button_press_me):
+                    menu_items = [
+                        {
+                            "text": f"Item {i}",
+                            "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                        } for i in range(5)
+                    ]
+                    MDDropdownMenu(caller=button_press_me, items=menu_items).open()
+
+                def menu_callback(self, text_item):
+                    print(text_item)
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Orange"
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDButton(
+                                MDButtonText(
+                                    text="Press me"
+                                ),
+                                pos_hint={"center_x": .5, "center_y": .5},
+                                on_release=self.menu_open,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+
+            Example().run()
 """
 
 from __future__ import annotations
@@ -623,7 +1052,6 @@ import os
 
 from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.uix.behaviors import ButtonBehavior
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -632,13 +1060,14 @@ from kivy.properties import (
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    VariableListProperty,
     StringProperty,
+    VariableListProperty,
 )
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.recycleview import RecycleView
 
 from kivymd import uix_path
-from kivymd.uix.behaviors import StencilBehavior, RectangularRippleBehavior
+from kivymd.uix.behaviors import RectangularRippleBehavior, StencilBehavior
 from kivymd.uix.behaviors.motion_behavior import MotionDropDownMenuBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
@@ -1064,6 +1493,8 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
     _tar_x = 0
     _tar_y = 0
 
+    __events__ = ("on_dismiss",)
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         Window.bind(
@@ -1071,7 +1502,6 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
             on_maximize=self._remove_menu,
             on_restore=self._remove_menu,
         )
-        self.register_event_type("on_dismiss")
         self.menu = self.ids.md_menu
         self.target_height = 0
 
@@ -1196,12 +1626,14 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
                 )
             elif self.position == "bottom":
                 self.pos = (
-                    (self._start_coords[0] - self.width / 2)
-                    if not self.hor_growth
-                    else (
-                        (self._start_coords[0] - self.width)
-                        if self.hor_growth == "left"
-                        else (self._start_coords[0])
+                    (
+                        (self._start_coords[0] - self.width / 2)
+                        if not self.hor_growth
+                        else (
+                            (self._start_coords[0] - self.width)
+                            if self.hor_growth == "left"
+                            else (self._start_coords[0])
+                        )
                     ),
                     self._start_coords[1]
                     - (
@@ -1212,12 +1644,14 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
                 )
             elif self.position == "top":
                 self.pos = (
-                    (self._start_coords[0] - self.width / 2)
-                    if not self.hor_growth
-                    else (
-                        (self._start_coords[0] - self.width)
-                        if self.hor_growth == "left"
-                        else (self._start_coords[0])
+                    (
+                        (self._start_coords[0] - self.width / 2)
+                        if not self.hor_growth
+                        else (
+                            (self._start_coords[0] - self.width)
+                            if self.hor_growth == "left"
+                            else (self._start_coords[0])
+                        )
                     ),
                     self._start_coords[1]
                     + self.caller.height / 2
@@ -1395,7 +1829,7 @@ if __name__ == "__main__":
     from kivymd.uix.button import MDButton, MDButtonText
     from kivymd.uix.screen import MDScreen
 
-    class Test(MDApp):
+    class Example(MDApp):
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
             self.screen = MDScreen(md_bg_color=self.theme_cls.backgroundColor)
@@ -1432,4 +1866,4 @@ if __name__ == "__main__":
         def build(self):
             return self.screen
 
-    Test().run()
+    Example().run()

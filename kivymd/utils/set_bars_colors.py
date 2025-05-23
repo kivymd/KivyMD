@@ -113,6 +113,7 @@ def set_bars_colors(
             if icons_color == "Dark":
                 window.getDecorView().setSystemUiVisibility(
                     View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+                    | View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR
                 )
             elif icons_color == "Light":
                 window.getDecorView().setSystemUiVisibility(0)

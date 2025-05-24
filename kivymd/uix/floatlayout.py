@@ -110,7 +110,7 @@ Equivalent
 .. code-block:: kv
 
     size_hint_x: None
-    height: self.minimum_width
+    width: self.minimum_width
 
 .. adaptive_size:
 

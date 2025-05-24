@@ -778,7 +778,7 @@ class MDTabsItem(MDTabsItemBase, BoxLayout):
 
     def _set_width(self, widget):
         def set_width(*args):
-            self.width = widget.texture_size[0] + widget.padding_x + 2
+            self.width = widget.texture_size[0] + widget.padding[0] + 2
 
         if not self._tabs.allow_stretch and isinstance(widget, MDTabsItemText):
             Clock.schedule_once(set_width)

@@ -16,16 +16,14 @@ import os
 
 from kivy.animation import Animation
 from kivy.clock import Clock
-from kivy.core.window import Window
+from kivy.core.window import WindowBase
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    ColorProperty,
-    ListProperty,
+    BooleanProperty,
     NumericProperty,
     ObjectProperty,
     StringProperty,
-    BooleanProperty
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -35,7 +33,6 @@ from kivy.uix.widget import Widget
 
 from kivymd import uix_path
 from kivymd.font_definitions import theme_font_styles
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDIcon
 from kivymd.utils import next_frame
 
@@ -78,7 +75,6 @@ class MDSearchViewContainer(BoxLayout):
 
 
 class MDSearchWidget(RelativeLayout):
-
     _font_style = theme_font_styles["Title"]["medium"]
     _d = 0.4
     _t = "in_out_circ"
@@ -98,12 +94,39 @@ class MDSearchWidget(RelativeLayout):
                 self.ids.root_container.radius = [dp(28)] * 4
                 docked_size = self.root.width, dp(56) + self.root.docked_height
                 self.ids.root_container.pos = [
-                    self.root.pos[0], self.root.pos[1] - docked_size[1] + dp(56)
+                    self.root.pos[0],
+                    self.root.pos[1] - docked_size[1] + dp(56),
                 ]
             else:
                 self.ids.root_container.radius = [0] * 4
-                self.ids.root_container.pos = [0,0]
+                self.ids.root_container.pos = [0, 0]
                 self.ids.root_container.size = self.size
+
+    def _close_if_outside_docked(
+        self,
+        win: WindowBase | Widget,
+        func_sign,
+        _,
+        mouse_x: float,
+        mouse_y: float,
+        button,
+        __,
+    ):
+        container = self.root._view_container
+        container_abs_x, container_abs_y = (
+            container.x,
+            win.height - container.y - container.height,
+        )
+        print(mouse_x, mouse_y)
+        print(container_abs_x, container_abs_y)
+        collides = (
+            container_abs_x <= mouse_x <= container_abs_x + container.width
+            and container_abs_y <= mouse_y <= container_abs_y + container.height
+        )
+        if not collides and self.state == "open" and self.root.docked:
+            pass
+            win.unbind(on_mouse_down=func_sign)
+            self.switch_state("close")
 
     def _docked_open(self, opacity_down, opacity_up):
         docked_size = self.root.width, dp(56) + self.root.docked_height
@@ -124,6 +147,10 @@ class MDSearchWidget(RelativeLayout):
         )
         next_frame(opacity_up.start, self.root._view_container, t=self._d)
         self.icons_open(opacity_up, opacity_down, self._d / 2)
+
+        win: WindowBase | Widget = self.get_root_window()
+        rx = lambda *x: self._close_if_outside_docked(win, rx, *x)
+        win.bind(on_mouse_down=rx)
 
     def _docked_close(self, opacity_down, opacity_up):
         self._close(opacity_down, opacity_up)
@@ -213,9 +240,6 @@ class MDSearchWidget(RelativeLayout):
             lambda dt: setattr(self, "switching_state", False), self._d
         )
 
-    def init_state(self):
-        self.clean_header()
-
     def clean_header(self):
         for child in self.ids.header.children:
             if child.__class__.__name__ != "TextInput":
@@ -242,7 +266,6 @@ class MDSearchWidget(RelativeLayout):
 
 
 class MDSearchBar(Widget):
-
     leading_icon = StringProperty("magnify")
     supporting_text = StringProperty("Hinted search text")
     view_root = ObjectProperty(None)

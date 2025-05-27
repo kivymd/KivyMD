@@ -1,127 +1,59 @@
-from kivy.lang import Builder
-from kivy.properties import StringProperty
+from kivy.metrics import dp
+from kivy.uix.widget import Widget
 
-from examples.common_app import CommonApp
+from kivymd import images_path
 from kivymd.app import MDApp
-from kivymd.icon_definitions import md_icons
-from kivymd.uix.list import MDListItem
+from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.button import MDButton, MDButtonText
+from kivymd.uix.label import MDLabel
+from kivymd.uix.screen import MDScreen
+from kivymd.uix.search import (
+    MDSearchBar,
+    MDSearchBarLeadingContainer,
+    MDSearchBarTrailingContainer,
+    MDSearchLeadingIcon,
+    MDSearchTextInput,
+    MDSearchTrailingAvatar,
+    MDSearchTrailingIcon,
+)
 
 
-class IconItem(MDListItem):
-    icon = StringProperty()
-    text = StringProperty()
+class MainApp(MDApp):
+    def __init__(self, **kwargs):
+        super().__init__()
+        self.root_layout = None
+        self.search = None
+        self.screen = None
+        self.layout = None
 
-
-MAIN_KV = """
-#: import images_path kivymd.images_path
-
-<IconItem>
-    divider: True
-    MDListItemLeadingIcon:
-        icon: root.icon
-
-    MDListItemSupportingText:
-        text: root.text
-
-MDScreen:
-    md_bg_color:app.theme_cls.backgroundColor
-    BoxLayout:
-        padding:[dp(10), dp(30), dp(10), dp(10)]
-        orientation:"vertical"
-
-        MDSearchBar:
-            id: search_bar
-            supporting_text: "Search in text"
-            view_root: root
-            # Search Bar
-            MDSearchBarLeadingContainer:
-                MDSearchLeadingIcon:
-                    icon: "menu"
-                    on_release: app.open_menu(self)
-
-            MDSearchBarTrailingContainer:
-                MDSearchTrailingIcon:
-                    icon:"microphone"
-                MDSearchTrailingAvatar:
-                    source:f"{images_path}/logo/kivymd-icon-128.png"
-
-            # Search View
-            MDSearchViewLeadingContainer:
-                MDSearchLeadingIcon:
-                    icon:"arrow-left"
-                    on_release: search_bar.close_view()
-
-            MDSearchViewTrailingContainer:
-                MDSearchTrailingIcon:
-                    icon:"window-close"
-
-            MDSearchViewContainer:
-                RecycleView:
-                    id: rv
-                    key_viewclass: 'viewclass'
-                    key_size: 'height'
-
-                    RecycleBoxLayout:
-                        default_size: None, dp(48)
-                        default_size_hint: 1, None
-                        size_hint_y: None
-                        height: self.minimum_height
-                        orientation: 'vertical'
-        Widget:
-
-
-
-
-    MDNavigationBar:
-        MDNavigationItem:
-            MDNavigationItemIcon:
-                icon: "gmail"
-            MDNavigationItemLabel:
-                text: "Gmail"
-        MDNavigationItem:
-            MDNavigationItemIcon:
-                icon: "twitter"
-            MDNavigationItemLabel:
-                text: "Twitter"
-
-    BoxLayout:
-        size_hint_y:None
-        height:dp(30)
-        padding:[dp(50), 0]
-        spacing:dp(10)
-        MDLabel:
-            text:"Bar dock"
-            halign:"right"
-        MDSwitch:
-            on_active:search_bar.docked = args[-1]
-"""
-
-
-class Example(MDApp, CommonApp):
     def build(self):
-        return Builder.load_string(MAIN_KV)
+        self.theme_cls.theme_style = "Light"
+        self.layout = MDBoxLayout(orientation="vertical")
+        self.search = MDSearchBar(
+            MDSearchBarLeadingContainer(
+                MDSearchLeadingIcon(icon="numeric-1-box"),
+            ),
+            MDSearchTextInput(),
+            MDSearchBarTrailingContainer(
+                MDSearchTrailingIcon(icon="numeric-2-box"),
+                MDSearchTrailingAvatar(
+                    source=f"{images_path}/logo/kivymd-icon-128.png"
+                ),
+            ),
+            view_root=self.layout,
+        )
+        self.layout.add_widget(self.search)
+        self.layout.add_widget(Widget())
+        self.root_layout = MDBoxLayout(
+            self.layout,
+            MDLabel(text="Do not replace", height=dp(30), size_hint_y=None),
+            orientation="vertical",
+        )
+        self.screen = MDScreen(
+            self.root_layout, md_bg_color=self.theme_cls.backgroundColor
+        )
 
-    def on_start(self):
-        self.set_list_md_icons()
-
-    def set_list_md_icons(self, text="", search=False):
-        def add_icon_item(name_icon):
-            self.root.ids.rv.data.append(
-                {
-                    "viewclass": "IconItem",
-                    "icon": name_icon,
-                    "text": name_icon,
-                    "callback": lambda x: x,
-                }
-            )
-
-        self.root.ids.rv.data = []
-        for name_icon in md_icons.keys():
-            if search:
-                if text in name_icon:
-                    add_icon_item(name_icon)
-            else:
-                add_icon_item(name_icon)
+        return self.screen
 
 
-Example().run()
+MainApp().run()

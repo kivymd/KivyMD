@@ -1,324 +1,209 @@
-from __future__ import annotations
-
-__all__ = (
-    "MDSearchBar",
-    "MDSearchTrailingAvatar",
-    "MDSearchTrailingIcon",
-    "MDSearchLeadingIcon",
-    "MDSearchViewContainer",
-    "MDSearchBarLeadingContainer",
-    "MDSearchBarTrailingContainer",
-    "MDSearchViewLeadingContainer",
-    "MDSearchViewTrailingContainer",
-)
-
-import os
-
-from kivy.animation import Animation
 from kivy.clock import Clock
-from kivy.core.window import WindowBase
-from kivy.lang import Builder
+from kivy.core.image import Texture
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
+    ListProperty,
     NumericProperty,
     ObjectProperty,
     StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.image import Image
-from kivy.uix.relativelayout import RelativeLayout
+from kivy.uix.textinput import TextInput
 from kivy.uix.widget import Widget
 
-from kivymd import uix_path
-from kivymd.font_definitions import theme_font_styles
+from kivymd.app import MDApp
+from kivymd.uix.anchorlayout import MDAnchorLayout
+from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDIcon
-from kivymd.utils import next_frame
-
-with open(
-    os.path.join(uix_path, "search", "search.kv"), encoding="utf-8"
-) as kv_file:
-    Builder.load_string(kv_file.read())
+from kivymd.utils.wrong_child import WrongChildException
 
 
 class MDSearchTrailingAvatar(ButtonBehavior, Image):
-    pass
+    """
+    Avatar shown after the icon in the search bar while it's not focused
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.size_hint_x = None
+        self.width = dp(30)
 
 
 class MDSearchLeadingIcon(ButtonBehavior, MDIcon):
-    pass
+    """
+    Icon in front of the search bar.
+    """
+
+    width = NumericProperty(dp(24))
+    icon_color = ListProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.update_icon_color()  # There should be a more elegant way to do this but IDK?
+        self.size_hint_x = None
+        self.size_hint_y = 1
+
+    def update_icon_color(self):
+        # Access the app's theme and set the color
+        app = MDApp.get_running_app()
+        if app and hasattr(app, "theme_cls"):
+            self.icon_color = app.theme_cls.onSurfaceColor
 
 
 class MDSearchTrailingIcon(ButtonBehavior, MDIcon):
-    pass
+    """
+    Icon after the search bar
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.update_icon_color()
+        self.size_hint_x = None
+        self.size_hint_y = 1
+        self.width = dp(24)
+
+    def update_icon_color(self):
+        # Access the app's theme and set the color
+        app = MDApp.get_running_app()
+        if app and hasattr(app, "theme_cls"):
+            self.icon_color = app.theme_cls.onSurfaceColor
 
 
-class MDSearchBarTrailingContainer(BoxLayout):
-    pass
+class MDSearchBarTrailingContainer(MDBoxLayout):
+    """
+    Container placed after the search bar
+    """
 
-
-class MDSearchBarLeadingContainer(BoxLayout):
-    pass
-
-
-class MDSearchViewTrailingContainer(BoxLayout):
-    pass
-
-
-class MDSearchViewLeadingContainer(BoxLayout):
-    pass
-
-
-class MDSearchViewContainer(BoxLayout):
-    pass
-
-
-class MDSearchWidget(RelativeLayout):
-    _font_style = theme_font_styles["Title"]["medium"]
-    _d = 0.4
-    _t = "in_out_circ"
-    state = "close"
-
-    def __init__(self, root, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.root = root
-
-    def update_bar(self, *args):
-        if self.state == "close":
-            self.ids.root_container.size = self.root.size
-            self.ids.root_container.radius = dp(28)
-            self.ids.root_container.pos = self.root.pos
-        else:
-            if self.root.docked:
-                self.ids.root_container.radius = [dp(28)] * 4
-                docked_size = self.root.width, dp(56) + self.root.docked_height
-                self.ids.root_container.pos = [
-                    self.root.pos[0],
-                    self.root.pos[1] - docked_size[1] + dp(56),
-                ]
-            else:
-                self.ids.root_container.radius = [0] * 4
-                self.ids.root_container.pos = [0, 0]
-                self.ids.root_container.size = self.size
-
-    def _close_if_outside_docked(
-        self,
-        win: WindowBase | Widget,
-        func_sign,
-        _,
-        mouse_x: float,
-        mouse_y: float,
-        button,
-        __,
-    ):
-        container = self.root._view_container
-        container_abs_x, container_abs_y = (
-            container.x,
-            win.height - container.y - container.height,
-        )
-        print(mouse_x, mouse_y)
-        print(container_abs_x, container_abs_y)
-        collides = (
-            container_abs_x <= mouse_x <= container_abs_x + container.width
-            and container_abs_y <= mouse_y <= container_abs_y + container.height
-        )
-        if not collides and self.state == "open" and self.root.docked:
-            pass
-            win.unbind(on_mouse_down=func_sign)
-            self.switch_state("close")
-
-    def _docked_open(self, opacity_down, opacity_up):
-        docked_size = self.root.width, dp(56) + self.root.docked_height
-        Animation(
-            size=docked_size,
-            pos=[self.root.pos[0], self.root.pos[1] - docked_size[1] + dp(56)],
-            radius=[dp(28)] * 4,
-            t=self._t,
-            d=self._d,
-        ).start(self.ids.root_container)
-        self.root._view_container.size_hint_y = 1
-        self.root._view_container.opacity = 0
-        self.root._view_container.padding = [0, 0, 0, dp(16)]
-        next_frame(
-            self.ids.root_container.add_widget,
-            self.root._view_container,
-            index=0,
-        )
-        next_frame(opacity_up.start, self.root._view_container, t=self._d)
-        self.icons_open(opacity_up, opacity_down, self._d / 2)
-
-        win: WindowBase | Widget = self.get_root_window()
-        rx = lambda *x: self._close_if_outside_docked(win, rx, *x)
-        win.bind(on_mouse_down=rx)
-
-    def _docked_close(self, opacity_down, opacity_up):
-        self._close(opacity_down, opacity_up)
-
-    def _open(self, opacity_down, opacity_up):
-        h_d = self._d / 2
-
-        # container
-        self.root._view_container.size_hint_y = 1
-        self.root._view_container.opacity = 0
-        self.root._view_container.padding = [0] * 4
-        self.ids.root_container.add_widget(self.root._view_container, index=0)
-        next_frame(opacity_up.start, self.root._view_container, t=h_d / 1.5)
-        Animation(
-            size=self.size, pos=self.pos, radius=[0] * 4, t=self._t, d=self._d
-        ).start(self.ids.root_container)
-
-        # header
-        Animation(height=dp(70), t=self._t, d=self._d).start(self.ids.header)
-        self.icons_open(opacity_up, opacity_down, h_d)
-
-    def _close(self, opacity_down, opacity_up):
-        h_d = self._d / 2
-        # container
-        self.root._view_container.size_hint_y = 1
-        self.root._view_container.opacity = 1
-        opacity_down.start(self.root._view_container)
-        if self.root._view_container in self.ids.root_container.children:
-            next_frame(
-                self.ids.root_container.remove_widget,
-                self.root._view_container,
-                t=self._d,
-            )
-        next_frame(setattr, self.root._view_container, "height", dp(55), t=h_d)
-        Animation(
-            size=[self.root.width, dp(56)],
-            pos=self.root.pos,
-            radius=[dp(28)] * 4,
-            t=self._t,
-            d=self._d,
-        ).start(self.ids.root_container)
-
-        # header
-        Animation(height=dp(56), t=self._t, d=self._d).start(self.ids.header)
-        self.icons_close(opacity_up, opacity_down, h_d)
-
-    def icons_close(self, opacity_up, opacity_down, h_d):
-        opacity_down.start(self.root._view_trailing_container)
-        opacity_down.start(self.root._view_leading_container)
-        self.root._bar_leading_container.opacity = 0
-        self.root._bar_trailing_container.opacity = 0
-        next_frame(self.update_state_closed, t=h_d)
-        next_frame(opacity_up.start, self.root._bar_trailing_container, t=h_d)
-        next_frame(opacity_up.start, self.root._bar_leading_container, t=h_d)
-
-    def icons_open(self, opacity_up, opacity_down, h_d):
-        opacity_down.start(self.root._bar_trailing_container)
-        opacity_down.start(self.root._bar_leading_container)
-        self.root._view_leading_container.opacity = 0
-        self.root._view_trailing_container.opacity = 0
-        next_frame(self.update_state_opened, t=h_d)
-        next_frame(opacity_up.start, self.root._view_trailing_container, t=h_d)
-        next_frame(opacity_up.start, self.root._view_leading_container, t=h_d)
-
-    switching_state = False
-
-    def switch_state(self, new_state):
-        if self.switching_state or new_state == self.state:
-            return
-        self.switching_state = True
-
-        opacity_down = Animation(opacity=0, d=self._d / 2)
-        opacity_up = Animation(opacity=1, d=self._d / 2)
-
-        if self.root.docked:
-            self.root.width = self.root.docked_width
-            self.ids.root_container.width = self.root.docked_width
-            getattr(self, "_docked_" + new_state)(opacity_down, opacity_up)
-        else:
-            getattr(self, "_" + new_state)(opacity_down, opacity_up)
-
-        if new_state == "close":
-            self.ids.text_input.focus = False
-
-        self.state = new_state
-        Clock.schedule_once(
-            lambda dt: setattr(self, "switching_state", False), self._d
-        )
-
-    def clean_header(self):
-        for child in self.ids.header.children:
-            if child.__class__.__name__ != "TextInput":
-                self.ids.header.remove_widget(child)
-
-    def init_state(self):
-        if self.root.docked:
-            self.root.size_hint_x = None
-            self.root.width = self.root.docked_width
-        else:
-            self.root.size_hint_x = 1
-        self.ids.root_container.size = [self.root.width, dp(56)]
-        self.update_state_closed()
-
-    def update_state_opened(self, *args):
-        self.clean_header()
-        self.ids.header.add_widget(self.root._view_leading_container, index=2)
-        self.ids.header.add_widget(self.root._view_trailing_container, index=0)
-
-    def update_state_closed(self, *args):
-        self.clean_header()
-        self.ids.header.add_widget(self.root._bar_leading_container, index=2)
-        self.ids.header.add_widget(self.root._bar_trailing_container, index=0)
+        self.size_hint_x = None
+        self.size_hint_y = 1
+        self.padding = [dp(16), 0, dp(16), 0]
+        self.spacing = dp(16)
+        self.bind(minimum_width=self.setter("width"))
 
 
-class MDSearchBar(Widget):
+class MDSearchBarLeadingContainer(MDBoxLayout):
+    """
+    Container placed before the search bar
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.size_hint_x = None
+        self.minimum_width = 0
+        self.size_hint_y = 1
+        self.padding = [dp(16), 0, dp(16), 0]
+
+        self.width = dp(16) * 2 + dp(24)
+
+
+class MDSearchViewTrailingContainer(MDBoxLayout):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.size_hint_x = None
+        self.spacing = dp(16)
+
+
+class MDSearchViewLeadingContainer(MDBoxLayout):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.size_hint_x = None
+        self.width = dp(30)
+        self.spacing = dp(16)
+
+
+class MDSearchTextInput(TextInput):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        app = MDApp.get_running_app()
+        self.background_color = app.theme_cls.surfaceContainerHighColor
+        self.foreground_color = app.theme_cls.onSurfaceColor
+        self.cursor_color = app.theme_cls.primaryColor
+        self.hint_text_color = app.theme_cls.onSurfaceVariantColor
+        self.background_active = ""
+        self.background_normal = ""
+        self.size_hint_x = 1
+        self.multiline = False
+
+        self.bind(size=self._update_padding, text=self._update_padding)
+
+        # Set initial padding
+        self._update_padding()
+
+    def _update_padding(self, *args):
+        self.padding = [0, (self.height - self.line_height) / 2]
+
+
+class MDSearchBar(MDBoxLayout):
+    """
+    Material Design search widget
+    @property @required view_root
+    """
+
     leading_icon = StringProperty("magnify")
     supporting_text = StringProperty("Hinted search text")
-    view_root = ObjectProperty(None)
+    view_root = ObjectProperty(
+        None
+    )  # What will be replaced when docked = False
     docked_width = NumericProperty(dp(360))
     docked_height = NumericProperty(dp(240))
     docked = BooleanProperty(False)
 
-    # internal props
-    _search_widget = None
-    _bar_leading_container = None
-    _bar_trailing_container = None
-    _view_leading_container = None
-    _view_trailing_container = None
-    _view_container = None
     _view_map = {
-        "MDSearchBarLeadingContainer": "_bar_leading_container",
-        "MDSearchBarTrailingContainer": "_bar_trailing_container",
-        "MDSearchViewLeadingContainer": "_view_leading_container",
-        "MDSearchViewTrailingContainer": "_view_trailing_container",
-        "MDSearchViewContainer": "_view_container",
+        "MDSearchBarLeadingContainer": "search_bar_leading_container",
+        "MDSearchBarTrailingContainer": "search_bar_trailing_container",
+        "MDSearchViewLeadingContainer": "search_view_leading_container",
+        "MDSearchViewTrailingContainer": "search_view_trailing_container",
+        "MDSearchTextInput": "text_input",
     }
+    _indexes = [
+        "MDSearchBarLeadingContainer",
+        "MDSearchTextInput",
+        "MDSearchBarTrailingContainer",
+    ]
+    search_bar_leading_container: MDSearchBarLeadingContainer
+    search_bar_trailing_container: MDSearchBarTrailingContainer
+    search_view_leading_container: MDSearchViewLeadingContainer
+    search_view_trailing_container: MDSearchViewTrailingContainer
+    text_input: TextInput
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self._search_widget = MDSearchWidget(self)
-        self.bind(pos=self._search_widget.update_bar)
-        self.bind(size=self._search_widget.update_bar)
-        self.on_docked(self, self.docked)
+        self.internal_add = self.add_widget
 
-    def on_docked(self, instance, docked):
-        if docked:
-            self.size_hint_x = None
-            self.width = self.docked_width
-        else:
-            self.size_hint_x = 1
+        self._assert_state()
+        self._define_layout()
 
-    def on_supporting_text(self, instance, text):
-        self._search_widget.ids.text_input.hint_text = text
-
-    def on_view_root(self, *args):
-        if self._search_widget.parent:
-            self._search_widget.parent.remove_widget(self._search_widget)
-        self.view_root.add_widget(self._search_widget)
-        self._search_widget.init_state()
-        self._search_widget.update_bar()
-        self.view_root.bind(size=self._search_widget.update_bar)
-
-    def add_widget(self, widget):
-        if widget.__class__.__name__ in self._view_map.keys():
+    def add_widget(self, widget, *args, **kwargs):
+        if self._view_map.get(widget.__class__.__name__):
             setattr(self, self._view_map[widget.__class__.__name__], widget)
+            super().add_widget(widget)
+        else:
+            raise WrongChildException(self, widget, list(self._view_map.keys()))
 
-    def close_view(self):
-        self._search_widget.switch_state("close")
+    def _define_layout(self):
+        """
+        Create layout
+        """
+        app = MDApp.get_running_app()
 
-    def open_view(self):
-        self._search_widget.switch_state("open")
+        self.height = dp(56)
+        self.size_hint_y = None
+        self.md_bg_color = app.theme_cls.surfaceContainerHighColor
+
+        self._state_closed()
+
+    def _clear_state(self):
+        pass
+
+    def _state_closed(self):
+        self._clear_state()
+
+    def _assert_state(self):
+        """
+        Check if required variables are defined
+        """
+        assert isinstance(self.view_root, Widget)

@@ -15,6 +15,7 @@ from kivymd.uix.search import (
     MDSearchTextInput,
     MDSearchTrailingAvatar,
     MDSearchTrailingIcon,
+    MDSearchView,
 )
 
 
@@ -40,13 +41,19 @@ class MainApp(MDApp):
                     source=f"{images_path}/logo/kivymd-icon-128.png"
                 ),
             ),
+            MDSearchView(),
             view_root=self.layout,
         )
         self.layout.add_widget(self.search)
         self.layout.add_widget(Widget())
+        self.layout.add_widget(
+            MDLabel(
+                text="This should be replaced", height=dp(30), size_hint_y=None
+            )
+        )
         self.root_layout = MDBoxLayout(
             self.layout,
-            MDLabel(text="Do not replace", height=dp(30), size_hint_y=None),
+            MDLabel(text="But this not", height=dp(30), size_hint_y=None),
             orientation="vertical",
         )
         self.screen = MDScreen(

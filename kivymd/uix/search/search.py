@@ -9,12 +9,14 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.textinput import TextInput
 from kivy.uix.widget import Widget
 
 from kivymd.app import MDApp
 from kivymd.uix.anchorlayout import MDAnchorLayout
+from kivymd.uix.behaviors.addition_complete_behaviour import AdditionComplete
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDIcon
 from kivymd.utils.wrong_child import WrongChildException
@@ -115,6 +117,16 @@ class MDSearchViewLeadingContainer(MDBoxLayout):
         self.spacing = dp(16)
 
 
+class MDSearchView(MDBoxLayout):
+    """
+    Housing for search Results, add them here
+    """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.size_hint = [0, 0]
+
+
 class MDSearchTextInput(TextInput):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -127,9 +139,18 @@ class MDSearchTextInput(TextInput):
         self.background_normal = ""
         self.size_hint_x = 1
         self.multiline = False
+        self.font_size = app.theme_cls.font_styles["Body"]["large"]["font-size"]
+        self.font_name = app.theme_cls.font_styles["Body"]["large"]["font-name"]
+        self.line_height = app.theme_cls.font_styles["Body"]["large"][
+            "line-height"
+        ]
 
         self.bind(size=self._update_padding, text=self._update_padding)
-
+        self.bind(
+            focus=lambda _, state: self.parent.state_open()
+            if state
+            else self.parent.state_closed()
+        )
         # Set initial padding
         self._update_padding()
 
@@ -137,7 +158,7 @@ class MDSearchTextInput(TextInput):
         self.padding = [0, (self.height - self.line_height) / 2]
 
 
-class MDSearchBar(MDBoxLayout):
+class MDSearchBar(MDBoxLayout, AdditionComplete):
     """
     Material Design search widget
     @property @required view_root
@@ -145,7 +166,7 @@ class MDSearchBar(MDBoxLayout):
 
     leading_icon = StringProperty("magnify")
     supporting_text = StringProperty("Hinted search text")
-    view_root = ObjectProperty(
+    view_root: Widget = ObjectProperty(
         None
     )  # What will be replaced when docked = False
     docked_width = NumericProperty(dp(360))
@@ -158,22 +179,23 @@ class MDSearchBar(MDBoxLayout):
         "MDSearchViewLeadingContainer": "search_view_leading_container",
         "MDSearchViewTrailingContainer": "search_view_trailing_container",
         "MDSearchTextInput": "text_input",
+        "MDSearchView": "search_view",
     }
-    _indexes = [
-        "MDSearchBarLeadingContainer",
-        "MDSearchTextInput",
-        "MDSearchBarTrailingContainer",
-    ]
+
     search_bar_leading_container: MDSearchBarLeadingContainer
     search_bar_trailing_container: MDSearchBarTrailingContainer
     search_view_leading_container: MDSearchViewLeadingContainer
     search_view_trailing_container: MDSearchViewTrailingContainer
+    search_view: MDSearchView
     text_input: TextInput
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        self.open = False
         self.internal_add = self.add_widget
+        self.radius = dp(28)
 
+    def on_fully_added(self, parent):
         self._assert_state()
         self._define_layout()
 
@@ -194,16 +216,24 @@ class MDSearchBar(MDBoxLayout):
         self.size_hint_y = None
         self.md_bg_color = app.theme_cls.surfaceContainerHighColor
 
-        self._state_closed()
+        self.state_closed()
 
-    def _clear_state(self):
-        pass
+    def state_closed(self):
+        self.open = False
 
-    def _state_closed(self):
-        self._clear_state()
+        self.radius = dp(28)
+
+    def state_open(self):
+        self.open = True
+
+        self.radius = dp(0)
+        self.search_view.size_hint = [1, 1]
+        self.search_view.pos = [self.x, self.y + self.height]
 
     def _assert_state(self):
         """
-        Check if required variables are defined
+        Check if widget is set up correctly
         """
         assert isinstance(self.view_root, Widget)
+        assert self in self.view_root.children
+        assert any(isinstance(child, MDSearchView) for child in self.children)

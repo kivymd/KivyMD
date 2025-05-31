@@ -1,5 +1,6 @@
 from kivy.clock import Clock
 from kivy.core.image import Texture
+from kivy.graphics import Color, Rectangle
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
@@ -13,12 +14,14 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.textinput import TextInput
 from kivy.uix.widget import Widget
+from win32comext.adsi.demos.search import search
 
 from kivymd.app import MDApp
 from kivymd.uix.anchorlayout import MDAnchorLayout
 from kivymd.uix.behaviors.addition_complete_behaviour import AdditionComplete
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDIcon
+from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.utils.wrong_child import WrongChildException
 
 
@@ -125,6 +128,17 @@ class MDSearchView(MDBoxLayout):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.size_hint = [0, 0]
+        self.md_bg_color = (0, 1, 0, 1)
+        with self.canvas.before:
+            Color(0, 1, 0, 1)
+            self.rect = Rectangle(size=self.size, pos=self.pos)
+
+        def update_rect(instance, value):
+            instance.rect.pos = instance.pos
+            instance.rect.size = instance.size
+
+        # listen to size and position changes
+        self.bind(pos=update_rect, size=update_rect)
 
 
 class MDSearchTextInput(TextInput):
@@ -158,6 +172,14 @@ class MDSearchTextInput(TextInput):
         self.padding = [0, (self.height - self.line_height) / 2]
 
 
+def print_widget_tree(widget, indent=0):
+    """Prints the widget tree structure."""
+    prefix = "    " * indent
+    print(f"{prefix}└── {widget.__class__.__name__} ")
+    for child in widget.children:
+        print_widget_tree(child, indent + 1)
+
+
 class MDSearchBar(MDBoxLayout, AdditionComplete):
     """
     Material Design search widget
@@ -171,6 +193,7 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
     )  # What will be replaced when docked = False
     docked_width = NumericProperty(dp(360))
     docked_height = NumericProperty(dp(240))
+    view_z_index = NumericProperty(100)
     docked = BooleanProperty(False)
 
     _view_map = {
@@ -190,6 +213,10 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
     text_input: TextInput
 
     def __init__(self, *args, **kwargs):
+        self._search_view_support_layout = FloatLayout(
+            size_hint=[None, None], width=0, height=0
+        )
+
         super().__init__(*args, **kwargs)
         self.open = False
         self.internal_add = self.add_widget
@@ -200,7 +227,11 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         self._define_layout()
 
     def add_widget(self, widget, *args, **kwargs):
-        if self._view_map.get(widget.__class__.__name__):
+        if widget.__class__.__name__ == "MDSearchView":
+            self.view_root.add_widget(self._search_view_support_layout, index=2)
+            self._search_view_support_layout.add_widget(widget)
+            self.search_view = widget
+        elif self._view_map.get(widget.__class__.__name__):
             setattr(self, self._view_map[widget.__class__.__name__], widget)
             super().add_widget(widget)
         else:
@@ -227,8 +258,16 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         self.open = True
 
         self.radius = dp(0)
-        self.search_view.size_hint = [1, 1]
-        self.search_view.pos = [self.x, self.y + self.height]
+        # Zero the position of the search view
+        self.search_view.pos = self._search_view_support_layout.to_local(
+            self.view_root.x, self.view_root.y
+        )
+
+        # Set a size as large as the size of the view_root (account for the height of the bar itself):
+        self.search_view.size_hint = [None, None]
+        self.search_view.width = self.view_root.width
+        self.search_view.height = self.view_root.height - self.height
+        print_widget_tree(self.get_root_window())
 
     def _assert_state(self):
         """
@@ -236,4 +275,3 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         """
         assert isinstance(self.view_root, Widget)
         assert self in self.view_root.children
-        assert any(isinstance(child, MDSearchView) for child in self.children)

@@ -129,8 +129,8 @@ class MDSearchView(MDBoxLayout):
             self.rect = Rectangle(size=self.size, pos=self.pos)
 
         def update_rect(instance, value):
-            instance.rect.pos = instance.pos
-            instance.rect.size = instance.size
+            instance.rect.pos = self.pos
+            instance.rect.size = self.size
 
         # listen to size and position changes
         self.bind(pos=update_rect, size=update_rect)
@@ -247,29 +247,32 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
 
         self.state_closed()
 
-    def state_closed(self):
-        self.open = False
-
-        self.radius = dp(28)
-
     def update_open(self, *args):
         # May want to consider an animation here in the future
+        print("Update open fire!@")
         self.search_view.pos = self._search_view_support_layout.to_local(
             self.view_root.x, self.view_root.y
         )
 
         # Set a size as large as the size of the view_root (account for the height of the bar itself):
-        self.search_view.size_hint = [None, None]
         self.search_view.width = self.view_root.width
         self.search_view.height = self.view_root.height - self.height
 
     def state_open(self):
         self.open = True
 
+        self.search_view.size_hint = [None, None]
+
         self.radius = dp(0)
         self.bind(pos=self.update_open, size=self.update_open)
 
         self.update_open()
+
+    def state_closed(self):
+        self.open = False
+        self.radius = dp(28)
+        self.unbind(pos=self.update_open, size=self.update_open)
+        self.search_view.size = [0, 0]
 
     def _assert_state(self):
         """

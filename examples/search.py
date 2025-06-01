@@ -59,7 +59,7 @@ class MainApp(MDApp):
             ),
             view_root=self.layout,
         )
-        self.layout.add_widget(self.search)
+        self.layout.add_widget(self.search, index=2)
         self.layout.add_widget(Widget())
         self.layout.add_widget(
             MDLabel(

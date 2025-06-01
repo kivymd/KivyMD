@@ -228,12 +228,11 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
 
     def add_widget(self, widget, *args, **kwargs):
         if widget.__class__.__name__ == "MDSearchView":
-            self.view_root.add_widget(self._search_view_support_layout, index=2)
-            self._search_view_support_layout.add_widget(widget)
+            self._search_view_support_layout.add_widget(widget, index=2)
             self.search_view = widget
         elif self._view_map.get(widget.__class__.__name__):
             setattr(self, self._view_map[widget.__class__.__name__], widget)
-            super().add_widget(widget)
+            super().add_widget(widget, index=2)
         else:
             raise WrongChildException(self, widget, list(self._view_map.keys()))
 
@@ -246,6 +245,7 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         self.height = dp(56)
         self.size_hint_y = None
         self.md_bg_color = app.theme_cls.surfaceContainerHighColor
+        self.view_root.parent.add_widget(self._search_view_support_layout)
 
         self.state_closed()
 

@@ -1,3 +1,4 @@
+from kivy.animation import Animation
 from kivy.graphics import Color, Rectangle
 from kivy.metrics import dp
 from kivy.properties import (
@@ -123,7 +124,6 @@ class MDSearchView(MDBoxLayout):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.size_hint = [0, 0]
-        self.md_bg_color = (0, 1, 0, 1)
         with self.canvas.before:
             Color(0, 1, 0, 1)
             self.rect = Rectangle(size=self.size, pos=self.pos)
@@ -249,7 +249,6 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
 
     def update_open(self, *args):
         # May want to consider an animation here in the future
-        print("Update open fire!@")
         self.search_view.pos = self._search_view_support_layout.to_local(
             self.view_root.x, self.view_root.y
         )
@@ -265,8 +264,16 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
 
         self.radius = dp(0)
         self.bind(pos=self.update_open, size=self.update_open)
+        self.search_view.pos = self.view_root.x, self.view_root.y
+        self.search_view.width = self.view_root.width
 
-        self.update_open()
+        print(self.search_view.pos)
+        anim = Animation(
+            size=[self.view_root.width, self.view_root.height - self.height],
+            t="in_out_circ",
+        )
+
+        anim.start(self.search_view)
 
     def state_closed(self):
         self.open = False

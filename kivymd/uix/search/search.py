@@ -1,5 +1,3 @@
-from kivy.clock import Clock
-from kivy.core.image import Texture
 from kivy.graphics import Color, Rectangle
 from kivy.metrics import dp
 from kivy.properties import (
@@ -14,14 +12,11 @@ from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.textinput import TextInput
 from kivy.uix.widget import Widget
-from win32comext.adsi.demos.search import search
 
 from kivymd.app import MDApp
-from kivymd.uix.anchorlayout import MDAnchorLayout
 from kivymd.uix.behaviors.addition_complete_behaviour import AdditionComplete
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDIcon
-from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.utils.wrong_child import WrongChildException
 
 
@@ -161,9 +156,11 @@ class MDSearchTextInput(TextInput):
 
         self.bind(size=self._update_padding, text=self._update_padding)
         self.bind(
-            focus=lambda _, state: self.parent.state_open()
-            if state
-            else self.parent.state_closed()
+            focus=lambda _, state: (
+                self.parent.state_open()
+                if state
+                else self.parent.state_closed()
+            )
         )
         # Set initial padding
         self._update_padding()
@@ -174,6 +171,7 @@ class MDSearchTextInput(TextInput):
 
 def print_widget_tree(widget, indent=0):
     """Prints the widget tree structure."""
+    """DEBUG UTIL REMOVE ME"""
     prefix = "    " * indent
     print(f"{prefix}└── {widget.__class__.__name__} ")
     for child in widget.children:
@@ -254,11 +252,8 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
 
         self.radius = dp(28)
 
-    def state_open(self):
-        self.open = True
-
-        self.radius = dp(0)
-        # Zero the position of the search view
+    def update_open(self, *args):
+        # May want to consider an animation here in the future
         self.search_view.pos = self._search_view_support_layout.to_local(
             self.view_root.x, self.view_root.y
         )
@@ -267,7 +262,14 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         self.search_view.size_hint = [None, None]
         self.search_view.width = self.view_root.width
         self.search_view.height = self.view_root.height - self.height
-        print_widget_tree(self.get_root_window())
+
+    def state_open(self):
+        self.open = True
+
+        self.radius = dp(0)
+        self.bind(pos=self.update_open, size=self.update_open)
+
+        self.update_open()
 
     def _assert_state(self):
         """

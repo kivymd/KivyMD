@@ -1,5 +1,5 @@
 from kivy.animation import Animation
-from kivy.graphics import Color, Rectangle
+from kivy.graphics import Color, Ellipse, Rectangle
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
@@ -122,10 +122,11 @@ class MDSearchView(MDBoxLayout):
     """
 
     def __init__(self, *args, **kwargs):
+        app = MDApp.get_running_app()
         super().__init__(*args, **kwargs)
         self.size_hint = [0, 0]
         with self.canvas.before:
-            Color(0, 1, 0, 1)
+            Color(*app.theme_cls.surfaceContainerHighColor)
             self.rect = Rectangle(size=self.size, pos=self.pos)
 
         def update_rect(instance, value):
@@ -176,6 +177,28 @@ def print_widget_tree(widget, indent=0):
     print(f"{prefix}└── {widget.__class__.__name__} ")
     for child in widget.children:
         print_widget_tree(child, indent + 1)
+
+
+class DebugCircle(Widget):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        # Ensure the debug circle is always on top (or z-index equivalent)
+        self.size_hint = (None, None)
+        self.size = (20, 20)  # Size of the debug circle
+
+        with self.canvas:
+            self.color = Color(1, 0, 0, 1)  # Red color
+            self.ellipse = Ellipse(size=self.size, pos=self.pos)
+
+        # Bind the ellipse position to the widget's position
+        self.bind(pos=self.update_ellipse_pos)
+
+    def set_pos(self, x, y):
+        # Center the debug circle on the given coordinates
+        self.pos = (x - self.width / 2, y - self.height / 2)
+
+    def update_ellipse_pos(self, instance, value):
+        self.ellipse.pos = value
 
 
 class MDSearchBar(MDBoxLayout, AdditionComplete):
@@ -242,10 +265,11 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
 
         self.height = dp(56)
         self.size_hint_y = None
-        self.md_bg_color = app.theme_cls.surfaceContainerHighColor
+        self.md_bg_color = (
+            app.theme_cls.surfaceContainerHighColor
+        )  # pyright: ignore [reportOptionalMemberAccess]
+        self.radius = dp(28)
         self.view_root.parent.add_widget(self._search_view_support_layout)
-
-        self.state_closed()
 
     def update_open(self, *args):
         # May want to consider an animation here in the future
@@ -265,27 +289,44 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         self.radius = dp(0)
         self.bind(pos=self.update_open, size=self.update_open)
         self.search_view.pos = self.view_root.x, self.view_root.y
-        self.search_view.width = self.view_root.width
         self.search_view.height = dp(0)
 
-        target_h = self.view_root.height - self.height
-
-        anim = Animation(
-            height=target_h,
-            t="in_out_circ",
+        target_h = (self.view_root.height - self.view_root.y) - self.height
+        search_view_open = Animation(
+            height=target_h, width=self.view_root.width, t="in_out_circ", d=0.4
         )
 
-        def set_anim_stable_pos(instance: MDSearchView, value):
-            self.search_view.y = target_h - instance.height + self.view_root.y
-
-        anim.on_progress = set_anim_stable_pos
-        anim.start(self.search_view)
+        search_view_open.on_progress = lambda instance, value: (
+            setattr(
+                self.search_view,
+                "y",
+                self.view_root.y + target_h - instance.height,
+            ),
+            setattr(
+                instance, "center_x", self.view_root.center_x - self.view_root.x
+            ),
+        )
+        search_view_open.start(self.search_view)
 
     def state_closed(self):
         self.open = False
         self.radius = dp(28)
         self.unbind(pos=self.update_open, size=self.update_open)
-        self.search_view.size = [0, 0]
+
+        source_h = self.search_view.height
+        anim = Animation(height=0, width=0, t="in_out_circ", d=0.4)
+
+        anim.on_progress = lambda instance, value: (
+            setattr(
+                self.search_view,
+                "y",
+                self.view_root.y + source_h - instance.height,
+            ),
+            setattr(
+                instance, "center_x", self.view_root.center_x - self.view_root.x
+            ),
+        )
+        anim.start(self.search_view)
 
     def _assert_state(self):
         """

@@ -1,11 +1,9 @@
 from kivy.metrics import dp
-from kivy.uix.label import Label
 from kivy.uix.widget import Widget
 
 from kivymd import images_path
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.button import MDButton, MDButtonText
 from kivymd.uix.label import MDLabel
 from kivymd.uix.recycleboxlayout import MDRecycleBoxLayout
 from kivymd.uix.recycleview import MDRecycleView
@@ -54,12 +52,14 @@ class MainApp(MDApp):
                         adaptive_height=True,
                         orientation="vertical",
                     ),
-                    id="rv",
                 )
             ),
             view_root=self.layout,
         )
-        self.layout.add_widget(self.search, index=2)
+        self.layout.add_widget(
+            MDLabel(text="But this not 4", height=dp(30), size_hint_y=None)
+        )
+        self.layout.add_widget(self.search)
         self.layout.add_widget(Widget())
         self.layout.add_widget(
             MDLabel(
@@ -67,16 +67,20 @@ class MainApp(MDApp):
             )
         )
         self.root_layout = MDBoxLayout(
-            self.layout,
-            MDLabel(text="But this not", height=dp(30), size_hint_y=None),
-            orientation="vertical",
+            MDLabel(text="But this not 2", width=dp(30), size_hint_x=None),
+            MDBoxLayout(
+                self.layout,
+                MDLabel(text="But this not 1", height=dp(30), size_hint_y=None),
+                orientation="vertical",
+            ),
+            MDLabel(text="But this not 3", width=dp(30), size_hint_x=None),
+            orientation="horizontal",
         )
         self.screen = MDScreen(
             self.root_layout, md_bg_color=self.theme_cls.backgroundColor
         )
 
         rv.key_viewclass = "viewclass"
-        rv.key_size = "height"
         rv.data = [{"viewclass": "Button", "text": f"{i}"} for i in range(30)]
 
         return self.screen

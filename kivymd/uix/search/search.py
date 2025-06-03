@@ -286,10 +286,12 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
 
         self.search_view.size_hint = [None, None]
 
-        self.radius = dp(0)
         self.bind(pos=self.update_open, size=self.update_open)
         self.search_view.pos = self.view_root.x, self.view_root.y
         self.search_view.height = dp(0)
+
+        search_bar_open = Animation(radius=[dp(0)] * 4, t="in_out_circ", d=0.4)
+        search_bar_open.start(self)
 
         target_h = (self.view_root.height - self.view_root.y) - self.height
         search_view_open = Animation(
@@ -310,13 +312,17 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
 
     def state_closed(self):
         self.open = False
-        self.radius = dp(28)
         self.unbind(pos=self.update_open, size=self.update_open)
 
-        source_h = self.search_view.height
-        anim = Animation(height=0, width=0, t="in_out_circ", d=0.4)
+        search_bar_close = Animation(
+            radius=[dp(28)] * 4, t="in_out_circ", d=0.4
+        )
+        search_bar_close.start(self)
 
-        anim.on_progress = lambda instance, value: (
+        source_h = self.search_view.height
+        search_view_close = Animation(height=0, width=0, t="in_out_circ", d=0.4)
+
+        search_view_close.on_progress = lambda instance, value: (
             setattr(
                 self.search_view,
                 "y",
@@ -326,7 +332,7 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
                 instance, "center_x", self.view_root.center_x - self.view_root.x
             ),
         )
-        anim.start(self.search_view)
+        search_view_close.start(self.search_view)
 
     def _assert_state(self):
         """

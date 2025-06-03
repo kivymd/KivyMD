@@ -9,7 +9,6 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
-from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.image import Image
 from kivy.uix.textinput import TextInput
 from kivy.uix.widget import Widget
@@ -18,6 +17,7 @@ from kivymd.app import MDApp
 from kivymd.uix.behaviors.addition_complete_behaviour import AdditionComplete
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDIcon
+from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.utils.wrong_child import WrongChildException
 
 
@@ -211,7 +211,7 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
     text_input: TextInput
 
     def __init__(self, *args, **kwargs):
-        self._search_view_support_layout = FloatLayout(
+        self._search_view_support_layout = MDRelativeLayout(
             size_hint=[None, None], width=0, height=0
         )
 
@@ -266,13 +266,19 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         self.bind(pos=self.update_open, size=self.update_open)
         self.search_view.pos = self.view_root.x, self.view_root.y
         self.search_view.width = self.view_root.width
+        self.search_view.height = dp(0)
 
-        print(self.search_view.pos)
+        target_h = self.view_root.height - self.height
+
         anim = Animation(
-            size=[self.view_root.width, self.view_root.height - self.height],
+            height=target_h,
             t="in_out_circ",
         )
 
+        def set_anim_stable_pos(instance: MDSearchView, value):
+            self.search_view.y = target_h - instance.height + self.view_root.y
+
+        anim.on_progress = set_anim_stable_pos
         anim.start(self.search_view)
 
     def state_closed(self):

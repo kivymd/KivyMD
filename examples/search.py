@@ -1,10 +1,15 @@
 from kivy.metrics import dp
+from kivy.properties import StringProperty
 from kivy.uix.widget import Widget
 
 from kivymd import images_path
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.label import MDLabel
+from kivymd.uix.list import (
+    MDListItem,
+    MDListItemHeadlineText,
+    MDListItemSupportingText,
+)
 from kivymd.uix.recycleboxlayout import MDRecycleBoxLayout
 from kivymd.uix.recycleview import MDRecycleView
 from kivymd.uix.screen import MDScreen
@@ -17,7 +22,28 @@ from kivymd.uix.search import (
     MDSearchTrailingAvatar,
     MDSearchTrailingIcon,
     MDSearchView,
+    MDSearchViewLeadingContainer,
+    MDSearchViewTrailingContainer,
 )
+
+
+class Item(MDListItem):
+    text = StringProperty()
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.headline_text_widget = MDListItemHeadlineText(
+            text=self.text,
+        )
+        self.support_text_widget = MDListItemSupportingText(
+            text=self.text,
+        )
+        self.add_widget(self.headline_text_widget)
+        self.add_widget(self.support_text_widget)
+
+    def on_text(self, instance, value):
+        self.headline_text_widget.text = value
+        self.support_text_widget.text = value
 
 
 class MainApp(MDApp):
@@ -26,11 +52,11 @@ class MainApp(MDApp):
         self.root_layout = None
         self.search = None
         self.screen = None
-        self.layout = None
+        self.search_view_root = None
 
     def build(self):
         self.theme_cls.theme_style = "Light"
-        self.layout = MDBoxLayout(orientation="vertical")
+        self.search_view_root = MDBoxLayout(orientation="vertical")
         self.search = MDSearchBar(
             MDSearchBarLeadingContainer(
                 MDSearchLeadingIcon(icon="numeric-1-box"),
@@ -41,6 +67,9 @@ class MainApp(MDApp):
                 MDSearchTrailingAvatar(
                     source=f"{images_path}/logo/kivymd-icon-128.png"
                 ),
+            ),
+            MDSearchViewLeadingContainer(
+                MDSearchLeadingIcon(icon="arrow-left"),
             ),
             MDSearchView(
                 rv := MDRecycleView(
@@ -54,26 +83,18 @@ class MainApp(MDApp):
                     ),
                 )
             ),
-            view_root=self.layout,
+            MDSearchViewTrailingContainer(
+                MDSearchLeadingIcon(icon="numeric-4-box")
+            ),
+            view_root=self.search_view_root,
         )
-        self.layout.add_widget(
-            MDLabel(text="But this not 4", height=dp(30), size_hint_y=None)
-        )
-        self.layout.add_widget(self.search)
-        self.layout.add_widget(Widget())
-        self.layout.add_widget(
-            MDLabel(
-                text="This should be replaced", height=dp(30), size_hint_y=None
-            )
-        )
+        self.search_view_root.add_widget(self.search)
+        self.search_view_root.add_widget(Widget())
         self.root_layout = MDBoxLayout(
-            MDLabel(text="But this not 2", width=dp(30), size_hint_x=None),
             MDBoxLayout(
-                self.layout,
-                MDLabel(text="But this not 1", height=dp(30), size_hint_y=None),
+                self.search_view_root,
                 orientation="vertical",
             ),
-            MDLabel(text="But this not 3", width=dp(30), size_hint_x=None),
             orientation="horizontal",
         )
         self.screen = MDScreen(
@@ -81,8 +102,7 @@ class MainApp(MDApp):
         )
 
         rv.key_viewclass = "viewclass"
-        rv.data = [{"viewclass": "Button", "text": f"{i}"} for i in range(30)]
-
+        rv.data = [{"viewclass": "Item", "text": f"{i}"} for i in range(30)]
         return self.screen
 
 

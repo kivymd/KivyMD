@@ -1,3 +1,144 @@
+"""
+Components/Search
+==========================
+.. versionadded:: 2.0.0
+
+.. seealso::
+
+    `Material Design spec, Search <https://m3.material.io/components/search/overview>`_
+
+.. rubric:: Search lets people enter a keyword or phrase to get relevant information
+
+
+.. image:: TODO: LINK SEARCH PREVIEW
+    :align: center
+
+- Use search bars and views for navigating a product through search queries
+- Search bars can display suggested keywords or phrases as the user types
+- Always display results in a search view
+
+Anatomy
+-------
+
+.. image:: TODO: SEARCH BAR
+    :align: center
+
+.. image:: TODO: SEARCH VIEW
+    :align: center
+
+The search view grows out of the search bar showing its contents, it will try to fully fill the area taken by the view root
+
+Examples
+^^^^^^^^^^^^^^^
+
+Full (not docked)
+________________
+
+.. tabs::
+
+    .. tab:: Declarative KV style
+
+        .. code-block:: kv
+
+            MDSegmentedButton:
+
+                MDSegmentedButtonItem:
+
+                    MDSegmentButtonIcon:
+                        icon: "language-python"
+
+                MDSegmentedButtonItem:
+
+                    MDSegmentButtonIcon:
+                        icon: "language-javascript"
+
+                MDSegmentedButtonItem:
+
+                    MDSegmentButtonIcon:
+                        icon: "language-swift"
+
+    .. tab:: Pure Python
+
+        .. code-block:: python
+
+            class Item(MDListItem):
+                text = StringProperty()
+
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    self.headline_text_widget = MDListItemHeadlineText(
+                        text=self.text,
+                    )
+                    self.support_text_widget = MDListItemSupportingText(
+                        text=self.text,
+                    )
+                    self.add_widget(self.headline_text_widget)
+                    self.add_widget(self.support_text_widget)
+
+                def on_text(self, instance, value):
+                    self.headline_text_widget.text = value
+                    self.support_text_widget.text = value
+
+
+            class MainApp(MDApp):
+                def __init__(self, **kwargs):
+                    super().__init__()
+                    self.root_layout = None
+                    self.search = None
+                    self.screen = None
+                    self.search_view_root = None
+
+                def build(self):
+                    self.theme_cls.theme_style = "Light"
+                    self.search_view_root = MDBoxLayout(orientation="vertical")
+                    self.search = MDSearchBar(
+                        MDSearchBarLeadingContainer(
+                            MDSearchLeadingIcon(icon="numeric-1-box"),
+                        ),
+                        MDSearchTextInput(),
+                        MDSearchBarTrailingContainer(
+                            MDSearchTrailingIcon(icon="numeric-2-box"),
+                            MDSearchTrailingAvatar(
+                                source=f"{images_path}/logo/kivymd-icon-128.png"
+                            ),
+                        ),
+                        MDSearchView(
+                            rv := MDRecycleView(
+                                MDRecycleBoxLayout(
+                                    padding=(dp(10), dp(10), 0, dp(10)),
+                                    default_size=(None, dp(48)),
+                                    default_size_hint=(1, None),
+                                    size_hint_y=None,
+                                    adaptive_height=True,
+                                    orientation="vertical",
+                                ),
+                            )
+                        ),
+                        view_root=self.search_view_root,
+                    )
+                    self.search_view_root.add_widget(self.search)
+                    self.search_view_root.add_widget(Widget())
+                    self.root_layout = MDBoxLayout(
+                        MDBoxLayout(
+                            self.search_view_root,
+                            orientation="vertical",
+                        ),
+                        orientation="horizontal",
+                    )
+                    self.screen = MDScreen(
+                        self.root_layout, md_bg_color=self.theme_cls.backgroundColor
+                    )
+
+                    rv.key_viewclass = "viewclass"
+                    rv.data = [{"viewclass": "Item", "text": f"{i}"} for i in range(30)]
+                    return self.screen
+
+
+            MainApp().run()
+.. image:: TODO: Add gif full bar opening and closing
+    :align: center
+"""
+
 from kivy.animation import Animation
 from kivy.graphics import Color, Ellipse, Rectangle
 from kivy.metrics import dp
@@ -105,15 +246,22 @@ class MDSearchViewTrailingContainer(MDBoxLayout):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.size_hint_x = None
-        self.spacing = dp(16)
+        self.minimum_width = 0
+        self.size_hint_y = 1
+        self.padding = [dp(16), 0, dp(16), 0]
+
+        self.width = dp(16) * 2 + dp(24)
 
 
 class MDSearchViewLeadingContainer(MDBoxLayout):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.size_hint_x = None
-        self.width = dp(30)
-        self.spacing = dp(16)
+        self.minimum_width = 0
+        self.size_hint_y = 1
+        self.padding = [dp(16), 0, dp(16), 0]
+
+        self.width = dp(16) * 2 + dp(24)
 
 
 class MDSearchView(MDBoxLayout):
@@ -180,6 +328,8 @@ def print_widget_tree(widget, indent=0):
 
 
 class DebugCircle(Widget):
+    """DEBUG UTIL REMOVE ME"""
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         # Ensure the debug circle is always on top (or z-index equivalent)
@@ -204,7 +354,6 @@ class DebugCircle(Widget):
 class MDSearchBar(MDBoxLayout, AdditionComplete):
     """
     Material Design search widget
-    @property @required view_root
     """
 
     leading_icon = StringProperty("magnify")
@@ -214,7 +363,6 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
     )  # What will be replaced when docked = False
     docked_width = NumericProperty(dp(360))
     docked_height = NumericProperty(dp(240))
-    view_z_index = NumericProperty(100)
     docked = BooleanProperty(False)
 
     _view_map = {
@@ -237,10 +385,8 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         self._search_view_support_layout = MDRelativeLayout(
             size_hint=[None, None], width=0, height=0
         )
-
         super().__init__(*args, **kwargs)
         self.open = False
-        self.internal_add = self.add_widget
         self.radius = dp(28)
 
     def on_fully_added(self, parent):
@@ -249,11 +395,10 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
 
     def add_widget(self, widget, *args, **kwargs):
         if widget.__class__.__name__ == "MDSearchView":
-            self._search_view_support_layout.add_widget(widget, index=2)
+            self._search_view_support_layout.add_widget(widget)
             self.search_view = widget
         elif self._view_map.get(widget.__class__.__name__):
             setattr(self, self._view_map[widget.__class__.__name__], widget)
-            super().add_widget(widget, index=2)
         else:
             raise WrongChildException(self, widget, list(self._view_map.keys()))
 
@@ -263,6 +408,18 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         """
         app = MDApp.get_running_app()
 
+        # Add widgets in order, might want to change this to a list later
+        if self.search_bar_leading_container:
+            super().add_widget(self.search_bar_leading_container)
+        if self.search_view_leading_container:
+            super().add_widget(self.search_view_leading_container)
+        if self.text_input:
+            super().add_widget(self.text_input)
+        if self.search_bar_trailing_container:
+            super().add_widget(self.search_bar_trailing_container)
+        if self.search_view_trailing_container:
+            super().add_widget(self.search_view_trailing_container)
+
         self.height = dp(56)
         self.size_hint_y = None
         self.md_bg_color = (
@@ -270,14 +427,14 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         )  # pyright: ignore [reportOptionalMemberAccess]
         self.radius = dp(28)
         self.view_root.parent.add_widget(self._search_view_support_layout)
+        self.search_view_leading_container.width = dp(0)
+        self.search_view_trailing_container.width = dp(0)
 
     def update_open(self, *args):
-        # May want to consider an animation here in the future
         self.search_view.pos = self._search_view_support_layout.to_local(
             self.view_root.x, self.view_root.y
         )
 
-        # Set a size as large as the size of the view_root (account for the height of the bar itself):
         self.search_view.width = self.view_root.width
         self.search_view.height = self.view_root.height - self.height
 
@@ -290,7 +447,7 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         self.search_view.pos = self.view_root.x, self.view_root.y
         self.search_view.height = dp(0)
 
-        search_bar_open = Animation(radius=[dp(0)] * 4, t="in_out_circ", d=0.4)
+        search_bar_open = Animation(radius=[dp(0)] * 4, t="in_out_circ", d=0.2)
         search_bar_open.start(self)
 
         target_h = (self.view_root.height - self.view_root.y) - self.height

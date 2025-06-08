@@ -22,6 +22,7 @@ from kivymd.uix.search import (
     MDSearchTrailingAvatar,
     MDSearchTrailingIcon,
     MDSearchView,
+    MDSearchViewDivider,
     MDSearchViewLeadingContainer,
     MDSearchViewTrailingContainer,
 )
@@ -72,6 +73,7 @@ class MainApp(MDApp):
                 MDSearchLeadingIcon(icon="arrow-left"),
             ),
             MDSearchView(
+                MDSearchViewDivider(),
                 rv := MDRecycleView(
                     MDRecycleBoxLayout(
                         padding=(dp(10), dp(10), 0, dp(10)),
@@ -81,7 +83,8 @@ class MainApp(MDApp):
                         adaptive_height=True,
                         orientation="vertical",
                     ),
-                )
+                ),
+                orientation="vertical",
             ),
             MDSearchViewTrailingContainer(
                 MDSearchLeadingIcon(icon="numeric-4-box")

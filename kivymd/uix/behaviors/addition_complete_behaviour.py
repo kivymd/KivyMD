@@ -1,8 +1,7 @@
-from abc import ABC, abstractmethod
-
 from kivy.clock import Clock
 from kivy.event import EventDispatcher
 from kivy.properties import BooleanProperty, ObjectProperty
+from kivy.uix.widget import Widget
 
 
 class AdditionComplete(EventDispatcher):
@@ -45,7 +44,7 @@ class AdditionComplete(EventDispatcher):
         ):
             self.dispatch("on_fully_added", self.parent)
 
-    def on_fully_added(self, parent_widget):
+    def on_fully_added(self, parent_widget: Widget):
         """
         Default handler for the 'on_fully_added' event.
         Override this method in your widget class that uses this mixin,

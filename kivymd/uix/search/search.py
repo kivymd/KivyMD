@@ -157,8 +157,10 @@ from kivy.uix.textinput import TextInput
 from kivy.uix.widget import Widget
 
 from kivymd.app import MDApp
+from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.behaviors.addition_complete_behaviour import AdditionComplete
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.divider import MDDivider
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.label import MDIcon
 from kivymd.uix.relativelayout import MDRelativeLayout
@@ -296,6 +298,24 @@ class MDSearchView(MDBoxLayout):
         self.bind(pos=update_rect, size=update_rect)
 
 
+class MDSearchViewDivider(MDDivider, AdditionComplete):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+    def on_fully_added(self, parent_widget):
+        assert isinstance(parent_widget, MDSearchView)
+        self.orientation = parent_widget.orientation
+        if parent_widget.orientation == "vertical":
+            self.size_hint_x = 1
+            self.size_hint_y = None
+            self.height = dp(1)
+
+        if parent_widget.orientation == "horizontal":
+            self.size_hint_x = None
+            self.size_hint_y = 1
+            self.width = dp(1)
+
+
 class MDSearchTextInput(TextInput):
     """
     Text input for the search bar
@@ -321,11 +341,7 @@ class MDSearchTextInput(TextInput):
 
         self.bind(size=self._update_padding, text=self._update_padding)
         self.bind(
-            focus=lambda _, state: (
-                self.parent.state_open_common()
-                if state
-                else self.parent.state_closed_common()
-            )
+            focus=lambda _, state: self.parent.switch_state(state),
         )
         # Set initial padding
         self._update_padding()
@@ -415,7 +431,7 @@ def _rotated_expand_animation(
     return animation
 
 
-class MDSearchBar(MDBoxLayout, AdditionComplete):
+class MDSearchBar(MDBoxLayout, AdditionComplete, RectangularRippleBehavior):
     """
     Material Design search widget
     """
@@ -450,6 +466,7 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
             size_hint=[None, None], width=0, height=0
         )
         super().__init__(*args, **kwargs)
+        super(RectangularRippleBehavior).__init__()
         self.open = False
         self.radius = dp(28)
 
@@ -533,8 +550,6 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         """
         Animate the opening of the search view.
         """
-        if self._lock:
-            return
         self._lock = True
 
         self.open = True
@@ -595,8 +610,6 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         search_bar_open.start(self)
 
     def state_closed_common(self):
-        if self._lock:
-            return
         self._lock = True
         self.open = False
         self.unbind(pos=self.update_open, size=self.update_open)
@@ -636,3 +649,14 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         """
         assert isinstance(self.view_root, Widget)
         assert self in self.view_root.children
+
+    def switch_state(self, opened):
+        """
+        Checks if a lock is in force, if not switches the state of the search bar
+        """
+        if self._lock:
+            return
+        if opened:
+            self.state_open_common()
+        else:
+            self.state_closed_common()

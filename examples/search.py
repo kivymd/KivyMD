@@ -87,6 +87,9 @@ class MainApp(MDApp):
                 MDSearchLeadingIcon(icon="numeric-4-box")
             ),
             view_root=self.search_view_root,
+            docked=True,
+            size_hint_x=None,
+            width=dp(300),
         )
         self.search_view_root.add_widget(self.search)
         self.search_view_root.add_widget(Widget())

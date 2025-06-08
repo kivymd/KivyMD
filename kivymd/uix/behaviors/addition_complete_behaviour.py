@@ -8,7 +8,7 @@ from kivy.properties import BooleanProperty, ObjectProperty
 class AdditionComplete(EventDispatcher):
     """
     A mixin to provide an 'on_fully_added' event that fires after a widget
-    has been added to a parent and the parent's children list is updated.
+    has been added to a parent
     """
 
     __events__ = ("on_fully_added",)
@@ -18,8 +18,6 @@ class AdditionComplete(EventDispatcher):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        # Using fbind for a slightly more direct binding to the parent property.
-        # This will call _mixin_on_parent_change when self.parent changes.
         self.parent = None
         self.fbind("parent", self._mixin_on_parent_change)
 
@@ -28,13 +26,9 @@ class AdditionComplete(EventDispatcher):
         Called when the widget's parent property changes.
         """
         if new_parent and not self._is_waiting_for_fully_added:
-            # Widget is being added to a new parent (or parent is changing)
-            # and we are not already waiting to dispatch on_fully_added.
             self._internal_parent_ref_for_mixin = new_parent
             self._is_waiting_for_fully_added = True
-            Clock.schedule_once(
-                self._mixin_dispatch_fully_added, 0
-            )  # 0 = next frame
+            Clock.schedule_once(self._mixin_dispatch_fully_added, 0)
         elif not new_parent:
             self._internal_parent_ref_for_mixin = None
 

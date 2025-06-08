@@ -140,7 +140,7 @@ Full (not docked)
 """
 
 from kivy.animation import Animation
-from kivy.graphics import Color, Ellipse, Rectangle
+from kivy.graphics import Color, Rectangle
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
@@ -320,9 +320,9 @@ class MDSearchTextInput(TextInput):
         self.bind(size=self._update_padding, text=self._update_padding)
         self.bind(
             focus=lambda _, state: (
-                self.parent.state_open()
+                self.parent.state_open_common()
                 if state
-                else self.parent.state_closed()
+                else self.parent.state_closed_common()
             )
         )
         # Set initial padding
@@ -332,20 +332,54 @@ class MDSearchTextInput(TextInput):
         self.padding = [0, (self.height - self.line_height) / 2]
 
 
-def _fade_icons(visible: Widget, to_be_shown: Widget):
+def _fade_icons(old: Widget, new: Widget):
     """
-
-    :param visible: Shown item
-    :param to_be_shown: Item to be shown
+    Generic animation to fade the old widget and show the new
+    :param old: Shown item
+    :param new: Item to be shown
     :return: None
     """
     fade_in = Animation(opacity=1, t="in_out_circ", d=0.2)
     fade_out = Animation(opacity=0, t="in_out_circ", d=0.2)
-    width = Animation(width=to_be_shown.width, t="in_out_circ", d=0.4)
+    width = Animation(width=new.width, t="in_out_circ", d=0.4)
 
-    fade_out.start(visible)
-    width.start(to_be_shown.parent)
-    fade_out.on_complete = lambda *_: fade_in.start(to_be_shown)
+    fade_out.start(old)
+    width.start(new.parent)
+    fade_out.on_complete = lambda *_: fade_in.start(new)
+
+
+def _rotated_expand_animation(
+    widget: Widget,
+    view_root: Widget,
+    target_height: float,
+    target_width: float,
+    search_bar: "MDSearchBar",
+) -> Animation:
+    """
+    Generic animation for expanding/closing a widget in a RelativeLayout
+    :param widget: Widget to be expanded
+    :param view_root: Container to contain the expansion
+    :param target_height: Target height
+    :param target_width: Target width
+    :return:
+    """
+    animation = Animation(
+        height=target_height, width=target_width, t="in_out_circ", d=0.4
+    )
+
+    start_h = widget.height
+
+    animation.on_progress = lambda instance, _: (
+        setattr(
+            instance,
+            "y",
+            view_root.y
+            + (target_height if target_height != 0 else start_h)
+            - instance.height,
+        ),
+        setattr(instance, "center_x", search_bar.center_x - view_root.x),
+    )
+    return animation
 
 
 class MDSearchBar(MDBoxLayout, AdditionComplete):
@@ -447,6 +481,7 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         )  # pyright: ignore [reportOptionalMemberAccess]
         self.radius = dp(28)
         self.view_root.parent.add_widget(self._search_view_support_layout)
+        self.padding = dp(10)
 
         self.search_view_leading_container.opacity = 0
         self.search_view_trailing_container.opacity = 0
@@ -459,7 +494,7 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         self.search_view.width = self.view_root.width
         self.search_view.height = self.view_root.height - self.height
 
-    def state_open(self):
+    def state_open_common(self):
         """
         Animate and open the search view.
         """
@@ -472,27 +507,14 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         self.search_view.pos = self.view_root.x, self.view_root.y
         self.search_view.height = dp(0)
 
-        # Bar Radius
-        search_bar_open = Animation(radius=[dp(0)] * 4, t="in_out_circ", d=0.2)
-        search_bar_open.start(self)
-
         # Search View
-        target_h = (self.view_root.height - self.view_root.y) - self.height
-        search_view_open = Animation(
-            height=target_h, width=self.view_root.width, t="in_out_circ", d=0.4
-        )
-
-        search_view_open.on_progress = lambda instance, value: (
-            setattr(
-                self.search_view,
-                "y",
-                self.view_root.y + target_h - instance.height,
-            ),
-            setattr(
-                instance, "center_x", self.view_root.center_x - self.view_root.x
-            ),
-        )
-        search_view_open.start(self.search_view)
+        _rotated_expand_animation(
+            self.search_view,
+            self.view_root,
+            (self.view_root.height - self.view_root.y) - self.height,
+            self.width,
+            self,
+        ).start(self.search_view)
 
         # Icons
         _fade_icons(
@@ -503,8 +525,28 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
             self.search_bar_trailing_container,
             self.search_view_trailing_container,
         )
+        if self.docked:
+            self.open_docked()
+        else:
+            self.open_undocked()
 
-    def state_closed(self):
+    def open_docked(self):
+        search_bar_open = Animation(
+            radius=[dp(28), dp(28), dp(0), dp(0)],
+            t="in_out_circ",
+            d=0.2,
+        )
+        search_bar_open.start(self)
+
+    def open_undocked(self):
+        search_bar_open = Animation(
+            radius=[dp(0)] * 4,
+            t="in_out_circ",
+            d=0.2,
+        )
+        search_bar_open.start(self)
+
+    def state_closed_common(self):
         self.open = False
         self.unbind(pos=self.update_open, size=self.update_open)
 
@@ -513,20 +555,9 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         )
         search_bar_close.start(self)
 
-        source_h = self.search_view.height
-        search_view_close = Animation(height=0, width=0, t="in_out_circ", d=0.4)
-
-        search_view_close.on_progress = lambda instance, value: (
-            setattr(
-                self.search_view,
-                "y",
-                self.view_root.y + source_h - instance.height,
-            ),
-            setattr(
-                instance, "center_x", self.view_root.center_x - self.view_root.x
-            ),
-        )
-        search_view_close.start(self.search_view)
+        _rotated_expand_animation(
+            self.search_view, self.view_root, 0, 0, self
+        ).start(self.search_view)
 
         # Icons
         _fade_icons(

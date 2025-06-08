@@ -140,6 +140,7 @@ Full (not docked)
 """
 
 from collections.abc import Callable
+from gc import disable
 
 from kivy.animation import Animation
 from kivy.graphics import Color, Rectangle
@@ -325,7 +326,7 @@ class MDSearchTextInput(TextInput):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         app = MDApp.get_running_app()
-        self.background_color = app.theme_cls.surfaceContainerHighColor
+        self.background_color = (0, 0, 0, 0)
         self.foreground_color = app.theme_cls.onSurfaceColor
         self.cursor_color = app.theme_cls.primaryColor
         self.hint_text_color = app.theme_cls.onSurfaceVariantColor
@@ -431,7 +432,7 @@ def _rotated_expand_animation(
     return animation
 
 
-class MDSearchBar(MDBoxLayout, AdditionComplete, RectangularRippleBehavior):
+class MDSearchBar(RectangularRippleBehavior, MDBoxLayout, AdditionComplete):
     """
     Material Design search widget
     """
@@ -466,7 +467,6 @@ class MDSearchBar(MDBoxLayout, AdditionComplete, RectangularRippleBehavior):
             size_hint=[None, None], width=0, height=0
         )
         super().__init__(*args, **kwargs)
-        super(RectangularRippleBehavior).__init__()
         self.open = False
         self.radius = dp(28)
 
@@ -551,7 +551,6 @@ class MDSearchBar(MDBoxLayout, AdditionComplete, RectangularRippleBehavior):
         Animate the opening of the search view.
         """
         self._lock = True
-
         self.open = True
 
         self.search_view.size_hint = [None, None]
@@ -612,6 +611,7 @@ class MDSearchBar(MDBoxLayout, AdditionComplete, RectangularRippleBehavior):
     def state_closed_common(self):
         self._lock = True
         self.open = False
+
         self.unbind(pos=self.update_open, size=self.update_open)
 
         search_bar_close = Animation(
@@ -628,6 +628,7 @@ class MDSearchBar(MDBoxLayout, AdditionComplete, RectangularRippleBehavior):
             animation.start(self.search_view)
 
         _deffer(animations, lambda: setattr(self, "_lock", False))
+        _deffer(animations, self.enable_ripple)
         _deffer(
             animations,
             lambda: self.text_input.setter("focus")(self.text_input, False),
@@ -654,9 +655,16 @@ class MDSearchBar(MDBoxLayout, AdditionComplete, RectangularRippleBehavior):
         """
         Checks if a lock is in force, if not switches the state of the search bar
         """
+        self.disable_ripple()
         if self._lock:
             return
         if opened:
             self.state_open_common()
         else:
             self.state_closed_common()
+
+    def disable_ripple(self):
+        self.lay_canvas_instructions = lambda *args: None
+
+    def enable_ripple(self):
+        self.lay_canvas_instructions = super().lay_canvas_instructions

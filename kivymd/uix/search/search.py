@@ -139,6 +139,8 @@ Full (not docked)
     :align: center
 """
 
+from collections.abc import Callable
+
 from kivy.animation import Animation
 from kivy.graphics import Color, Rectangle
 from kivy.metrics import dp
@@ -332,6 +334,37 @@ class MDSearchTextInput(TextInput):
         self.padding = [0, (self.height - self.line_height) / 2]
 
 
+def __deffer_target(
+    item: Animation,
+    animations: list[Animation],
+    callback: Callable,
+    previous: Callable,
+    widget: Widget,
+):
+    previous(widget)
+    try:
+        animations.remove(item)
+    except ValueError:
+        pass
+    if not animations:
+        callback()
+        print("Unlocked")
+
+
+def _deffer(animations: list[Animation], callback: Callable):
+    """
+    Executes a `~callback` after all animations have finished playing
+    :param animations: List of animations
+    :param callback: Callback to execute
+    :return:
+    """
+    for animation in animations:
+        previous = animation.on_complete
+        animation.on_complete = lambda widget: __deffer_target(
+            animation, animations, callback, previous, widget
+        )
+
+
 def _fade_icons(old: Widget, new: Widget):
     """
     Generic animation to fade the old widget and show the new
@@ -420,6 +453,8 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         self.open = False
         self.radius = dp(28)
 
+        self._lock = False
+
         self._swap_container_leading: MDFloatLayout = MDRelativeLayout(
             size_hint=[None, 1]
         )
@@ -496,8 +531,11 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
 
     def state_open_common(self):
         """
-        Animate and open the search view.
+        Animate the opening of the search view.
         """
+        if self._lock:
+            return
+        self._lock = True
 
         self.open = True
 
@@ -507,14 +545,24 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         self.search_view.pos = self.view_root.x, self.view_root.y
         self.search_view.height = dp(0)
 
-        # Search View
-        _rotated_expand_animation(
-            self.search_view,
-            self.view_root,
-            (self.view_root.height - self.view_root.y) - self.height,
-            self.width,
-            self,
-        ).start(self.search_view)
+        animations: list[Animation] = [
+            _rotated_expand_animation(
+                self.search_view,
+                self.view_root,
+                (self.view_root.height - self.view_root.y) - self.height,
+                self.width,
+                self,
+            )
+        ]
+
+        for animation in animations:
+            animation.start(self.search_view)
+
+        _deffer(animations, lambda: setattr(self, "_lock", False))
+        _deffer(
+            animations,
+            lambda: self.text_input.setter("focus")(self.text_input, True),
+        )
 
         # Icons
         _fade_icons(
@@ -547,6 +595,9 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         search_bar_open.start(self)
 
     def state_closed_common(self):
+        if self._lock:
+            return
+        self._lock = True
         self.open = False
         self.unbind(pos=self.update_open, size=self.update_open)
 
@@ -555,9 +606,19 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         )
         search_bar_close.start(self)
 
-        _rotated_expand_animation(
-            self.search_view, self.view_root, 0, 0, self
-        ).start(self.search_view)
+        animations: list[Animation] = [
+            _rotated_expand_animation(
+                self.search_view, self.view_root, 0, 0, self
+            )
+        ]
+        for animation in animations:
+            animation.start(self.search_view)
+
+        _deffer(animations, lambda: setattr(self, "_lock", False))
+        _deffer(
+            animations,
+            lambda: self.text_input.setter("focus")(self.text_input, False),
+        )
 
         # Icons
         _fade_icons(

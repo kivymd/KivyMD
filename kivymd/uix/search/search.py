@@ -29,10 +29,10 @@ Anatomy
 The search view grows out of the search bar showing its contents, it will try to fully fill the area taken by the view root
 
 Examples
-^^^^^^^^^^^^^^^
+-------
 
 Full (not docked)
-________________
+^^^^^^^
 
 .. tabs::
 
@@ -244,6 +244,10 @@ class MDSearchBarLeadingContainer(MDBoxLayout):
 
 
 class MDSearchViewTrailingContainer(MDBoxLayout):
+    """
+    Container shown behind the search bar after search view expansion is triggered
+    """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.size_hint_x = None
@@ -255,6 +259,10 @@ class MDSearchViewTrailingContainer(MDBoxLayout):
 
 
 class MDSearchViewLeadingContainer(MDBoxLayout):
+    """
+    Container shown in front of the search bar after search view expansion is triggered
+    """
+
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.size_hint_x = None
@@ -287,6 +295,11 @@ class MDSearchView(MDBoxLayout):
 
 
 class MDSearchTextInput(TextInput):
+    """
+    Text input for the search bar
+    :attr:`~.self.text` is the searched text
+    """
+
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         app = MDApp.get_running_app()
@@ -317,39 +330,6 @@ class MDSearchTextInput(TextInput):
 
     def _update_padding(self, *args):
         self.padding = [0, (self.height - self.line_height) / 2]
-
-
-def print_widget_tree(widget, indent=0):
-    """Prints the widget tree structure."""
-    """DEBUG UTIL REMOVE ME"""
-    prefix = "    " * indent
-    print(f"{prefix}└── {widget.__class__.__name__} ")
-    for child in widget.children:
-        print_widget_tree(child, indent + 1)
-
-
-class DebugCircle(Widget):
-    """DEBUG UTIL REMOVE ME"""
-
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
-        # Ensure the debug circle is always on top (or z-index equivalent)
-        self.size_hint = (None, None)
-        self.size = (20, 20)  # Size of the debug circle
-
-        with self.canvas:
-            self.color = Color(1, 0, 0, 1)  # Red color
-            self.ellipse = Ellipse(size=self.size, pos=self.pos)
-
-        # Bind the ellipse position to the widget's position
-        self.bind(pos=self.update_ellipse_pos)
-
-    def set_pos(self, x, y):
-        # Center the debug circle on the given coordinates
-        self.pos = (x - self.width / 2, y - self.height / 2)
-
-    def update_ellipse_pos(self, instance, value):
-        self.ellipse.pos = value
 
 
 def _fade_icons(visible: Widget, to_be_shown: Widget):
@@ -453,6 +433,13 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
                 self.search_view_trailing_container
             )
 
+        self._swap_container_leading.width = (
+            self.search_bar_leading_container.width
+        )
+        self._swap_container_trailing.width = (
+            self.search_bar_trailing_container.width
+        )
+
         self.height = dp(56)
         self.size_hint_y = None
         self.md_bg_color = (
@@ -460,13 +447,6 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         )  # pyright: ignore [reportOptionalMemberAccess]
         self.radius = dp(28)
         self.view_root.parent.add_widget(self._search_view_support_layout)
-
-        self._swap_container_leading.width = (
-            self.search_bar_leading_container.width
-        )
-        self._swap_container_trailing.width = (
-            self.search_bar_trailing_container.width
-        )
 
         self.search_view_leading_container.opacity = 0
         self.search_view_trailing_container.opacity = 0

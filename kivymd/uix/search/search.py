@@ -157,6 +157,7 @@ from kivy.uix.widget import Widget
 from kivymd.app import MDApp
 from kivymd.uix.behaviors.addition_complete_behaviour import AdditionComplete
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.label import MDIcon
 from kivymd.uix.relativelayout import MDRelativeLayout
 from kivymd.utils.wrong_child import WrongChildException
@@ -351,6 +352,22 @@ class DebugCircle(Widget):
         self.ellipse.pos = value
 
 
+def _fade_icons(visible: Widget, to_be_shown: Widget):
+    """
+
+    :param visible: Shown item
+    :param to_be_shown: Item to be shown
+    :return: None
+    """
+    fade_in = Animation(opacity=1, t="in_out_circ", d=0.2)
+    fade_out = Animation(opacity=0, t="in_out_circ", d=0.2)
+    width = Animation(width=to_be_shown.width, t="in_out_circ", d=0.4)
+
+    fade_out.start(visible)
+    width.start(to_be_shown.parent)
+    fade_out.on_complete = lambda *_: fade_in.start(to_be_shown)
+
+
 class MDSearchBar(MDBoxLayout, AdditionComplete):
     """
     Material Design search widget
@@ -389,6 +406,13 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         self.open = False
         self.radius = dp(28)
 
+        self._swap_container_leading: MDFloatLayout = MDRelativeLayout(
+            size_hint=[None, 1]
+        )
+        self._swap_container_trailing: MDFloatLayout = MDRelativeLayout(
+            size_hint=[None, 1]
+        )
+
     def on_fully_added(self, parent):
         self._assert_state()
         self._define_layout()
@@ -409,16 +433,25 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         app = MDApp.get_running_app()
 
         # Add widgets in order, might want to change this to a list later
+        super().add_widget(self._swap_container_leading)
         if self.search_bar_leading_container:
-            super().add_widget(self.search_bar_leading_container)
+            self._swap_container_leading.add_widget(
+                self.search_bar_leading_container
+            )
         if self.search_view_leading_container:
-            super().add_widget(self.search_view_leading_container)
-        if self.text_input:
-            super().add_widget(self.text_input)
+            self._swap_container_leading.add_widget(
+                self.search_view_leading_container
+            )
+        super().add_widget(self.text_input)
+        super().add_widget(self._swap_container_trailing)
         if self.search_bar_trailing_container:
-            super().add_widget(self.search_bar_trailing_container)
+            self._swap_container_trailing.add_widget(
+                self.search_bar_trailing_container
+            )
         if self.search_view_trailing_container:
-            super().add_widget(self.search_view_trailing_container)
+            self._swap_container_trailing.add_widget(
+                self.search_view_trailing_container
+            )
 
         self.height = dp(56)
         self.size_hint_y = None
@@ -427,8 +460,16 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         )  # pyright: ignore [reportOptionalMemberAccess]
         self.radius = dp(28)
         self.view_root.parent.add_widget(self._search_view_support_layout)
-        self.search_view_leading_container.width = dp(0)
-        self.search_view_trailing_container.width = dp(0)
+
+        self._swap_container_leading.width = (
+            self.search_bar_leading_container.width
+        )
+        self._swap_container_trailing.width = (
+            self.search_bar_trailing_container.width
+        )
+
+        self.search_view_leading_container.opacity = 0
+        self.search_view_trailing_container.opacity = 0
 
     def update_open(self, *args):
         self.search_view.pos = self._search_view_support_layout.to_local(
@@ -439,6 +480,10 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         self.search_view.height = self.view_root.height - self.height
 
     def state_open(self):
+        """
+        Animate and open the search view.
+        """
+
         self.open = True
 
         self.search_view.size_hint = [None, None]
@@ -447,9 +492,11 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
         self.search_view.pos = self.view_root.x, self.view_root.y
         self.search_view.height = dp(0)
 
+        # Bar Radius
         search_bar_open = Animation(radius=[dp(0)] * 4, t="in_out_circ", d=0.2)
         search_bar_open.start(self)
 
+        # Search View
         target_h = (self.view_root.height - self.view_root.y) - self.height
         search_view_open = Animation(
             height=target_h, width=self.view_root.width, t="in_out_circ", d=0.4
@@ -466,6 +513,16 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
             ),
         )
         search_view_open.start(self.search_view)
+
+        # Icons
+        _fade_icons(
+            self.search_bar_leading_container,
+            self.search_view_leading_container,
+        )
+        _fade_icons(
+            self.search_bar_trailing_container,
+            self.search_view_trailing_container,
+        )
 
     def state_closed(self):
         self.open = False
@@ -490,6 +547,16 @@ class MDSearchBar(MDBoxLayout, AdditionComplete):
             ),
         )
         search_view_close.start(self.search_view)
+
+        # Icons
+        _fade_icons(
+            self.search_view_leading_container,
+            self.search_bar_leading_container,
+        )
+        _fade_icons(
+            self.search_view_trailing_container,
+            self.search_bar_trailing_container,
+        )
 
     def _assert_state(self):
         """

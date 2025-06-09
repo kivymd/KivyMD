@@ -377,7 +377,7 @@ class CommonRipple:
                     and window_cords[1]
                     < touch.y
                     < window_cords[1] + current.height
-                )
+                )  # Relativelayout collide
                 and not current.disabled
             ):
                 return False

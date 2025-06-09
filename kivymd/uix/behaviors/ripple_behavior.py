@@ -363,6 +363,27 @@ class CommonRipple:
             return False
         if not self.collide_point(touch.x, touch.y):
             return False
+
+        # Traverse the children tree and check if any children may be superimposed on top of the widget, if so their ripple takes priority
+        stack = [self]
+        while stack:
+            current = stack.pop()
+            window_cords = current.to_window(current.x, current.y)
+            if (
+                current != self
+                and isinstance(current, CommonRipple)
+                and (
+                    window_cords[0] < touch.x < window_cords[0] + current.width
+                    and window_cords[1]
+                    < touch.y
+                    < window_cords[1] + current.height
+                )
+                and not current.disabled
+            ):
+                return False
+
+            stack.extend(current.children)
+
         if not self.disabled:
             self.call_ripple_animation_methods(touch)
             # FIXME: this check is needed for the `MDTabsLabel` object.

@@ -140,7 +140,6 @@ Full (not docked)
 """
 
 from collections.abc import Callable
-from gc import disable
 
 from kivy.animation import Animation
 from kivy.graphics import Color, Rectangle
@@ -179,7 +178,7 @@ class MDSearchTrailingAvatar(ButtonBehavior, Image):
         self.width = dp(30)
 
 
-class MDSearchLeadingIcon(ButtonBehavior, MDIcon):
+class MDSearchLeadingIcon(RectangularRippleBehavior, ButtonBehavior, MDIcon):
     """
     Icon in front of the search bar.
     """
@@ -200,7 +199,7 @@ class MDSearchLeadingIcon(ButtonBehavior, MDIcon):
             self.icon_color = app.theme_cls.onSurfaceColor
 
 
-class MDSearchTrailingIcon(ButtonBehavior, MDIcon):
+class MDSearchTrailingIcon(RectangularRippleBehavior, ButtonBehavior, MDIcon):
     """
     Icon after the search bar
     """
@@ -533,7 +532,6 @@ class MDSearchBar(RectangularRippleBehavior, MDBoxLayout, AdditionComplete):
         )  # pyright: ignore [reportOptionalMemberAccess]
         self.radius = dp(28)
         self.view_root.parent.add_widget(self._search_view_support_layout)
-        self.padding = dp(10)
 
         self.search_view_leading_container.opacity = 0
         self.search_view_trailing_container.opacity = 0

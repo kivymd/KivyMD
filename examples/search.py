@@ -65,7 +65,7 @@ class MainApp(MDApp):
             MDSearchTextInput(),
             MDSearchBarTrailingContainer(
                 MDSearchTrailingIcon(
-                    icon="numeric-2-box", on_press=lambda *_: print("X")
+                    icon="numeric-2-box",
                 ),
                 MDSearchTrailingAvatar(
                     source=f"{images_path}/logo/kivymd-icon-128.png"
@@ -89,10 +89,11 @@ class MainApp(MDApp):
                 orientation="vertical",
             ),
             MDSearchViewTrailingContainer(
-                MDSearchLeadingIcon(icon="numeric-4-box")
+                MDSearchTrailingIcon(icon="numeric-4-box")
             ),
             view_root=self.search_view_root,
             docked=True,
+            docked_height=dp(240),
             size_hint_x=None,
             width=dp(300),
         )

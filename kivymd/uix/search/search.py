@@ -153,10 +153,12 @@ from kivy.properties import (
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.image import Image
+from kivy.uix.layout import Layout
 from kivy.uix.textinput import TextInput
 from kivy.uix.widget import Widget
 
 from kivymd.app import MDApp
+from kivymd.uix.anchorlayout import MDAnchorLayout
 from kivymd.uix.behaviors import RectangularRippleBehavior
 from kivymd.uix.behaviors.addition_complete_behaviour import AdditionComplete
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -174,8 +176,8 @@ class MDSearchTrailingAvatar(ButtonBehavior, Image):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        self.size_hint_x = None
-        self.width = dp(30)
+        self.size_hint = (None, None)
+        self.size = (dp(30), dp(30))
 
 
 class MDSearchLeadingIcon(RectangularRippleBehavior, ButtonBehavior, MDIcon):
@@ -189,8 +191,8 @@ class MDSearchLeadingIcon(RectangularRippleBehavior, ButtonBehavior, MDIcon):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.update_icon_color()  # There should be a more elegant way to do this but IDK?
-        self.size_hint_x = None
-        self.size_hint_y = 1
+        self.size_hint = (None, None)
+        self.size = (dp(24), dp(24))
 
     def update_icon_color(self):
         # Access the app's theme and set the color
@@ -207,9 +209,8 @@ class MDSearchTrailingIcon(RectangularRippleBehavior, ButtonBehavior, MDIcon):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.update_icon_color()
-        self.size_hint_x = None
-        self.size_hint_y = 1
-        self.width = dp(24)
+        self.size_hint = (None, None)
+        self.size = (dp(24), dp(24))
 
     def update_icon_color(self):
         # Access the app's theme and set the color
@@ -218,63 +219,60 @@ class MDSearchTrailingIcon(RectangularRippleBehavior, ButtonBehavior, MDIcon):
             self.icon_color = app.theme_cls.onSurfaceColor
 
 
-class MDSearchBarTrailingContainer(MDBoxLayout):
-    """
-    Container placed after the search bar
-    """
-
+class _BarContainer(MDBoxLayout):
     def __init__(self, *args, **kwargs):
+        self.support_layouts: dict[Widget, MDBoxLayout] = {}
+
         super().__init__(*args, **kwargs)
         self.size_hint_x = None
         self.size_hint_y = 1
         self.padding = [dp(16), 0, dp(16), 0]
         self.spacing = dp(16)
-        self.bind(minimum_width=self.setter("width"))
+
+    def add_widget(self, widget, *args, **kwargs):
+        """
+        Support layouts need to be added since, to facilitate ripple animations of the icons
+        """
+        self.support_layouts[widget] = MDAnchorLayout(
+            widget,
+            size_hint=(None, 1),
+            anchor_x="left",
+            anchor_y="center",
+            width=widget.width,
+        )
+        super().add_widget(self.support_layouts[widget])
 
 
-class MDSearchBarLeadingContainer(MDBoxLayout):
+class MDSearchBarTrailingContainer(_BarContainer):
+    """
+    Container placed after the search bar
+    """
+
+    ...
+
+
+class MDSearchBarLeadingContainer(_BarContainer):
     """
     Container placed before the search bar
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.size_hint_x = None
-        self.minimum_width = 0
-        self.size_hint_y = 1
-        self.padding = [dp(16), 0, dp(16), 0]
-
-        self.width = dp(16) * 2 + dp(24)
+    ...
 
 
-class MDSearchViewTrailingContainer(MDBoxLayout):
+class MDSearchViewTrailingContainer(_BarContainer):
     """
     Container shown behind the search bar after search view expansion is triggered
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.size_hint_x = None
-        self.minimum_width = 0
-        self.size_hint_y = 1
-        self.padding = [dp(16), 0, dp(16), 0]
-
-        self.width = dp(16) * 2 + dp(24)
+    ...
 
 
-class MDSearchViewLeadingContainer(MDBoxLayout):
+class MDSearchViewLeadingContainer(_BarContainer):
     """
     Container shown in front of the search bar after search view expansion is triggered
     """
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.size_hint_x = None
-        self.minimum_width = 0
-        self.size_hint_y = 1
-        self.padding = [dp(16), 0, dp(16), 0]
-
-        self.width = dp(16) * 2 + dp(24)
+    ...
 
 
 class MDSearchView(MDBoxLayout):
@@ -364,7 +362,6 @@ def __deffer_target(
         pass
     if not animations:
         callback()
-        print("Unlocked")
 
 
 def _deffer(animations: list[Animation], callback: Callable):
@@ -381,7 +378,7 @@ def _deffer(animations: list[Animation], callback: Callable):
         )
 
 
-def _fade_icons(old: Widget, new: Widget):
+def _fade_icons(old: Widget, new: MDBoxLayout):
     """
     Generic animation to fade the old widget and show the new
     :param old: Shown item
@@ -390,7 +387,7 @@ def _fade_icons(old: Widget, new: Widget):
     """
     fade_in = Animation(opacity=1, t="in_out_circ", d=0.2)
     fade_out = Animation(opacity=0, t="in_out_circ", d=0.2)
-    width = Animation(width=new.width, t="in_out_circ", d=0.4)
+    width = Animation(width=new.minimum_width, t="in_out_circ", d=0.4)
 
     fade_out.start(old)
     width.start(new.parent)
@@ -441,7 +438,6 @@ class MDSearchBar(RectangularRippleBehavior, MDBoxLayout, AdditionComplete):
     view_root: Widget = ObjectProperty(
         None
     )  # What will be replaced when docked = False
-    docked_width = NumericProperty(dp(360))
     docked_height = NumericProperty(dp(240))
     docked = BooleanProperty(False)
 

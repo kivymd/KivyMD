@@ -74,14 +74,33 @@ class MDSearchViewLeadingContainer(BoxLayout):
 
 
 class MDSearchViewContainer(BoxLayout):
-    pass
+    
+    _d = 0.3
+    _children = None
 
+    def add_widget(self, widget, *args, **kwargs):
+        if self._children is not None:
+            raise Exception("MDSearchViewContainer only accetps single widget")
+
+        self._children = widget
+    
+    def show_child(self, anim_time):
+        self._children.opacity = 0
+        next_frame(Animation(opacity=1, d=self._d).start, self._children, t=anim_time)
+        next_frame(super().add_widget, self._children, t=anim_time)
+
+    def hide_child(self):
+        super().remove_widget(self._children)
+
+    def remove_widget(self, widget):
+        if self._children == widget:
+            super().remove_widget(self._children)
 
 class MDSearchWidget(RelativeLayout):
 
     _font_style = theme_font_styles["Title"]["medium"]
-    _d = 0.4
-    _t = "in_out_circ"
+    _d = 0.3
+    _t = "easing_standard"
     state = "close"
 
     def __init__(self, root, *args, **kwargs):
@@ -124,6 +143,7 @@ class MDSearchWidget(RelativeLayout):
         )
         next_frame(opacity_up.start, self.root._view_container, t=self._d)
         self.icons_open(opacity_up, opacity_down, self._d / 2)
+        self.root._view_container.show_child(self._d)
 
     def _docked_close(self, opacity_down, opacity_up):
         self._close(opacity_down, opacity_up)
@@ -144,6 +164,7 @@ class MDSearchWidget(RelativeLayout):
         # header
         Animation(height=dp(70), t=self._t, d=self._d).start(self.ids.header)
         self.icons_open(opacity_up, opacity_down, h_d)
+        self.root._view_container.show_child(self._d)
 
     def _close(self, opacity_down, opacity_up):
         h_d = self._d / 2
@@ -169,6 +190,7 @@ class MDSearchWidget(RelativeLayout):
         # header
         Animation(height=dp(56), t=self._t, d=self._d).start(self.ids.header)
         self.icons_close(opacity_up, opacity_down, h_d)
+        self.root._view_container.hide_child()
 
     def icons_close(self, opacity_up, opacity_down, h_d):
         opacity_down.start(self.root._view_trailing_container)

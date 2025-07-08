@@ -764,6 +764,39 @@ class BaseTextFieldIcon(MDIcon):
     and defaults to `None`.
     """
 
+    # kivymd.uix.textfield.textfield.MDTextField object.
+    _text_field = ObjectProperty(None)
+
+    def on_icon_color_normal(
+        self,
+        instance: BaseTextFieldIcon | MDTextFieldTrailingIcon,
+        value: list | str,
+    ):
+        """
+        Called when the `icon_color_normal` property of the icon is changed.
+
+        If the associated text field is set, this method triggers an update
+        to the icon's color appearance, ensuring that the correct color is
+        used based on the focus state of the text field.
+
+        Typically used to visually reflect property changes in real time
+        in response to user interaction or theme updates.
+
+        :param instance: The instance of `BaseTextFieldIcon` that had its
+                         `icon_color_normal` property changed.
+        :param value: The new color value, either as a list of RGBA components
+                      or a string (e.g., a hex color or color name).
+        """
+
+        if self._text_field and not self._text_field.disabled:
+            update_color_method = {
+                MDTextFieldLeadingIcon: self._text_field._set_texture_leading_icons_color,
+                MDTextFieldTrailingIcon: self._text_field._set_texture_trailing_icons_color,
+            }.get(type(instance))
+
+            if update_color_method:
+                update_color_method(icon_color_focus=self._text_field.focus)
+
 
 class MDTextFieldLeadingIcon(BaseTextFieldIcon):
     """
@@ -1251,9 +1284,11 @@ class MDTextField(
             self._set_texture_hint_text_color(text_color_focus=False)
         if isinstance(widget, MDTextFieldLeadingIcon):
             self._leading_icon = widget
+            widget._text_field = self
             self._set_texture_leading_icons_color(icon_color_focus=False)
         if isinstance(widget, MDTextFieldTrailingIcon):
             self._trailing_icon = widget
+            widget._text_field = self
             self._set_texture_trailing_icons_color(icon_color_focus=False)
         if isinstance(widget, MDTextFieldMaxLengthText):
             self._max_length_label = widget
@@ -1920,62 +1955,67 @@ class MDTextField(
             )
 
     def _set_disabled_colors(self):
-        def schedule_set_texture_color(widget, group_name, color, opacity):
-            Clock.schedule_once(
-                lambda x: self.set_texture_color(
-                    widget, group_name, color + [opacity]
+        """
+        Sets the color and opacity of various widget components when the widget
+        is disabled.
+
+        For each of the following components (if present):
+        - Maximum length label (`_max_length_label`)
+        - Helper text label (`_helper_text_label`)
+        - Hint text label (`_hint_text_label`)
+        - Leading icon (`_leading_icon`)
+        - Trailing icon (`_trailing_icon`)
+
+        Determines the base color to use:
+        - If the component has an `icon_color_disabled` attribute and it's not
+          None, uses it (without the alpha channel).
+        - Otherwise, uses `self.theme_cls.disabledTextColor`
+          (without the alpha channel).
+
+        Schedules a call via `Clock.schedule_once` to apply the final RGBA
+        color (base + opacity) using the `set_texture_color()` method.
+        """
+
+        def schedule_set_texture_color(widget, group, opacity):
+            if widget and group:
+                color = (
+                    widget.icon_color_disabled[:-1]
+                    if hasattr(widget, "icon_color_disabled")
+                    and widget.icon_color_disabled
+                    else self.theme_cls.disabledTextColor[:-1]
                 )
-            )
+                Clock.schedule_once(
+                    lambda x: self.set_texture_color(
+                        widget, group[0], color + [opacity]
+                    )
+                )
 
-        max_length_label_group = self.canvas.before.get_group(
-            "max-length-color"
-        )
-        helper_text_label_group = self.canvas.before.get_group(
-            "helper-text-color"
-        )
-        hint_text_label_group = self.canvas.after.get_group("hint-text-color")
-        leading_icon_group = self.canvas.before.get_group("leading-icons-color")
-        trailing_icon_group = self.canvas.before.get_group(
-            "trailing-icons-color"
-        )
-
-        disabled_color = self.theme_cls.disabledTextColor[:-1]
-
-        if self._max_length_label:
-            schedule_set_texture_color(
-                self._max_length_label,
-                max_length_label_group[0],
-                disabled_color,
+        groups = {
+            "_max_length_label": (
+                self.canvas.before.get_group("max-length-color"),
                 self.text_field_opacity_value_disabled_max_length_label,
-            )
-        if self._helper_text_label:
-            schedule_set_texture_color(
-                self._helper_text_label,
-                helper_text_label_group[0],
-                disabled_color,
+            ),
+            "_helper_text_label": (
+                self.canvas.before.get_group("helper-text-color"),
                 self.text_field_opacity_value_disabled_helper_text_label,
-            )
-        if self._hint_text_label:
-            schedule_set_texture_color(
-                self._hint_text_label,
-                hint_text_label_group[0],
-                disabled_color,
+            ),
+            "_hint_text_label": (
+                self.canvas.after.get_group("hint-text-color"),
                 self.text_field_opacity_value_disabled_hint_text_label,
-            )
-        if self._leading_icon:
-            schedule_set_texture_color(
-                self._leading_icon,
-                leading_icon_group[0],
-                disabled_color,
+            ),
+            "_leading_icon": (
+                self.canvas.before.get_group("leading-icons-color"),
                 self.text_field_opacity_value_disabled_leading_icon,
-            )
-        if self._trailing_icon:
-            schedule_set_texture_color(
-                self._trailing_icon,
-                trailing_icon_group[0],
-                disabled_color,
+            ),
+            "_trailing_icon": (
+                self.canvas.before.get_group("trailing-icons-color"),
                 self.text_field_opacity_value_disabled_trailing_icon,
-            )
+            ),
+        }
+
+        for attr, (group, opacity) in groups.items():
+            widget = getattr(self, attr, None)
+            schedule_set_texture_color(widget, group, opacity)
 
     def _get_has_error(self) -> bool:
         """

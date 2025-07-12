@@ -268,6 +268,7 @@ from kivy.properties import (
     ColorProperty,
     ListProperty,
     StringProperty,
+    BoundedNumericProperty,
 )
 from kivy.uix.behaviors import ToggleButtonBehavior, ButtonBehavior
 
@@ -585,6 +586,10 @@ class MDSwitch(StateLayerBehavior, ButtonBehavior, MDFloatLayout):
     :class:`~kivymd.uix.floatlayout.MDFloatLayout`
     classes documentation.
     """
+
+    width = BoundedNumericProperty(dp(52), min=dp(52), max=dp(52))
+
+    height = BoundedNumericProperty(dp(32), min=dp(32), max=dp(32))
 
     md_bg_color_disabled = ColorProperty(None)
     """

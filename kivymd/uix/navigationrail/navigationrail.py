@@ -702,7 +702,7 @@ class MDNavigationRail(
     Available options are: `'top'`, `'bottom'`, `'center'`.
 
     :attr:`anchor` is an :class:`~kivy.properties.OptionProperty`
-    and defaults to `'top'`.
+    and defaults to `'center'`.
     """
 
     type = OptionProperty(

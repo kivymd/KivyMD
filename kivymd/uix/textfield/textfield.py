@@ -1535,7 +1535,7 @@ class MDTextField(
 
             # Start the appropriate texture animations when programmatically
             # pasting text into a text field.
-            if len(self.text) != 0 and not self.focus:
+            if len(self.text) and not self.focus:
                 if self._hint_text_label:
                     self._hint_text_label.font_size = theme_font_styles[
                         self._hint_text_label.font_style
@@ -1666,7 +1666,12 @@ class MDTextField(
                     self.set_hint_text_font_size()
                     self.set_pos_hint_text(
                         (self.height / 2)
-                        - (self._hint_text_label.texture_size[1] / 2),
+                        - (self._hint_text_label.texture_size[1] / 2)
+                        - (
+                            dp(8)
+                            if self.multiline and self.height != dp(56)
+                            else 0
+                        ),
                         0,
                     )
             else:
@@ -1676,31 +1681,33 @@ class MDTextField(
                             dp(14),
                             self._hint_text_label.texture_size[0] + dp(18),
                         )
-                    self.set_pos_hint_text(
-                        0 if self.mode != "outlined" else dp(-14),
-                        (
+                    Clock.schedule_once(
+                        lambda x: self.set_pos_hint_text(
+                            0 if self.mode != "outlined" else dp(-14),
                             (
-                                -(
+                                (
+                                    -(
+                                        (
+                                            self._leading_icon.texture_size[0]
+                                            if self._leading_icon
+                                            else 0
+                                        )
+                                        + dp(12)
+                                    )
+                                    if self._leading_icon
+                                    else 0
+                                )
+                                if self.mode == "outlined"
+                                else -(
                                     (
                                         self._leading_icon.texture_size[0]
                                         if self._leading_icon
                                         else 0
                                     )
-                                    + dp(12)
+                                    - dp(24)
                                 )
-                                if self._leading_icon
-                                else 0
-                            )
-                            if self.mode == "outlined"
-                            else -(
-                                (
-                                    self._leading_icon.texture_size[0]
-                                    if self._leading_icon
-                                    else 0
-                                )
-                                - dp(24)
-                            )
-                        ),
+                            ),
+                        )
                     )
 
             if self._hint_text_label:

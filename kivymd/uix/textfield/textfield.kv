@@ -365,7 +365,14 @@
                 ) \
                 if not self.multiline else \
                 ( \
-                self.top - self._hint_text_label.texture_size[1] + dp(8) \
+                ( \
+                (self.top - self._hint_text_label.texture_size[1] + dp(8)) \
+                if not self.multiline else \
+                ( \
+                self.top - self._hint_text_label.texture_size[1]
+                - (dp(6) if self.mode == "filled" else dp(-8)) \
+                ) \
+                ) \
                 if self.text else \
                 ( \
                 self.y + self.height \
@@ -397,7 +404,7 @@
         )
     multiline: False
     size_hint_y: None
-    height: dp(56) # if not self.multiline else (dp(10) + self.minimum_height)
+    height: dp(56)
 
 
 <BaseTextFieldIcon>

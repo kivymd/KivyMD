@@ -24,27 +24,36 @@ Components/Slider
 Usage
 -----
 
-.. code-block:: python
+.. tabs::
 
-    MDSlider(
-        MDSliderHandle(
-        ),
-        MDSliderValueLabel(
-        ),
-        step=10,
-        value=50,
-    )
+    .. tab:: Declarative Python style
 
-.. code-block:: kv
+        .. code-block:: python
 
-    MDSlider:
-        step: 10
-        value: 50
+            MDSlider(
+                MDSliderHandle(
+                    ...
+                ),
+                MDSliderValueLabel(
+                    ...
+                ),
+                step=10,
+                value=50,
+            )
 
-        MDSliderHandle:
+    .. tab:: Declarative KV style
 
-        MDSliderValueLabel:
+        .. code-block:: kv
 
+            MDSlider:
+                step: 10
+                value: 50
+
+                MDSliderHandle:
+                    ...
+
+                MDSliderValueLabel:
+                    ....
 
 Anatomy
 -------

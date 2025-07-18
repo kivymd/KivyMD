@@ -13,7 +13,7 @@ from kivy import platform
 from kivy.lang import Builder
 from kivy.properties import ColorProperty, NumericProperty
 
-from kivymd.uix.behaviors.focus_behavior import FocusBehavior
+from kivymd.uix.behaviors.focus_behavior import StateFocusBehavior
 
 Builder.load_string(
     """
@@ -35,7 +35,7 @@ Builder.load_string(
 #  `on_enter` and `on_leave` and `pressed`).
 
 
-class StateLayerBehavior(FocusBehavior):
+class StateLayerBehavior(StateFocusBehavior):
     state_layer_color = ColorProperty([0, 0, 0, 0])
     """
     The color of the layer state.

@@ -433,7 +433,7 @@ from kivymd.uix.behaviors import (
     RectangularRippleBehavior,
     ScaleBehavior,
 )
-from kivymd.uix.behaviors.focus_behavior import FocusBehavior
+from kivymd.uix.behaviors.focus_behavior import StateFocusBehavior
 from kivymd.uix.button import MDFabButton, MDIconButton
 from kivymd.uix.label import MDIcon, MDLabel
 
@@ -596,7 +596,7 @@ class MDNavigationRailItem(
     DeclarativeBehavior,
     ButtonBehavior,
     ThemableBehavior,
-    FocusBehavior,
+    StateFocusBehavior,
     BoxLayout,
 ):
     """
@@ -606,7 +606,7 @@ class MDNavigationRailItem(
     :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
     :class:`~kivymd.theming.ThemableBehavior` and
-    :class:`~kivymd.uix.behaviors.focus_behavior.FocusBehavior`
+    :class:`~kivymd.uix.behaviors.focus_behavior.StateFocusBehavior`
     :class:`~kivy.uix.boxlayout.BoxLayout`
     classes documentation.
     """

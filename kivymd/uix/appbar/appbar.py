@@ -440,7 +440,7 @@ A practical example
     from kivy.clock import Clock
     from kivy.lang import Builder
     from kivy.properties import StringProperty, BooleanProperty, ObjectProperty
-    from kivy.uix.behaviors import FocusBehavior
+    from kivy.uix.behaviors import StateFocusBehavior
     from kivy.uix.recycleboxlayout import RecycleBoxLayout
     from kivy.uix.recycleview.layout import LayoutSelectionBehavior
     from kivy.uix.recycleview.views import RecycleDataViewBehavior
@@ -557,7 +557,7 @@ A practical example
 
 
     class SelectableRecycleGridLayout(
-        FocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout
+        StateFocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout
     ):
         pass
 

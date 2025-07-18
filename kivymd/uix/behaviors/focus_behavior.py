@@ -71,14 +71,9 @@ from kivy.properties import BooleanProperty, ColorProperty
 from kivymd.uix.behaviors import HoverBehavior
 
 
-class FocusBehavior(HoverBehavior):
+class StateFocusBehavior(HoverBehavior):
     """
     Focus behavior class.
-
-    For more information, see in the
-    :class:`~kivymd.uix.behavior.HoverBehavior` and
-    :class:`~kivy.uix.button.ButtonBehavior`
-    classes documentation.
 
     :Events:
         :attr:`on_enter`
@@ -87,16 +82,11 @@ class FocusBehavior(HoverBehavior):
         :attr:`on_leave`
             Fired when the mouse exits the widget AND the widget is visible.
 
-    .. deprecated:: 2.0.0
-    """
+    For more information, see in the
+    :class:`~kivymd.uix.behavior.HoverBehavior` class documentation.
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        Logger.warning(
-            "KivyMD: "
-            "The `FocusBehavior` class is deprecated. It is recommended to "
-            "use `StateFocusBehavior` instead of `FocusBehavior`."
-        )
+    .. versionadded:: 2.0.0
+    """
 
     focus_behavior = BooleanProperty(True)
     """
@@ -123,12 +113,21 @@ class FocusBehavior(HoverBehavior):
     """
 
 
-class StateFocusBehavior(FocusBehavior):
+class FocusBehavior(StateFocusBehavior):
     """
     Focus behavior class.
 
     For more information, see in the
-    :class:`~kivymd.uix.behavior.FocusBehavior` class documentation.
+    :class:`~kivymd.uix.behavior.focus_behavior.StateFocusBehavior`
+    class documentation.
 
-    .. versionadded:: 2.0.0
+    .. deprecated:: 2.0.0
     """
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        Logger.warning(
+            "KivyMD: "
+            "The `FocusBehavior` class is deprecated. It is recommended to "
+            "use `StateFocusBehavior` instead of `FocusBehavior`."
+        )

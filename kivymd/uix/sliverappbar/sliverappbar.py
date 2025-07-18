@@ -17,22 +17,46 @@ Components/SliverAppbar
 Usage
 -----
 
-.. code-block:: kv
+.. tabs::
 
-    MDScreen:
+    .. tab:: Declarative KV style
 
-        MDSliverAppbar:
+        .. code-block:: kv
 
-            MDTopAppBar:
-                [...]
+            MDScreen:
 
-            MDSliverAppbarHeader:
+                MDSliverAppbar:
 
-                # Custom content.
-                [...]
+                    MDTopAppBar:
+                        [...]
 
-            # Custom list.
-            MDSliverAppbarContent:
+                    MDSliverAppbarHeader:
+
+                        # Custom content.
+                        [...]
+
+                    # Custom list.
+                    MDSliverAppbarContent:
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDScreen(
+                MDSliverAppbar(
+                    MDTopAppBar(
+                        [...]
+                    ),
+                    MDSliverAppbarHeader(
+                        # Custom content.
+                        [...]
+                    ),
+                    MDSliverAppbarContent(
+                        # Custom list.
+                        [...]
+                    ),
+                )
+            )
 
 Anatomy
 -------
@@ -196,6 +220,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.appbar import MDTopAppBar
+from kivymd.uix.behaviors import DeclarativeBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 
 with open(
@@ -226,7 +251,7 @@ class MDSliverAppbarHeader(BoxLayout):
     """
 
 
-class MDSliverAppbar(ThemableBehavior, BoxLayout):
+class MDSliverAppbar(DeclarativeBehavior, ThemableBehavior, BoxLayout):
     """
     Sliver appbar class.
 
@@ -336,8 +361,8 @@ class MDSliverAppbar(ThemableBehavior, BoxLayout):
 
     __events__ = ("on_scroll_content",)
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def on_hide_appbar(self, instance, value) -> None:
         """Fired when the `hide_appbar` value changes."""

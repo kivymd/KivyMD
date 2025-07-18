@@ -242,7 +242,7 @@ class MDSliverAppbarContent(MDBoxLayout):
     """
 
 
-class MDSliverAppbarHeader(BoxLayout):
+class MDSliverAppbarHeader(DeclarativeBehavior, BoxLayout):
     """
     Sliver app bar header class.
 

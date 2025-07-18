@@ -67,91 +67,189 @@ Anatomy
 Example
 -------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang.builder import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
-    from kivymd.uix.list import MDListItem
+        .. code-block:: python
 
-    KV = '''
-    <GuitarItem>
-        theme_bg_color: "Custom"
-        md_bg_color: "2d4a50"
+            from kivy.lang.builder import Builder
 
-        MDListItemLeadingAvatar
-            source: "avatar.png"
+            from kivymd.app import MDApp
+            from kivymd.uix.list import MDListItem
 
-        MDListItemHeadlineText:
-            text: "Ibanez"
-
-        MDListItemSupportingText:
-            text: "GRG121DX-BKF"
-
-        MDListItemTertiaryText:
-            text: "$445,99"
-
-        MDListItemTrailingIcon:
-            icon: "guitar-electric"
-
-
-    MDScreen:
-
-        MDSliverAppbar:
-            background_color: "2d4a50"
-            hide_appbar: True
-
-            MDTopAppBar:
-                type: "medium"
-
-                MDTopAppBarLeadingButtonContainer:
-
-                    MDActionTopAppBarButton:
-                        icon: "arrow-left"
-
-                MDTopAppBarTitle:
-                    text: "Sliver toolbar"
-
-                MDTopAppBarTrailingButtonContainer:
-
-                    MDActionTopAppBarButton:
-                        icon: "attachment"
-
-                    MDActionTopAppBarButton:
-                        icon: "calendar"
-
-                    MDActionTopAppBarButton:
-                        icon: "dots-vertical"
-
-            MDSliverAppbarHeader:
-
-                FitImage:
-                    source: "bg.jpg"
-
-            MDSliverAppbarContent:
-                id: content
-                orientation: "vertical"
-                padding: "12dp"
+            KV = '''
+            <GuitarItem>
                 theme_bg_color: "Custom"
                 md_bg_color: "2d4a50"
-    '''
+
+                MDListItemLeadingAvatar
+                    source: "avatar.png"
+
+                MDListItemHeadlineText:
+                    text: "Ibanez"
+
+                MDListItemSupportingText:
+                    text: "GRG121DX-BKF"
+
+                MDListItemTertiaryText:
+                    text: "$445,99"
+
+                MDListItemTrailingIcon:
+                    icon: "guitar-electric"
 
 
-    class GuitarItem(MDListItem):
-        ...
+            MDScreen:
+
+                MDSliverAppbar:
+                    background_color: "2d4a50"
+                    hide_appbar: True
+
+                    MDTopAppBar:
+                        type: "medium"
+
+                        MDTopAppBarLeadingButtonContainer:
+
+                            MDActionTopAppBarButton:
+                                icon: "arrow-left"
+
+                        MDTopAppBarTitle:
+                            text: "Sliver toolbar"
+
+                        MDTopAppBarTrailingButtonContainer:
+
+                            MDActionTopAppBarButton:
+                                icon: "attachment"
+
+                            MDActionTopAppBarButton:
+                                icon: "calendar"
+
+                            MDActionTopAppBarButton:
+                                icon: "dots-vertical"
+
+                    MDSliverAppbarHeader:
+
+                        FitImage:
+                            source: "bg.jpg"
+
+                    MDSliverAppbarContent:
+                        id: content
+                        orientation: "vertical"
+                        padding: "12dp"
+                        theme_bg_color: "Custom"
+                        md_bg_color: "2d4a50"
+            '''
 
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
-
-        def on_start(self):
-            for x in range(10):
-                self.root.ids.content.add_widget(GuitarItem())
+            class GuitarItem(MDListItem):
+                ...
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+                def on_start(self):
+                    for x in range(10):
+                        self.root.ids.content.add_widget(GuitarItem())
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.appbar import (
+                MDTopAppBar,
+                MDTopAppBarLeadingButtonContainer,
+                MDActionTopAppBarButton,
+                MDTopAppBarTitle,
+                MDTopAppBarTrailingButtonContainer,
+            )
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.list import (
+                MDListItem,
+                MDListItemLeadingAvatar,
+                MDListItemHeadlineText,
+                MDListItemSupportingText,
+                MDListItemTertiaryText,
+                MDListItemTrailingIcon,
+            )
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.sliverappbar import (
+                MDSliverAppbar,
+                MDSliverAppbarHeader,
+                MDSliverAppbarContent,
+            )
+
+
+            class GuitarItem(MDListItem):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.theme_bg_color = "Custom"
+                    self.md_bg_color = "2d4a50"
+                    self.widgets = [
+                        MDListItemLeadingAvatar(source="avatar.png"),
+                        MDListItemHeadlineText(text="Ibanez"),
+                        MDListItemSupportingText(text="GRG121DX-BKF"),
+                        MDListItemTertiaryText(text="$445,99"),
+                        MDListItemTrailingIcon(icon="guitar-electric"),
+                    ]
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return MDScreen(
+                        MDSliverAppbar(
+                            MDTopAppBar(
+                                MDTopAppBarLeadingButtonContainer(
+                                    MDActionTopAppBarButton(
+                                        icon="arrow-left",
+                                    ),
+                                ),
+                                MDTopAppBarTitle(
+                                    text="Sliver toolbar",
+                                ),
+                                MDTopAppBarTrailingButtonContainer(
+                                    MDActionTopAppBarButton(
+                                        icon="attachment",
+                                    ),
+                                    MDActionTopAppBarButton(
+                                        icon="calendar",
+                                    ),
+                                    MDActionTopAppBarButton(
+                                        icon="dots-vertical",
+                                    ),
+                                ),
+                                type="medium",
+                            ),
+                            MDSliverAppbarHeader(
+                                FitImage(
+                                    source="bg.jpg",
+                                ),
+                            ),
+                            MDSliverAppbarContent(
+                                id="content",
+                                orientation="vertical",
+                                padding="12dp",
+                                theme_bg_color="Custom",
+                                md_bg_color="2d4a50",
+                            ),
+                            background_color="2d4a50",
+                            hide_appbar=True,
+                        )
+                    )
+
+                def on_start(self):
+                    for x in range(10):
+                        self.root.get_ids().content.add_widget(GuitarItem())
+
+
+            Example().run()
 
 API break
 =========

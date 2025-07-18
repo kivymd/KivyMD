@@ -118,6 +118,7 @@ from kivy.utils import platform
 
 from kivymd import uix_path
 from kivymd.uix.boxlayout import MDBoxLayout
+from kivymd.uix.behaviors import DeclarativeBehavior
 
 with open(
     os.path.join(uix_path, "swiper", "swiper.kv"), encoding="utf-8"
@@ -198,7 +199,7 @@ class MDSwiperItem(MDBoxLayout):
         anim.start(self)
 
 
-class MDSwiper(ScrollView):
+class MDSwiper(DeclarativeBehavior, ScrollView):
     """
     Swiper class.
 

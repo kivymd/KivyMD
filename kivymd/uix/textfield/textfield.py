@@ -26,26 +26,54 @@ Components/Text fields
 Usage
 -----
 
-.. code-block:: kv
+.. tabs::
 
-    MDTextField:
-        mode: "filled"
+    .. tab:: Declarative KV style
 
-        MDTextFieldLeadingIcon:
-            icon: "magnify"
+        .. code-block:: kv
 
-        MDTextFieldHintText:
-            text: "Hint text"
+            MDTextField:
+                mode: "filled"
 
-        MDTextFieldHelperText:
-            text: "Helper text"
-            mode: "persistent"
+                MDTextFieldLeadingIcon:
+                    icon: "magnify"
 
-        MDTextFieldTrailingIcon:
-            icon: "information"
+                MDTextFieldHintText:
+                    text: "Hint text"
 
-        MDTextFieldMaxLengthText:
-            max_text_length: 10
+                MDTextFieldHelperText:
+                    text: "Helper text"
+                    mode: "persistent"
+
+                MDTextFieldTrailingIcon:
+                    icon: "information"
+
+                MDTextFieldMaxLengthText:
+                    max_text_length: 10
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDTextField(
+                MDTextFieldLeadingIcon(
+                    icon="magnify",
+                ),
+                MDTextFieldHintText(
+                    text="Hint text",
+                ),
+                MDTextFieldHelperText(
+                    text="Helper text",
+                    mode="persistent",
+                ),
+                MDTextFieldTrailingIcon(
+                    icon="information",
+                ),
+                MDTextFieldMaxLengthText(
+                    max_text_length=10,
+                ),
+                mode="filled",
+            )
 
 Anatomy
 -------
@@ -59,10 +87,22 @@ Available types of text fields
 Filled mode
 -----------
 
-.. code-block:: kv
+.. tabs::
 
-    MDTextField:
-        mode: "filled"
+    .. tab:: Declarative KV style
+
+        .. code-block:: kv
+
+            MDTextField:
+                mode: "filled"
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDTextField(
+                mode="filled",
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-filled-mode.png
     :align: center
@@ -70,10 +110,22 @@ Filled mode
 Outlined mode
 -------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDTextField:
-        mode: "outlined"
+    .. tab:: Declarative KV style
+
+        .. code-block:: kv
+
+            MDTextField:
+                mode: "outlined"
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDTextField(
+                mode="outlined",
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-outlined-mode.png
     :align: center
@@ -200,26 +252,53 @@ API break
 
 .. note:: The text field with the `round` type was removed in version `2.0.0`.
 
-.. code-block:: kv
+.. tabs::
 
-    MDTextField:
-        mode: "outlined"
+    .. tab:: Declarative KV style
 
-        MDTextFieldLeadingIcon:
-            icon: "phone"
+        .. code-block:: kv
 
-        MDTextFieldTrailingIcon:
-            icon: "information"
+            MDTextField:
+                mode: "outlined"
 
-        MDTextFieldHintText:
-            text: "Hint text"
+                MDTextFieldLeadingIcon:
+                    icon: "phone"
 
-        MDTextFieldHelperText:
-            text: "Helper text"
-            mode: "persistent"
+                MDTextFieldTrailingIcon:
+                    icon: "information"
 
-        MDTextFieldMaxLengthText:
-            max_text_length: 10
+                MDTextFieldHintText:
+                    text: "Hint text"
+
+                MDTextFieldHelperText:
+                    text: "Helper text"
+                    mode: "persistent"
+
+                MDTextFieldMaxLengthText:
+                    max_text_length: 10
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDTextField(
+                MDTextFieldLeadingIcon(
+                    icon="magnify",
+                ),
+                MDTextFieldHintText(
+                    text="Hint text",
+                ),
+                MDTextFieldHelperText(
+                    text="Helper text",
+                    mode="persistent",
+                ),
+                MDTextFieldTrailingIcon(
+                    icon="information",
+                ),
+                MDTextFieldMaxLengthText(
+                    max_text_length=10,
+                ),
+            )
 """
 
 from __future__ import annotations
@@ -517,14 +596,30 @@ class BaseTextFieldLabel(MDLabel):
         The property was moved from class:`~MDTextField` class and renamed
         from `helper_text_color_normal` to `text_color_normal`.
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            mode: "filled"
+        .. tab:: Declarative KV style
 
-            MDTextFieldHintText:
-                text: "Hint text color normal"
-                text_color_normal: "brown"
+            .. code-block:: kv
+
+                MDTextField:
+                    mode: "filled"
+        
+                    MDTextFieldHintText:
+                        text: "Hint text color normal"
+                        text_color_normal: "brown"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldHintText(
+                        text="Hint text color normal",
+                        text_color_normal="brown",
+                    ),
+                    mode="filled",
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-text-color-normal.png
         :align: center
@@ -544,13 +639,28 @@ class BaseTextFieldLabel(MDLabel):
         The property was moved from class:`~MDTextField` class and renamed
         from `helper_text_color_focus` to `text_color_focus`.
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
+        .. tab:: Declarative KV style
 
-            MDTextFieldHelperText:
-                text: "Helper text color focus"
-                text_color_focus: "brown"
+            .. code-block:: kv
+
+                MDTextField:
+
+                    MDTextFieldHelperText:
+                        text: "Helper text color focus"
+                        text_color_focus: "brown"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldHelperText(
+                        text="Helper text color focus",
+                        text_color_normal="brown",
+                    ),
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-text-color-focus.png
         :align: center
@@ -584,14 +694,30 @@ class MDTextFieldHelperText(BaseTextFieldLabel):
     On focus
     --------
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            mode: "filled"
+        .. tab:: Declarative KV style
 
-            MDTextFieldHelperText:
-                text: "Helper text"
-                mode: "on_focus"
+            .. code-block:: kv
+
+                MDTextField:
+                    mode: "filled"
+
+                    MDTextFieldHelperText:
+                        text: "Helper text"
+                        mode: "on_focus"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldHelperText(
+                        text="Helper text",
+                        mode="on_focus",
+                    ),
+                    mode="filled",
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-helper-text-mode-on-focus.gif
         :align: center
@@ -599,17 +725,36 @@ class MDTextFieldHelperText(BaseTextFieldLabel):
     On error
     --------
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            mode: "filled"
+        .. tab:: Declarative KV style
 
-            MDTextFieldHelperText:
-                text: "Helper text"
-                mode: "on_error"
+            .. code-block:: kv
 
-            MDTextFieldMaxLengthText:
-                max_text_length: 5
+                MDTextField:
+                    mode: "filled"
+
+                    MDTextFieldHelperText:
+                        text: "Helper text"
+                        mode: "on_error"
+
+                    MDTextFieldMaxLengthText:
+                        max_text_length: 5
+
+        .. tab:: Declarative Python style
+    
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldHelperText(
+                        text="Helper text",
+                        mode="on_error",
+                    ),
+                    MDTextFieldMaxLengthText(
+                        max_text_length=5,
+                    ),
+                    mode="filled",
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-helper-text-mode-on-error.gif
         :align: center
@@ -617,14 +762,30 @@ class MDTextFieldHelperText(BaseTextFieldLabel):
     Persistent
     ----------
 
-    .. code-block:: kv
+    .. tabs::
+    
+        .. tab:: Declarative KV style
 
-        MDTextField:
-            mode: "filled"
+            .. code-block:: kv
 
-            MDTextFieldHelperText:
-                text: "Helper text"
-                mode: "persistent"
+                MDTextField:
+                    mode: "filled"
+
+                    MDTextFieldHelperText:
+                        text: "Helper text"
+                        mode: "persistent"
+
+        .. tab:: Declarative Python style
+    
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldHelperText(
+                        text="Helper text",
+                        mode="persistent",
+                    ),
+                    mode="filled",
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-helper-text-mode-persistent.gif
         :align: center
@@ -651,13 +812,28 @@ class MDTextFieldMaxLengthText(BaseTextFieldLabel):
     .. versionchanged:: 2.0.0
         The property was moved from class:`~MDTextField`.
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            mode: "filled"
+        .. tab:: Declarative KV style
 
-            MDTextFieldMaxLengthText:
-                max_text_length: 10
+            .. code-block:: kv
+
+                MDTextField:
+                    mode: "filled"
+
+                    MDTextFieldMaxLengthText:
+                        max_text_length: 10
+
+        .. tab:: Declarative Python style
+    
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldMaxLengthText(
+                        max_text_length=10,
+                    ),
+                    mode="filled",
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-max-text-length.png
         :align: center
@@ -676,13 +852,28 @@ class MDTextFieldHintText(BaseTextFieldLabel):
 
     .. versionadded:: 2.0.0
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            mode: "filled"
+        .. tab:: Declarative KV style
 
-            MDTextFieldHintText:
-                text: "Hint text"
+            .. code-block:: kv
+
+                MDTextField:
+                    mode: "filled"
+
+                    MDTextFieldHintText:
+                        text: "Hint text"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldHintText(
+                        text="Hint text",
+                    ),
+                    mode="filled",
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-hint-text.gif
         :align: center
@@ -712,18 +903,38 @@ class BaseTextFieldIcon(MDIcon):
         from `icon_right_color_normal/icon_left_color_normal`
         to `icon_color_normal`.
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            mode: "filled"
+        .. tab:: Declarative KV style
 
-            MDTextFieldLeadingIcon:
-                icon: "phone"
-                theme_icon_color: "Custom"
-                icon_color_normal: "lightgreen"
+            .. code-block:: kv
 
-            MDTextFieldHintText:
-                text: "Leading icon color normal"
+                MDTextField:
+                    mode: "filled"
+
+                    MDTextFieldLeadingIcon:
+                        icon: "phone"
+                        theme_icon_color: "Custom"
+                        icon_color_normal: "lightgreen"
+
+                    MDTextFieldHintText:
+                        text: "Leading icon color normal"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldLeadingIcon(
+                        icon="phone",
+                        theme_icon_color="Custom",
+                        icon_color_normal="lightgreen",
+                    ),
+                    MDTextFieldHintText(
+                        text="Leading icon color normal",
+                    ),
+                    mode="filled",
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-leading-icon-color-normal.png
         :align: center
@@ -744,18 +955,38 @@ class BaseTextFieldIcon(MDIcon):
         from `icon_right_color_focus/icon_left_color_focus `
         to `icon_color_focus`.
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            mode: "filled"
+        .. tab:: Declarative KV style
 
-            MDTextFieldLeadingIcon:
-                icon: "phone"
-                theme_icon_color: "Custom"
-                icon_color_focus: "lightgreen"
+            .. code-block:: kv
 
-            MDTextFieldHintText:
-                text: "Leading icon color focus"
+                MDTextField:
+                    mode: "filled"
+
+                    MDTextFieldLeadingIcon:
+                        icon: "phone"
+                        theme_icon_color: "Custom"
+                        icon_color_focus: "lightgreen"
+
+                    MDTextFieldHintText:
+                        text: "Leading icon color focus"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldLeadingIcon(
+                        icon="phone",
+                        theme_icon_color="Custom",
+                        icon_color_focus="lightgreen",
+                    ),
+                    MDTextFieldHintText(
+                        text="Leading icon color focus",
+                    ),
+                    mode="filled",
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-leading-icon-color-focus.png
         :align: center
@@ -807,16 +1038,34 @@ class MDTextFieldLeadingIcon(BaseTextFieldIcon):
 
     .. versionadded:: 2.0.0
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            mode: "filled"
+        .. tab:: Declarative KV style
 
-            MDTextFieldLeadingIcon:
-                icon: "phone"
+            .. code-block:: kv
 
-            MDTextFieldHintText:
-                text: "Field with leading icon"
+                MDTextField:
+                    mode: "filled"
+
+                    MDTextFieldLeadingIcon:
+                        icon: "phone"
+
+                    MDTextFieldHintText:
+                        text: "Field with leading icon"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldLeadingIcon(
+                        icon="phone",
+                    ),
+                    MDTextFieldHintText(
+                        text="Field with leading icon",
+                    ),
+                    mode="filled",
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-leading-icon.png
         :align: center
@@ -832,16 +1081,34 @@ class MDTextFieldTrailingIcon(BaseTextFieldIcon):
 
     .. versionadded:: 2.0.0
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            mode: "filled"
+        .. tab:: Declarative KV style
 
-            MDTextFieldTrailingIcon:
-                icon: "phone"
+            .. code-block:: kv
 
-            MDTextFieldHintText:
-                text: "Field with trailing icon"
+                MDTextField:
+                    mode: "filled"
+
+                    MDTextFieldTrailingIcon:
+                        icon: "phone"
+
+                    MDTextFieldHintText:
+                        text: "Field with trailing icon"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldTrailingIcon(
+                        icon="phone",
+                    ),
+                    MDTextFieldHintText(
+                        text="Field with trailing icon",
+                    ),
+                    mode="filled",
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-trailing-icon.png
         :align: center
@@ -931,12 +1198,26 @@ class MDTextField(
 
     .. versionadded:: 1.0.0
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            theme_text_color: "Custom"
-            text_color_normal: "green"
-            text: "Text color normal"
+        .. tab:: Declarative KV style
+
+            .. code-block:: kv
+
+                MDTextField:
+                    theme_text_color: "Custom"
+                    text_color_normal: "green"
+                    text: "Text color normal"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    theme_text_color="Custom",
+                    text_color_normal="green",
+                    text="Text color normal",
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-text-color-normal.png
         :align: center
@@ -951,12 +1232,26 @@ class MDTextField(
 
     .. versionadded:: 1.0.0
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            theme_text_color: "Custom"
-            text_color_focus: "green"
-            text: "Text color focus"
+        .. tab:: Declarative KV style
+
+            .. code-block:: kv
+
+                MDTextField:
+                    theme_text_color: "Custom"
+                    text_color_focus: "green"
+                    text: "Text color focus"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    theme_text_color="Custom",
+                    text_color_focus="green",
+                    text="Text color focus",
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-field-text-color-focus.png
         :align: center
@@ -985,16 +1280,34 @@ class MDTextField(
     """
     Line color normal (active indicator) in (r, g, b, a) or string format.
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            mode: "filled"
-            theme_line_color: "Custom"
-            line_color_normal: "green"
+        .. tab:: Declarative KV style
 
-            MDTextFieldHelperText:
-                text: "Line color normal"
-                mode: "persistent"
+            .. code-block:: kv
+
+                MDTextField:
+                    mode: "filled"
+                    theme_line_color: "Custom"
+                    line_color_normal: "green"
+
+                    MDTextFieldHelperText:
+                        text: "Line color normal"
+                        mode: "persistent"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldHelperText(
+                        text="Line color normal",
+                        mode="persistent",
+                    ),
+                    mode="filled",
+                    theme_line_color="Custom",
+                    line_color_normal="green",
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-line-color-normal.png
         :align: center
@@ -1007,16 +1320,34 @@ class MDTextField(
     """
     Line color focus (active indicator) in (r, g, b, a) or string format.
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            mode: "filled"
-            theme_line_color: "Custom"
-            line_color_focus: "green"
+        .. tab:: Declarative KV style
 
-            MDTextFieldHelperText:
-                text: "Line color focus"
-                mode: "persistent"
+            .. code-block:: kv
+
+                MDTextField:
+                    mode: "filled"
+                    theme_line_color: "Custom"
+                    line_color_focus: "green"
+
+                    MDTextFieldHelperText:
+                        text: "Line color focus"
+                        mode: "persistent"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldHelperText(
+                        text="Line color focus",
+                        mode="persistent",
+                    ),
+                    mode="filled",
+                    theme_line_color="Custom",
+                    line_color_focus="green",
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-line-color-focus.png
         :align: center
@@ -1030,16 +1361,34 @@ class MDTextField(
     Fill background color in (r, g, b, a) or string format in 'fill' mode when]
     text field is out of focus.
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            mode: "filled"
-            theme_bg_color: "Custom"
-            fill_color_normal: 0, 1, 0, .2
+        .. tab:: Declarative KV style
 
-            MDTextFieldHelperText:
-                text: "Fill color normal"
-                mode: "persistent"
+            .. code-block:: kv
+
+                MDTextField:
+                    mode: "filled"
+                    theme_bg_color: "Custom"
+                    fill_color_normal: 0, 1, 0, .2
+
+                    MDTextFieldHelperText:
+                        text: "Fill color normal"
+                        mode: "persistent"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldHelperText(
+                        text="Fill color normal",
+                        mode="persistent",
+                    ),
+                    mode="filled",
+                    theme_bg_color="Custom",
+                    fill_color_normal=[0, 1, 0, .2],
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-fill-color-normal.png
         :align: center
@@ -1053,16 +1402,34 @@ class MDTextField(
     Fill background color in (r, g, b, a) or string format in 'fill' mode when
     the text field has focus.
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            mode: "filled"
-            theme_bg_color: "Custom"
-            fill_color_focus: 0, 1, 0, .2
+        .. tab:: Declarative KV style
 
-            MDTextFieldHelperText:
-                text: "Fill color focus"
-                mode: "persistent"
+            .. code-block:: kv
+
+                MDTextField:
+                    mode: "filled"
+                    theme_bg_color: "Custom"
+                    fill_color_focus: 0, 1, 0, .2
+
+                    MDTextFieldHelperText:
+                        text: "Fill color focus"
+                        mode: "persistent"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldHelperText(
+                        text="Fill color focus",
+                        mode="persistent",
+                    ),
+                    mode="filled",
+                    theme_bg_color="Custom",
+                    fill_color_focus=[0, 1, 0, .2],
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-fill-color-focus.png
         :align: center
@@ -1077,16 +1444,34 @@ class MDTextField(
     """
     Maximum height of the text box when `multiline = True`.
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            mode: "filled"
-            max_height: "200dp"
-            multiline: True
+        .. tab:: Declarative KV style
 
-            MDTextFieldHelperText:
-                text: "multiline=True"
-                mode: "persistent"
+            .. code-block:: kv
+
+                MDTextField:
+                    mode: "filled"
+                    max_height: "200dp"
+                    multiline: True
+
+                    MDTextFieldHelperText:
+                        text: "multiline=True"
+                        mode: "persistent"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldHelperText(
+                        text="multiline=True",
+                        mode="persistent",
+                    ),
+                    mode="filled",
+                    max_height="200dp",
+                    multiline=True,
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-multiline.gif
         :align: center
@@ -1115,111 +1500,229 @@ class MDTextField(
 
     .. versionadded:: 1.1.0
 
-    .. code-block:: kv
+    .. tabs::
 
-        MDTextField:
-            mode: "filled"
-            validator: "email"
+        .. tab:: Declarative KV style
 
-            MDTextFieldHintText:
-                text: "Email"
+            .. code-block:: kv
 
-            MDTextFieldHelperText:
-                text: "user@gmail.com"
-                mode: "persistent"
+                MDTextField:
+                    mode: "filled"
+                    validator: "email"
+
+                    MDTextFieldHintText:
+                        text: "Email"
+
+                    MDTextFieldHelperText:
+                        text: "user@gmail.com"
+                        mode: "persistent"
+
+        .. tab:: Declarative Python style
+
+            .. code-block:: python
+
+                MDTextField(
+                    MDTextFieldHintText(
+                        text="Email",
+                    ),
+                    MDTextFieldHelperText(
+                        text="user@gmail.com",
+                        mode="persistent",
+                    ),
+                    mode="filled",
+                    validator="email",
+                )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-email-validator.png
         :align: center
 
-    .. code-block:: python
+    .. tabs::
 
-        from kivy.lang import Builder
+        .. tab:: Declarative KV style
 
-        from kivymd.app import MDApp
+            .. code-block:: python
 
-        KV = '''
-        MDScreen:
-            md_bg_color: self.theme_cls.backgroundColor
+                from kivy.lang import Builder
 
-            MDBoxLayout:
-                orientation: "vertical"
-                spacing: "20dp"
-                adaptive_height: True
-                size_hint_x: .8
-                pos_hint: {"center_x": .5, "center_y": .5}
+                from kivymd.app import MDApp
 
-                MDTextField:
-                    validator: "date"
-                    date_format: "dd/mm/yyyy"
+                KV = '''
+                MDScreen:
+                    md_bg_color: self.theme_cls.backgroundColor
 
-                    MDTextFieldHintText:
-                        text: "Date dd/mm/yyyy without limits"
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        spacing: "28dp"
+                        adaptive_height: True
+                        size_hint_x: .8
+                        pos_hint: {"center_x": .5, "center_y": .5}
 
-                    MDTextFieldHelperText:
-                        text: "Enter a valid dd/mm/yyyy date"
+                        MDTextField:
+                            validator: "date"
+                            date_format: "dd/mm/yyyy"
 
-                MDTextField:
-                    validator: "date"
-                    date_format: "mm/dd/yyyy"
+                            MDTextFieldHintText:
+                                text: "Date dd/mm/yyyy without limits"
 
-                    MDTextFieldHintText:
-                        text: "Date mm/dd/yyyy without limits"
+                            MDTextFieldHelperText:
+                                text: "Enter a valid dd/mm/yyyy date"
 
-                    MDTextFieldHelperText:
-                        text: "Enter a valid mm/dd/yyyy date"
+                        MDTextField:
+                            validator: "date"
+                            date_format: "mm/dd/yyyy"
 
-                MDTextField:
-                    validator: "date"
-                    date_format: "yyyy/mm/dd"
+                            MDTextFieldHintText:
+                                text: "Date mm/dd/yyyy without limits"
 
-                    MDTextFieldHintText:
-                        text: "Date yyyy/mm/dd without limits"
+                            MDTextFieldHelperText:
+                                text: "Enter a valid mm/dd/yyyy date"
 
-                    MDTextFieldHelperText:
-                        text: "Enter a valid yyyy/mm/dd date"
+                        MDTextField:
+                            validator: "date"
+                            date_format: "yyyy/mm/dd"
 
-                MDTextField:
-                    validator: "date"
-                    date_format: "dd/mm/yyyy"
-                    date_interval: "01/01/1900", "01/01/2100"
+                            MDTextFieldHintText:
+                                text: "Date yyyy/mm/dd without limits"
 
-                    MDTextFieldHintText:
-                        text: "Date dd/mm/yyyy in [01/01/1900, 01/01/2100] interval"
+                            MDTextFieldHelperText:
+                                text: "Enter a valid yyyy/mm/dd date"
 
-                    MDTextFieldHelperText:
-                        text: "Enter a valid dd/mm/yyyy date"
+                        MDTextField:
+                            validator: "date"
+                            date_format: "dd/mm/yyyy"
+                            date_interval: "01/01/1900", "01/01/2100"
 
-                MDTextField:
-                    validator: "date"
-                    date_format: "dd/mm/yyyy"
-                    date_interval: "01/01/1900", None
+                            MDTextFieldHintText:
+                                text: "Date dd/mm/yyyy in [01/01/1900, 01/01/2100] interval"
 
-                    MDTextFieldHintText:
-                        text: "Date dd/mm/yyyy in [01/01/1900, None] interval"
+                            MDTextFieldHelperText:
+                                text: "Enter a valid dd/mm/yyyy date"
 
-                    MDTextFieldHelperText:
-                        text: "Enter a valid dd/mm/yyyy date"
+                        MDTextField:
+                            validator: "date"
+                            date_format: "dd/mm/yyyy"
+                            date_interval: "01/01/1900", None
 
-                MDTextField:
-                    validator: "date"
-                    date_format: "dd/mm/yyyy"
-                    date_interval: None, "01/01/2100"
+                            MDTextFieldHintText:
+                                text: "Date dd/mm/yyyy in [01/01/1900, None] interval"
 
-                    MDTextFieldHintText:
-                        text: "Date dd/mm/yyyy in [None, 01/01/2100] interval"
+                            MDTextFieldHelperText:
+                                text: "Enter a valid dd/mm/yyyy date"
 
-                    MDTextFieldHelperText:
-                        text: "Enter a valid dd/mm/yyyy date"
-        '''
+                        MDTextField:
+                            validator: "date"
+                            date_format: "dd/mm/yyyy"
+                            date_interval: None, "01/01/2100"
 
+                            MDTextFieldHintText:
+                                text: "Date dd/mm/yyyy in [None, 01/01/2100] interval"
 
-        class Example(MDApp):
-            def build(self):
-                self.theme_cls.primary_palette = "Olive"
-                return Builder.load_string(KV)
+                            MDTextFieldHelperText:
+                                text: "Enter a valid dd/mm/yyyy date"
+                '''
 
 
-        Example().run()
+                class Example(MDApp):
+                    def build(self):
+                        self.theme_cls.primary_palette = "Olive"
+                        return Builder.load_string(KV)
+
+
+                Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.textfield import (
+                MDTextField, MDTextFieldHintText, MDTextFieldHelperText
+            )
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            MDBoxLayout(
+                                MDTextField(
+                                    MDTextFieldHintText(
+                                        text="Date dd/mm/yyyy without limits",
+                                    ),
+                                    MDTextFieldHelperText(
+                                        text="Enter a valid dd/mm/yyyy date",
+                                    ),
+                                    validator="date",
+                                    date_format="dd/mm/yyyy",
+                                ),
+                                MDTextField(
+                                    MDTextFieldHintText(
+                                        text="Date mm/dd/yyyy without limits",
+                                    ),
+                                    MDTextFieldHelperText(
+                                        text="Enter a valid mm/dd/yyyy date",
+                                    ),
+                                    validator="date",
+                                    date_format="mm/dd/yyyy",
+                                ),
+                                MDTextField(
+                                    MDTextFieldHintText(
+                                        text="Date yyyy/mm/dd without limits",
+                                    ),
+                                    MDTextFieldHelperText(
+                                        text="Enter a valid yyyy/mm/dd date",
+                                    ),
+                                    validator="date",
+                                    date_format="yyyy/mm/dd",
+                                ),
+                                MDTextField(
+                                    MDTextFieldHintText(
+                                        text="Date dd/mm/yyyy in [01/01/1900, 01/01/2100] interval",
+                                    ),
+                                    MDTextFieldHelperText(
+                                        text="Enter a valid dd/mm/yyyy date",
+                                    ),
+                                    validator="date",
+                                    date_format="dd/mm/yyyy",
+                                    date_interval=["01/01/1900", "01/01/2100"],
+                                ),
+                                MDTextField(
+                                    MDTextFieldHintText(
+                                        text="Date dd/mm/yyyy in [01/01/1900, None] interval",
+                                    ),
+                                    MDTextFieldHelperText(
+                                        text="Enter a valid dd/mm/yyyy date",
+                                    ),
+                                    validator="date",
+                                    date_format="dd/mm/yyyy",
+                                    date_interval=["01/01/1900", None],
+                                ),
+                                MDTextField(
+                                    MDTextFieldHintText(
+                                        text="Date dd/mm/yyyy in [None, 01/01/2100] interval",
+                                    ),
+                                    MDTextFieldHelperText(
+                                        text="Enter a valid dd/mm/yyyy date",
+                                    ),
+                                    validator="date",
+                                    date_format="dd/mm/yyyy",
+                                    date_interval=[None, "01/01/2100"],
+                                ),
+                                orientation="vertical",
+                                spacing="28dp",
+                                adaptive_height=True,
+                                size_hint_x=.8,
+                                pos_hint={"center_x": .5, "center_y": .5},
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+
+            Example().run()
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-validator-date.png
         :align: center

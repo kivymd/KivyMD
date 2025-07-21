@@ -273,8 +273,8 @@ Modal
 Anchoring screen edge for drawer
 ================================
 
-    Left
-    ----
+Left
+----
 
     .. code-block:: kv
 
@@ -284,8 +284,8 @@ Anchoring screen edge for drawer
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-ancjor-left.png
     :align: center
 
-    Right
-    -----
+Right
+-----
 
     .. code-block:: kv
 

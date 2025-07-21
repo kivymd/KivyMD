@@ -1630,99 +1630,99 @@ class MDTextField(
 
                 Example().run()
 
-    .. tab:: Declarative Python style
+        .. tab:: Declarative Python style
 
-        .. code-block:: python
+            .. code-block:: python
 
-            from kivymd.app import MDApp
-            from kivymd.uix.boxlayout import MDBoxLayout
-            from kivymd.uix.screen import MDScreen
-            from kivymd.uix.textfield import (
-                MDTextField, MDTextFieldHintText, MDTextFieldHelperText
-            )
+                from kivymd.app import MDApp
+                from kivymd.uix.boxlayout import MDBoxLayout
+                from kivymd.uix.screen import MDScreen
+                from kivymd.uix.textfield import (
+                    MDTextField, MDTextFieldHintText, MDTextFieldHelperText
+                )
 
 
-            class Example(MDApp):
-                def build(self):
-                    self.theme_cls.primary_palette = "Olive"
-                    return (
-                        MDScreen(
-                            MDBoxLayout(
-                                MDTextField(
-                                    MDTextFieldHintText(
-                                        text="Date dd/mm/yyyy without limits",
+                class Example(MDApp):
+                    def build(self):
+                        self.theme_cls.primary_palette = "Olive"
+                        return (
+                            MDScreen(
+                                MDBoxLayout(
+                                    MDTextField(
+                                        MDTextFieldHintText(
+                                            text="Date dd/mm/yyyy without limits",
+                                        ),
+                                        MDTextFieldHelperText(
+                                            text="Enter a valid dd/mm/yyyy date",
+                                        ),
+                                        validator="date",
+                                        date_format="dd/mm/yyyy",
                                     ),
-                                    MDTextFieldHelperText(
-                                        text="Enter a valid dd/mm/yyyy date",
+                                    MDTextField(
+                                        MDTextFieldHintText(
+                                            text="Date mm/dd/yyyy without limits",
+                                        ),
+                                        MDTextFieldHelperText(
+                                            text="Enter a valid mm/dd/yyyy date",
+                                        ),
+                                        validator="date",
+                                        date_format="mm/dd/yyyy",
                                     ),
-                                    validator="date",
-                                    date_format="dd/mm/yyyy",
+                                    MDTextField(
+                                        MDTextFieldHintText(
+                                            text="Date yyyy/mm/dd without limits",
+                                        ),
+                                        MDTextFieldHelperText(
+                                            text="Enter a valid yyyy/mm/dd date",
+                                        ),
+                                        validator="date",
+                                        date_format="yyyy/mm/dd",
+                                    ),
+                                    MDTextField(
+                                        MDTextFieldHintText(
+                                            text="Date dd/mm/yyyy in [01/01/1900, 01/01/2100] interval",
+                                        ),
+                                        MDTextFieldHelperText(
+                                            text="Enter a valid dd/mm/yyyy date",
+                                        ),
+                                        validator="date",
+                                        date_format="dd/mm/yyyy",
+                                        date_interval=["01/01/1900", "01/01/2100"],
+                                    ),
+                                    MDTextField(
+                                        MDTextFieldHintText(
+                                            text="Date dd/mm/yyyy in [01/01/1900, None] interval",
+                                        ),
+                                        MDTextFieldHelperText(
+                                            text="Enter a valid dd/mm/yyyy date",
+                                        ),
+                                        validator="date",
+                                        date_format="dd/mm/yyyy",
+                                        date_interval=["01/01/1900", None],
+                                    ),
+                                    MDTextField(
+                                        MDTextFieldHintText(
+                                            text="Date dd/mm/yyyy in [None, 01/01/2100] interval",
+                                        ),
+                                        MDTextFieldHelperText(
+                                            text="Enter a valid dd/mm/yyyy date",
+                                        ),
+                                        validator="date",
+                                        date_format="dd/mm/yyyy",
+                                        date_interval=[None, "01/01/2100"],
+                                    ),
+                                    orientation="vertical",
+                                    spacing="28dp",
+                                    adaptive_height=True,
+                                    size_hint_x=.8,
+                                    pos_hint={"center_x": .5, "center_y": .5},
                                 ),
-                                MDTextField(
-                                    MDTextFieldHintText(
-                                        text="Date mm/dd/yyyy without limits",
-                                    ),
-                                    MDTextFieldHelperText(
-                                        text="Enter a valid mm/dd/yyyy date",
-                                    ),
-                                    validator="date",
-                                    date_format="mm/dd/yyyy",
-                                ),
-                                MDTextField(
-                                    MDTextFieldHintText(
-                                        text="Date yyyy/mm/dd without limits",
-                                    ),
-                                    MDTextFieldHelperText(
-                                        text="Enter a valid yyyy/mm/dd date",
-                                    ),
-                                    validator="date",
-                                    date_format="yyyy/mm/dd",
-                                ),
-                                MDTextField(
-                                    MDTextFieldHintText(
-                                        text="Date dd/mm/yyyy in [01/01/1900, 01/01/2100] interval",
-                                    ),
-                                    MDTextFieldHelperText(
-                                        text="Enter a valid dd/mm/yyyy date",
-                                    ),
-                                    validator="date",
-                                    date_format="dd/mm/yyyy",
-                                    date_interval=["01/01/1900", "01/01/2100"],
-                                ),
-                                MDTextField(
-                                    MDTextFieldHintText(
-                                        text="Date dd/mm/yyyy in [01/01/1900, None] interval",
-                                    ),
-                                    MDTextFieldHelperText(
-                                        text="Enter a valid dd/mm/yyyy date",
-                                    ),
-                                    validator="date",
-                                    date_format="dd/mm/yyyy",
-                                    date_interval=["01/01/1900", None],
-                                ),
-                                MDTextField(
-                                    MDTextFieldHintText(
-                                        text="Date dd/mm/yyyy in [None, 01/01/2100] interval",
-                                    ),
-                                    MDTextFieldHelperText(
-                                        text="Enter a valid dd/mm/yyyy date",
-                                    ),
-                                    validator="date",
-                                    date_format="dd/mm/yyyy",
-                                    date_interval=[None, "01/01/2100"],
-                                ),
-                                orientation="vertical",
-                                spacing="28dp",
-                                adaptive_height=True,
-                                size_hint_x=.8,
-                                pos_hint={"center_x": .5, "center_y": .5},
-                            ),
-                            md_bg_color=self.theme_cls.backgroundColor,
+                                md_bg_color=self.theme_cls.backgroundColor,
+                            )
                         )
-                    )
 
 
-            Example().run()
+                Example().run()
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-validator-date.png
         :align: center

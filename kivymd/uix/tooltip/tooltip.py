@@ -28,57 +28,122 @@ Components/Tooltip
 Usage of tooltip plain
 ----------------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.properties import StringProperty
+    .. tab:: Declarative KV style
 
-    from kivymd.uix.button import MDButton
-    from kivymd.uix.tooltip import MDTooltip
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    <YourTooltipClass>
+            from kivy.lang import Builder
+            from kivy.properties import StringProperty
 
-        MDTooltipPlain:
-            text:
-                "Grant value is calculated using the closing stock price \\\\n" \\
-                "from the day before the grant date. Amounts do not \\\\n" \\
-                "reflect tax witholdings."
+            from kivymd.uix.button import MDButton
+            from kivymd.uix.tooltip import MDTooltip
+            from kivymd.app import MDApp
 
+            KV = '''
+            <YourTooltipClass>
 
-    <TooltipMDIconButton>
-
-        MDButtonText:
-            text: root.text
+                MDTooltipPlain:
+                    text:
+                        "Grant value is calculated using the closing stock price \\\\n" \\
+                        "from the day before the grant date. Amounts do not \\\\n" \\
+                        "reflect tax witholdings."
 
 
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            <TooltipMDIconButton>
 
-        TooltipMDIconButton:
-            text: "Tooltip button"
-            pos_hint: {"center_x": .5, "center_y": .5}
-    '''
+                MDButtonText:
+                    text: root.text
 
 
-    class YourTooltipClass(MDTooltip):
-        '''Implements your tooltip base class.'''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                TooltipMDIconButton:
+                    text: "Tooltip button"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+            '''
 
 
-    class TooltipMDIconButton(YourTooltipClass, MDButton):
-        '''Implements a button with tooltip behavior.'''
-
-        text = StringProperty()
+            class YourTooltipClass(MDTooltip):
+                '''Implements your tooltip base class.'''
 
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.primary_palette = "Olive"
-            return Builder.load_string(KV)
+            class TooltipMDIconButton(YourTooltipClass, MDButton):
+                '''Implements a button with tooltip behavior.'''
+
+                text = StringProperty()
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivy.properties import StringProperty
+            from kivy.clock import Clock
+
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.tooltip import MDTooltip, MDTooltipPlain
+            from kivymd.app import MDApp
+
+
+            class YourTooltipClass(MDTooltip):
+                '''Implements your tooltip base class.'''
+
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    self.widgets = [
+                        MDTooltipPlain(
+                            text="Grant value is calculated using the closing stock price \n"
+                            "from the day before the grant date. Amounts do not \n"
+                            "reflect tax witholdings.",
+                        )
+                    ]
+
+
+            class TooltipMDIconButton(YourTooltipClass, MDButton):
+                '''Implements a button with tooltip behavior.'''
+
+                text = StringProperty()
+
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    Clock.schedule_once(self.set_widgets)
+
+                def set_widgets(self, *args):
+                    self.widgets = [
+                        MDButtonText(
+                            text=self.text,
+                            pos_hint={"center_x": .5, "center_y": .5}
+                        )
+                    ]
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            TooltipMDIconButton(
+                                text="Tooltip button",
+                                pos_hint={"center_x": .5, "center_y": .5},
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tooltip-m3-plain-usage.gif
     :align: center
@@ -92,70 +157,157 @@ The anatomy of a plain tooltip
 Usage of tooltip rich
 ---------------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.properties import StringProperty
+    .. tab:: Declarative KV style
 
-    from kivymd.uix.button import MDButton
-    from kivymd.uix.tooltip import MDTooltip
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    <YourTooltipClass>
+            from kivy.lang import Builder
+            from kivy.properties import StringProperty
 
-        MDTooltipRich:
-            id: tooltip
-            auto_dismiss: False
+            from kivymd.uix.button import MDButton
+            from kivymd.uix.tooltip import MDTooltip
+            from kivymd.app import MDApp
 
-            MDTooltipRichSubhead:
-                text: "Add others"
+            KV = '''
+            <YourTooltipClass>
 
-            MDTooltipRichSupportingText:
-                text:
-                    "Grant value is calculated using the closing stock price \\\\n" \\
-                    "from the day before the grant date. Amounts do not \\\\n" \\
-                    "reflect tax witholdings."
+                MDTooltipRich:
+                    id: tooltip
+                    auto_dismiss: False
 
-            MDTooltipRichActionButton:
-                on_press: tooltip.dismiss()
+                    MDTooltipRichSubhead:
+                        text: "Add others"
+
+                    MDTooltipRichSupportingText:
+                        text:
+                            "Grant value is calculated using the closing stock price \\\\n" \\
+                            "from the day before the grant date. Amounts do not \\\\n" \\
+                            "reflect tax witholdings."
+
+                    MDTooltipRichActionButton:
+                        on_press: tooltip.dismiss()
+
+                        MDButtonText:
+                            text: "Learn more"
+
+
+            <TooltipMDIconButton>
 
                 MDButtonText:
-                    text: "Learn more"
+                    text: root.text
 
 
-    <TooltipMDIconButton>
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-        MDButtonText:
-            text: root.text
-
-
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
-
-        TooltipMDIconButton:
-            text: "Tooltip button"
-            pos_hint: {"center_x": .5, "center_y": .5}
-    '''
+                TooltipMDIconButton:
+                    text: "Tooltip button"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+            '''
 
 
-    class YourTooltipClass(MDTooltip):
-        '''Implements your tooltip base class.'''
+            class YourTooltipClass(MDTooltip):
+                '''Implements your tooltip base class.'''
 
 
-    class TooltipMDIconButton(YourTooltipClass, MDButton):
-        '''Implements a button with tooltip behavior.'''
+            class TooltipMDIconButton(YourTooltipClass, MDButton):
+                '''Implements a button with tooltip behavior.'''
 
-        text = StringProperty()
-
-
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.primary_palette = "Olive"
-            return Builder.load_string(KV)
+                text = StringProperty()
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivy.properties import StringProperty
+            from kivy.clock import Clock
+
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.tooltip import (
+                MDTooltip,
+                MDTooltipRich,
+                MDTooltipRichSubhead,
+                MDTooltipRichSupportingText,
+                MDTooltipRichActionButton,
+            )
+            from kivymd.app import MDApp
+
+
+            class YourTooltipClass(MDTooltip):
+                '''Implements your tooltip base class.'''
+
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    self.widgets = [
+                        MDTooltipRich(
+                            MDTooltipRichSubhead(
+                                text="Add others",
+                            ),
+                            MDTooltipRichSupportingText(
+                                text="Grant value is calculated using the closing stock price \n"
+                                "from the day before the grant date. Amounts do not \n"
+                                "reflect tax witholdings."
+                            ),
+                            MDTooltipRichActionButton(
+                                MDButtonText(
+                                    text="Learn more",
+                                ),
+                                on_press=self.tooltip_dismiss,
+                            ),
+                            id="tooltip",
+                            auto_dismiss=False,
+                        ),
+                    ]
+
+                def tooltip_dismiss(self, *args):
+                    MDApp.get_running_app().root.get_ids().tooltip.dismiss()
+
+
+            class TooltipMDIconButton(YourTooltipClass, MDButton):
+                '''Implements a button with tooltip behavior.'''
+
+                text = StringProperty()
+
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    Clock.schedule_once(self.set_widgets)
+
+                def set_widgets(self, *args):
+                    self.widgets = [
+                        MDButtonText(
+                            text=self.text,
+                            pos_hint={"center_x": .5, "center_y": .5}
+                        )
+                    ]
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            TooltipMDIconButton(
+                                text="Tooltip button",
+                                pos_hint={"center_x": .5, "center_y": .5},
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tooltip-m3-rich-usage.gif
     :align: center

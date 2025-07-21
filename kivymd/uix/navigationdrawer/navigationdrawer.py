@@ -281,8 +281,8 @@ Anchoring screen edge for drawer
         MDNavigationDrawer:
             anchor: "left"
 
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-ancjor-left.png
-        :align: center
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/navigation-drawer-ancjor-left.png
+    :align: center
 
     Right
     -----

@@ -1797,7 +1797,7 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
 
     def on_touch_down(self, touch):
         if not self.menu.collide_point(*touch.pos):
-            self.dispatch("on_dismiss")
+            self.dismiss()
             return True
         super().on_touch_down(touch)
         return True
@@ -1812,8 +1812,7 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
 
     def dismiss(self, *args) -> None:
         """Closes the menu."""
-
-        self.on_dismiss()
+        self.dispatch("on_dismiss")
 
     def _remove_menu(self, *args):
         Window.remove_widget(self)

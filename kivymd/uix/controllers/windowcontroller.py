@@ -34,7 +34,10 @@ Controlling the resizing direction of the application window
 """
 
 from kivy.core.window import Window
-from kivy.core.window.window_sdl2 import WindowSDL
+try:
+    from kivy.core.window.window_sdl2 import WindowSDL
+except (ModuleNotFoundError, ImportError):
+    from kivy.core.window.window_sdl3 import WindowSDL
 from kivy.metrics import dp
 
 

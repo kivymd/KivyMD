@@ -120,6 +120,7 @@ if __name__ == "__main__":
             "docs": [
                 "sphinx==7.3.7",
                 "sphinx-autoapi==3.0.0",
+                "astroid<2.12",
                 # "furo",
                 "sphinx-book-theme",
                 "sphinx-notfound-page",

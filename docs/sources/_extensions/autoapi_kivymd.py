@@ -21,6 +21,7 @@ from autoapi.directives import NestedParse
 from autoapi.extension import LOGGER
 from autoapi.extension import setup as autoapi_setup
 from autoapi.mappers.python.mapper import PythonSphinxMapper
+from autoapi.mappers.python.parser import Parser
 from autoapi.mappers.python.objects import PythonPythonMapper
 from docutils import nodes
 from sphinx.util.console import bold, darkgreen
@@ -109,6 +110,15 @@ def PythonSphinxMapper_output_rst(
         self._output_top_rst(root)
 
 
+def PythonSphinxMapper_read_file(self : PythonSphinxMapper, path, **kwargs):
+    dir_root = kwargs.get("dir_root")
+    if self._use_implicit_namespace:
+        parsed_data = Parser().parse_file_in_namespace(path, dir_root)
+    else:
+        parsed_data = Parser().parse_file(path)
+    return parsed_data
+
+
 def extension_build_finished(app, exception):
     if (
         not app.config.autoapi_keep_files
@@ -150,5 +160,6 @@ def setup(app):
     PythonPythonMapper.pathname = property(PythonPythonMapper_pathname)
     PythonPythonMapper.include_dir = PythonPythonMapper_include_dir
     PythonSphinxMapper.output_rst = PythonSphinxMapper_output_rst
+    PythonSphinxMapper.read_file = PythonSphinxMapper_read_file
     autoapi.extension.build_finished = extension_build_finished
     autoapi_setup(app)

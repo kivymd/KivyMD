@@ -132,6 +132,7 @@ if __name__ == "__main__":
             "kivy>=2.3.0",
             "pillow",
             "materialyoucolor>=2.0.7",
+            "materialshapes>=0.3",
             "asynckivy>=0.6,<0.7",
         ],
         setup_requires=[],

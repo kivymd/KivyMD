@@ -316,7 +316,7 @@ class MDSharedAxisTransition(MDTransitionBase):
     .. versionadded:: 2.0.0
     """
 
-    transition_axis = OptionProperty("x", options=["x", "y", "z"])
+    transition_axis = OptionProperty("z", options=["x", "y", "z"])
     """
     Axis of the transition. Available values "x", "y", and "z".
 
@@ -327,7 +327,7 @@ class MDSharedAxisTransition(MDTransitionBase):
     and defaults to `"x"`.
     """
 
-    duration = NumericProperty(0.15)
+    duration = NumericProperty(0.2)
     """
     Duration in seconds of the transition. Android recommends these intervals:
 
@@ -351,7 +351,7 @@ class MDSharedAxisTransition(MDTransitionBase):
           - 0.35
 
     :attr:`duration` is a :class:`~kivy.properties.NumericProperty` and
-    defaults to 0.15 (= 150ms).
+    defaults to 0.2 (= 200ms).
     """
 
     switch_animation = OptionProperty(

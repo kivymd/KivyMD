@@ -221,9 +221,9 @@ class MDScreenManager(
         from kivymd.uix.transition.transition import MDTransitionBase
 
         if not issubclass(self.transition.__class__, MDTransitionBase):
-            from kivymd.uix.transition import MDSlideTransition
+            from kivymd.uix.transition import MDSharedAxisTransition
 
-            self.transition = MDSlideTransition()
+            self.transition = MDSharedAxisTransition()
 
     def get_hero_from_widget(self) -> list:
         """

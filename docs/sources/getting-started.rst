@@ -4,6 +4,13 @@ Getting Started
 In order to start using `KivyMD`, you must first `install the Kivy framework <https://kivy.org/doc/stable/gettingstarted/installation.html>`_
 on your computer. Once you have installed `Kivy`, you can install `KivyMD`.
 
+.. note::
+
+   On **Linux** and **macOS**, you may also need to install `PyCairo <https://pycairo.readthedocs.io/en/latest/getting_started.html#getting-started>`_
+   manually before installing KivyMD, as it is a required dependency for rendering graphics.
+
+   On **Windows**, this step is not necessary — ``pip`` will automatically install PyCairo when needed.
+
 .. warning:: `KivyMD` depends on `Kivy`!
     Therefore, before using `KivyMD`, first `learn how to work <https://kivy.org/doc/stable/>`_ with `Kivy`.
 

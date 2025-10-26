@@ -51,7 +51,9 @@ pip install kivymd==2.0.0
 - [Kivy](https://github.com/kivy/kivy) >= 2.3.0 ([Installation](https://kivy.org/doc/stable/gettingstarted/installation.html))
 - [Python 3.7+](https://www.python.org/)
 - [Pillow](https://github.com/python-pillow/Pillow/)
+- [PyCairo](https://github.com/pygobject/pycairo) ([Installation](https://pycairo.readthedocs.io/en/latest/getting_started.html#getting-started))
 - [MaterialColor](https://github.com/T-Dynamos/materialyoucolor-python)
+- [MaterialShapes](https://github.com/T-Dynamos/materialshapes-python)
 - [asynckivy](https://github.com/asyncgui/asynckivy)
 
 ### How to install
@@ -89,6 +91,9 @@ requirements = python3,
     kivy,
     https://github.com/kivymd/KivyMD/archive/master.zip,
     materialyoucolor,
+    materialshapes,
+    pycairo,
+    pillow,
     exceptiongroup,
     asyncgui,
     asynckivy,

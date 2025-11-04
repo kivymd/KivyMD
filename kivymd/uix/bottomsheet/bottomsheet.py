@@ -72,19 +72,82 @@ Tapping the scrim dismisses a modal bottom sheet.
 Add elements to :class:`~MDBottomSheetDragHandleTitle` class
 ------------------------------------------------------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDBottomSheet:
+    .. tab:: Imperative python style with KV
 
-        MDBottomSheetDragHandle:
+        .. code-block:: python
 
-            MDBottomSheetDragHandleTitle:
-                text: "MDBottomSheet"
-                adaptive_height: True
-                pos_hint: {"center_y": .5}
+            from kivy.lang import Builder
 
-            MDBottomSheetDragHandleButton:
-                icon: "close"
+            from kivymd.app import MDApp
+
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDBottomSheet:
+                    size_hint_y: None
+                    height: "84dp"
+
+                    MDBottomSheetDragHandle:
+
+                        MDBottomSheetDragHandleTitle:
+                            text: "MDBottomSheet"
+                            adaptive_height: True
+                            pos_hint: {"center_y": .5}
+
+                        MDBottomSheetDragHandleButton:
+                            icon: "close"
+            '''
+
+
+            class Example(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.bottomsheet import (
+                MDBottomSheet,
+                MDBottomSheetDragHandle,
+                MDBottomSheetDragHandleTitle,
+                MDBottomSheetDragHandleButton,
+            )
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDBottomSheet(
+                                MDBottomSheetDragHandle(
+                                    MDBottomSheetDragHandleTitle(
+                                        text="MDBottomSheet",
+                                        adaptive_height=True,
+                                        pos_hint={"center_y": 0.5},
+                                    ),
+                                    MDBottomSheetDragHandleButton(
+                                        icon="close",
+                                    ),
+                                ),
+                                size_hint_y=None,
+                                height="84dp",
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottomsheet-drag-handle-elements.png
     :align: center
@@ -94,137 +157,299 @@ A practical example with standard bottom sheet
 
 (A double tap on the map to open the bottom sheet)
 
-.. code-block:: python
+.. tabs::
 
-    import asynckivy
+    .. tab:: Imperative python style with KV
 
-    from kivy.lang import Builder
-    from kivy.properties import StringProperty, ObjectProperty, BooleanProperty
-    from kivy_garden.mapview import MapView
+        .. code-block:: python
 
-    from kivymd.app import MDApp
-    from kivymd.uix.behaviors import TouchBehavior
-    from kivymd.uix.boxlayout import MDBoxLayout
+            import asynckivy
 
-    KV = '''
-    #:import MapSource kivy_garden.mapview.MapSource
-    #:import asynckivy asynckivy
+            from kivy.lang import Builder
+            from kivy.properties import StringProperty, ObjectProperty, BooleanProperty
+            from kivy_garden.mapview import MapView
 
+            from kivymd.app import MDApp
+            from kivymd.uix.behaviors import TouchBehavior
+            from kivymd.uix.boxlayout import MDBoxLayout
 
-    <TypeMapElement>
-        orientation: "vertical"
-        adaptive_height: True
-        spacing: "8dp"
-
-        MDIconButton:
-            id: icon
-            icon: root.icon
-            theme_bg_color: "Custom"
-            md_bg_color: "#EDF1F9" if not root.selected else app.theme_cls.primaryColor
-            pos_hint: {"center_x": .5}
-            theme_icon_color: "Custom"
-            icon_color: "white" if root.selected else "black"
-            on_release: app.set_active_element(root, root.title.lower())
-
-        MDLabel:
-            text: root.title
-            pos_hint: {"center_x": .5}
-            halign: "center"
-            adaptive_height: True
+            KV = '''
+            #:import MapSource kivy_garden.mapview.MapSource
+            #:import asynckivy asynckivy
 
 
-    MDScreen:
+            <TypeMapElement>
+                orientation: "vertical"
+                adaptive_height: True
+                spacing: "8dp"
 
-        MDNavigationLayout:
+                MDIconButton:
+                    id: icon
+                    icon: root.icon
+                    theme_bg_color: "Custom"
+                    md_bg_color: "#EDF1F9" if not root.selected else app.theme_cls.primaryColor
+                    pos_hint: {"center_x": .5}
+                    theme_icon_color: "Custom"
+                    icon_color: "white" if root.selected else "black"
+                    on_release: app.set_active_element(root, root.title.lower())
 
-            MDScreenManager:
-
-                MDScreen:
-
-                    CustomMapView:
-                        bottom_sheet: bottom_sheet
-                        map_source: MapSource(url=app.map_sources[app.current_map])
-                        lat: 46.5124
-                        lon: 47.9812
-                        zoom: 12
-
-            MDBottomSheet:
-                id: bottom_sheet
-                sheet_type: "standard"
-                size_hint_y: None
-                height: "150dp"
-                on_open: asynckivy.start(app.generate_content())
-
-                MDBottomSheetDragHandle:
-                    drag_handle_color: "grey"
-
-                    MDBottomSheetDragHandleTitle:
-                        text: "Select type map"
-                        pos_hint: {"center_y": .5}
-
-                    MDBottomSheetDragHandleButton:
-                        icon: "close"
-                        ripple_effect: False
-                        on_release: bottom_sheet.set_state("toggle")
-
-                BoxLayout:
-                    id: content_container
-                    padding: 0, 0, 0, "16dp"
-    '''
+                MDLabel:
+                    text: root.title
+                    pos_hint: {"center_x": .5}
+                    halign: "center"
+                    adaptive_height: True
 
 
-    class TypeMapElement(MDBoxLayout):
-        selected = BooleanProperty(False)
-        icon = StringProperty()
-        title = StringProperty()
+            MDScreen:
+
+                MDNavigationLayout:
+
+                    MDScreenManager:
+
+                        MDScreen:
+
+                            CustomMapView:
+                                bottom_sheet: bottom_sheet
+                                map_source: MapSource(url=app.map_sources[app.current_map])
+                                lat: 46.5124
+                                lon: 47.9812
+                                zoom: 12
+
+                    MDBottomSheet:
+                        id: bottom_sheet
+                        sheet_type: "standard"
+                        size_hint_y: None
+                        height: "150dp"
+                        on_open: asynckivy.start(app.generate_content())
+
+                        MDBottomSheetDragHandle:
+                            drag_handle_color: "grey"
+
+                            MDBottomSheetDragHandleTitle:
+                                text: "Select type map"
+                                pos_hint: {"center_y": .5}
+
+                            MDBottomSheetDragHandleButton:
+                                icon: "close"
+                                ripple_effect: False
+                                on_release: bottom_sheet.set_state("toggle")
+
+                        BoxLayout:
+                            id: content_container
+                            padding: 0, 0, 0, "16dp"
+            '''
 
 
-    class CustomMapView(MapView, TouchBehavior):
-        bottom_sheet = ObjectProperty()
-
-        def on_double_tap(self, touch, *args):
-            if self.bottom_sheet:
-                self.bottom_sheet.set_state("toggle")
+            class TypeMapElement(MDBoxLayout):
+                selected = BooleanProperty(False)
+                icon = StringProperty()
+                title = StringProperty()
 
 
-    class Example(MDApp):
-        map_sources = {
-            "street": "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
-            "sputnik": "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
-            "hybrid": "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
-        }
-        current_map = StringProperty("street")
+            class CustomMapView(MapView, TouchBehavior):
+                bottom_sheet = ObjectProperty()
 
-        async def generate_content(self):
-            icons = {
-                "street": "google-street-view",
-                "sputnik": "space-station",
-                "hybrid": "map-legend",
-            }
-            if not self.root.ids.content_container.children:
-                for i, title in enumerate(self.map_sources.keys()):
-                    await asynckivy.sleep(0)
-                    self.root.ids.content_container.add_widget(
-                        TypeMapElement(
-                            title=title.capitalize(),
-                            icon=icons[title],
-                            selected=not i,
+                def on_double_tap(self, touch, *args):
+                    if self.bottom_sheet:
+                        self.bottom_sheet.set_state("toggle")
+
+
+            class Example(MDApp):
+                map_sources = {
+                    "street": "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+                    "sputnik": "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+                    "hybrid": "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
+                }
+                current_map = StringProperty("street")
+
+                async def generate_content(self):
+                    icons = {
+                        "street": "google-street-view",
+                        "sputnik": "space-station",
+                        "hybrid": "map-legend",
+                    }
+                    if not self.root.ids.content_container.children:
+                        for i, title in enumerate(self.map_sources.keys()):
+                            await asynckivy.sleep(0)
+                            self.root.ids.content_container.add_widget(
+                                TypeMapElement(
+                                    title=title.capitalize(),
+                                    icon=icons[title],
+                                    selected=not i,
+                                )
+                            )
+
+                def set_active_element(self, instance, type_map):
+                    for element in self.root.ids.content_container.children:
+                        if instance == element:
+                            element.selected = True
+                            self.current_map = type_map
+                        else:
+                            element.selected = False
+
+                def build(self):
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.properties import StringProperty, ObjectProperty, BooleanProperty
+            from kivy_garden.mapview import MapView
+
+            import asynckivy
+            from kivy_garden.mapview import MapSource
+
+            from kivymd.app import MDApp
+            from kivymd.uix.behaviors import TouchBehavior, DeclarativeBehavior
+            from kivymd.uix.bottomsheet import (
+                MDBottomSheet,
+                MDBottomSheetDragHandle,
+                MDBottomSheetDragHandleTitle,
+                MDBottomSheetDragHandleButton,
+            )
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.button import MDIconButton
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.navigationdrawer import MDNavigationLayout
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.screenmanager import MDScreenManager
+
+
+            class TypeMapElement(MDBoxLayout):
+                selected = BooleanProperty(False)
+                icon = StringProperty()
+                title = StringProperty()
+
+
+            class CustomMapView(DeclarativeBehavior, MapView, TouchBehavior):
+                bottom_sheet = ObjectProperty()
+
+                def on_double_tap(self, touch, *args):
+                    if self.bottom_sheet:
+                        self.bottom_sheet.set_state("toggle")
+
+
+            class Example(MDApp):
+                map_sources = {
+                    "street": "https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+                    "sputnik": "https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}",
+                    "hybrid": "https://mt1.google.com/vt/lyrs=y&x={x}&y={y}&z={z}",
+                }
+                current_map = StringProperty("street")
+
+                async def generate_content(self):
+                    icons = {
+                        "street": "google-street-view",
+                        "sputnik": "space-station",
+                        "hybrid": "map-legend",
+                    }
+                    if not self.screen.get_ids().content_container.children:
+                        for i, title in enumerate(self.map_sources.keys()):
+                            await asynckivy.sleep(0)
+                            type_map_element = TypeMapElement(
+                                MDIconButton(
+                                    id=f"icon_{icons[title]}",
+                                    icon=icons[title],
+                                    theme_bg_color="Custom",
+                                    md_bg_color="#EDF1F9",
+                                    pos_hint={"center_x": 0.5},
+                                    theme_icon_color="Custom",
+                                    icon_color="black"
+                                ),
+                                MDLabel(
+                                    text=title,
+                                    pos_hint={"center_x": 0.5},
+                                    halign="center",
+                                    adaptive_height=True,
+                                ),
+                                orientation="vertical",
+                                adaptive_height=True,
+                                spacing="8dp",
+                                title=title.capitalize(),
+                                icon=icons[title],
+                                selected=not i,
+                            )
+                            icon = type_map_element.get_ids()[f"icon_{icons[title]}"]
+                            icon.bind(
+                                on_release=lambda x=icon, z=type_map_element, y=title.lower(): self.set_active_element(
+                                    x, z, y
+                                )
+                            )
+                            self.screen.get_ids().content_container.add_widget(
+                                type_map_element
+                            )
+
+                def set_active_element(self, button, instance, type_map):
+                    for element in self.screen.get_ids().content_container.children:
+                        if instance is element:
+                            element.selected = True
+                            button.md_bg_color = self.theme_cls.primaryColor
+                            button.icon_color = "white"
+                            self.current_map = type_map
+                            self.screen.get_ids().custom_mapview.map_source = MapSource(
+                                url=self.map_sources[self.current_map]
+                            )
+                        else:
+                            for widget in element.children:
+                                if isinstance(widget, MDIconButton) and not widget is button:
+                                    element.selected = False
+                                    widget.md_bg_color = "#EDF1F9"
+                                    widget.icon_color = "black"
+
+                def build(self):
+                    self.screen = MDScreen(
+                        MDNavigationLayout(
+                            MDScreenManager(
+                                MDScreen(
+                                    CustomMapView(
+                                        id="custom_mapview",
+                                        map_source=MapSource(
+                                            url=self.map_sources[self.current_map]
+                                        ),
+                                        lat=46.5124,
+                                        lon=47.9812,
+                                        zoom=12,
+                                    )
+                                )
+                            ),
+                            MDBottomSheet(
+                                MDBottomSheetDragHandle(
+                                    MDBottomSheetDragHandleTitle(
+                                        text="Select type map",
+                                        pos_hint={"center_y": 0.5},
+                                    ),
+                                    MDBottomSheetDragHandleButton(
+                                        id="handle_button",
+                                        icon="close",
+                                        ripple_effect=False,
+                                    ),
+                                    drag_handle_color="grey",
+                                ),
+                                MDBoxLayout(
+                                    id="content_container",
+                                    padding=(0, 0, 0, "16dp"),
+                                ),
+                                id="bottom_sheet",
+                                sheet_type="standard",
+                                size_hint_y=None,
+                                height="150dp",
+                                on_open=lambda x: asynckivy.start(self.generate_content()),
+                            ),
                         )
                     )
-
-        def set_active_element(self, instance, type_map):
-            for element in self.root.ids.content_container.children:
-                if instance == element:
-                    element.selected = True
-                    self.current_map = type_map
-                else:
-                    element.selected = False
-
-        def build(self):
-            return Builder.load_string(KV)
+                    bottom_sheet = self.screen.get_ids().bottom_sheet
+                    self.screen.get_ids().custom_mapview.bottom_sheet = bottom_sheet
+                    self.screen.get_ids().handle_button.bind(
+                        on_release=lambda x: bottom_sheet.set_state("toggle")
+                    )
+                    return self.screen
 
 
-    Example().run()
+            Example().run()
 
 API break
 =========
@@ -295,6 +520,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 
 from kivymd import uix_path
+from kivymd.uix.behaviors import DeclarativeBehavior
 from kivymd.uix.button import MDIconButton
 from kivymd.uix.label import MDLabel
 from kivymd.uix.navigationdrawer import MDNavigationDrawer
@@ -337,14 +563,15 @@ class MDBottomSheetDragHandleTitle(MDLabel):
     """
 
 
-class MDBottomSheetDragHandle(BoxLayout):
+class MDBottomSheetDragHandle(DeclarativeBehavior, BoxLayout):
     """
     Implements a container that can place the header of the bottom sheet
     and the close button. Also implements the event of dragging the
     bottom sheet on the parent screen.
 
     For more information, see in the
-    :class:`~kivy.uix.boxlayout.BoxLayout` class documentation.
+    :class:`~kivymd.uix.behaviors.DeclarativeBehavior` and
+    :class:`~kivy.uix.boxlayout.BoxLayout` classes documentation.
 
     .. versionadded:: 1.2.0
     """

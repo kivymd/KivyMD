@@ -28,70 +28,140 @@ Usage primary tabs
 
 Primary tabs should be used when just one set of tabs are needed.
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
-    from kivymd.uix.tab import (
-        MDTabsItem,
-        MDTabsItemIcon,
-        MDTabsItemText,
-        MDTabsBadge,
-    )
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDTabsPrimary:
-            id: tabs
-            pos_hint: {"center_x": .5, "center_y": .5}
+            from kivymd.app import MDApp
+            from kivymd.uix.tab import (
+                MDTabsItem,
+                MDTabsItemIcon,
+                MDTabsItemText,
+                MDTabsBadge,
+            )
 
-            MDDivider:
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDTabsPrimary:
+                    id: tabs
+                    pos_hint: {"center_x": .5, "center_y": .5}
+
+                    MDDivider:
+            '''
 
 
-    class Example(MDApp):
-        def on_start(self):
-            for tab_icon, tab_name in {
-                "airplane": "Flights",
-                "treasure-chest": "Trips",
-                "compass-outline": "Explore",
-            }.items():
-                if tab_icon == "treasure-chest":
-                    self.root.ids.tabs.add_widget(
-                        MDTabsItem(
-                            MDTabsItemIcon(
-                                MDTabsBadge(
-                                    text="99",
-                                ),
-                                icon=tab_icon,
+            class Example(MDApp):
+                def on_start(self):
+                    for tab_icon, tab_name in {
+                        "airplane": "Flights",
+                        "treasure-chest": "Trips",
+                        "compass-outline": "Explore",
+                    }.items():
+                        if tab_icon == "treasure-chest":
+                            self.root.ids.tabs.add_widget(
+                                MDTabsItem(
+                                    MDTabsItemIcon(
+                                        MDTabsBadge(
+                                            text="99",
+                                        ),
+                                        icon=tab_icon,
+                                    ),
+                                    MDTabsItemText(
+                                        text=tab_name,
+                                    ),
+                                )
+                            )
+                        else:
+                            self.root.ids.tabs.add_widget(
+                                MDTabsItem(
+                                    MDTabsItemIcon(
+                                        icon=tab_icon,
+                                    ),
+                                    MDTabsItemText(
+                                        text=tab_name,
+                                    ),
+                                )
+                            )
+                        self.root.ids.tabs.switch_tab(icon="airplane")
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.divider import MDDivider
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.tab import (
+                MDTabsItem,
+                MDTabsItemIcon,
+                MDTabsItemText,
+                MDTabsBadge,
+                MDTabsPrimary,
+            )
+
+
+            class Example(MDApp):
+                def on_start(self):
+                    for tab_icon, tab_name in {
+                        "airplane": "Flights",
+                        "treasure-chest": "Trips",
+                        "compass-outline": "Explore",
+                    }.items():
+                        if tab_icon == "treasure-chest":
+                            self.root.get_ids().tabs.add_widget(
+                                MDTabsItem(
+                                    MDTabsItemIcon(
+                                        MDTabsBadge(
+                                            text="99",
+                                        ),
+                                        icon=tab_icon,
+                                    ),
+                                    MDTabsItemText(
+                                        text=tab_name,
+                                    ),
+                                )
+                            )
+                        else:
+                            self.root.get_ids().tabs.add_widget(
+                                MDTabsItem(
+                                    MDTabsItemIcon(
+                                        icon=tab_icon,
+                                    ),
+                                    MDTabsItemText(
+                                        text=tab_name,
+                                    ),
+                                )
+                            )
+                        self.root.get_ids().tabs.switch_tab(icon="airplane")
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            MDTabsPrimary(
+                                MDDivider(),
+                                id="tabs",
+                                pos_hint={"center_x": .5, "center_y": .5},
                             ),
-                            MDTabsItemText(
-                                text=tab_name,
-                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
                         )
                     )
-                else:
-                    self.root.ids.tabs.add_widget(
-                        MDTabsItem(
-                            MDTabsItemIcon(
-                                icon=tab_icon,
-                            ),
-                            MDTabsItemText(
-                                text=tab_name,
-                            ),
-                        )
-                    )
-                self.root.ids.tabs.switch_tab(icon="airplane")
-
-        def build(self):
-            self.theme_cls.primary_palette = "Olive"
-            return Builder.load_string(KV)
 
 
-    Example().run()
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tab-primary-usage.png
     :align: center
@@ -109,69 +179,139 @@ Secondary tabs are necessary when a screen requires more than one level of
 tabs. These tabs use a simpler style of indicator, but their function is
 identical to primary tabs.
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
-    from kivymd.uix.tab import (
-        MDTabsItemIcon,
-        MDTabsItemText,
-        MDTabsBadge, MDTabsItemSecondary,
-    )
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDTabsSecondary:
-            id: tabs
-            pos_hint: {"center_x": .5, "center_y": .5}
+            from kivymd.app import MDApp
+            from kivymd.uix.tab import (
+                MDTabsItemIcon,
+                MDTabsItemText,
+                MDTabsBadge, MDTabsItemSecondary,
+            )
 
-            MDDivider:
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDTabsSecondary:
+                    id: tabs
+                    pos_hint: {"center_x": .5, "center_y": .5}
+
+                    MDDivider:
+            '''
 
 
-    class Example(MDApp):
-        def on_start(self):
-            for tab_icon, tab_name in {
-                "airplane": "Flights",
-                "treasure-chest": "Trips",
-                "compass-outline": "Explore",
-            }.items():
-                if tab_icon == "treasure-chest":
-                    self.root.ids.tabs.add_widget(
-                        MDTabsItemSecondary(
-                            MDTabsItemIcon(
-                                icon=tab_icon,
+            class Example(MDApp):
+                def on_start(self):
+                    for tab_icon, tab_name in {
+                        "airplane": "Flights",
+                        "treasure-chest": "Trips",
+                        "compass-outline": "Explore",
+                    }.items():
+                        if tab_icon == "treasure-chest":
+                            self.root.ids.tabs.add_widget(
+                                MDTabsItemSecondary(
+                                    MDTabsItemIcon(
+                                        icon=tab_icon,
+                                    ),
+                                    MDTabsItemText(
+                                        text=tab_name,
+                                    ),
+                                    MDTabsBadge(
+                                        text="5",
+                                    ),
+                                )
+                            )
+                        else:
+                            self.root.ids.tabs.add_widget(
+                                MDTabsItemSecondary(
+                                    MDTabsItemIcon(
+                                        icon=tab_icon,
+                                    ),
+                                    MDTabsItemText(
+                                        text=tab_name,
+                                    ),
+                                )
+                            )
+                    self.root.ids.tabs.switch_tab(icon="airplane")
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.divider import MDDivider
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.tab import (
+                MDTabsItemIcon,
+                MDTabsItemText,
+                MDTabsBadge,
+                MDTabsSecondary,
+                MDTabsItemSecondary,
+            )
+
+
+            class Example(MDApp):
+                def on_start(self):
+                    for tab_icon, tab_name in {
+                        "airplane": "Flights",
+                        "treasure-chest": "Trips",
+                        "compass-outline": "Explore",
+                    }.items():
+                        if tab_icon == "treasure-chest":
+                            self.root.get_ids().tabs.add_widget(
+                                MDTabsItemSecondary(
+                                    MDTabsItemIcon(
+                                        icon=tab_icon,
+                                    ),
+                                    MDTabsItemText(
+                                        text=tab_name,
+                                    ),
+                                    MDTabsBadge(
+                                        text="5",
+                                    ),
+                                )
+                            )
+                        else:
+                            self.root.get_ids().tabs.add_widget(
+                                MDTabsItemSecondary(
+                                    MDTabsItemIcon(
+                                        icon=tab_icon,
+                                    ),
+                                    MDTabsItemText(
+                                        text=tab_name,
+                                    ),
+                                )
+                            )
+                    self.root.get_ids().tabs.switch_tab(icon="airplane")
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            MDTabsSecondary(
+                                MDDivider(),
+                                id="tabs",
+                                pos_hint={"center_x": .5, "center_y": .5},
                             ),
-                            MDTabsItemText(
-                                text=tab_name,
-                            ),
-                            MDTabsBadge(
-                                text="5",
-                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
                         )
                     )
-                else:
-                    self.root.ids.tabs.add_widget(
-                        MDTabsItemSecondary(
-                            MDTabsItemIcon(
-                                icon=tab_icon,
-                            ),
-                            MDTabsItemText(
-                                text=tab_name,
-                            ),
-                        )
-                    )
-            self.root.ids.tabs.switch_tab(icon="airplane")
-
-        def build(self):
-            self.theme_cls.primary_palette = "Olive"
-            return Builder.load_string(KV)
 
 
-    Example().run()
+            Example().run()
 
 Anatomy secondary tabs
 ----------------------
@@ -184,67 +324,137 @@ Related content
 
 Use tabs to group related content, not sequential content.
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
-    from kivymd.uix.label import MDLabel
-    from kivymd.uix.tab import (
-        MDTabsItemIcon,
-        MDTabsItemText,
-        MDTabsItem,
-    )
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDTabsPrimary:
-            id: tabs
-            pos_hint: {"center_x": .5, "center_y": .5}
-            size_hint_x: .6
+            from kivymd.app import MDApp
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.tab import (
+                MDTabsItemIcon,
+                MDTabsItemText,
+                MDTabsItem,
+            )
 
-            MDDivider:
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-            MDTabsCarousel:
-                id: related_content_container
-                size_hint_y: None
-                height: dp(320)
-    '''
+                MDTabsPrimary:
+                    id: tabs
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    size_hint_x: .6
+
+                    MDDivider:
+
+                    MDTabsCarousel:
+                        id: related_content_container
+                        size_hint_y: None
+                        height: dp(320)
+            '''
 
 
-    class Example(MDApp):
-        def on_start(self):
-            for tab_icon, tab_name in {
-                "airplane": "Flights",
-                "treasure-chest": "Trips",
-                "compass-outline": "Explore",
-            }.items():
-                self.root.ids.tabs.add_widget(
-                    MDTabsItem(
-                        MDTabsItemIcon(
-                            icon=tab_icon,
-                        ),
-                        MDTabsItemText(
-                            text=tab_name,
-                        ),
+            class Example(MDApp):
+                def on_start(self):
+                    for tab_icon, tab_name in {
+                        "airplane": "Flights",
+                        "treasure-chest": "Trips",
+                        "compass-outline": "Explore",
+                    }.items():
+                        self.root.ids.tabs.add_widget(
+                            MDTabsItem(
+                                MDTabsItemIcon(
+                                    icon=tab_icon,
+                                ),
+                                MDTabsItemText(
+                                    text=tab_name,
+                                ),
+                            )
+                        )
+                        self.root.ids.related_content_container.add_widget(
+                            MDLabel(
+                                text=tab_name,
+                                halign="center",
+                            )
+                        )
+                        self.root.ids.tabs.switch_tab(icon="airplane")
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.material_resources import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.divider import MDDivider
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.tab import (
+                MDTabsItemIcon,
+                MDTabsItemText,
+                MDTabsPrimary,
+                MDTabsCarousel,
+                MDTabsItem,
+            )
+
+
+            class Example(MDApp):
+                def on_start(self):
+                    for tab_icon, tab_name in {
+                        "airplane": "Flights",
+                        "treasure-chest": "Trips",
+                        "compass-outline": "Explore",
+                    }.items():
+                        self.root.get_ids().tabs.add_widget(
+                            MDTabsItem(
+                                MDTabsItemIcon(
+                                    icon=tab_icon,
+                                ),
+                                MDTabsItemText(
+                                    text=tab_name,
+                                ),
+                            )
+                        )
+                        self.root.get_ids().related_content_container.add_widget(
+                            MDLabel(
+                                text=tab_name,
+                                halign="center",
+                            )
+                        )
+                        self.root.get_ids().tabs.switch_tab(icon="airplane")
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            MDTabsPrimary(
+                                MDDivider(),
+                                MDTabsCarousel(
+                                    id="related_content_container",
+                                    size_hint_y=None,
+                                    height=dp(320),
+                                ),
+                                id="tabs",
+                                pos_hint={"center_x": .5, "center_y": .5},
+                                size_hint_x=0.6,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
                     )
-                )
-                self.root.ids.related_content_container.add_widget(
-                    MDLabel(
-                        text=tab_name,
-                        halign="center",
-                    )
-                )
-                self.root.ids.tabs.switch_tab(icon="airplane")
-
-        def build(self):
-            self.theme_cls.primary_palette = "Olive"
-            return Builder.load_string(KV)
 
 
-    Example().run()
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tab-primary-related-content.gif
     :align: center
@@ -259,54 +469,111 @@ When a set of tabs cannot fit on screen, use scrollable tabs. Scrollable tabs
 can use longer text labels and a larger number of tabs. They are best used for
 browsing on touch interfaces.
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
-    from kivymd.uix.tab import MDTabsItemText, MDTabsItem
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDTabsPrimary:
-            id: tabs
-            pos_hint: {"center_x": .5, "center_y": .5}
-            size_hint_x: .6
-            allow_stretch: False
-            label_only: True
+            from kivymd.app import MDApp
+            from kivymd.uix.tab import MDTabsItemText, MDTabsItem
 
-            MDDivider:
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDTabsPrimary:
+                    id: tabs
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    size_hint_x: .6
+                    allow_stretch: False
+                    label_only: True
+
+                    MDDivider:
+            '''
 
 
-    class Example(MDApp):
-        def on_start(self):
-            for tab_name in [
-                "Moscow",
-                "Saint Petersburg",
-                "Novosibirsk",
-                "Yekaterinburg",
-                "Kazan",
-                "Nizhny Novgorod",
-                "Chelyabinsk",
-            ]:
-                self.root.ids.tabs.add_widget(
-                    MDTabsItem(
-                        MDTabsItemText(
-                            text=tab_name,
-                        ),
+            class Example(MDApp):
+                def on_start(self):
+                    for tab_name in [
+                        "Moscow",
+                        "Saint Petersburg",
+                        "Novosibirsk",
+                        "Yekaterinburg",
+                        "Kazan",
+                        "Nizhny Novgorod",
+                        "Chelyabinsk",
+                    ]:
+                        self.root.ids.tabs.add_widget(
+                            MDTabsItem(
+                                MDTabsItemText(
+                                    text=tab_name,
+                                ),
+                            )
+                        )
+                    self.root.ids.tabs.switch_tab(text="Moscow")
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.divider import MDDivider
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.tab import (
+                MDTabsItemText,
+                MDTabsPrimary,
+                MDTabsItem,
+            )
+
+
+            class Example(MDApp):
+                def on_start(self):
+                    for tab_name in [
+                        "Moscow",
+                        "Saint Petersburg",
+                        "Novosibirsk",
+                        "Yekaterinburg",
+                        "Kazan",
+                        "Nizhny Novgorod",
+                        "Chelyabinsk",
+                    ]:
+                        self.root.get_ids().tabs.add_widget(
+                            MDTabsItem(
+                                MDTabsItemText(
+                                    text=tab_name,
+                                ),
+                            )
+                        )
+                    self.root.get_ids().tabs.switch_tab(text="Moscow")
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            MDTabsPrimary(
+                                MDDivider(),
+                                id="tabs",
+                                pos_hint={"center_x": .5, "center_y": .5},
+                                size_hint_x=0.6,
+                                allow_stretch=False,
+                                label_only=True,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
                     )
-                )
-            self.root.ids.tabs.switch_tab(text="Moscow")
-
-        def build(self):
-            self.theme_cls.primary_palette = "Olive"
-            return Builder.load_string(KV)
 
 
-    Example().run()
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tab-primary-scrollable-behavior.gif
     :align: center
@@ -319,48 +586,99 @@ switching between related content quickly, such as between transportation
 methods in a map. To navigate between fixed tabs, tap an individual tab, or
 swipe left or right in the content area.
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
-    from kivymd.uix.tab import MDTabsItemText, MDTabsItem
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDTabsPrimary:
-            id: tabs
-            pos_hint: {"center_x": .5, "center_y": .5}
-            size_hint_x: .6
-            allow_stretch: True
-            label_only: True
+            from kivymd.app import MDApp
+            from kivymd.uix.tab import MDTabsItemText, MDTabsItem
 
-            MDDivider:
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDTabsPrimary:
+                    id: tabs
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    size_hint_x: .6
+                    allow_stretch: True
+                    label_only: True
+
+                    MDDivider:
+            '''
 
 
-    class Example(MDApp):
-        def on_start(self):
-            for tab_name in [
-                "Moscow", "Saint Petersburg", "Novosibirsk"
-            ]:
-                self.root.ids.tabs.add_widget(
-                    MDTabsItem(
-                        MDTabsItemText(
-                            text=tab_name,
-                        ),
+            class Example(MDApp):
+                def on_start(self):
+                    for tab_name in [
+                        "Moscow", "Saint Petersburg", "Novosibirsk"
+                    ]:
+                        self.root.ids.tabs.add_widget(
+                            MDTabsItem(
+                                MDTabsItemText(
+                                    text=tab_name,
+                                ),
+                            )
+                        )
+                    self.root.ids.tabs.switch_tab(text="Moscow")
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.divider import MDDivider
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.tab import (
+                MDTabsItemText,
+                MDTabsPrimary,
+                MDTabsItem,
+            )
+
+
+            class Example(MDApp):
+                def on_start(self):
+                    for tab_name in [
+                        "Moscow", "Saint Petersburg", "Novosibirsk"
+                    ]:
+                        self.root.get_ids().tabs.add_widget(
+                            MDTabsItem(
+                                MDTabsItemText(
+                                    text=tab_name,
+                                ),
+                            )
+                        )
+                    self.root.get_ids().tabs.switch_tab(text="Moscow")
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            MDTabsPrimary(
+                                MDDivider(),
+                                id="tabs",
+                                pos_hint={"center_x": .5, "center_y": .5},
+                                size_hint_x=0.6,
+                                allow_stretch=True,
+                                label_only=True,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
                     )
-                )
-            self.root.ids.tabs.switch_tab(text="Moscow")
-
-        def build(self):
-            self.theme_cls.primary_palette = "Olive"
-            return Builder.load_string(KV)
 
 
-    Example().run()
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tab-primary-fixed-behavior.png
     :align: center
@@ -457,60 +775,128 @@ API break
 2.0.0 version
 -------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
-    from kivymd.icon_definitions import md_icons
-    from kivymd.uix.label import MDIcon
-    from kivymd.uix.tab import MDTabsItem, MDTabsItemIcon
-    from kivymd.uix.tab.tab import MDTabsItemText
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDTabsPrimary:
-            id: tabs
-            allow_stretch: False
-            pos_hint: {"center_x": .5, "center_y": .5}
+            from kivymd.app import MDApp
+            from kivymd.icon_definitions import md_icons
+            from kivymd.uix.label import MDIcon
+            from kivymd.uix.tab import MDTabsItem, MDTabsItemIcon
+            from kivymd.uix.tab.tab import MDTabsItemText
 
-            MDDivider:
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-            MDTabsCarousel:
-                id: related_content
-                size_hint_y: None
-                height: root.height - tabs.ids.tab_scroll.height
-    '''
+                MDTabsPrimary:
+                    id: tabs
+                    allow_stretch: False
+                    pos_hint: {"center_x": .5, "center_y": .5}
+
+                    MDDivider:
+
+                    MDTabsCarousel:
+                        id: related_content
+                        size_hint_y: None
+                        height: root.height - tabs.ids.tab_scroll.height
+            '''
 
 
-    class Example(MDApp):
-        def on_start(self):
-            for name_tab in list(md_icons.keys())[15:30]:
-                self.root.ids.tabs.add_widget(
-                    MDTabsItem(
-                        MDTabsItemIcon(
-                            icon=name_tab,
-                        ),
-                        MDTabsItemText(
-                            text=name_tab,
-                        ),
+            class Example(MDApp):
+                def on_start(self):
+                    for name_tab in list(md_icons.keys())[15:30]:
+                        self.root.ids.tabs.add_widget(
+                            MDTabsItem(
+                                MDTabsItemIcon(
+                                    icon=name_tab,
+                                ),
+                                MDTabsItemText(
+                                    text=name_tab,
+                                ),
+                            )
+                        )
+                        self.root.ids.related_content.add_widget(
+                            MDIcon(
+                                icon=name_tab,
+                                pos_hint={"center_x": 0.5, "center_y": 0.5},
+                            )
+                        )
+                        self.root.ids.tabs.switch_tab(icon="airplane")
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.divider import MDDivider
+            from kivymd.uix.label import MDIcon
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.tab import (
+                MDTabsItemIcon,
+                MDTabsItemText,
+                MDTabsPrimary,
+                MDTabsCarousel,
+                MDTabsItem,
+            )
+
+
+            class Example(MDApp):
+                def on_start(self):
+                    tabs = self.root.get_ids().tabs
+                    related_content = self.root.get_ids().related_content
+                    related_content.height = (
+                        self.root.height - tabs.ids.tab_scroll.height
                     )
-                )
-                self.root.ids.related_content.add_widget(
-                    MDIcon(
-                        icon=name_tab,
-                        pos_hint={"center_x": 0.5, "center_y": 0.5},
+
+                    for name_tab in list(md_icons.keys())[15:30]:
+                        tabs.add_widget(
+                            MDTabsItem(
+                                MDTabsItemIcon(
+                                    icon=name_tab,
+                                ),
+                                MDTabsItemText(
+                                    text=name_tab,
+                                ),
+                            )
+                        )
+                        related_content.add_widget(
+                            MDIcon(
+                                icon=name_tab,
+                                pos_hint={"center_x": 0.5, "center_y": 0.5},
+                            )
+                        )
+                        tabs.switch_tab(icon="airplane")
+
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return MDScreen(
+                        MDTabsPrimary(
+                            MDDivider(),
+                            MDTabsCarousel(
+                                id="related_content",
+                                size_hint_y=None,
+                            ),
+                            id="tabs",
+                            pos_hint={"center_x": 0.5, "center_y": 0.5},
+                            allow_stretch=False,
+                        ),
+                        md_bg_color=self.theme_cls.backgroundColor,
                     )
-                )
-                self.root.ids.tabs.switch_tab(icon="airplane")
-
-        def build(self):
-            return Builder.load_string(KV)
 
 
-    Example().run()
+            Example().run()
 """
 
 from __future__ import annotations
@@ -582,7 +968,7 @@ class MDTabsBadge(MDBadge):
     """
 
 
-class MDTabsCarousel(Carousel):
+class MDTabsCarousel(DeclarativeBehavior, Carousel):
     """
     Implements a carousel for user-generated content.
 

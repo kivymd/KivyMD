@@ -35,55 +35,109 @@ the widget.
     To get the legacy behavior that the events are always triggered, you can
     set `detect_visible` on the Widget to `False`.
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
-    from kivymd.uix.behaviors import HoverBehavior
-    from kivymd.uix.boxlayout import MDBoxLayout
+        .. code-block:: python
 
-    KV = '''
-    MDScreen
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDBoxLayout:
-            id: box
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            size_hint: .8, .8
-            md_bg_color: self.theme_cls.secondaryContainerColor
-    '''
+            from kivymd.app import MDApp
+            from kivymd.uix.behaviors import HoverBehavior
+            from kivymd.uix.boxlayout import MDBoxLayout
 
+            KV = '''
+            MDScreen
+                md_bg_color: self.theme_cls.backgroundColor
 
-    class HoverItem(MDBoxLayout, HoverBehavior):
-        '''Custom item implementing hover behavior.'''
-
-        def on_enter(self, *args):
-            '''
-            The method will be called when the mouse cursor
-            is within the borders of the current widget.
+                MDBoxLayout:
+                    id: box
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    size_hint: .8, .8
+                    md_bg_color: self.theme_cls.secondaryContainerColor
             '''
 
-            self.md_bg_color = "white"
 
-        def on_leave(self, *args):
-            '''
-            The method will be called when the mouse cursor goes beyond
-            the borders of the current widget.
-            '''
+            class HoverItem(MDBoxLayout, HoverBehavior):
+                '''Custom item implementing hover behavior.'''
 
-            self.md_bg_color = self.theme_cls.secondaryContainerColor
+                def on_enter(self, *args):
+                    '''
+                    The method will be called when the mouse cursor
+                    is within the borders of the current widget.
+                    '''
+
+                    self.md_bg_color = "white"
+
+                def on_leave(self, *args):
+                    '''
+                    The method will be called when the mouse cursor goes beyond
+                    the borders of the current widget.
+                    '''
+
+                    self.md_bg_color = self.theme_cls.secondaryContainerColor
 
 
-    class Example(MDApp):
-        def build(self):
-            self.screen = Builder.load_string(KV)
-            for i in range(5):
-                self.screen.ids.box.add_widget(HoverItem())
-            return self.screen
+            class Example(MDApp):
+                def build(self):
+                    self.screen = Builder.load_string(KV)
+                    for i in range(5):
+                        self.screen.ids.box.add_widget(HoverItem())
+                    return self.screen
 
 
-    Example().run()
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.behaviors import HoverBehavior
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.screen import MDScreen
+
+
+            class HoverItem(MDBoxLayout, HoverBehavior):
+                '''Custom item implementing hover behavior.'''
+
+                def on_enter(self, *args):
+                    '''
+                    The method will be called when the mouse cursor
+                    is within the borders of the current widget.
+                    '''
+
+                    self.md_bg_color = "white"
+
+                def on_leave(self, *args):
+                    '''
+                    The method will be called when the mouse cursor goes beyond
+                    the borders of the current widget.
+                    '''
+
+                    self.md_bg_color = self.theme_cls.secondaryContainerColor
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.screen = (
+                        MDScreen(
+                            MDBoxLayout(
+                                id="box",
+                                pos_hint={'center_x': .5, 'center_y': .5},
+                                size_hint=(.8, .8),
+                                md_bg_color=self.theme_cls.secondaryContainerColor,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+                    for i in range(5):
+                        self.screen.get_ids().box.add_widget(HoverItem())
+                    return self.screen
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hover-behavior.gif
    :align: center

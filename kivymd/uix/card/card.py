@@ -135,7 +135,7 @@ Example
 
                 def on_start(self):
                     for style in ("elevated", "filled", "outlined"):
-                        self.root.ids.box.add_widget(
+                        self.root..get_ids().box.add_widget(
                             MyCard(
                                 MDRelativeLayout(
                                     MDIconButton(
@@ -199,58 +199,117 @@ Outlined
 Customization of card
 =====================
 
-.. code-block:: kv
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Imperative python style with KV
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        theme_bg_color: "Custom"
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDCard:
-            style: "elevated"
-            pos_hint: {"center_x": .5, "center_y": .5}
-            padding: "4dp"
-            size_hint: None, None
-            size: "240dp", "100dp"
-            # Sets custom properties.
-            theme_shadow_color: "Custom"
-            shadow_color: "green"
-            theme_bg_color: "Custom"
-            md_bg_color: "white"
-            md_bg_color_disabled: "grey"
-            theme_shadow_offset: "Custom"
-            shadow_offset: (1, -2)
-            theme_shadow_softness: "Custom"
-            shadow_softness: 1
-            theme_elevation_level: "Custom"
-            elevation_level: 2
+            from kivymd.app import MDApp
 
-            MDRelativeLayout:
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-                MDIconButton:
-                    icon: "dots-vertical"
-                    pos_hint: {"top": 1, "right": 1}
+                MDCard:
+                    style: "elevated"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    padding: "4dp"
+                    size_hint: None, None
+                    size: "240dp", "100dp"
+                    # Sets custom properties.
+                    theme_shadow_color: "Custom"
+                    shadow_color: "green"
+                    theme_bg_color: "Custom"
+                    md_bg_color: "white"
+                    md_bg_color_disabled: "grey"
+                    theme_shadow_offset: "Custom"
+                    shadow_offset: (1, -2)
+                    theme_shadow_softness: "Custom"
+                    shadow_softness: 1
+                    theme_elevation_level: "Custom"
+                    elevation_level: 2
 
-                MDLabel:
-                    text: "Elevated"
-                    adaptive_size: True
-                    color: "grey"
-                    pos: "12dp", "12dp"
-                    bold: True
-    '''
+                    RelativeLayout:
 
+                        MDIconButton:
+                            icon: "dots-vertical"
+                            pos_hint: {"top": 1, "right": 1}
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.primary_palette = "Green"
-            return Builder.load_string(KV)
+                        MDLabel:
+                            text: "Elevated"
+                            adaptive_size: True
+                            color: "grey"
+                            pos: "12dp", "12dp"
+                            bold: True
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Green"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDIconButton
+            from kivymd.uix.card import MDCard
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.relativelayout import MDRelativeLayout
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Green"
+                    return (
+                        MDScreen(
+                            MDCard(
+                                MDRelativeLayout(
+                                    MDIconButton(
+                                        icon="dots-vertical",
+                                        pos_hint={"top": 1, "right": 1},
+                                    ),
+                                    MDLabel(
+                                        text="Elevated",
+                                        adaptive_size=True,
+                                        color="grey",
+                                        pos=("12dp", "12dp"),
+                                        bold=True,
+                                    ),
+                                ),
+                                style="elevated",
+                                pos_hint={"center_x": .5, "center_y": .5},
+                                padding="4dp",
+                                size_hint=(None, None),
+                                size=("240dp", "100dp"),
+                                # Sets custom properties.
+                                theme_shadow_color="Custom",
+                                shadow_color="green",
+                                theme_bg_color="Custom",
+                                md_bg_color="white",
+                                md_bg_color_disabled="grey",
+                                theme_shadow_offset="Custom",
+                                shadow_offset=(1, -2),
+                                theme_shadow_softness="Custom",
+                                shadow_softness=1,
+                                theme_elevation_level="Custom",
+                                elevation_level=2,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/card-customization.png
     :align: center
@@ -317,10 +376,12 @@ Example
 
                 MDCardSwipeFrontBox:
 
-                    OneLineListItem:
+                    MDListItem:
                         id: content
-                        text: root.text
-                        _no_ripple_effect: True
+                        ripple_effect: False
+
+                        MDListItemSupportingText
+                            text: root.text
 
 
             MDScreen:
@@ -363,50 +424,70 @@ Example
 
         .. code-block:: python
 
+            from kivy.properties import StringProperty
+
             from kivymd.app import MDApp
+            from kivymd.uix.button import MDIconButton
             from kivymd.uix.card import (
                 MDCardSwipe, MDCardSwipeLayerBox, MDCardSwipeFrontBox
             )
-            from kivymd.uix.list import MDList, OneLineListItem
+            from kivymd.uix.list import MDList, MDListItem, MDListItemSupportingText
             from kivymd.uix.screen import MDScreen
             from kivymd.uix.scrollview import MDScrollView
 
 
+            class SwipeToDeleteItem(MDCardSwipe):
+                text = StringProperty()
+
+
             class Example(MDApp):
-                def build(self):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
                     self.theme_cls.theme_style = "Dark"
                     self.theme_cls.primary_palette = "Orange"
+
+                def build(self):
                     return (
                         MDScreen(
                             MDScrollView(
                                 MDList(
                                     id="md_list",
-                                    padding=0,
-                                ),
-                                id="scroll",
-                                scroll_timeout=100,
-                            ),
+                                    padding=10,
+                                )
+                            )
                         )
                     )
 
-                def on_start(self):
-                    '''Creates a list of cards.'''
+                def remove_item(self, instance):
+                    self.root.get_ids().md_list.remove_widget(instance)
 
+                def on_start(self):
                     for i in range(20):
-                        self.root.ids.scroll.ids.md_list.add_widget(
-                            MDCardSwipe(
-                                MDCardSwipeLayerBox(),
-                                MDCardSwipeFrontBox(
-                                    OneLineListItem(
-                                        id="content",
-                                        text=f"One-line item {i}",
-                                        _no_ripple_effect=True,
-                                    )
+                        swipe_to_delete_item = SwipeToDeleteItem(
+                            MDCardSwipeLayerBox(
+                                MDIconButton(
+                                    id="trash_can",
+                                    icon="trash-can",
+                                    pos_hint={"center_y": 0.5},
                                 ),
-                                size_hint_y=None,
-                                height="48dp",
-                            )
+                            ),
+                            MDCardSwipeFrontBox(
+                                MDListItem(
+                                    MDListItemSupportingText(
+                                        text=f"One-line item {i}",
+                                    ),
+                                    id="content",
+                                    ripple_effect=False,
+                                ),
+                            ),
+                            size_hint_y=None,
                         )
+                        trash_can = swipe_to_delete_item.get_ids().trash_can
+                        trash_can.bind(
+                            on_release=lambda x, y=swipe_to_delete_item: self.remove_item(y)
+                        )
+                        self.root.get_ids().md_list.add_widget(swipe_to_delete_item)
+                        swipe_to_delete_item.height = swipe_to_delete_item.get_ids().content.height
 
 
             Example().run()
@@ -481,7 +562,7 @@ You can use this event to remove items from a list:
         .. code-block:: python
 
             def on_swipe_complete(self, instance):
-                self.root.ids.box.ids.scroll.ids.md_list.remove_widget(instance)
+                self.root.get_ids().md_list.remove_widget(instance)
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/auto-mdcard-swipe.gif
     :align: center
@@ -526,11 +607,11 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
+    ColorProperty,
     NumericProperty,
     OptionProperty,
     StringProperty,
     VariableListProperty,
-    ColorProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -539,10 +620,10 @@ from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
     CommonElevationBehavior,
     DeclarativeBehavior,
     RectangularRippleBehavior,
-    BackgroundColorBehavior,
 )
 from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
 from kivymd.uix.boxlayout import MDBoxLayout

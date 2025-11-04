@@ -48,14 +48,14 @@
     theme_font_size: "Custom"
     font_size: "18sp"
     pos_hint: {"center_y": .5}
-    padding:
-        "12dp", \
-        0, \
-        0 \
-        if self.parent.parent.ids.container.parent._label else \
-        "12dp", \
+    on_size:
+        self.padding = [
+        "12dp",
+        0,
+        0 if self.parent.parent.ids.container.parent._label else "12dp",
         0
-    icon_color:
+        ]
+        self.icon_color = \
         ( \
         self.theme_cls.onSecondaryContainerColor \
         if self.parent.parent.ids.container.parent.active else \

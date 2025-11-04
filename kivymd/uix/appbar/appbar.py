@@ -40,24 +40,50 @@ TopAppBar
 Usage
 -----
 
-.. code-block:: kv
+.. tabs::
 
-    MDTopAppBar:
-        type: "small"
+    .. tab:: Imperative python style with KV
 
-        MDTopAppBarLeadingButtonContainer:
+        .. code-block:: kv
 
-            MDActionTopAppBarButton:
-                icon: "menu"
+            MDTopAppBar:
+                type: "small"
 
-        MDTopAppBarTitle:
-            text: "AppBar Center-aligned"
-            pos_hint: {"center_x": .5}
+                MDTopAppBarLeadingButtonContainer:
 
-        MDTopAppBarTrailingButtonContainer:
+                    MDActionTopAppBarButton:
+                        icon: "menu"
 
-            MDActionTopAppBarButton:
-                icon: "account-circle-outline"
+                MDTopAppBarTitle:
+                    text: "AppBar Center-aligned"
+                    halign: "center"
+
+                MDTopAppBarTrailingButtonContainer:
+
+                    MDActionTopAppBarButton:
+                        icon: "account-circle-outline"
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            MDTopAppBar(
+                MDTopAppBarLeadingButtonContainer(
+                    MDActionTopAppBarButton(
+                        icon="menu",
+                    ),
+                ),
+                MDTopAppBarTitle(
+                    text="AppBar Center-aligned",
+                    halign="center",
+                ),
+                MDTopAppBarTrailingButtonContainer(
+                    MDActionTopAppBarButton(
+                        icon="account-circle-outline",
+                    ),
+                ),
+                type="small",
+            )
 
 Anatomy
 -------
@@ -71,29 +97,60 @@ Configurations
 1. Center-aligned
 -----------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDScreen:
-        md_bg_color: self.theme_cls.secondaryContainerColor
+    .. tab:: Imperative python style with KV
 
-        MDTopAppBar:
-            type: "small"
-            size_hint_x: .8
-            pos_hint: {"center_x": .5, "center_y": .5}
+        .. code-block:: kv
 
-            MDTopAppBarLeadingButtonContainer:
+            MDScreen:
+                md_bg_color: self.theme_cls.secondaryContainerColor
 
-                MDActionTopAppBarButton:
-                    icon: "menu"
+                MDTopAppBar:
+                    type: "small"
+                    size_hint_x: .8
+                    pos_hint: {"center_x": .5, "center_y": .5}
 
-            MDTopAppBarTitle:
-                text: "AppBar small"
-                pos_hint: {"center_x": .5}
+                    MDTopAppBarLeadingButtonContainer:
 
-            MDTopAppBarTrailingButtonContainer:
+                        MDActionTopAppBarButton:
+                            icon: "menu"
 
-                MDActionTopAppBarButton:
-                    icon: "account-circle-outline"
+                    MDTopAppBarTitle:
+                        text: "AppBar small"
+                        halign: "center"
+
+                    MDTopAppBarTrailingButtonContainer:
+
+                        MDActionTopAppBarButton:
+                            icon: "account-circle-outline"
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            MDScreen(
+                MDTopAppBar(
+                    MDTopAppBarLeadingButtonContainer(
+                        MDActionTopAppBarButton(
+                            icon="menu",
+                        ),
+                    ),
+                    MDTopAppBarTitle(
+                        text="AppBar small",
+                        halign="center",
+                    ),
+                    MDTopAppBarTrailingButtonContainer(
+                        MDActionTopAppBarButton(
+                            icon="account-circle-outline",
+                        ),
+                    ),
+                    type="small",
+                    size_hint_x=.8,
+                    pos_hint={"center_x": 0.5, "center_y": 0.5},
+                ),
+                md_bg_color=self.theme_cls.secondaryContainerColor,
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/top-appbar-center-aligned.png
     :align: center
@@ -101,34 +158,70 @@ Configurations
 2. Small
 --------
 
-.. code-block:: kv
+.. tabs::
 
-    MDScreen:
-        md_bg_color: self.theme_cls.secondaryContainerColor
+    .. tab:: Imperative python style with KV
 
-        MDTopAppBar:
-            type: "small"
-            size_hint_x: .8
-            pos_hint: {"center_x": .5, "center_y": .5}
+        .. code-block:: kv
 
-            MDTopAppBarLeadingButtonContainer:
+            MDScreen:
+                md_bg_color: self.theme_cls.secondaryContainerColor
 
-                MDActionTopAppBarButton:
-                    icon: "arrow-left"
+                MDTopAppBar:
+                    type: "small"
+                    size_hint_x: .8
+                    pos_hint: {"center_x": .5, "center_y": .5}
 
-            MDTopAppBarTitle:
-                text: "AppBar small"
+                    MDTopAppBarLeadingButtonContainer:
 
-            MDTopAppBarTrailingButtonContainer:
+                        MDActionTopAppBarButton:
+                            icon: "arrow-left"
 
-                MDActionTopAppBarButton:
-                    icon: "attachment"
+                    MDTopAppBarTitle:
+                        text: "AppBar small"
 
-                MDActionTopAppBarButton:
-                    icon: "calendar"
+                    MDTopAppBarTrailingButtonContainer:
 
-                MDActionTopAppBarButton:
-                    icon: "dots-vertical"
+                        MDActionTopAppBarButton:
+                            icon: "attachment"
+
+                        MDActionTopAppBarButton:
+                            icon: "calendar"
+
+                        MDActionTopAppBarButton:
+                            icon: "dots-vertical"
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            MDScreen(
+                MDTopAppBar(
+                    MDTopAppBarLeadingButtonContainer(
+                        MDActionTopAppBarButton(
+                            icon="arrow-left",
+                        ),
+                    ),
+                    MDTopAppBarTitle(
+                        text="AppBar small",
+                    ),
+                    MDTopAppBarTrailingButtonContainer(
+                        MDActionTopAppBarButton(
+                            icon="attachment",
+                        ),
+                        MDActionTopAppBarButton(
+                            icon="calendar",
+                        ),
+                        MDActionTopAppBarButton(
+                            icon="dots-vertical",
+                        ),
+                    ),
+                    type="small",
+                    size_hint_x=.8,
+                    pos_hint={"center_x": 0.5, "center_y": 0.5},
+                ),
+                md_bg_color=self.theme_cls.secondaryContainerColor,
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/top-appbar-small.png
     :align: center
@@ -163,30 +256,60 @@ BottomAppBar
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/app-bar-bottom-m3.png
     :align: center
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Imperative python style with KV
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDBottomAppBar:
+            from kivymd.app import MDApp
 
-            MDFabBottomAppBarButton:
-                icon: "plus"
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
+                MDBottomAppBar:
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+                    MDFabBottomAppBarButton:
+                        icon: "plus"
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.appbar import MDBottomAppBar, MDFabBottomAppBarButton
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDBottomAppBar(
+                                MDFabBottomAppBarButton(
+                                    icon="plus",
+                                ),
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-app-bar-m3-style-1.png
     :align: center
@@ -215,48 +338,94 @@ Add action items
 Change action items
 -------------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Imperative python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.appbar import MDActionBottomAppBarButton
+        .. code-block:: python
 
-    KV = '''
-    #:import MDActionBottomAppBarButton kivymd.uix.appbar.MDActionBottomAppBarButton
+            from kivy.lang import Builder
 
+            from kivymd.app import MDApp
+            from kivymd.uix.appbar import MDActionBottomAppBarButton
 
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
-
-        MDBottomAppBar:
-            id: bottom_appbar
-            action_items:
-                [
-                MDActionBottomAppBarButton(icon="gmail"),
-                MDActionBottomAppBarButton(icon="bookmark"),
-                ]
-
-            MDFabBottomAppBarButton:
-                icon: "plus"
-                on_release: app.change_actions_items()
-    '''
+            KV = '''
+            #:import MDActionBottomAppBarButton kivymd.uix.appbar.MDActionBottomAppBarButton
 
 
-    class Example(MDApp):
-        def change_actions_items(self):
-            self.root.ids.bottom_appbar.action_items = [
-                MDActionBottomAppBarButton(icon="magnify"),
-                MDActionBottomAppBarButton(icon="trash-can-outline"),
-                MDActionBottomAppBarButton(icon="download-box-outline"),
-            ]
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+                MDBottomAppBar:
+                    id: bottom_appbar
+                    action_items:
+                        [
+                        MDActionBottomAppBarButton(icon="gmail"),
+                        MDActionBottomAppBarButton(icon="bookmark"),
+                        ]
+
+                    MDFabBottomAppBarButton:
+                        icon: "plus"
+                        on_release: app.change_actions_items()
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def change_actions_items(self):
+                    self.root.ids.bottom_appbar.action_items = [
+                        MDActionBottomAppBarButton(icon="magnify"),
+                        MDActionBottomAppBarButton(icon="trash-can-outline"),
+                        MDActionBottomAppBarButton(icon="download-box-outline"),
+                    ]
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.appbar import (
+                MDBottomAppBar, MDFabBottomAppBarButton, MDActionBottomAppBarButton
+            )
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def change_actions_items(self, *args):
+                    self.screen.get_ids().bottom_appbar.action_items = [
+                        MDActionBottomAppBarButton(icon="magnify"),
+                        MDActionBottomAppBarButton(icon="trash-can-outline"),
+                        MDActionBottomAppBarButton(icon="download-box-outline"),
+                    ]
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.screen = (
+                        MDScreen(
+                            MDBottomAppBar(
+                                MDFabBottomAppBarButton(
+                                    icon="plus",
+                                    on_release=self.change_actions_items,
+                                ),
+                                id="bottom_appbar",
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+                    self.screen.get_ids().bottom_appbar.action_items = [
+                        MDActionBottomAppBarButton(icon="gmail"),
+                        MDActionBottomAppBarButton(icon="bookmark"),
+                    ]
+                    return self.screen
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/bottom-app-bar-m3-style-3.gif
     :align: center
@@ -271,7 +440,7 @@ A practical example
     from kivy.clock import Clock
     from kivy.lang import Builder
     from kivy.properties import StringProperty, BooleanProperty, ObjectProperty
-    from kivy.uix.behaviors import FocusBehavior
+    from kivy.uix.behaviors import StateFocusBehavior
     from kivy.uix.recycleboxlayout import RecycleBoxLayout
     from kivy.uix.recycleview.layout import LayoutSelectionBehavior
     from kivy.uix.recycleview.views import RecycleDataViewBehavior
@@ -388,7 +557,7 @@ A practical example
 
 
     class SelectableRecycleGridLayout(
-        FocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout
+        StateFocusBehavior, LayoutSelectionBehavior, RecycleBoxLayout
     ):
         pass
 
@@ -513,6 +682,7 @@ __all__ = (
 
 import os
 
+import asynckivy
 from kivy import Logger
 from kivy.animation import Animation
 from kivy.clock import Clock
@@ -521,12 +691,12 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
+    ColorProperty,
     ListProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
     StringProperty,
-    ColorProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
@@ -536,18 +706,16 @@ from kivy.uix.widget import Widget
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
     CommonElevationBehavior,
     DeclarativeBehavior,
     RotateBehavior,
     ScaleBehavior,
-    BackgroundColorBehavior,
 )
 from kivymd.uix.button import MDFabButton, MDIconButton
 from kivymd.uix.controllers import WindowController
 from kivymd.uix.label import MDLabel
 from kivymd.utils.set_bars_colors import set_bars_colors
-
-import asynckivy
 
 with open(
     os.path.join(uix_path, "appbar", "appbar.kv"), encoding="utf-8"
@@ -566,7 +734,7 @@ class BaseTopAppBarButtonContainer(DeclarativeBehavior, BoxLayout):
         return super().add_widget(widget)
 
     def _check_icon_color(self, widget):
-        if widget.theme_icon_color == "Primary" and widget.icon_color == None:
+        if widget.theme_icon_color == "Primary" and widget.icon_color is None:
             widget.theme_icon_color = "Custom"
             widget.icon_color = widget.theme_cls.onSurfaceColor
 
@@ -625,25 +793,6 @@ class MDTopAppBarTitle(MDLabel):
     """
 
     _appbar = ObjectProperty()
-    _title_width = NumericProperty(0)
-
-    # FIXME: When changing the text, the texture_size property returns an
-    #  incorrect value, which causes the panel title to shift.
-    def on_text(self, instance, value) -> None:
-        """Fired when the :attr:`text` value changes."""
-
-        def set_title_width(*args) -> None:
-            self._title_width = self.texture_size[0]
-
-        Clock.schedule_once(set_title_width)
-
-    def on_pos_hint(self, instance, value) -> None:
-        """Fired when the :attr:`pos_hint` value changes."""
-
-        if self._appbar:
-            Clock.schedule_once(
-                lambda x: self._appbar._set_padding_title(value)
-            )
 
 
 class MDTopAppBarLeadingButtonContainer(BaseTopAppBarButtonContainer):
@@ -672,11 +821,6 @@ class MDTopAppBarTrailingButtonContainer(BaseTopAppBarButtonContainer):
     """
 
 
-# FIXME: The on_enter/on_leave event is not triggered for
-#  MDActionTopAppBarButton buttons in the MDTopAppBarTrailingButtonContainer
-#  container.
-#  When the screen size is changed on desktop devices, the position of the
-#  trailing container is shifted until the screen size change is completed.
 class MDTopAppBar(
     DeclarativeBehavior,
     ThemableBehavior,
@@ -731,149 +875,31 @@ class MDTopAppBar(
     _trailing_button_container = ObjectProperty()
     _leading_button_container = ObjectProperty()
     _appbar_title = ObjectProperty()
-    _right_padding = NumericProperty(0)
-    _left_padding = NumericProperty(0)
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        Clock.schedule_once(lambda x: self.on_size(self, (0, 0)))
-
-    def on_type(self, instance, value) -> None:
-        def on_type(*args):
-            if value in ("medium", "large"):
-                self.ids.root_box.add_widget(Widget(), index=1)
-
-        Clock.schedule_once(on_type, 0.5)
-
-    def on_size(self, instance, size) -> None:
-        """Fired when the application screen size changes."""
-
-        if self._appbar_title:
-            if not self._appbar_title._title_width:
-                self._appbar_title._title_width = (
-                    self._appbar_title.texture_size[0]
-                )
-            self._right_padding = 0
-            self._left_padding = 0
-            self._appbar_title.on_pos_hint(
-                self._appbar_title, self._appbar_title.pos_hint
-            )
 
     def add_widget(self, widget, *args, **kwargs):
         if isinstance(widget, MDTopAppBarTitle):
             widget._appbar = self
             self._appbar_title = widget
-            widget.bind(text=lambda *x: self.on_size(*x))
             Clock.schedule_once(lambda x: self._add_title(widget))
         elif isinstance(widget, MDTopAppBarTrailingButtonContainer):
             self._trailing_button_container = widget
             widget._appbar = self
             Clock.schedule_once(lambda x: self.ids.root_box.add_widget(widget))
         elif isinstance(widget, MDTopAppBarLeadingButtonContainer):
-            widget._appbar = self
             self._leading_button_container = widget
-            Clock.schedule_once(lambda x: self.ids.root_box.add_widget(widget))
+            widget._appbar = self
+            Clock.schedule_once(lambda x: self.ids.root_box.add_widget(widget, len(self.ids.root_box.children)))
         else:
             return super().add_widget(widget)
 
     def _add_title(self, widget):
         if self.type == "small":
-            self.ids.root_box.add_widget(widget)
+            self.ids.text_box.add_widget(widget)
         else:
             self.ids.title_box.add_widget(widget)
-
-    def _set_padding_title(self, value):
-        if value.get("center_x", 0) == 0.5 and self.type == "small":
-            if (
-                not self._trailing_button_container
-                and self._leading_button_container
-            ):
-                self._left_padding = (
-                    (self.width // 2)
-                    - (
-                        self._leading_button_container.width
-                        + (self._appbar_title._title_width // 2)
-                    )
-                ) - self._left_padding
-            elif (
-                self._trailing_button_container
-                and not self._leading_button_container
-            ):
-                self._left_padding = (
-                    (self.width // 2) - (self._appbar_title._title_width // 2)
-                ) - self._left_padding
-                self._right_padding = (
-                    (self.width // 2)
-                    - (
-                        self._trailing_button_container.width
-                        + (self._appbar_title._title_width // 2)
-                    )
-                ) - self._right_padding
-            elif (
-                not self._trailing_button_container
-                and not self._leading_button_container
-            ):
-                self._left_padding = (
-                    (self.width // 2) - (self._appbar_title._title_width // 2)
-                ) - self._left_padding
-                self._right_padding = (
-                    (self.width // 2) - (self._appbar_title._title_width // 2)
-                ) - self._right_padding
-            elif (
-                self._trailing_button_container
-                and self._leading_button_container
-            ):
-                self._left_padding = (
-                    (self.width // 2)
-                    - (
-                        self._leading_button_container.width
-                        + (self._appbar_title._title_width // 2)
-                    )
-                ) - self._left_padding
-                self._right_padding = (
-                    (self.width // 2)
-                    - (
-                        self._trailing_button_container.width
-                        + (self._appbar_title._title_width // 2)
-                    )
-                ) - self._right_padding
-        elif (
-            not value
-            and self._trailing_button_container
-            and self._leading_button_container
-        ):
-            if self.type == "small":
-
-                self._right_padding = (
-                    self.width
-                    - (
-                        self._trailing_button_container.width
-                        + self._leading_button_container.width
-                        + self._appbar_title._title_width
-                    )
-                    - self._right_padding
-                )
-        elif (
-            not value
-            and self._trailing_button_container
-            and not self._leading_button_container
-        ):
-            if self.type == "small":
-                self._right_padding = (
-                    self.width
-                    - (
-                        self._trailing_button_container.width
-                        + self._appbar_title._title_width
-                    )
-                    - self._right_padding
-                )
-                self._left_padding = dp(16)
-        elif (
-            not value
-            and not self._trailing_button_container
-            and not self._leading_button_container
-        ):
-            self._left_padding = dp(16)
 
 
 class MDBottomAppBar(

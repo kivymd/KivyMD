@@ -14,19 +14,35 @@ Components/ImageList
 Usage
 -----
 
-.. code-block:: kv
+.. tabs::
 
-    MDSmartTile:
-        [...]
+    .. tab:: Declarative KV style
 
-        MDSmartTileImage:
-            [...]
+        .. code-block:: kv
 
-        MDSmartTileOverlayContainer:
-            [...]
+            MDSmartTile:
+                [...]
 
-            # Content
-            [...]
+                MDSmartTileImage:
+                    [...]
+
+                MDSmartTileOverlayContainer:
+                    [...]
+
+                    # Content
+                    [...]
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDSmartTile(
+                MDSmartTileImage(
+                ),
+                MDSmartTileOverlayContainer(
+                    # Content
+                )
+            )
 
 Anatomy
 -------
@@ -37,57 +53,127 @@ Anatomy
 Example
 -------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative python style with KV
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDSmartTile:
-            pos_hint: {"center_x": .5, "center_y": .5}
-            size_hint: None, None
-            size: "320dp", "320dp"
-            overlap: False
+            from kivymd.app import MDApp
 
-            MDSmartTileImage:
-                source: "bg.jpg"
-                radius: [dp(24), dp(24), 0, 0]
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-            MDSmartTileOverlayContainer:
-                md_bg_color: 0, 0, 0, .5
-                adaptive_height: True
-                padding: "8dp"
-                spacing: "8dp"
-                radius: [0, 0, dp(24), dp(24)]
+                MDSmartTile:
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    size_hint: None, None
+                    size: "320dp", "320dp"
+                    overlap: False
 
-                MDIconButton:
-                    icon: "heart-outline"
-                    theme_icon_color: "Custom"
-                    icon_color: 1, 0, 0, 1
-                    pos_hint: {"center_y": .5}
-                    on_release:
-                        self.icon = "heart" \\
-                        if self.icon == "heart-outline" else \\
-                        "heart-outline"
+                    MDSmartTileImage:
+                        source: "bg.jpg"
+                        radius: [dp(24), dp(24), 0, 0]
 
-                MDLabel:
-                    text: "Ibanez GRG121DX-BKF"
-                    theme_text_color: "Custom"
-                    text_color: "white"
-    '''
+                    MDSmartTileOverlayContainer:
+                        md_bg_color: 0, 0, 0, .5
+                        adaptive_height: True
+                        padding: "8dp"
+                        spacing: "8dp"
+                        radius: [0, 0, dp(24), dp(24)]
 
+                        MDIconButton:
+                            icon: "heart-outline"
+                            theme_icon_color: "Custom"
+                            icon_color: 1, 0, 0, 1
+                            pos_hint: {"center_y": .5}
+                            on_release:
+                                self.icon = "heart" \\
+                                if self.icon == "heart-outline" else \\
+                                "heart-outline"
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+                        MDLabel:
+                            text: "Ibanez GRG121DX-BKF"
+                            theme_text_color: "Custom"
+                            text_color: "white"
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDIconButton
+            from kivymd.uix.imagelist import (
+                MDSmartTile,
+                MDSmartTileImage,
+                MDSmartTileOverlayContainer,
+            )
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def set_icon(self, heart_outline):
+                    heart_outline.icon = (
+                        "heart"
+                        if heart_outline.icon == "heart-outline"
+                        else "heart-outline"
+                    )
+
+                def on_start(self):
+                    self.root.get_ids().heart_outline.bind(on_release=self.set_icon)
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return MDScreen(
+                        MDSmartTile(
+                            MDSmartTileImage(
+                                source="bg.jpg",
+                                radius=[dp(24), dp(24), 0, 0],
+                            ),
+                            MDSmartTileOverlayContainer(
+                                MDIconButton(
+                                    id="heart_outline",
+                                    icon="heart-outline",
+                                    theme_icon_color="Custom",
+                                    icon_color=(1, 0, 0, 1),
+                                    pos_hint={"center_y": 0.5},
+                                ),
+                                MDLabel(
+                                    text="Ibanez GRG121DX-BKF",
+                                    theme_text_color="Custom",
+                                    text_color="white",
+                                ),
+                                md_bg_color=(0, 0, 0, 0.5),
+                                adaptive_height=True,
+                                padding="8dp",
+                                spacing="8dp",
+                                radius=[0, 0, dp(24), dp(24)],
+                            ),
+                            pos_hint={"center_x": 0.5, "center_y": 0.5},
+                            size_hint=(None, None),
+                            size=("320dp", "320dp"),
+                            overlap=False,
+                        ),
+                        md_bg_color=self.theme_cls.backgroundColor,
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/image-list-example.png
     :align: center
@@ -268,8 +354,8 @@ class MDSmartTile(MDRelativeLayout):
 
     __events__ = ("on_release", "on_press")
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def on_release(self, *args):
         """

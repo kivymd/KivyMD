@@ -683,26 +683,26 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     ColorProperty,
+    DictProperty,
     NumericProperty,
+    ObjectProperty,
     OptionProperty,
     VariableListProperty,
-    ObjectProperty,
-    DictProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.relativelayout import RelativeLayout
 
-from kivymd.uix.label import MDIcon, MDLabel
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
     CommonElevationBehavior,
     DeclarativeBehavior,
     RectangularRippleBehavior,
-    BackgroundColorBehavior,
 )
 from kivymd.uix.behaviors.motion_behavior import MotionExtendedFabButtonBehavior
 from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
+from kivymd.uix.label import MDIcon, MDLabel
 
 with open(
     os.path.join(uix_path, "button", "button.kv"), encoding="utf-8"
@@ -900,6 +900,15 @@ class BaseButton(
     def on_touch_down(self, touch):
         if self.collide_point(touch.x, touch.y) and not self.disabled:
             return super().on_touch_down(touch)
+
+    def finish_ripple(self):
+        def reset_state(*args):
+            self.dispatch("on_leave")
+            self.hovering = False
+            self.hover_visible = False
+
+        super().finish_ripple()
+        Clock.schedule_once(reset_state, 0.2)
 
 
 class MDButton(BaseButton, CommonElevationBehavior, RelativeLayout):

@@ -8,45 +8,90 @@ Components/DropdownItem
 Usage
 -----
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivymd.uix.menu import MDDropdownMenu
+    .. tab:: Declarative python style with KV
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreen
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
+            from kivymd.uix.menu import MDDropdownMenu
 
-        MDDropDownItem:
-            pos_hint: {"center_x": .5, "center_y": .5}
-            on_release: app.open_menu(self)
+            from kivymd.app import MDApp
 
-            MDDropDownItemText:
-                id: drop_text
-                text: "Item"
-    '''
+            KV = '''
+            MDScreen
+                md_bg_color: self.theme_cls.backgroundColor
 
+                MDDropDownItem:
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    on_release: app.open_menu(self)
 
-    class Example(MDApp):
-        def open_menu(self, item):
-            menu_items = [
-                {
-                    "text": f"{i}",
-                    "on_release": lambda x=f"Item {i}": self.menu_callback(x),
-                } for i in range(5)
-            ]
-            MDDropdownMenu(caller=item, items=menu_items).open()
-
-        def menu_callback(self, text_item):
-            self.root.ids.drop_text.text = text_item
-
-        def build(self):
-            return Builder.load_string(KV)
+                    MDDropDownItemText:
+                        id: drop_text
+                        text: "Item"
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def open_menu(self, item):
+                    menu_items = [
+                        {
+                            "text": f"{i}",
+                            "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                        } for i in range(5)
+                    ]
+                    MDDropdownMenu(caller=item, items=menu_items).open()
+
+                def menu_callback(self, text_item):
+                    self.root.ids.drop_text.text = text_item
+
+                def build(self):
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.dropdownitem import MDDropDownItem, MDDropDownItemText
+            from kivymd.uix.menu import MDDropdownMenu
+            from kivymd.app import MDApp
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def open_menu(self, item):
+                    menu_items = [
+                        {
+                            "text": f"{i}",
+                            "on_release": lambda x=f"Item {i}": self.menu_callback(x),
+                        } for i in range(5)
+                    ]
+                    MDDropdownMenu(caller=item, items=menu_items).open()
+
+                def menu_callback(self, text_item):
+                    self.root.get_ids().drop_text.text = text_item
+
+                def build(self):
+                    return (
+                        MDScreen(
+                            MDDropDownItem(
+                                MDDropDownItemText(
+                                    id="drop_text",
+                                    text="Item",
+                                ),
+                                pos_hint={"center_x": .5, "center_y": .5},
+                                on_release=self.open_menu,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+
+            Example().run()
 
 .. seealso::
 
@@ -83,14 +128,14 @@ import os
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
-from kivy.properties import ObjectProperty, ListProperty
+from kivy.properties import ListProperty, ObjectProperty
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 
-from kivymd.uix.label import MDLabel
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import DeclarativeBehavior
+from kivymd.uix.label import MDLabel
 
 with open(
     os.path.join(uix_path, "dropdownitem", "dropdownitem.kv"), encoding="utf-8"

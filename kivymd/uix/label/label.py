@@ -81,11 +81,28 @@ After that, you can specify the desired color in the ``text_color`` parameter:
 
 .. code-block:: kv
 
-    MDLabel:
-        text: "Custom color"
-        halign: "center"
-        theme_text_color: "Custom"
-        text_color: "red"
+.. tabs::
+
+    .. tab:: KV style
+
+        .. code-block:: kv
+
+            MDLabel:
+                text: "Custom color"
+                halign: "center"
+                theme_text_color: "Custom"
+                text_color: "red"
+
+    .. tab:: Python
+
+        .. code-block:: python
+
+            MDLabel(
+                text="Custom color",
+                halign="center",
+                theme_text_color="Custom",
+                text_color="red",
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-label-custom-color.png
     :align: center
@@ -94,21 +111,48 @@ After that, you can specify the desired color in the ``text_color`` parameter:
 specify the name of the desired style in the :attr:`~MDLabel.font_style`
 and :attr:`~MDLabel.role` parameters:
 
-.. code-block:: kv
+.. tabs::
 
-    MDLabel:
-        text: "Display, role - 'large'"
-        font_style: "Display"
+    .. tab:: KV style
+
+        .. code-block:: kv
+
+            MDLabel:
+                text: "Display, role - 'large'"
+                font_style: "Display"
+
+    .. tab:: Python
+
+        .. code-block:: python
+
+            MDLabel(
+                text="Display, role - 'large'",
+                font_style="Display",
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-label-font-style-display-large.png
     :align: center
 
-.. code-block:: kv
+.. tabs::
 
-    MDLabel:
-        text: "Display, role - 'small'"
-        font_style: "Display"
-        role: "small"
+    .. tab:: KV style
+
+        .. code-block:: kv
+
+            MDLabel:
+                text: "Display, role - 'small'"
+                font_style: "Display"
+                role: "small"
+
+    .. tab:: Python
+
+        .. code-block:: python
+
+            MDLabel(
+                text="Display, role - 'small'",
+                font_style="Display",
+                role="small",
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-label-font-style-display-small.png
     :align: center
@@ -121,55 +165,114 @@ and :attr:`~MDLabel.role` parameters:
 All styles
 ----------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative python style with KV
 
-    from kivymd.font_definitions import theme_font_styles
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDRecycleView:
-            id: rv
-            key_viewclass: 'viewclass'
-            key_size: 'height'
+            from kivymd.font_definitions import theme_font_styles
+            from kivymd.app import MDApp
 
-            RecycleBoxLayout:
-                padding: dp(10)
-                spacing: dp(10)
-                default_size: None, dp(48)
-                default_size_hint: 1, None
-                size_hint_y: None
-                height: self.minimum_height
-                orientation: "vertical"
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDRecycleView:
+                    id: rv
+                    key_viewclass: 'viewclass'
+                    key_size: 'height'
+
+                    RecycleBoxLayout:
+                        padding: dp(10)
+                        spacing: dp(10)
+                        default_size: None, dp(48)
+                        default_size_hint: 1, None
+                        size_hint_y: None
+                        height: self.minimum_height
+                        orientation: "vertical"
+            '''
 
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
 
-        def on_start(self):
-            for style in theme_font_styles:
-                if style != "Icon":
-                    for role in theme_font_styles[style]:
-                        font_size = int(theme_font_styles[style][role]["font-size"])
-                        self.root.ids.rv.data.append(
-                            {
-                                "viewclass": "MDLabel",
-                                "text": f"{style} {role} {font_size} sp",
-                                "adaptive_height": "True",
-                                "font_style": style,
-                                "role": role,
-                            }
+                def on_start(self):
+                    for style in theme_font_styles:
+                        if style != "Icon":
+                            for role in theme_font_styles[style]:
+                                font_size = int(theme_font_styles[style][role]["font-size"])
+                                self.root.ids.rv.data.append(
+                                    {
+                                        "viewclass": "MDLabel",
+                                        "text": f"{style} {role} {font_size} sp",
+                                        "adaptive_height": "True",
+                                        "font_style": style,
+                                        "role": role,
+                                    }
+                                )
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+
+            from kivymd.font_definitions import theme_font_styles
+            from kivymd.app import MDApp
+            from kivymd.uix.recycleboxlayout import MDRecycleBoxLayout
+            from kivymd.uix.recycleview import MDRecycleView
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDRecycleView(
+                                MDRecycleBoxLayout(
+                                    padding=dp(10),
+                                    spacing=dp(10),
+                                    default_size=(None, dp(48)),
+                                    default_size_hint=(1, None),
+                                    adaptive_height=True,
+                                    orientation="vertical",
+                                ),
+                                id="rv",
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
                         )
+                    )
+
+                def on_start(self):
+                    self.root.get_ids().rv.key_viewclass = 'viewclass'
+                    self.root.get_ids().rv.key_size = 'height'
+
+                    for style in theme_font_styles:
+                        if style != "Icon":
+                            for role in theme_font_styles[style]:
+                                font_size = int(
+                                    theme_font_styles[style][role]["font-size"])
+                                self.root.get_ids().rv.data.append(
+                                    {
+                                        "viewclass": "MDLabel",
+                                        "text": f"{style} {role} {font_size} sp",
+                                        "adaptive_height": "True",
+                                        "font_style": style,
+                                        "role": role,
+                                    }
+                                )
 
 
-    Example().run()
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/label-font-style-preview.png
     :align: center
@@ -326,116 +429,233 @@ You can copy the label text by double clicking on it:
 Example of copying/cutting labels using the context menu
 --------------------------------------------------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.core.clipboard import Clipboard
-    from kivy.lang.builder import Builder
-    from kivy.metrics import dp
+    .. tab:: Declarative KV style
 
-    from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
-    from kivymd.app import MDApp
-    from kivymd.uix.label import MDLabel
-    from kivymd.uix.menu import MDDropdownMenu
+        .. code-block:: python
 
-    KV = '''
-    MDBoxLayout:
-        orientation: "vertical"
-        spacing: "12dp"
-        padding: "24dp"
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.core.clipboard import Clipboard
+            from kivy.lang.builder import Builder
+            from kivy.metrics import dp
 
-        MDBoxLayout:
-            id: box
-            orientation: "vertical"
-            padding: "24dp"
-            spacing: "12dp"
-            adaptive_height: True
+            from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
+            from kivymd.app import MDApp
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.menu import MDDropdownMenu
 
-        MDTextField:
-            max_height: "200dp"
-            mode: "filled"
-            multiline: True
+            KV = '''
+            MDBoxLayout:
+                orientation: "vertical"
+                spacing: "12dp"
+                padding: "24dp"
+                md_bg_color: self.theme_cls.backgroundColor
 
-        Widget:
-    '''
+                MDBoxLayout:
+                    id: box
+                    orientation: "vertical"
+                    padding: "24dp"
+                    spacing: "12dp"
+                    adaptive_height: True
 
-    data = [
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-        "Sed blandit libero volutpat sed cras ornare arcu. Nisl vel pretium "
-        "lectus quam id leo in. Tincidunt arcu non sodales neque sodales ut etiam.",
-        "Elit scelerisque mauris pellentesque pulvinar pellentesque habitant. "
-        "Nisl rhoncus mattis rhoncus urna neque. Orci nulla pellentesque "
-        "dignissim enim. Ac auctor augue mauris augue neque gravida in fermentum. "
-        "Lacus suspendisse faucibus interdum posuere."
-    ]
+                MDTextField:
+                    max_height: "200dp"
+                    mode: "filled"
+                    multiline: True
 
+                Widget:
+            '''
 
-    def toast(text):
-        MDSnackbar(
-            MDSnackbarText(
-                text=text,
-            ),
-            y=dp(24),
-            pos_hint={"center_x": 0.5},
-            size_hint_x=0.3,
-        ).open()
-
-
-    class CopyLabel(MDLabel):
-        def __init__(self, *args, **kwargs):
-            super().__init__(*args, **kwargs)
-            self.allow_selection = True
-            self.adaptive_height = True
-
-
-    class Example(MDApp):
-        context_menu = None
-
-        def build(self):
-            return Builder.load_string(KV)
-
-        def on_start(self):
-            for text in data:
-                copy_label = CopyLabel(text=text)
-                copy_label.bind(on_selection=self.open_context_menu)
-                self.root.ids.box.add_widget(copy_label)
-
-        def click_item_context_menu(
-            self, type_click: str, instance_label: CopyLabel
-        ) -> None:
-            Clipboard.copy(instance_label.text)
-
-            if type_click == "copy":
-                toast("Copied")
-            elif type_click == "cut":
-                self.root.ids.box.remove_widget(instance_label)
-                toast("Cut")
-            if self.context_menu:
-                self.context_menu.dismiss()
-
-        def open_context_menu(self, instance_label: CopyLabel) -> None:
-            instance_label.text_color = "black"
-            menu_items = [
-                {
-                    "text": "Copy text",
-                    "on_release": lambda: self.click_item_context_menu(
-                        "copy", instance_label
-                    ),
-                },
-                {
-                    "text": "Cut text",
-                    "on_release": lambda: self.click_item_context_menu(
-                        "cut", instance_label
-                    ),
-                },
+            data = [
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "Sed blandit libero volutpat sed cras ornare arcu. Nisl vel pretium "
+                "lectus quam id leo in. Tincidunt arcu non sodales neque sodales ut etiam.",
+                "Elit scelerisque mauris pellentesque pulvinar pellentesque habitant. "
+                "Nisl rhoncus mattis rhoncus urna neque. Orci nulla pellentesque "
+                "dignissim enim. Ac auctor augue mauris augue neque gravida in fermentum. "
+                "Lacus suspendisse faucibus interdum posuere."
             ]
-            self.context_menu = MDDropdownMenu(
-                caller=instance_label, items=menu_items, width_mult=3
-            )
-            self.context_menu.open()
 
 
-    Example().run()
+            def toast(text):
+                MDSnackbar(
+                    MDSnackbarText(
+                        text=text,
+                    ),
+                    y=dp(24),
+                    pos_hint={"center_x": 0.5},
+                    size_hint_x=0.3,
+                ).open()
+
+
+            class CopyLabel(MDLabel):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.allow_selection = True
+                    self.adaptive_height = True
+
+
+            class Example(MDApp):
+                context_menu = None
+
+                def build(self):
+                    return Builder.load_string(KV)
+
+                def on_start(self):
+                    for text in data:
+                        copy_label = CopyLabel(text=text)
+                        copy_label.bind(on_selection=self.open_context_menu)
+                        self.root.ids.box.add_widget(copy_label)
+
+                def click_item_context_menu(
+                    self, type_click: str, instance_label: CopyLabel
+                ) -> None:
+                    Clipboard.copy(instance_label.text)
+
+                    if type_click == "copy":
+                        toast("Copied")
+                    elif type_click == "cut":
+                        self.root.ids.box.remove_widget(instance_label)
+                        toast("Cut")
+                    if self.context_menu:
+                        self.context_menu.dismiss()
+
+                def open_context_menu(self, instance_label: CopyLabel) -> None:
+                    instance_label.text_color = "black"
+                    menu_items = [
+                        {
+                            "text": "Copy text",
+                            "on_release": lambda: self.click_item_context_menu(
+                                "copy", instance_label
+                            ),
+                        },
+                        {
+                            "text": "Cut text",
+                            "on_release": lambda: self.click_item_context_menu(
+                                "cut", instance_label
+                            ),
+                        },
+                    ]
+                    self.context_menu = MDDropdownMenu(
+                        caller=instance_label, items=menu_items, width_mult=3
+                    )
+                    self.context_menu.open()
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivy.core.clipboard import Clipboard
+            from kivy.metrics import dp
+
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.snackbar import MDSnackbar, MDSnackbarText
+            from kivymd.app import MDApp
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.menu import MDDropdownMenu
+            from kivymd.uix.textfield import MDTextField
+            from kivymd.uix.widget import MDWidget
+
+            data = [
+                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+                "Sed blandit libero volutpat sed cras ornare arcu. Nisl vel pretium "
+                "lectus quam id leo in. Tincidunt arcu non sodales neque sodales ut etiam.",
+                "Elit scelerisque mauris pellentesque pulvinar pellentesque habitant. "
+                "Nisl rhoncus mattis rhoncus urna neque. Orci nulla pellentesque "
+                "dignissim enim. Ac auctor augue mauris augue neque gravida in fermentum. "
+                "Lacus suspendisse faucibus interdum posuere."
+            ]
+
+
+            def toast(text):
+                MDSnackbar(
+                    MDSnackbarText(
+                        text=text,
+                    ),
+                    y=dp(24),
+                    pos_hint={"center_x": 0.5},
+                    size_hint_x=0.3,
+                ).open()
+
+
+            class CopyLabel(MDLabel):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.allow_selection = True
+                    self.adaptive_height = True
+
+
+            class Example(MDApp):
+                context_menu = None
+
+                def build(self):
+                    return (
+                        MDBoxLayout(
+                            MDBoxLayout(
+                                id="box",
+                                orientation="vertical",
+                                padding="24dp",
+                                spacing="12dp",
+                                adaptive_height=True,
+                            ),
+                            MDTextField(
+                                max_height="200dp",
+                                mode="filled",
+                                multiline=True,
+                            ),
+                            MDWidget(),
+                            orientation="vertical",
+                            spacing="12dp",
+                            padding="24dp",
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+                def on_start(self):
+                    for text in data:
+                        copy_label = CopyLabel(text=text)
+                        copy_label.bind(on_selection=self.open_context_menu)
+                        self.root.get_ids().box.add_widget(copy_label)
+
+                def click_item_context_menu(
+                        self, type_click: str, instance_label: CopyLabel
+                ) -> None:
+                    Clipboard.copy(instance_label.text)
+
+                    if type_click == "copy":
+                        toast("Copied")
+                    elif type_click == "cut":
+                        self.root.get_ids().box.remove_widget(instance_label)
+                        toast("Cut")
+                    if self.context_menu:
+                        self.context_menu.dismiss()
+
+                def open_context_menu(self, instance_label: CopyLabel) -> None:
+                    instance_label.text_color = "black"
+                    menu_items = [
+                        {
+                            "text": "Copy text",
+                            "on_release": lambda: self.click_item_context_menu(
+                                "copy", instance_label
+                            ),
+                        },
+                        {
+                            "text": "Cut text",
+                            "on_release": lambda: self.click_item_context_menu(
+                                "cut", instance_label
+                            ),
+                        },
+                    ]
+                    self.context_menu = MDDropdownMenu(
+                        caller=instance_label, items=menu_items, width_mult=3
+                    )
+                    self.context_menu.open()
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/copying-cutting-labels-using-context-menu.gif
     :align: center
@@ -460,10 +680,22 @@ The :class:`~MDIcon` class is inherited from
 .. Warning:: For the :class:`~MDIcon` class, you cannot use ``text``
     and ``font_style`` options!
 
-.. code-block:: kv
+.. tabs::
 
-    MDIcon:
-        icon: "gmail"
+    .. tab:: KV style
+
+        .. code-block:: kv
+
+            MDIcon:
+                icon: "gmail"
+
+    .. tab:: Python
+
+        .. code-block:: python
+
+            MDIcon(
+                icon="gmail"
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon.png
     :align: center
@@ -471,13 +703,28 @@ The :class:`~MDIcon` class is inherited from
 MDIcon with badge icon
 ----------------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDIcon:
-        icon: "gmail"
+    .. tab:: Declarative KV style
 
-        MDBadge:
-            text: "10+"
+        .. code-block:: kv
+
+            MDIcon:
+                icon: "gmail"
+
+                MDBadge:
+                    text: "10+"
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            MDIcon(
+                MDBadge(
+                    text="10+"
+                ),
+                icon="gmail"
+            )
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-badge.png
     :align: center
@@ -491,68 +738,138 @@ necessary fonts in the
 `materialsymbols-python <https://github.com/T-Dynamos/materialsymbols-python>`_
 repository
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.core.text import LabelBase
-    from kivy.lang import Builder
-    from kivy.metrics import sp
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
+        .. code-block:: kv
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.core.text import LabelBase
+            from kivy.lang import Builder
+            from kivy.metrics import sp
 
-        MDIcon:
-            icon: "music_video"
-            theme_font_name: "Custom"
-            font_name: "MaterialSymbols"
-            pos_hint: {"center_x": .5, "center_y": .58}
+            from kivymd.app import MDApp
 
-        MDButton:
-            pos_hint: {"center_x": .5, "center_y": .47}
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-            MDButtonIcon:
-                icon: "music_video"
-                theme_font_name: "Custom"
-                font_name: "MaterialSymbols"
+                MDIcon:
+                    icon: "music_video"
+                    theme_font_name: "Custom"
+                    font_name: "MaterialSymbols"
+                    pos_hint: {"center_x": .5, "center_y": .58}
 
-            MDButtonText:
-                text: "Elevated"
-    '''
+                MDButton:
+                    pos_hint: {"center_x": .5, "center_y": .47}
 
+                    MDButtonIcon:
+                        icon: "music_video"
+                        theme_font_name: "Custom"
+                        font_name: "MaterialSymbols"
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-
-            LabelBase.register(
-                name="MaterialSymbols",
-                fn_regular="Material_Symbols_Outlined-20-200-1_200.ttf",
-            )
-
-            self.theme_cls.font_styles["MaterialSymbols"] = {
-                "large": {
-                    "line-height": 1.64,
-                    "font-name": "MaterialSymbols",
-                    "font-size": sp(57),
-                },
-                "medium": {
-                    "line-height": 1.52,
-                    "font-name": "MaterialSymbols",
-                    "font-size": sp(45),
-                },
-                "small": {
-                    "line-height": 1.44,
-                    "font-name": "MaterialSymbols",
-                    "font-size": sp(36),
-                },
-            }
-
-            return Builder.load_string(KV)
+                    MDButtonText:
+                        text: "Elevated"
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+
+                    LabelBase.register(
+                        name="MaterialSymbols",
+                        fn_regular="Material_Symbols_Outlined-20-200-1_200.ttf",
+                    )
+
+                    self.theme_cls.font_styles["MaterialSymbols"] = {
+                        "large": {
+                            "line-height": 1.64,
+                            "font-name": "MaterialSymbols",
+                            "font-size": sp(57),
+                        },
+                        "medium": {
+                            "line-height": 1.52,
+                            "font-name": "MaterialSymbols",
+                            "font-size": sp(45),
+                        },
+                        "small": {
+                            "line-height": 1.44,
+                            "font-name": "MaterialSymbols",
+                            "font-size": sp(36),
+                        },
+                    }
+
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.core.text import LabelBase
+            from kivy.metrics import sp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButton, MDButtonIcon, MDButtonText
+            from kivymd.uix.label import MDIcon
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+
+                    LabelBase.register(
+                        name="MaterialSymbols",
+                        fn_regular="Material_Symbols_Outlined-20-200-1_200.ttf",
+                    )
+
+                    self.theme_cls.font_styles["MaterialSymbols"] = {
+                        "large": {
+                            "line-height": 1.64,
+                            "font-name": "MaterialSymbols",
+                            "font-size": sp(57),
+                        },
+                        "medium": {
+                            "line-height": 1.52,
+                            "font-name": "MaterialSymbols",
+                            "font-size": sp(45),
+                        },
+                        "small": {
+                            "line-height": 1.44,
+                            "font-name": "MaterialSymbols",
+                            "font-size": sp(36),
+                        },
+                    }
+
+                    return (
+                        MDScreen(
+                            MDIcon(
+                                icon="music_video",
+                                theme_font_name="Custom",
+                                font_name="MaterialSymbols",
+                                pos_hint={"center_x": .5, "center_y": .58},
+                            ),
+                            MDButton(
+                                MDButtonIcon(
+                                    icon="music_video",
+                                    theme_font_name="Custom",
+                                    font_name="MaterialSymbols",
+                                ),
+                                MDButtonText(
+                                    text="Elevated"
+                                ),
+                                pos_hint={"center_x": .5, "center_y": .47}
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-icon-castom-font.png
     :align: center

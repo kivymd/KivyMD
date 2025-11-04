@@ -46,56 +46,119 @@ dates.
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/docked-data-picker-preview.gif
     :align: center
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.metrics import dp
+    .. tab:: Declarative python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.pickers import MDDockedDatePicker
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
+            from kivy.metrics import dp
 
-        MDTextField:
-            id: field
-            mode: "outlined"
-            pos_hint: {'center_x': .5, 'center_y': .85}
-            size_hint_x: .5
-            on_focus: app.show_date_picker(self.focus)
+            from kivymd.app import MDApp
+            from kivymd.uix.pickers import MDDockedDatePicker
 
-            MDTextFieldHintText:
-                text: "Docked date picker"
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
-            MDTextFieldHelperText:
-                text: "MM/DD/YYYY"
-                mode: "persistent"
+                MDTextField:
+                    id: field
+                    mode: "outlined"
+                    pos_hint: {'center_x': .5, 'center_y': .85}
+                    size_hint_x: .5
+                    on_focus: app.show_date_picker(self.focus)
 
-            MDTextFieldTrailingIcon:
-                icon: "calendar"
-    '''
+                    MDTextFieldHintText:
+                        text: "Docked date picker"
 
+                    MDTextFieldHelperText:
+                        text: "MM/DD/YYYY"
+                        mode: "persistent"
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.primary_palette = "Olive"
-            return Builder.load_string(KV)
-
-        def show_date_picker(self, focus):
-            if not focus:
-                return
-
-            date_dialog = MDDockedDatePicker()
-            # You have to control the position of the date picker dialog yourself.
-            date_dialog.pos = [
-                self.root.ids.field.center_x - date_dialog.width / 2,
-                self.root.ids.field.y - (date_dialog.height + dp(32)),
-            ]
-            date_dialog.open()
+                    MDTextFieldTrailingIcon:
+                        icon: "calendar"
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return Builder.load_string(KV)
+
+                def show_date_picker(self, focus):
+                    if not focus:
+                        return
+
+                    date_dialog = MDDockedDatePicker()
+                    # You have to control the position of the date picker dialog yourself.
+                    date_dialog.pos = [
+                        self.root.ids.field.center_x - date_dialog.width / 2,
+                        self.root.ids.field.y - (date_dialog.height + dp(32)),
+                    ]
+                    date_dialog.open()
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.pickers import MDDockedDatePicker
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.textfield import (
+                MDTextFieldHintText,
+                MDTextField,
+                MDTextFieldHelperText,
+                MDTextFieldTrailingIcon,
+            )
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            MDTextField(
+                                MDTextFieldHintText(
+                                    text="Docked date picker"
+                                ),
+                                MDTextFieldHelperText(
+                                    text="MM/DD/YYYY",
+                                    mode="persistent",
+                                ),
+                                MDTextFieldTrailingIcon(
+                                    icon="calendar"
+                                ),
+                                id="field",
+                                mode="outlined",
+                                pos_hint={'center_x': .5, 'center_y': 0.85},
+                                size_hint_x=0.5,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+                def on_start(self):
+                    self.root.get_ids().field.bind(focus=self.show_date_picker)
+
+                def show_date_picker(self, field, focus):
+                    if focus:
+                        date_dialog = MDDockedDatePicker()
+                        # You have to control the position of the date picker dialog
+                        # yourself.
+                        date_dialog.pos = [
+                            field.center_x - date_dialog.width / 2,
+                            field.y - (date_dialog.height + dp(32)),
+                        ]
+                        date_dialog.open()
+
+
+            Example().run()
 
 .. _MDModalDatePicker:
 
@@ -115,37 +178,75 @@ a docked datepicker instead.
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/modal-data-picker-preview.gif
     :align: center
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.pickers import MDModalDatePicker
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDButton:
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            on_release: app.show_date_picker()
+            from kivymd.app import MDApp
+            from kivymd.uix.pickers import MDModalDatePicker
 
-            MDButtonText:
-                text: "Open modal date picker dialog"
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
+                MDButton:
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    on_release: app.show_date_picker()
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.primary_palette = "Olive"
-            return Builder.load_string(KV)
-
-        def show_date_picker(self):
-            date_dialog = MDModalDatePicker()
-            date_dialog.open()
+                    MDButtonText:
+                        text: "Open modal date picker dialog"
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return Builder.load_string(KV)
+
+                def show_date_picker(self):
+                    date_dialog = MDModalDatePicker()
+                    date_dialog.open()
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.pickers import MDModalDatePicker
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            MDButton(
+                                MDButtonText(
+                                    text="Open modal date picker dialog"
+                                ),
+                                id="button",
+                                pos_hint={'center_x': .5, 'center_y': 0.5},
+                                on_release=self.show_date_picker,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+                def show_date_picker(self, args):
+                    date_dialog = MDModalDatePicker()
+                    date_dialog.open()
+
+
+            Example().run()
 
 .. _MDModalInputDatePicker:
 
@@ -158,37 +259,75 @@ keyboard. Users can input a date or a range of dates in a dialog.
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/modal-input-data-picker-preview.gif
     :align: center
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.pickers import MDModalInputDatePicker
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDButton:
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            on_release: app.show_date_picker()
+            from kivymd.app import MDApp
+            from kivymd.uix.pickers import MDModalInputDatePicker
 
-            MDButtonText:
-                text: "Open modal date picker dialog"
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
+                MDButton:
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    on_release: app.show_date_picker()
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.primary_palette = "Olive"
-            return Builder.load_string(KV)
-
-        def show_date_picker(self):
-            date_dialog = MDModalInputDatePicker()
-            date_dialog.open()
+                    MDButtonText:
+                        text: "Open modal date picker dialog"
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return Builder.load_string(KV)
+
+                def show_date_picker(self):
+                    date_dialog = MDModalInputDatePicker()
+                    date_dialog.open()
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.pickers import MDModalInputDatePicker
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            MDButton(
+                                MDButtonText(
+                                    text="Open modal date picker dialog"
+                                ),
+                                id="button",
+                                pos_hint={'center_x': .5, 'center_y': 0.5},
+                                on_release=self.show_date_picker,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+                def show_date_picker(self, args):
+                    date_dialog = MDModalInputDatePicker()
+                    date_dialog.open()
+
+
+            Example().run()
 
 The range of available dates
 ============================
@@ -247,52 +386,106 @@ Events
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/modal-data-picker-event-on-edit.gif
     :align: center
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.clock import Clock
-    from kivy.lang import Builder
+    .. tab:: Declarative python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.pickers import MDModalInputDatePicker, MDModalDatePicker
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.clock import Clock
+            from kivy.lang import Builder
 
-        MDButton:
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            on_release: app.show_modal_date_picker()
+            from kivymd.app import MDApp
+            from kivymd.uix.pickers import MDModalInputDatePicker, MDModalDatePicker
 
-            MDButtonText:
-                text: "Open modal date picker dialog"
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
+                MDButton:
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    on_release: app.show_modal_date_picker()
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.primary_palette = "Olive"
-            return Builder.load_string(KV)
-
-        def show_modal_input_date_picker(self, *args):
-            def on_edit(*args):
-                date_dialog.dismiss()
-                Clock.schedule_once(self.show_modal_date_picker, 0.2)
-
-            date_dialog = MDModalInputDatePicker()
-            date_dialog.bind(on_edit=on_edit)
-            date_dialog.open()
-
-        def on_edit(self, instance_date_picker):
-            instance_date_picker.dismiss()
-            Clock.schedule_once(self.show_modal_input_date_picker, 0.2)
-
-        def show_modal_date_picker(self, *args):
-            date_dialog = MDModalDatePicker()
-            date_dialog.bind(on_edit=self.on_edit)
-            date_dialog.open()
+                    MDButtonText:
+                        text: "Open modal date picker dialog"
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return Builder.load_string(KV)
+
+                def show_modal_input_date_picker(self, *args):
+                    def on_edit(*args):
+                        date_dialog.dismiss()
+                        Clock.schedule_once(self.show_modal_date_picker, 0.2)
+
+                    date_dialog = MDModalInputDatePicker()
+                    date_dialog.bind(on_edit=on_edit)
+                    date_dialog.open()
+
+                def on_edit(self, instance_date_picker):
+                    instance_date_picker.dismiss()
+                    Clock.schedule_once(self.show_modal_input_date_picker, 0.2)
+
+                def show_modal_date_picker(self, *args):
+                    date_dialog = MDModalDatePicker()
+                    date_dialog.bind(on_edit=self.on_edit)
+                    date_dialog.open()
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.clock import Clock
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.pickers import MDModalInputDatePicker, MDModalDatePicker
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            MDButton(
+                                MDButtonText(
+                                    text="Open modal date picker dialog"
+                                ),
+                                id="button",
+                                pos_hint={'center_x': .5, 'center_y': 0.5},
+                                on_release=self.show_modal_date_picker,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+                def show_modal_input_date_picker(self, *args):
+                    def on_edit(*args):
+                        date_dialog.dismiss()
+                        Clock.schedule_once(self.show_modal_date_picker, 0.2)
+
+                    date_dialog = MDModalInputDatePicker()
+                    date_dialog.bind(on_edit=on_edit)
+                    date_dialog.open()
+
+                def on_edit(self, instance_date_picker):
+                    instance_date_picker.dismiss()
+                    Clock.schedule_once(self.show_modal_input_date_picker, 0.2)
+
+                def show_modal_date_picker(self, *args):
+                    date_dialog = MDModalDatePicker()
+                    date_dialog.bind(on_edit=self.on_edit)
+                    date_dialog.open()
+
+
+            Example().run()
 
 **on_select_day** event
 -----------------------
@@ -300,53 +493,107 @@ Events
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/modal-data-picker-event-on-select-day.gif
     :align: center
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.metrics import dp
+    .. tab:: Declarative python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.pickers import MDModalDatePicker
-    from kivymd.uix.snackbar import MDSnackbar, MDSnackbarSupportingText
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
+            from kivy.metrics import dp
 
-        MDButton:
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            on_release: app.show_modal_date_picker()
+            from kivymd.app import MDApp
+            from kivymd.uix.pickers import MDModalDatePicker
+            from kivymd.uix.snackbar import MDSnackbar, MDSnackbarSupportingText
 
-            MDButtonText:
-                text: "Open modal date picker dialog"
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
+                MDButton:
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    on_release: app.show_modal_date_picker()
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.primary_palette = "Olive"
-            return Builder.load_string(KV)
-
-        def on_select_day(self, instance_date_picker, number_day):
-            instance_date_picker.dismiss()
-            MDSnackbar(
-                MDSnackbarSupportingText(
-                    text=f"The selected day is {number_day}",
-                ),
-                y=dp(24),
-                orientation="horizontal",
-                pos_hint={"center_x": 0.5},
-                size_hint_x=0.5,
-                background_color="olive"
-            ).open()
-
-        def show_modal_date_picker(self, *args):
-            date_dialog = MDModalDatePicker()
-            date_dialog.bind(on_select_day=self.on_select_day)
-            date_dialog.open()
+                    MDButtonText:
+                        text: "Open modal date picker dialog"
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return Builder.load_string(KV)
+
+                def on_select_day(self, instance_date_picker, number_day):
+                    instance_date_picker.dismiss()
+                    MDSnackbar(
+                        MDSnackbarSupportingText(
+                            text=f"The selected day is {number_day}",
+                        ),
+                        y=dp(24),
+                        orientation="horizontal",
+                        pos_hint={"center_x": 0.5},
+                        size_hint_x=0.5,
+                        background_color="olive"
+                    ).open()
+
+                def show_modal_date_picker(self, *args):
+                    date_dialog = MDModalDatePicker()
+                    date_dialog.bind(on_select_day=self.on_select_day)
+                    date_dialog.open()
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.material_resources import dp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.pickers import MDModalDatePicker
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.snackbar import MDSnackbar, MDSnackbarSupportingText
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            MDButton(
+                                MDButtonText(
+                                    text="Open modal date picker dialog"
+                                ),
+                                id="button",
+                                pos_hint={'center_x': .5, 'center_y': 0.5},
+                                on_release=self.show_modal_date_picker,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+                def on_select_day(self, instance_date_picker, number_day):
+                    instance_date_picker.dismiss()
+                    MDSnackbar(
+                        MDSnackbarSupportingText(
+                            text=f"The selected day is {number_day}",
+                        ),
+                        y=dp(24),
+                        orientation="horizontal",
+                        pos_hint={"center_x": 0.5},
+                        size_hint_x=0.5,
+                        background_color="olive"
+                    ).open()
+
+                def show_modal_date_picker(self, *args):
+                    date_dialog = MDModalDatePicker()
+                    date_dialog.bind(on_select_day=self.on_select_day)
+                    date_dialog.open()
+
+
+            Example().run()
 
 **on_select_month** event
 -------------------------
@@ -418,67 +665,136 @@ Events
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/modal-data-picker-event-on-ok-with-range.gif
     :align: center
 
-.. code-block:: python
+.. tabs::
 
-    import datetime
+    .. tab:: Declarative python style with KV
 
-    from kivy.lang import Builder
-    from kivy.metrics import dp
+        .. code-block:: python
 
-    from kivymd.app import MDApp
-    from kivymd.uix.pickers import MDModalDatePicker
-    from kivymd.uix.snackbar import (
-        MDSnackbar, MDSnackbarSupportingText, MDSnackbarText
-    )
+            import datetime
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
+            from kivy.metrics import dp
 
-        MDButton:
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            on_release: app.show_modal_date_picker()
-
-            MDButtonText:
-                text: "Open modal date picker dialog"
-    '''
-
-
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.primary_palette = "Olive"
-            return Builder.load_string(KV)
-
-        def on_ok(self, instance_date_picker):
-            MDSnackbar(
-                MDSnackbarText(
-                    text="Selected dates is:",
-                ),
-                MDSnackbarSupportingText(
-                    text="\\n".join(str(date) for date in instance_date_picker.get_date()),
-                    padding=[0, 0, 0, dp(12)],
-                ),
-                y=dp(124),
-                pos_hint={"center_x": 0.5},
-                size_hint_x=0.5,
-                padding=[0, 0, "8dp", "8dp"],
-            ).open()
-
-        def show_modal_date_picker(self, *args):
-            date_dialog = MDModalDatePicker(
-                mode="range",
-                min_date=datetime.date.today(),
-                max_date=datetime.date(
-                    datetime.date.today().year,
-                    datetime.date.today().month,
-                    datetime.date.today().day + 4,
-                ),
+            from kivymd.app import MDApp
+            from kivymd.uix.pickers import MDModalDatePicker
+            from kivymd.uix.snackbar import (
+                MDSnackbar, MDSnackbarSupportingText, MDSnackbarText
             )
-            date_dialog.bind(on_ok=self.on_ok)
-            date_dialog.open()
+
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDButton:
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    on_release: app.show_modal_date_picker()
+
+                    MDButtonText:
+                        text: "Open modal date picker dialog"
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return Builder.load_string(KV)
+
+                def on_ok(self, instance_date_picker):
+                    MDSnackbar(
+                        MDSnackbarText(
+                            text="Selected dates is:",
+                        ),
+                        MDSnackbarSupportingText(
+                            text="\\n".join(str(date) for date in instance_date_picker.get_date()),
+                            padding=[0, 0, 0, dp(12)],
+                        ),
+                        y=dp(124),
+                        pos_hint={"center_x": 0.5},
+                        size_hint_x=0.5,
+                        padding=[0, 0, "8dp", "8dp"],
+                    ).open()
+
+                def show_modal_date_picker(self, *args):
+                    date_dialog = MDModalDatePicker(
+                        mode="range",
+                        min_date=datetime.date.today(),
+                        max_date=datetime.date(
+                            datetime.date.today().year,
+                            datetime.date.today().month,
+                            datetime.date.today().day + 4,
+                        ),
+                    )
+                    date_dialog.bind(on_ok=self.on_ok)
+                    date_dialog.open()
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            import datetime
+
+            from kivymd.app import MDApp
+            from kivymd.material_resources import dp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.pickers import MDModalDatePicker
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.snackbar import (
+                MDSnackbar, MDSnackbarSupportingText, MDSnackbarText
+            )
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            MDButton(
+                                MDButtonText(
+                                    text="Open modal date picker dialog"
+                                ),
+                                id="button",
+                                pos_hint={'center_x': .5, 'center_y': 0.5},
+                                on_release=self.show_modal_date_picker,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+                def on_ok(self, instance_date_picker):
+                    MDSnackbar(
+                        MDSnackbarText(
+                            text="Selected dates is:",
+                        ),
+                        MDSnackbarSupportingText(
+                            text="\\n".join(
+                                str(date) for date in instance_date_picker.get_date()),
+                            padding=[0, 0, 0, dp(12)],
+                        ),
+                        y=dp(124),
+                        pos_hint={"center_x": 0.5},
+                        size_hint_x=0.5,
+                        padding=[0, 0, "8dp", "8dp"],
+                    ).open()
+
+                def show_modal_date_picker(self, *args):
+                    date_dialog = MDModalDatePicker(
+                        mode="range",
+                        min_date=datetime.date.today(),
+                        max_date=datetime.date(
+                            datetime.date.today().year,
+                            datetime.date.today().month,
+                            datetime.date.today().day + 4,
+                        ),
+                    )
+                    date_dialog.bind(on_ok=self.on_ok)
+                    date_dialog.open()
+
+
+            Example().run()
 
 API break
 =========
@@ -517,9 +833,9 @@ __all__ = (
     "MDModalInputDatePicker",
 )
 
-import os
 import calendar
 import datetime
+import os
 from datetime import date
 from itertools import zip_longest
 
@@ -529,12 +845,12 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    NumericProperty,
-    OptionProperty,
-    ObjectProperty,
     BooleanProperty,
-    StringProperty,
     ColorProperty,
+    NumericProperty,
+    ObjectProperty,
+    OptionProperty,
+    StringProperty,
     VariableListProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior, FocusBehavior
@@ -550,17 +866,17 @@ from kivy.uix.widget import Widget
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
-    ScaleBehavior,
     CircularRippleBehavior,
-    RotateBehavior,
     CommonElevationBehavior,
+    RotateBehavior,
+    ScaleBehavior,
 )
 from kivymd.uix.behaviors.motion_behavior import MotionDatePickerBehavior
-from kivymd.uix.label import MDLabel, MDIcon
+from kivymd.uix.label import MDIcon, MDLabel
 from kivymd.uix.textfield import (
     MDTextField,
-    MDTextFieldHintText,
     MDTextFieldHelperText,
+    MDTextFieldHintText,
 )
 
 with open(
@@ -1170,7 +1486,7 @@ class MDDockedDatePickerBaseSelectionContainer(BoxLayout):
     text = StringProperty()
     """
     The current name of the month or the current year.
-    
+
     :attr:`text` is an :class:`~kivy.properties.StringProperty`
     and defaults to `''`.
     """

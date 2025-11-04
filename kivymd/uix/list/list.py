@@ -20,19 +20,50 @@ Components/List
 Usage
 -----
 
-.. code-block:: kv
+.. tabs::
 
-    MDListItem:
+    .. tab:: Declarative KV style
 
-        MDListItemLeadingIcon:  # MDListItemLeadingAvatar
+        .. code-block:: python
 
-        MDListItemHeadlineText:
+            MDListItem:
 
-        MDListItemSupportingText:
+                MDListItemLeadingIcon:  # MDListItemLeadingAvatar
 
-        MDListItemTertiaryText:
+                MDListItemHeadlineText:
 
-        MDListItemTrailingIcon:  # MDListItemTrailingCheckbox
+                MDListItemSupportingText:
+
+                MDListItemTertiaryText:
+
+                MDListItemTrailingIcon:  # MDListItemTrailingCheckbox
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDListItem(
+
+                MDListItemLeadingIcon(
+                   ...
+                ),  # MDListItemLeadingAvatar
+
+                MDListItemHeadlineText(
+                    ...
+                ),
+
+                MDListItemSupportingText(
+                    ...
+                ),
+
+                MDListItemTertiaryText(
+                    ...
+                ),
+
+                MDListItemTrailingIcon(
+                    ...
+                ),  # MDListItemTrailingCheckbox
+            )
 
 Anatomy
 -------
@@ -584,7 +615,7 @@ class MDListItem(BaseListItem, BoxLayout):
         elif isinstance(
             widget, (MDListItemLeadingIcon, MDListItemLeadingAvatar)
         ):
-            if not self.ids.leading_container.children:
+            if self.ids and not self.ids.leading_container.children:
                 widget._list_item = self
                 self.ids.leading_container.add_widget(widget)
                 Clock.schedule_once(
@@ -602,7 +633,7 @@ class MDListItem(BaseListItem, BoxLayout):
                 MDListItemTrailingSupportingText,
             ),
         ):
-            if not self.ids.trailing_container.children:
+            if self.ids and not self.ids.trailing_container.children:
                 self.ids.trailing_container.add_widget(widget)
                 Clock.schedule_once(
                     lambda x: self._set_with_container(

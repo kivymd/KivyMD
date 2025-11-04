@@ -7,49 +7,66 @@ This module contains :class:`MDApp` class that is inherited from
 library (like :attr:`~MDApp.theme_cls`). You can turn on the monitor
 displaying the current `FP` value in your application:
 
-.. code-block:: python
+    .. tabs::
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+        .. tab:: Imperative python style with KV
 
-        MDLabel:
-            text: "Hello, World!"
-            halign: "center"
-    '''
+            .. code-block:: python
 
-    from kivy.lang import Builder
+                KV = '''
+                MDScreen:
+                    md_bg_color: self.theme_cls.backgroundColor
 
-    from kivymd.app import MDApp
+                    MDLabel:
+                        text: "Hello, World!"
+                        halign: "center"
+                '''
 
+                from kivy.lang import Builder
 
-    class MainApp(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
-
-        def on_start(self):
-            self.fps_monitor_start()
+                from kivymd.app import MDApp
 
 
-    MainApp().run()
+                class MainApp(MDApp):
+                    def build(self):
+                        return Builder.load_string(KV)
+
+                    def on_start(self):
+                        self.fps_monitor_start()
+
+
+                MainApp().run()
+
+        .. tab:: Declarative python style
+
+            .. code-block:: python
+
+                from kivymd.uix.label import MDLabel
+                from kivymd.uix.screen import MDScreen
+                from kivymd.app import MDApp
+
+
+                class MainApp(MDApp):
+                    def build(self):
+                        return (
+                            MDScreen(
+                                MDLabel(
+                                    text="Hello, World!",
+                                    halign="center",
+                                ),
+                                md_bg_color=self.theme_cls.backgroundColor,
+                            )
+                        )
+
+                    def on_start(self):
+                        self.fps_monitor_start()
+
+
+                MainApp().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/fps-monitor-dark.png
     :width: 350 px
     :align: center
-
-.. note::
-
-    Note that if you override the built-in on_start method, you will
-    definitely need to call the super method:
-
-    .. code-block:: python
-
-        class MainApp(MDApp):
-            def build(self):
-                [...]
-
-            def on_start(self):
-                [...]
 """
 
 __all__ = ("MDApp",)

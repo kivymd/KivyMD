@@ -25,8 +25,20 @@
 
 
 <MDIcon>
+    canvas:
+        Color:
+            rgba: (1, 1, 1, 1) if self.source else (0, 0, 0, 0)
+        Rectangle:
+            group: "rectangle"
+            source: self.source
+            pos:
+                self.pos \
+                if not self.source else \
+                (self.x - (dp(18) / 2), self.y + dp(3))
+            size:
+                (0, 0) if not self.source else (dp(18), dp(18))
+
     font_style: "Icon"
-    source: None if self.icon in md_icons else self.icon
     adaptive_size: True
     text:
         ( \
@@ -39,3 +51,10 @@
         self.icon_color \
         if self.icon_color else \
         self.theme_cls.onSurfaceVariantColor
+    disabled_color:
+        ( \
+        app.theme_cls.onSurfaceColor[:-1] + \
+        [self.label_opacity_value_disabled_text] \
+        ) \
+        if not self.icon_color_disabled else \
+        self.icon_color_disabled

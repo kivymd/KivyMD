@@ -48,37 +48,74 @@ milliseconds for a stopwatch application.
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/vertical-time-picker-preview.gif
     :align: center
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
-    from kivymd.uix.pickers import MDTimePickerDialVertical
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
 
-        MDButton:
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            on_release: app.show_time_picker()
+            from kivymd.app import MDApp
+            from kivymd.uix.pickers import MDTimePickerDialVertical
 
-            MDButtonText:
-                text: "Open time picker"
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
+                MDButton:
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    on_release: app.show_time_picker()
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
-
-        def show_time_picker(self):
-            time_picker = MDTimePickerDialVertical()
-            time_picker.open()
+                    MDButtonText:
+                        text: "Open time picker"
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+                def show_time_picker(self):
+                    time_picker = MDTimePickerDialVertical()
+                    time_picker.open()
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.pickers import MDTimePickerDialVertical
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDButton(
+                                MDButtonText(
+                                    text="Open time picker",
+                                ),
+                                pos_hint={'center_x': .5, 'center_y': .5},
+                                on_release=self.show_time_picker,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+                def show_time_picker(self, *args):
+                    time_picker = MDTimePickerDialVertical()
+                    time_picker.open()
+
+
+            Example().run()
 
 .. _MDTimePickerDialHorizontal:
 
@@ -98,87 +135,177 @@ the stacked input and selection options are positioned side-by-side.
 
 .. note:: You must control the orientation of the time picker yourself.
 
-.. code-block:: python
+.. tabs::
 
-    from typing import Literal
+    .. tab:: Declarative KV style
 
-    from kivy.clock import Clock
-    from kivy.lang import Builder
-    from kivy.properties import ObjectProperty
+        .. code-block:: python
 
-    from kivymd.app import MDApp
-    from kivymd.theming import ThemeManager
-    from kivymd.uix.pickers import (
-        MDTimePickerDialHorizontal,
-        MDTimePickerDialVertical,
-    )
+            from typing import Literal
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.clock import Clock
+            from kivy.lang import Builder
+            from kivy.properties import ObjectProperty
 
-        MDButton:
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            on_release:
-                app.open_time_picker_horizontal("1", "10") \
-                if self.theme_cls.device_orientation == "landscape" else \
-                app.open_time_picker_vertical("1", "10")
+            from kivymd.app import MDApp
+            from kivymd.theming import ThemeManager
+            from kivymd.uix.pickers import (
+                MDTimePickerDialHorizontal,
+                MDTimePickerDialVertical,
+            )
 
-            MDButtonText:
-                text: "Open time picker"
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDButton:
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    on_release:
+                        app.open_time_picker_horizontal("1", "10") \
+                        if self.theme_cls.device_orientation == "landscape" else \
+                        app.open_time_picker_vertical("1", "10")
+
+                    MDButtonText:
+                        text: "Open time picker"
+            '''
 
 
-    class Example(MDApp):
-        ORIENTATION = Literal["portrait", "landscape"]
-        time_picker_horizontal: MDTimePickerDialHorizontal = ObjectProperty(
-            allownone=True
-        )
-        time_picker_vertical: MDTimePickerDialHorizontal = ObjectProperty(
-            allownone=True
-        )
-
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            self.theme_cls.bind(device_orientation=self.check_orientation)
-            return Builder.load_string(KV)
-
-        def check_orientation(
-            self, instance: ThemeManager, orientation: ORIENTATION
-        ):
-            if orientation == "portrait" and self.time_picker_horizontal:
-                self.time_picker_horizontal.dismiss()
-                hour = str(self.time_picker_horizontal.time.hour)
-                minute = str(self.time_picker_horizontal.time.minute)
-                Clock.schedule_once(
-                    lambda x: self.open_time_picker_vertical(hour, minute),
-                    0.1,
+            class Example(MDApp):
+                ORIENTATION = Literal["portrait", "landscape"]
+                time_picker_horizontal: MDTimePickerDialHorizontal = ObjectProperty(
+                    allownone=True
                 )
-            elif orientation == "landscape" and self.time_picker_vertical:
-                self.time_picker_vertical.dismiss()
-                hour = str(self.time_picker_vertical.time.hour)
-                minute = str(self.time_picker_vertical.time.minute)
-                Clock.schedule_once(
-                    lambda x: self.open_time_picker_horizontal(hour, minute),
-                    0.1,
+                time_picker_vertical: MDTimePickerDialHorizontal = ObjectProperty(
+                    allownone=True
                 )
 
-        def open_time_picker_horizontal(self, hour, minute):
-            self.time_picker_vertical = None
-            self.time_picker_horizontal = MDTimePickerDialHorizontal(
-                hour=hour, minute=minute
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.bind(device_orientation=self.check_orientation)
+                    return Builder.load_string(KV)
+
+                def check_orientation(
+                    self, instance: ThemeManager, orientation: ORIENTATION
+                ):
+                    if orientation == "portrait" and self.time_picker_horizontal:
+                        self.time_picker_horizontal.dismiss()
+                        hour = str(self.time_picker_horizontal.time.hour)
+                        minute = str(self.time_picker_horizontal.time.minute)
+                        Clock.schedule_once(
+                            lambda x: self.open_time_picker_vertical(hour, minute),
+                            0.1,
+                        )
+                    elif orientation == "landscape" and self.time_picker_vertical:
+                        self.time_picker_vertical.dismiss()
+                        hour = str(self.time_picker_vertical.time.hour)
+                        minute = str(self.time_picker_vertical.time.minute)
+                        Clock.schedule_once(
+                            lambda x: self.open_time_picker_horizontal(hour, minute),
+                            0.1,
+                        )
+
+                def open_time_picker_horizontal(self, hour, minute):
+                    self.time_picker_vertical = None
+                    self.time_picker_horizontal = MDTimePickerDialHorizontal(
+                        hour=hour, minute=minute
+                    )
+                    self.time_picker_horizontal.open()
+
+                def open_time_picker_vertical(self, hour, minute):
+                    self.time_picker_horizontal = None
+                    self.time_picker_vertical = MDTimePickerDialVertical(
+                        hour=hour, minute=minute
+                    )
+                    self.time_picker_vertical.open()
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from typing import Literal
+
+            from kivy.clock import Clock
+            from kivy.properties import ObjectProperty
+
+            from kivymd.app import MDApp
+            from kivymd.theming import ThemeManager
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.pickers import (
+                MDTimePickerDialHorizontal,
+                MDTimePickerDialVertical,
             )
-            self.time_picker_horizontal.open()
-
-        def open_time_picker_vertical(self, hour, minute):
-            self.time_picker_horizontal = None
-            self.time_picker_vertical = MDTimePickerDialVertical(
-                hour=hour, minute=minute
-            )
-            self.time_picker_vertical.open()
+            from kivymd.uix.screen import MDScreen
 
 
-    Example().run()
+            class Example(MDApp):
+                ORIENTATION = Literal["portrait", "landscape"]
+                time_picker_horizontal: MDTimePickerDialHorizontal = ObjectProperty(
+                    allownone=True
+                )
+                time_picker_vertical: MDTimePickerDialHorizontal = ObjectProperty(
+                    allownone=True
+                )
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.bind(device_orientation=self.check_orientation)
+                    return MDScreen(
+                        MDButton(
+                            MDButtonText(
+                                text="Open time picker",
+                            ),
+                            pos_hint={"center_x": 0.5, "center_y": 0.5},
+                            on_release=self.show_time_picker,
+                        ),
+                        md_bg_color=self.theme_cls.backgroundColor,
+                    )
+
+                def show_time_picker(self, *args):
+                    (
+                        self.open_time_picker_horizontal("1", "10")
+                        if self.theme_cls.device_orientation == "landscape"
+                        else self.open_time_picker_vertical("1", "10")
+                    )
+
+                def check_orientation(
+                    self, instance: ThemeManager, orientation: ORIENTATION
+                ):
+                    if orientation == "portrait" and self.time_picker_horizontal:
+                        self.time_picker_horizontal.dismiss()
+                        hour = str(self.time_picker_horizontal.time.hour)
+                        minute = str(self.time_picker_horizontal.time.minute)
+                        Clock.schedule_once(
+                            lambda x: self.open_time_picker_vertical(hour, minute),
+                            0.1,
+                        )
+                    elif orientation == "landscape" and self.time_picker_vertical:
+                        self.time_picker_vertical.dismiss()
+                        hour = str(self.time_picker_vertical.time.hour)
+                        minute = str(self.time_picker_vertical.time.minute)
+                        Clock.schedule_once(
+                            lambda x: self.open_time_picker_horizontal(hour, minute),
+                            0.1,
+                        )
+
+                def open_time_picker_horizontal(self, hour, minute):
+                    self.time_picker_vertical = None
+                    self.time_picker_horizontal = MDTimePickerDialHorizontal(
+                        hour=hour, minute=minute
+                    )
+                    self.time_picker_horizontal.open()
+
+                def open_time_picker_vertical(self, hour, minute):
+                    self.time_picker_horizontal = None
+                    self.time_picker_vertical = MDTimePickerDialVertical(
+                        hour=hour, minute=minute
+                    )
+                    self.time_picker_vertical.open()
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-control-orientation.gif
     :align: center
@@ -209,52 +336,105 @@ Events
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/time-picker-vertical-event-on-edit.gif
     :align: center
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.clock import Clock
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
-    from kivymd.uix.pickers import MDTimePickerDialVertical, MDTimePickerInput
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.clock import Clock
+            from kivy.lang import Builder
 
-        MDButton:
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            on_release: app.show_time_picker_vertical()
+            from kivymd.app import MDApp
+            from kivymd.uix.pickers import MDTimePickerDialVertical, MDTimePickerInput
 
-            MDButtonText:
-                text: "Open time picker"
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
 
+                MDButton:
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    on_release: app.show_time_picker_vertical()
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
-
-        def on_edit_time_picker_input(self, time_picker_input):
-            time_picker_input.dismiss()
-            Clock.schedule_once(self.show_time_picker_vertical, 0.2)
-
-        def show_time_picker_input(self, *args):
-            time_picker_input = MDTimePickerInput()
-            time_picker_input.bind(on_edit=self.on_edit_time_picker_input)
-            time_picker_input.open()
-
-        def on_edit_time_picker_vertical(self, time_picker_vertical):
-            time_picker_vertical.dismiss()
-            Clock.schedule_once(self.show_time_picker_input, 0.2)
-
-        def show_time_picker_vertical(self, *args):
-            time_picker_vertical = MDTimePickerDialVertical()
-            time_picker_vertical.bind(on_edit=self.on_edit_time_picker_vertical)
-            time_picker_vertical.open()
+                    MDButtonText:
+                        text: "Open time picker"
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+                def on_edit_time_picker_input(self, time_picker_input):
+                    time_picker_input.dismiss()
+                    Clock.schedule_once(self.show_time_picker_vertical, 0.2)
+
+                def show_time_picker_input(self, *args):
+                    time_picker_input = MDTimePickerInput()
+                    time_picker_input.bind(on_edit=self.on_edit_time_picker_input)
+                    time_picker_input.open()
+
+                def on_edit_time_picker_vertical(self, time_picker_vertical):
+                    time_picker_vertical.dismiss()
+                    Clock.schedule_once(self.show_time_picker_input, 0.2)
+
+                def show_time_picker_vertical(self, *args):
+                    time_picker_vertical = MDTimePickerDialVertical()
+                    time_picker_vertical.bind(on_edit=self.on_edit_time_picker_vertical)
+                    time_picker_vertical.open()
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivy.clock import Clock
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.pickers import (
+                MDTimePickerDialVertical, MDTimePickerInput,
+            )
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return MDScreen(
+                        MDButton(
+                            MDButtonText(
+                                text="Open time picker",
+                            ),
+                            pos_hint={"center_x": 0.5, "center_y": 0.5},
+                            on_release=self.show_time_picker_vertical,
+                        ),
+                        md_bg_color=self.theme_cls.backgroundColor,
+                    )
+
+                def on_edit_time_picker_input(self, time_picker_input):
+                    time_picker_input.dismiss()
+                    Clock.schedule_once(self.show_time_picker_vertical, 0.2)
+
+                def show_time_picker_input(self, *args):
+                    time_picker_input = MDTimePickerInput()
+                    time_picker_input.bind(on_edit=self.on_edit_time_picker_input)
+                    time_picker_input.open()
+
+                def on_edit_time_picker_vertical(self, time_picker_vertical):
+                    time_picker_vertical.dismiss()
+                    Clock.schedule_once(self.show_time_picker_input, 0.2)
+
+                def show_time_picker_vertical(self, *args):
+                    time_picker_vertical = MDTimePickerDialVertical()
+                    time_picker_vertical.bind(on_edit=self.on_edit_time_picker_vertical)
+                    time_picker_vertical.open()
+
+
+            Example().run()
 
 **on_hour_select** event
 ------------------------

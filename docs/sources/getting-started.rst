@@ -47,7 +47,8 @@ First KivyMD application
 
     MainApp().run()
 
-.. rubric:: And the equivalent with `Kivy`:
+And the equivalent with `Kivy`
+-----------------------------
 
 .. code-block:: python
 
@@ -62,7 +63,8 @@ First KivyMD application
 
     MainApp().run()
 
-.. rubric:: To left - `Kivy`, to right - `KivyMD`:
+To left - `Kivy`, to right - `KivyMD`
+------------------------------------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hello-world.png
     :align: center
@@ -142,7 +144,8 @@ create a custom button in `Kivy`:
 
     MainApp().run()
 
-.. rubric:: And the equivalent with `KivyMD`:
+And the equivalent with `KivyMD`
+--------------------------------
 
 .. code-block:: python
 
@@ -170,12 +173,14 @@ create a custom button in `Kivy`:
 
     MainApp().run()
 
-.. rubric:: `KivyMD`:
+`KivyMD`
+--------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/kivymd-ripple-rectangle-button.gif
     :align: center
 
-.. rubric:: `Kivy`:
+`Kivy`
+------
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/kivy-ripple-rectangle-button.gif
     :align: center

@@ -27,105 +27,209 @@ Anatomy
 Example
 =======
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.uix.widget import Widget
+    .. tab:: Declarative python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.button import MDButton, MDButtonText
-    from kivymd.uix.dialog import (
-        MDDialog,
-        MDDialogIcon,
-        MDDialogHeadlineText,
-        MDDialogSupportingText,
-        MDDialogButtonContainer,
-        MDDialogContentContainer,
-    )
-    from kivymd.uix.divider import MDDivider
-    from kivymd.uix.list import (
-        MDListItem,
-        MDListItemLeadingIcon,
-        MDListItemSupportingText,
-    )
+        .. code-block:: python
 
-    KV = '''
-    MDScreen:
-        md_bg_color: self.theme_cls.backgroundColor
+            from kivy.lang import Builder
+            from kivy.uix.widget import Widget
 
-        MDButton:
-            pos_hint: {'center_x': .5, 'center_y': .5}
-            on_release: app.show_alert_dialog()
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.dialog import (
+                MDDialog,
+                MDDialogIcon,
+                MDDialogHeadlineText,
+                MDDialogSupportingText,
+                MDDialogButtonContainer,
+                MDDialogContentContainer,
+            )
+            from kivymd.uix.divider import MDDivider
+            from kivymd.uix.list import (
+                MDListItem,
+                MDListItemLeadingIcon,
+                MDListItemSupportingText,
+            )
 
-            MDButtonText:
-                text: "Show dialog"
-    '''
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDButton:
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    on_release: app.show_alert_dialog()
+
+                    MDButtonText:
+                        text: "Show dialog"
+            '''
 
 
-    class Example(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
+            class Example(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
 
-        def show_alert_dialog(self):
-            MDDialog(
-                # ----------------------------Icon-----------------------------
-                MDDialogIcon(
-                    icon="refresh",
-                ),
-                # -----------------------Headline text-------------------------
-                MDDialogHeadlineText(
-                    text="Reset settings?",
-                ),
-                # -----------------------Supporting text-----------------------
-                MDDialogSupportingText(
-                    text="This will reset your app preferences back to their "
-                    "default settings. The following accounts will also "
-                    "be signed out:",
-                ),
-                # -----------------------Custom content------------------------
-                MDDialogContentContainer(
-                    MDDivider(),
-                    MDListItem(
-                        MDListItemLeadingIcon(
-                            icon="gmail",
+                def show_alert_dialog(self):
+                    MDDialog(
+                        # ----------------------------Icon-----------------------------
+                        MDDialogIcon(
+                            icon="refresh",
                         ),
-                        MDListItemSupportingText(
-                            text="KivyMD-library@yandex.com",
+                        # -----------------------Headline text-------------------------
+                        MDDialogHeadlineText(
+                            text="Reset settings?",
                         ),
-                        theme_bg_color="Custom",
-                        md_bg_color=self.theme_cls.transparentColor,
-                    ),
-                    MDListItem(
-                        MDListItemLeadingIcon(
-                            icon="gmail",
+                        # -----------------------Supporting text-----------------------
+                        MDDialogSupportingText(
+                            text="This will reset your app preferences back to their "
+                            "default settings. The following accounts will also "
+                            "be signed out:",
                         ),
-                        MDListItemSupportingText(
-                            text="kivydevelopment@gmail.com",
+                        # -----------------------Custom content------------------------
+                        MDDialogContentContainer(
+                            MDDivider(),
+                            MDListItem(
+                                MDListItemLeadingIcon(
+                                    icon="gmail",
+                                ),
+                                MDListItemSupportingText(
+                                    text="KivyMD-library@yandex.com",
+                                ),
+                                theme_bg_color="Custom",
+                                md_bg_color=self.theme_cls.transparentColor,
+                            ),
+                            MDListItem(
+                                MDListItemLeadingIcon(
+                                    icon="gmail",
+                                ),
+                                MDListItemSupportingText(
+                                    text="kivydevelopment@gmail.com",
+                                ),
+                                theme_bg_color="Custom",
+                                md_bg_color=self.theme_cls.transparentColor,
+                            ),
+                            MDDivider(),
+                            orientation="vertical",
                         ),
-                        theme_bg_color="Custom",
-                        md_bg_color=self.theme_cls.transparentColor,
-                    ),
-                    MDDivider(),
-                    orientation="vertical",
-                ),
-                # ---------------------Button container------------------------
-                MDDialogButtonContainer(
-                    Widget(),
-                    MDButton(
-                        MDButtonText(text="Cancel"),
-                        style="text",
-                    ),
-                    MDButton(
-                        MDButtonText(text="Accept"),
-                        style="text",
-                    ),
-                    spacing="8dp",
-                ),
-                # -------------------------------------------------------------
-            ).open()
+                        # ---------------------Button container------------------------
+                        MDDialogButtonContainer(
+                            Widget(),
+                            MDButton(
+                                MDButtonText(text="Cancel"),
+                                style="text",
+                            ),
+                            MDButton(
+                                MDButtonText(text="Accept"),
+                                style="text",
+                            ),
+                            spacing="8dp",
+                        ),
+                        # -------------------------------------------------------------
+                    ).open()
 
 
-    Example().run()
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.dialog import (
+                MDDialog,
+                MDDialogIcon,
+                MDDialogHeadlineText,
+                MDDialogSupportingText,
+                MDDialogContentContainer,
+                MDDialogButtonContainer,
+            )
+            from kivymd.uix.divider import MDDivider
+            from kivymd.uix.list import (
+                MDListItem, MDListItemSupportingText, MDListItemLeadingIcon
+            )
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.widget import MDWidget
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Olive"
+                    return (
+                        MDScreen(
+                            MDButton(
+                                MDButtonText(
+                                    text="Show dialog"
+                                ),
+                                id="button",
+                                pos_hint={'center_x': .5, 'center_y': 0.5},
+                                on_release=self.show_alert_dialog,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+                def show_alert_dialog(self, *args):
+                    MDDialog(
+                        # ----------------------------Icon-----------------------------
+                        MDDialogIcon(
+                            icon="refresh",
+                        ),
+                        # -----------------------Headline text-------------------------
+                        MDDialogHeadlineText(
+                            text="Reset settings?",
+                        ),
+                        # -----------------------Supporting text-----------------------
+                        MDDialogSupportingText(
+                            text="This will reset your app preferences back to their "
+                                 "default settings. The following accounts will also "
+                                 "be signed out:",
+                        ),
+                        # -----------------------Custom content------------------------
+                        MDDialogContentContainer(
+                            MDDivider(),
+                            MDListItem(
+                                MDListItemLeadingIcon(
+                                    icon="gmail",
+                                ),
+                                MDListItemSupportingText(
+                                    text="KivyMD-library@yandex.com",
+                                ),
+                                theme_bg_color="Custom",
+                                md_bg_color=self.theme_cls.transparentColor,
+                            ),
+                            MDListItem(
+                                MDListItemLeadingIcon(
+                                    icon="gmail",
+                                ),
+                                MDListItemSupportingText(
+                                    text="kivydevelopment@gmail.com",
+                                ),
+                                theme_bg_color="Custom",
+                                md_bg_color=self.theme_cls.transparentColor,
+                            ),
+                            MDDivider(),
+                            orientation="vertical",
+                        ),
+                        # ---------------------Button container------------------------
+                        MDDialogButtonContainer(
+                            MDWidget(),
+                            MDButton(
+                                MDButtonText(text="Cancel"),
+                                style="text",
+                            ),
+                            MDButton(
+                                MDButtonText(text="Accept"),
+                                style="text",
+                            ),
+                            spacing="8dp",
+                        ),
+                        # -------------------------------------------------------------
+                    ).open()
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-example.gif
     :align: center
@@ -418,20 +522,20 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    VariableListProperty,
-    NumericProperty,
-    ColorProperty,
-    ObjectProperty,
     BooleanProperty,
+    ColorProperty,
+    NumericProperty,
+    ObjectProperty,
+    VariableListProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.widget import Widget
 
-from kivymd.uix.card import MDCard
-from kivymd.uix.label import MDIcon, MDLabel
 from kivymd import uix_path
 from kivymd.material_resources import DEVICE_TYPE
-from kivymd.uix.behaviors import MotionDialogBehavior, DeclarativeBehavior
+from kivymd.uix.behaviors import DeclarativeBehavior, MotionDialogBehavior
+from kivymd.uix.card import MDCard
+from kivymd.uix.label import MDIcon, MDLabel
 
 with open(
     os.path.join(uix_path, "dialog", "dialog.kv"), encoding="utf-8"

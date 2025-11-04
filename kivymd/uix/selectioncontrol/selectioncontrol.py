@@ -26,31 +26,61 @@ MDCheckbox
 Usage
 -----
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
+            from kivy.lang import Builder
 
-    KV = '''
-    MDFloatLayout:
-
-        MDCheckbox:
-            size_hint: None, None
-            size: "48dp", "48dp"
-            pos_hint: {'center_x': .5, 'center_y': .5}
-    '''
+            from kivymd.app import MDApp
 
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.primary_palette = "Green"
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+            KV = '''
+            MDFloatLayout:
+
+                MDCheckbox:
+                    size_hint: None, None
+                    size: "48dp", "48dp"
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Green"
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.uix.selectioncontrol import MDCheckbox
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Green"
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDFloatLayout(
+                            MDCheckbox(
+                                size_hint=(None, None),
+                                size=("48dp", "48dp"),
+                                pos_hint={'center_x': .5, 'center_y': .5},
+                            )
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox.gif
     :align: center
@@ -62,10 +92,22 @@ Usage
 Control state
 -------------
 
-.. code-block:: kv
+.. tabs::
 
-    MDCheckbox:
-        on_active: app.on_checkbox_active(*args)
+    .. tab:: Declarative KV style
+
+        .. code-block:: kv
+
+            MDCheckbox:
+                on_active: app.on_checkbox_active(*args)
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDCheckbox(
+                on_active=self.on_checkbox_active,
+            )
 
 .. code-block:: python
 
@@ -78,38 +120,79 @@ Control state
 MDCheckbox with group
 ---------------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    <Check@MDCheckbox>:
-        group: 'group'
-        size_hint: None, None
-        size: dp(48), dp(48)
+            from kivy.lang import Builder
 
+            from kivymd.app import MDApp
 
-    MDFloatLayout:
-
-        Check:
-            active: True
-            pos_hint: {'center_x': .4, 'center_y': .5}
-
-        Check:
-            pos_hint: {'center_x': .6, 'center_y': .5}
-    '''
+            KV = '''
+            <Check@MDCheckbox>:
+                group: 'group'
+                size_hint: None, None
+                size: dp(48), dp(48)
 
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.primary_palette = "Green"
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+            MDFloatLayout:
+
+                Check:
+                    active: True
+                    pos_hint: {'center_x': .4, 'center_y': .5}
+
+                Check:
+                    pos_hint: {'center_x': .6, 'center_y': .5}
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Green"
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.material_resources import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.uix.selectioncontrol import MDCheckbox
+
+
+            class Check(MDCheckbox):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    self.group = 'group'
+                    self.size_hint = (None, None)
+                    self.size = (dp(48), dp(48))
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Green"
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDFloatLayout(
+                            Check(
+                                pos_hint={'center_x': 0.4, 'center_y': 0.5},
+                            ),
+                            Check(
+                                pos_hint={'center_x': 0.6, 'center_y': 0.5},
+                            )
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox-group.gif
     :align: center
@@ -126,90 +209,192 @@ checkbox.
 Usage
 -----
 
-.. code-block:: kv
+.. tabs::
 
-    MDCheckbox:
-        group: "root"  # this is a required name for the parent checkbox group
+    .. tab:: Declarative KV style
 
-    MDCheckbox:
-        group: "child"  # this is a required name for a group of child checkboxes
+        .. code-block:: kv
 
-    MDCheckbox:
-        group: "child"  # this is a required name for a group of child checkboxes
+            MDCheckbox:
+                group: "root"  # this is a required name for the parent checkbox group
+
+            MDCheckbox:
+                group: "child"  # this is a required name for a group of child checkboxes
+
+            MDCheckbox:
+                group: "child"  # this is a required name for a group of child checkboxes
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDCheckbox(
+                # This is a required name for the parent checkbox group.
+                group="root",
+            )
+
+            MDCheckbox(
+                # This is a required name for a group of child checkboxes.
+                group="child",
+            )
+
+            MDCheckbox(
+                # This is a required name for a group of child checkboxes.
+                group="child",
+            )
 
 Example
 -------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
-    from kivy.properties import StringProperty
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
-    from kivymd.uix.boxlayout import MDBoxLayout
+        .. code-block:: python
 
-    KV = '''
-    <CheckItem>
-        adaptive_height: True
+            from kivy.lang import Builder
+            from kivy.properties import StringProperty
 
-        MDCheckbox:
-            group: root.group
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
 
-        MDLabel:
-            text: root.text
-            adaptive_height: True
-            padding_x: "12dp"
-            pos_hint: {"center_y": .5}
+            KV = '''
+            <CheckItem>
+                adaptive_height: True
 
+                MDCheckbox:
+                    group: root.group
 
-    MDBoxLayout:
-        orientation: "vertical"
-        md_bg_color: self.theme_cls.backgroundColor
+                MDLabel:
+                    text: root.text
+                    adaptive_height: True
+                    padding_x: "12dp"
+                    pos_hint: {"center_y": .5}
 
-        MDBoxLayout:
-            orientation: "vertical"
-            adaptive_height: True
-            padding: "12dp", "36dp", 0, 0
-            spacing: "12dp"
-
-            CheckItem:
-                text: "Recieve emails"
-                group: "root"
 
             MDBoxLayout:
                 orientation: "vertical"
-                adaptive_height: True
-                padding: "24dp", 0, 0, 0
-                spacing: "12dp"
+                md_bg_color: self.theme_cls.backgroundColor
 
-                CheckItem:
-                    text: "Daily"
-                    group: "child"
+                MDBoxLayout:
+                    orientation: "vertical"
+                    adaptive_height: True
+                    padding: "12dp", "36dp", 0, 0
+                    spacing: "12dp"
 
-                CheckItem:
-                    text: "Weekly"
-                    group: "child"
+                    CheckItem:
+                        text: "Recieve emails"
+                        group: "root"
 
-                CheckItem:
-                    text: "Monthly"
-                    group: "child"
+                    MDBoxLayout:
+                        orientation: "vertical"
+                        adaptive_height: True
+                        padding: "24dp", 0, 0, 0
+                        spacing: "12dp"
 
-        MDWidget:
-    '''
+                        CheckItem:
+                            text: "Daily"
+                            group: "child"
+
+                        CheckItem:
+                            text: "Weekly"
+                            group: "child"
+
+                        CheckItem:
+                            text: "Monthly"
+                            group: "child"
+
+                MDWidget:
+            '''
 
 
-    class CheckItem(MDBoxLayout):
-        text = StringProperty()
-        group = StringProperty()
+            class CheckItem(MDBoxLayout):
+                text = StringProperty()
+                group = StringProperty()
 
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.primary_palette = "Teal"
-            return Builder.load_string(KV)
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Teal"
+                    return Builder.load_string(KV)
 
 
-    Example().run()
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivy.properties import StringProperty
+
+            from kivymd.app import MDApp
+            from kivymd.uix.boxlayout import MDBoxLayout
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.selectioncontrol import MDCheckbox
+            from kivymd.uix.widget import MDWidget
+
+
+            class CheckItem(MDBoxLayout):
+                text = StringProperty()
+                group = StringProperty()
+
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.adaptive_height = True
+                    self.widgets = [
+                        MDCheckbox(
+                            group=self.group,
+                        ),
+                        MDLabel(
+                            text=self.text,
+                            adaptive_height=True,
+                            padding_x="12dp",
+                            pos_hint={"center_y": .5},
+                        ),
+                    ]
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Teal"
+                    return (
+                        MDBoxLayout(
+                            MDBoxLayout(
+                                CheckItem(
+                                    text="Recieve emails",
+                                    group="root",
+                                ),
+                                MDBoxLayout(
+                                    CheckItem(
+                                        text="Daily",
+                                        group="child",
+                                    ),
+                                    CheckItem(
+                                        text="Weekly",
+                                        group="child",
+                                    ),
+                                    CheckItem(
+                                        text="Monthly",
+                                        group="child",
+                                    ),
+                                    orientation="vertical",
+                                    adaptive_height=True,
+                                    padding=("24dp", 0, 0, 0),
+                                    spacing="12dp",
+                                ),
+                                orientation="vertical",
+                                adaptive_height=True,
+                                padding=("12dp", "36dp", 0, 0),
+                                spacing="12dp",
+                            ),
+                            MDWidget(),
+                            orientation="vertical",
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/checkbox-parent-child.gif
     :align: center
@@ -225,28 +410,56 @@ MDSwitch
 Usage
 -----
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative KV style
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDFloatLayout:
+            from kivy.lang import Builder
 
-        MDSwitch:
-            pos_hint: {'center_x': .5, 'center_y': .5}
-    '''
+            from kivymd.app import MDApp
 
+            KV = '''
+            MDFloatLayout:
 
-    class Example(MDApp):
-        def build(self):
-            self.theme_cls.primary_palette = "Green"
-            self.theme_cls.theme_style = "Dark"
-            return Builder.load_string(KV)
+                MDSwitch:
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+            '''
 
 
-    Example().run()
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Green"
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.floatlayout import MDFloatLayout
+            from kivymd.uix.selectioncontrol import MDSwitch
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.primary_palette = "Green"
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDFloatLayout(
+                            MDSwitch(
+                                pos_hint={'center_x': .5, 'center_y': .5},
+                            )
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/md-switch.gif
     :align: center
@@ -268,6 +481,7 @@ from kivy.properties import (
     ColorProperty,
     ListProperty,
     StringProperty,
+    BoundedNumericProperty,
 )
 from kivy.uix.behaviors import ToggleButtonBehavior, ButtonBehavior
 
@@ -284,7 +498,55 @@ with open(
     Builder.load_string(kv_file.read())
 
 
+class ActiveBehavior:
+    """
+    Trigger the 'on_active' event when the 'active' property changes.
+
+    This method is automatically called whenever the 'active' property
+    changes its value. It dispatches the 'on_active' event with the new
+    value of 'active'.
+
+    Args:
+        instance: The instance of the property that triggered this callback
+                  (usually self).
+        value (bool): The new value of the 'active' property.
+
+    Implements:
+
+        .. code-block:: python
+
+            MDCheckbox(
+                on_active=self.callback,
+            )
+            MDSwitch(
+                on_active=self.callback,
+            )
+
+    .. versionadded:: 2.0.1
+    """
+
+    active = BooleanProperty(False)
+    """
+    Indicates if the switch/checkbox is active or inactive.
+
+    :attr:`active` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    def __init__(self, **kwargs):
+        callback = kwargs.pop("on_active", None)
+        super().__init__(**kwargs)
+
+        if callback:
+            self.bind(on_active=callback)
+        self.bind(active=self._trigger_on_active)
+
+    def _trigger_on_active(self, instance, value):
+        self.dispatch("on_active", value)
+
+
 class MDCheckbox(
+    ActiveBehavior,
     CircularRippleBehavior,
     ScaleBehavior,
     ToggleButtonBehavior,
@@ -304,14 +566,6 @@ class MDCheckbox(
 
     __allow_child_checkboxes_active = True
     __allow_root_checkbox_active = True
-
-    active = BooleanProperty(False)
-    """
-    Indicates if the checkbox is active or inactive.
-
-    :attr:`active` is a :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
-    """
 
     checkbox_icon_normal = StringProperty("checkbox-blank-outline")
     """
@@ -432,6 +686,8 @@ class MDCheckbox(
     """
 
     _current_color = ColorProperty([0.0, 0.0, 0.0, 0.0])
+
+    __events__ = ("on_active", )
 
     def __init__(self, **kwargs):
         self.check_anim_out = Animation(
@@ -575,7 +831,7 @@ class Thumb(CircularRippleBehavior, ButtonBehavior, MDFloatLayout):
         )
 
 
-class MDSwitch(StateLayerBehavior, ButtonBehavior, MDFloatLayout):
+class MDSwitch(ActiveBehavior, StateLayerBehavior, ButtonBehavior, MDFloatLayout):
     """
     Switch class.
 
@@ -585,6 +841,10 @@ class MDSwitch(StateLayerBehavior, ButtonBehavior, MDFloatLayout):
     :class:`~kivymd.uix.floatlayout.MDFloatLayout`
     classes documentation.
     """
+
+    width = BoundedNumericProperty(dp(52), min=dp(52), max=dp(52))
+
+    height = BoundedNumericProperty(dp(32), min=dp(32), max=dp(32))
 
     md_bg_color_disabled = ColorProperty(None)
     """
@@ -604,14 +864,6 @@ class MDSwitch(StateLayerBehavior, ButtonBehavior, MDFloatLayout):
 
     :attr:`ripple_effect` is a :class:`~kivy.properties.BooleanProperty`
     and defaults to `True`.
-    """
-
-    active = BooleanProperty(False)
-    """
-    Indicates if the switch is active or inactive.
-
-    :attr:`active` is a :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
     """
 
     icon_active = StringProperty()
@@ -814,7 +1066,7 @@ class MDSwitch(StateLayerBehavior, ButtonBehavior, MDFloatLayout):
     _thumb_pos = ListProperty([0, 0])
     _line_color = ColorProperty(None)
 
-    __events__ = ("on_press", "on_release")
+    __events__ = ("on_press", "on_release", "on_active")
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
@@ -839,8 +1091,13 @@ class MDSwitch(StateLayerBehavior, ButtonBehavior, MDFloatLayout):
         if not self.disabled:
             self._line_color = value
 
-    def on_active(self, instance_switch, active_value: bool) -> None:
+    def on_active(self, *args) -> None:
         """Fired when the values of :attr:`active` change."""
+
+        if len(args) == 2:
+            active_value = args[1]
+        else:
+            active_value = args[0]
 
         size = (
             ((dp(16), dp(16)) if not self.icon_inactive else (dp(24), dp(24)))

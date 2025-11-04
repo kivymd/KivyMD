@@ -42,72 +42,161 @@ following:
 Base example
 ------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative python style with KV
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreenManager:
+            from kivy.lang import Builder
 
-        MDScreen:
-            name: "screen A"
-            md_bg_color: "lightblue"
+            from kivymd.app import MDApp
 
-            MDHeroFrom:
-                id: hero_from
-                tag: "hero"
-                size_hint: None, None
-                size: "120dp", "120dp"
-                pos_hint: {"top": .98}
-                x: 24
+            KV = '''
+            MDScreenManager:
 
-                FitImage:
-                    source: "bg.jpg"
-                    size_hint: None, None
-                    size: hero_from.size
+                MDScreen:
+                    name: "screen A"
+                    md_bg_color: "lightblue"
 
-            MDButton:
-                pos_hint: {"center_x": .5}
-                y: "36dp"
-                on_release:
-                    root.current_heroes = ["hero"]
-                    root.current = "screen B"
+                    MDHeroFrom:
+                        id: hero_from
+                        tag: "hero"
+                        size_hint: None, None
+                        size: "120dp", "120dp"
+                        pos_hint: {"top": .98}
+                        x: 24
 
-                MDButtonText:
-                    text: "Move Hero To Screen B"
+                        FitImage:
+                            source: "kivymd/images/logo/kivymd-icon-512.png"
+                            size_hint: None, None
+                            size: hero_from.size
 
-        MDScreen:
-            name: "screen B"
-            hero_to: hero_to
-            md_bg_color: "cadetblue"
+                    MDButton:
+                        pos_hint: {"center_x": .5}
+                        y: "36dp"
+                        on_release:
+                            root.current_heroes = ["hero"]
+                            root.current = "screen B"
 
-            MDHeroTo:
-                id: hero_to
-                tag: "hero"
-                size_hint: None, None
-                size: "220dp", "220dp"
-                pos_hint: {"center_x": .5, "center_y": .5}
+                        MDButtonText:
+                            text: "Move Hero To Screen B"
 
-            MDButton:
-                pos_hint: {"center_x": .5}
-                y: "36dp"
-                on_release:
-                    root.current_heroes = ["hero"]
-                    root.current = "screen A"
+                MDScreen:
+                    name: "screen B"
+                    hero_to: hero_to
+                    md_bg_color: "cadetblue"
 
-                MDButtonText:
-                    text: "Move Hero To Screen A"
-    '''
+                    MDHeroTo:
+                        id: hero_to
+                        tag: "hero"
+                        size_hint: None, None
+                        size: "220dp", "220dp"
+                        pos_hint: {"center_x": .5, "center_y": .5}
+
+                    MDButton:
+                        pos_hint: {"center_x": .5}
+                        y: "36dp"
+                        on_release:
+                            root.current_heroes = ["hero"]
+                            root.current = "screen A"
+
+                        MDButtonText:
+                            text: "Move Hero To Screen A"
+            '''
 
 
-    class Example(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
+            class Example(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
 
 
-    Example().run()
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.clock import Clock
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.hero import MDHeroFrom, MDHeroTo
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.screenmanager import MDScreenManager
+
+
+            class Example(MDApp):
+                def go_to_screen(self, *args):
+                    self.root.current_heroes = ["hero"]
+                    if self.root.current == "screen A":
+                        self.root.current = "screen B"
+                    else:
+                        self.root.current = "screen A"
+
+                def on_start(self):
+                    def on_start(*args):
+                        self.root.get_ids().image.size = self.root.get_ids().hero_from.size
+                        self.root.get_ids().screen_b.hero_to = self.root.get_ids().hero_to
+
+                    self.root.get_ids().button_b.bind(on_release=self.go_to_screen)
+                    self.root.get_ids().button_a.bind(on_release=self.go_to_screen)
+                    Clock.schedule_once(on_start)
+
+                def build(self):
+                    return (
+                        MDScreenManager(
+                            MDScreen(
+                                MDHeroFrom(
+                                    FitImage(
+                                        id="image",
+                                        source="kivymd/images/logo/kivymd-icon-512.png",
+                                        size_hint=(None, None),
+                                    ),
+                                    id="hero_from",
+                                    tag="hero",
+                                    size_hint=(None, None),
+                                    size=("120dp", "120dp"),
+                                    pos_hint={"top": .98},
+                                    x=24,
+                                ),
+                                MDButton(
+                                    MDButtonText(
+                                        text="Move Hero To Screen B"
+                                    ),
+                                    id="button_b",
+                                    pos_hint={"center_x": .5},
+                                    y="36dp",
+                                ),
+                                name="screen A",
+                                md_bg_color="lightblue",
+                            ),
+                            MDScreen(
+                                MDHeroTo(
+                                    id="hero_to",
+                                    tag="hero",
+                                    size_hint=(None, None),
+                                    size=("220dp", "220dp"),
+                                    pos_hint={"center_x": .5, "center_y": .5},
+                                ),
+                                MDButton(
+                                    MDButtonText(
+                                        text="Move Hero To Screen A"
+                                    ),
+                                    id="button_a",
+                                    pos_hint={"center_x": .5},
+                                    y="36dp",
+                                ),
+                                id="screen_b",
+                                name="screen B",
+                                md_bg_color="cadetblue",
+                            )
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hero-usage.gif
     :align: center
@@ -115,139 +204,332 @@ Base example
 
 Note that the child of the :class:`~MDHeroFrom` widget must have the size of the parent:
 
-.. code-block:: kv
+.. tabs::
 
-    MDHeroFrom:
-        id: hero_from
-        tag: "hero"
+    .. tab:: Declarative KV style
 
-        FitImage:
-            size_hint: None, None
-            size: hero_from.size
+        .. code-block:: kv
+
+            MDHeroFrom:
+                id: hero_from
+                tag: "hero"
+
+                FitImage:
+                    size_hint: None, None
+                    size: hero_from.size
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            class Example(MDApp):
+                def on_start(self):
+                    def on_start(*args):
+                        self.root.get_ids().image.size = self.root.get_ids().hero_from.size
+
+                    Clock.schedule_once(on_start)
+
+                def build(self):
+                    return (
+                        [...]
+
+                        MDHeroFrom(
+                            FitImage(
+                                id="image",
+                                size_hint=(None, None),
+                            ),
+                            id="hero_from",
+                        ),
+
+                        [...]
+                    )
 
 To enable hero animation before setting the name of the current screen for the
 screen manager, you must specify the name of the tag of the :class:`~MDHeroFrom`
 container in which the hero is located:
 
-.. code-block:: kv
+.. tabs::
 
-    MDButton:
-        on_release:
-            root.current_heroes = ["hero"]
-            root.current = "screen 2"
+    .. tab:: Declarative KV style
 
-        MDButtonText:
-            text: "Move Hero To Screen B"
-
-If you need to switch to a screen that does not contain heroes, set the
-`current_hero` attribute for the screen manager as "" (empty string):
-
-.. code-block:: kv
-
-    MDButton:
-        on_release:
-            root.current_heroes = []
-            root.current = "another screen"
-
-        MDButtonText:
-            text: "Go To Another Screen"
-
-Example
--------
-
-.. code-block:: python
-
-    from kivy.lang import Builder
-
-    from kivymd.app import MDApp
-
-    KV = '''
-    MDScreenManager:
-
-        MDScreen:
-            name: "screen A"
-            md_bg_color: "lightblue"
-
-            MDHeroFrom:
-                id: hero_from
-                tag: "hero"
-                size_hint: None, None
-                size: "120dp", "120dp"
-                pos_hint: {"top": .98}
-                x: 24
-
-                FitImage:
-                    source: "bg.jpg"
-                    size_hint: None, None
-                    size: hero_from.size
+        .. code-block:: kv
 
             MDButton:
-                pos_hint: {"center_x": .5}
-                y: "36dp"
                 on_release:
                     root.current_heroes = ["hero"]
-                    root.current = "screen B"
+                    root.current = "screen 2"
 
                 MDButtonText:
                     text: "Move Hero To Screen B"
 
-        MDScreen:
-            name: "screen B"
-            hero_to: hero_to
-            md_bg_color: "cadetblue"
+    .. tab:: Declarative python style
 
-            MDHeroTo:
-                id: hero_to
-                tag: "hero"
-                size_hint: None, None
-                size: "220dp", "220dp"
-                pos_hint: {"center_x": .5, "center_y": .5}
+        .. code-block:: python
+
+            class Example(MDApp):
+                def go_to_screen(self, *args):
+                    self.root.current_heroes = ["hero"]
+                    self.root.current = "screen 2"
+
+                def on_start(self):
+                    self.root.get_ids().button_b.bind(on_release=self.go_to_screen)
+
+                def build(self):
+                    return (
+                        [...]
+
+                        MDButton(
+                            MDButtonText(
+                                text="Move Hero To Screen B"
+                            ),
+                            id="button_b",
+                        ),
+
+                        [...]
+                    )
+
+
+If you need to switch to a screen that does not contain heroes, set the
+`current_hero` attribute for the screen manager as "" (empty string):
+
+.. tabs::
+
+    .. tab:: Declarative KV style
+
+        .. code-block:: kv
 
             MDButton:
-                pos_hint: {"center_x": .5}
-                y: "52dp"
                 on_release:
                     root.current_heroes = []
-                    root.current = "screen C"
+                    root.current = "another screen"
 
                 MDButtonText:
-                    text: "Go To Screen C"
+                    text: "Go To Another Screen"
 
-            MDButton:
-                pos_hint: {"center_x": .5}
-                y: "8dp"
-                on_release:
-                    root.current_heroes = ["hero"]
-                    root.current = "screen A"
+    .. tab:: Declarative python style
 
-                MDButtonText:
-                    text: "Move Hero To Screen A"
+        .. code-block:: python
 
-        MDScreen:
-            name: "screen C"
-            md_bg_color: "olive"
+            class Example(MDApp):
+                def go_to_screen(self, *args):
+                    self.root.current_heroes = []
+                    self.root.current = "another screen"
 
-            MDLabel:
-                text: "Screen C"
-                halign: "center"
+                def on_start(self):
+                    self.root.get_ids().button_b.bind(on_release=self.go_to_screen)
 
-            MDButton:
-                pos_hint: {"center_x": .5}
-                y: "36dp"
-                on_release:
-                    root.current = "screen B"
+                def build(self):
+                    return (
+                        [...]
 
-                MDButtonText:
-                    text: "Back To Screen B"
-    '''
+                        MDButton(
+                            MDButtonText(
+                                text="Go To Another Screen"
+                            ),
+                            id="button_b",
+                        ),
+
+                        [...]
+                    )
+
+Example
+-------
+
+.. tabs::
+
+    .. tab:: Declarative python style with KV
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+
+            from kivymd.app import MDApp
+
+            KV = '''
+            MDScreenManager:
+
+                MDScreen:
+                    name: "screen A"
+                    md_bg_color: "lightblue"
+
+                    MDHeroFrom:
+                        id: hero_from
+                        tag: "hero"
+                        size_hint: None, None
+                        size: "120dp", "120dp"
+                        pos_hint: {"top": .98}
+                        x: 24
+
+                        FitImage:
+                            source: "kivymd/images/logo/kivymd-icon-512.png"
+                            size_hint: None, None
+                            size: hero_from.size
+
+                    MDButton:
+                        pos_hint: {"center_x": .5}
+                        y: "36dp"
+                        on_release:
+                            root.current_heroes = ["hero"]
+                            root.current = "screen B"
+
+                        MDButtonText:
+                            text: "Move Hero To Screen B"
+
+                MDScreen:
+                    name: "screen B"
+                    hero_to: hero_to
+                    md_bg_color: "cadetblue"
+
+                    MDHeroTo:
+                        id: hero_to
+                        tag: "hero"
+                        size_hint: None, None
+                        size: "220dp", "220dp"
+                        pos_hint: {"center_x": .5, "center_y": .5}
+
+                    MDButton:
+                        pos_hint: {"center_x": .5}
+                        y: "52dp"
+                        on_release:
+                            root.current_heroes = []
+                            root.current = "screen C"
+
+                        MDButtonText:
+                            text: "Go To Screen C"
+
+                    MDButton:
+                        pos_hint: {"center_x": .5}
+                        y: "8dp"
+                        on_release:
+                            root.current_heroes = ["hero"]
+                            root.current = "screen A"
+
+                        MDButtonText:
+                            text: "Move Hero To Screen A"
+
+                MDScreen:
+                    name: "screen C"
+                    md_bg_color: "olive"
+
+                    MDLabel:
+                        text: "Screen C"
+                        halign: "center"
+
+                    MDButton:
+                        pos_hint: {"center_x": .5}
+                        y: "36dp"
+                        on_release:
+                            root.current = "screen B"
+
+                        MDButtonText:
+                            text: "Back To Screen B"
+            '''
 
 
-    class Example(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
+            class Example(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
 
 
-    Example().run()
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.clock import Clock
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.hero import MDHeroFrom, MDHeroTo
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.screenmanager import MDScreenManager
+
+
+            class Example(MDApp):
+                def on_start(self):
+                    def on_start(*args):
+                        self.root.get_ids().screen_b.hero_to = self.root.get_ids().hero_to
+
+                    Clock.schedule_once(on_start)
+
+                def build(self):
+                    return MDScreenManager(
+                        MDScreen(
+                            MDHeroFrom(
+                                FitImage(
+                                    source="kivymd/images/logo/kivymd-icon-512.png",
+                                    size_hint=(None, None),
+                                ),
+                                id="hero_from",
+                                tag="hero",
+                                size_hint=(None, None),
+                                size=("120dp", "120dp"),
+                                pos_hint={"top": 0.98},
+                                x=24,
+                            ),
+                            MDButton(
+                                MDButtonText(text="Move Hero To Screen B"),
+                                pos_hint={"center_x": 0.5},
+                                y="36dp",
+                                on_release=lambda x: (
+                                    setattr(self.root, "current_heroes", ["hero"]),
+                                    setattr(self.root, "current", "screen B")
+                                )
+                            ),
+                            name="screen A",
+                            md_bg_color="lightblue",
+                        ),
+                        MDScreen(
+                            MDHeroTo(
+                                id="hero_to",
+                                tag="hero",
+                                size_hint=(None, None),
+                                size=("220dp", "220dp"),
+                                pos_hint={"center_x": 0.5, "center_y": 0.5},
+                            ),
+                            MDButton(
+                                MDButtonText(text="Go To Screen C"),
+                                pos_hint={"center_x": 0.5},
+                                y="52dp",
+                                on_release=lambda x: (
+                                    setattr(self.root, "current_heroes", []),
+                                    setattr(self.root, "current", "screen C")
+                                )
+                            ),
+                            MDButton(
+                                MDButtonText(text="Move Hero To Screen A"),
+                                pos_hint={"center_x": 0.5},
+                                y="8dp",
+                                on_release=lambda x: (
+                                    setattr(self.root, "current_heroes", ["hero"]),
+                                    setattr(self.root, "current", "screen A")
+                                )
+                            ),
+                            id="screen_b",
+                            name="screen B",
+                            md_bg_color="cadetblue",
+                        ),
+                        MDScreen(
+                            MDLabel(
+                                text="Screen C",
+                                halign="center",
+                            ),
+                            MDButton(
+                                MDButtonText(text="Back To Screen B"),
+                                pos_hint={"center_x": 0.5},
+                                y="36dp",
+                                on_release=lambda x: setattr(self.root, "current", "screen B")
+                            ),
+                            name="screen C",
+                            md_bg_color="olive",
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hero-switch-another-screen.gif
     :align: center
@@ -264,110 +546,236 @@ The `on_transform_in`, `on_transform_out` events relate to the
 :class:`~MDHeroFrom` container. For example, let's change the radius and
 background color of the hero during the flight between the screens:
 
-.. code-block:: python
+.. tabs::
 
-    from kivy import utils
-    from kivy.animation import Animation
-    from kivy.lang import Builder
-    from kivy.utils import get_color_from_hex
+    .. tab:: Declarative python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.hero import MDHeroFrom
-    from kivymd.uix.relativelayout import MDRelativeLayout
+        .. code-block:: python
 
-    KV = '''
-    MDScreenManager:
+            from kivy import utils
+            from kivy.animation import Animation
+            from kivy.lang import Builder
+            from kivy.utils import get_color_from_hex
 
-        MDScreen:
-            name: "screen A"
-            md_bg_color: "lightblue"
+            from kivymd.app import MDApp
+            from kivymd.uix.hero import MDHeroFrom
+            from kivymd.uix.relativelayout import MDRelativeLayout
 
-            MyHero:
-                id: hero_from
-                tag: "hero"
-                size_hint: None, None
-                size: "120dp", "120dp"
-                pos_hint: {"top": .98}
-                x: 24
+            KV = '''
+            MDScreenManager:
 
-                MDRelativeLayout:
-                    size_hint: None, None
-                    size: hero_from.size
-                    md_bg_color: "blue"
-                    radius: [24, 12, 24, 12]
+                MDScreen:
+                    name: "screen A"
+                    md_bg_color: "lightblue"
 
-                    FitImage:
-                        source: "https://github.com/kivymd/internal/raw/main/logo/kivymd_logo_blue.png"
+                    MyHero:
+                        id: hero_from
+                        tag: "hero"
+                        size_hint: None, None
+                        size: "120dp", "120dp"
+                        pos_hint: {"top": .98}
+                        x: 24
 
-            MDButton:
-                pos_hint: {"center_x": .5}
-                y: "36dp"
-                on_release:
-                    root.current_heroes = ["hero"]
-                    root.current = "screen B"
+                        MDRelativeLayout:
+                            size_hint: None, None
+                            size: hero_from.size
+                            md_bg_color: "blue"
+                            radius: [24, 12, 24, 12]
 
-                MDButtonText:
-                    text: "Move Hero To Screen B"
+                            FitImage:
+                                source: "kivymd/images/logo/kivymd-icon-512.png"
 
-        MDScreen:
-            name: "screen B"
-            hero_to: hero_to
-            md_bg_color: "cadetblue"
+                    MDButton:
+                        pos_hint: {"center_x": .5}
+                        y: "36dp"
+                        on_release:
+                            root.current_heroes = ["hero"]
+                            root.current = "screen B"
 
-            MDHeroTo:
-                id: hero_to
-                tag: "hero"
-                size_hint: None, None
-                size: "220dp", "220dp"
-                pos_hint: {"center_x": .5, "center_y": .5}
+                        MDButtonText:
+                            text: "Move Hero To Screen B"
 
-            MDButton:
-                pos_hint: {"center_x": .5}
-                y: "36dp"
-                on_release:
-                    root.current_heroes = ["hero"]
-                    root.current = "screen A"
+                MDScreen:
+                    name: "screen B"
+                    hero_to: hero_to
+                    md_bg_color: "cadetblue"
 
-                MDButtonText:
-                    text: "Move Hero To Screen A"
-    '''
+                    MDHeroTo:
+                        id: hero_to
+                        tag: "hero"
+                        size_hint: None, None
+                        size: "220dp", "220dp"
+                        pos_hint: {"center_x": .5, "center_y": .5}
 
+                    MDButton:
+                        pos_hint: {"center_x": .5}
+                        y: "36dp"
+                        on_release:
+                            root.current_heroes = ["hero"]
+                            root.current = "screen A"
 
-    class Example(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
-
-
-    class MyHero(MDHeroFrom):
-        def on_transform_in(
-            self, instance_hero_widget: MDRelativeLayout, duration: float
-        ):
-            '''
-            Fired when the hero flies from screen **A** to screen **B**.
-
-            :param instance_hero_widget: dhild widget of the `MDHeroFrom` class.
-            :param duration of the transition animation between screens.
+                        MDButtonText:
+                            text: "Move Hero To Screen A"
             '''
 
-            Animation(
-                radius=[12, 24, 12, 24],
-                duration=duration,
-                md_bg_color=(0, 1, 1, 1),
-            ).start(instance_hero_widget)
 
-        def on_transform_out(
-            self, instance_hero_widget: MDRelativeLayout, duration: float
-        ):
-            '''Fired when the hero back from screen **B** to screen **A**.'''
-
-            Animation(
-                radius=[24, 12, 24, 12],
-                duration=duration,
-                md_bg_color=get_color_from_hex(utils.hex_colormap["blue"]),
-            ).start(instance_hero_widget)
+            class Example(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
 
 
-    Example().run()
+            class MyHero(MDHeroFrom):
+                def on_transform_in(
+                    self, instance_hero_widget: MDRelativeLayout, duration: float
+                ):
+                    '''
+                    Fired when the hero flies from screen **A** to screen **B**.
+
+                    :param instance_hero_widget: dhild widget of the `MDHeroFrom` class.
+                    :param duration of the transition animation between screens.
+                    '''
+
+                    Animation(
+                        radius=[12, 24, 12, 24],
+                        duration=duration,
+                        md_bg_color=(0, 1, 1, 1),
+                    ).start(instance_hero_widget)
+
+                def on_transform_out(
+                    self, instance_hero_widget: MDRelativeLayout, duration: float
+                ):
+                    '''Fired when the hero back from screen **B** to screen **A**.'''
+
+                    Animation(
+                        radius=[24, 12, 24, 12],
+                        duration=duration,
+                        md_bg_color=get_color_from_hex(utils.hex_colormap["blue"]),
+                    ).start(instance_hero_widget)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.clock import Clock
+            from kivy.animation import Animation
+            from kivy.utils import get_color_from_hex
+            from kivy import utils
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.hero import MDHeroFrom, MDHeroTo
+            from kivymd.uix.relativelayout import MDRelativeLayout
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.screenmanager import MDScreenManager
+
+
+            class MyHero(MDHeroFrom):
+                def on_transform_in(
+                        self, instance_hero_widget: MDRelativeLayout, duration: float
+                ):
+                    '''
+                    Fired when the hero flies from screen **A** to screen **B**.
+
+                    :param instance_hero_widget: dhild widget of the `MDHeroFrom` class.
+                    :param duration of the transition animation between screens.
+                    '''
+
+                    Animation(
+                        radius=[12, 24, 12, 24],
+                        duration=0.1,
+                        md_bg_color=(0, 1, 1, 1),
+                    ).start(instance_hero_widget)
+
+                def on_transform_out(
+                        self, instance_hero_widget: MDRelativeLayout, duration: float
+                ):
+                    '''Fired when the hero back from screen **B** to screen **A**.'''
+
+                    Animation(
+                        radius=[24, 12, 24, 12],
+                        duration=0.1,
+                        md_bg_color=get_color_from_hex(utils.hex_colormap["blue"]),
+                    ).start(instance_hero_widget)
+
+
+            class Example(MDApp):
+                def go_to_screen(self, *args):
+                    self.root.current_heroes = ["hero"]
+                    if self.root.current == "screen A":
+                        self.root.current = "screen B"
+                    else:
+                        self.root.current = "screen A"
+
+                def on_start(self):
+                    def on_start(*args):
+                        self.root.get_ids().relative.size = self.root.get_ids().hero_from.size
+                        self.root.get_ids().screen_b.hero_to = self.root.get_ids().hero_to
+
+                    self.root.get_ids().button_b.bind(on_release=self.go_to_screen)
+                    self.root.get_ids().button_a.bind(on_release=self.go_to_screen)
+                    Clock.schedule_once(on_start)
+
+                def build(self):
+                    return (
+                        MDScreenManager(
+                            MDScreen(
+                                MyHero(
+                                    MDRelativeLayout(
+                                        FitImage(
+                                            source="kivymd/images/logo/kivymd-icon-512.png",
+                                        ),
+                                        id="relative",
+                                        size_hint=(None, None),
+                                        md_bg_color="blue",
+                                        radius=[24, 12, 24, 12],
+                                    ),
+                                    id="hero_from",
+                                    tag="hero",
+                                    size_hint=(None, None),
+                                    size=("120dp", "120dp"),
+                                    pos_hint={"top": .98},
+                                    x=24,
+                                ),
+                                MDButton(
+                                    MDButtonText(
+                                        text="Move Hero To Screen B"
+                                    ),
+                                    id="button_b",
+                                    pos_hint={"center_x": .5},
+                                    y="36dp",
+                                ),
+                                name="screen A",
+                                md_bg_color="lightblue",
+                            ),
+                            MDScreen(
+                                MDHeroTo(
+                                    id="hero_to",
+                                    tag="hero",
+                                    size_hint=(None, None),
+                                    size=("220dp", "220dp"),
+                                    pos_hint={"center_x": .5, "center_y": .5},
+                                ),
+                                MDButton(
+                                    MDButtonText(
+                                        text="Move Hero To Screen A"
+                                    ),
+                                    id="button_a",
+                                    pos_hint={"center_x": .5},
+                                    y="36dp",
+                                ),
+                                id="screen_b",
+                                name="screen B",
+                                md_bg_color="cadetblue",
+                            )
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hero-events.gif
     :align: center
@@ -375,137 +783,287 @@ background color of the hero during the flight between the screens:
 Usage with ScrollView
 ---------------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.animation import Animation
-    from kivy.clock import Clock
-    from kivy.lang import Builder
-    from kivy.metrics import dp
-    from kivy.properties import StringProperty, ObjectProperty
+    .. tab:: Declarative python style with KV
 
-    from kivymd.app import MDApp
-    from kivymd.uix.hero import MDHeroFrom
+        .. code-block:: python
 
-    KV = '''
-    <HeroItem>
-        size_hint_y: None
-        height: "200dp"
-        radius: "24dp"
+            from kivy.animation import Animation
+            from kivy.clock import Clock
+            from kivy.lang import Builder
+            from kivy.metrics import dp
+            from kivy.properties import StringProperty, ObjectProperty
 
-        MDSmartTile:
-            id: tile
-            size_hint: None, None
-            size: root.size
-            on_release: root.on_release()
+            from kivymd.app import MDApp
+            from kivymd.uix.hero import MDHeroFrom
 
-            MDSmartTileImage:
-                id: image
-                source: "bg.jpg"
-                radius: dp(24)
+            KV = '''
+            <HeroItem>
+                size_hint_y: None
+                height: "200dp"
+                radius: "24dp"
 
-            MDSmartTileOverlayContainer:
-                id: overlay
-                md_bg_color: 0, 0, 0, .5
-                adaptive_height: True
-                padding: "8dp"
-                spacing: "8dp"
-                radius: [0, 0, dp(24), dp(24)]
+                MDSmartTile:
+                    id: tile
+                    size_hint: None, None
+                    size: root.size
+                    on_release: root.on_release()
 
-                MDLabel:
-                    text: root.tag
-                    theme_text_color: "Custom"
-                    text_color: "white"
-                    adaptive_height: True
+                    MDSmartTileImage:
+                        id: image
+                        source: "kivymd/images/logo/kivymd-icon-512.png"
+                        radius: dp(24)
 
+                    MDSmartTileOverlayContainer:
+                        id: overlay
+                        md_bg_color: 0, 0, 0, .5
+                        adaptive_height: True
+                        padding: "8dp"
+                        spacing: "8dp"
+                        radius: [0, 0, dp(24), dp(24)]
 
-    MDScreenManager:
-        md_bg_color: self.theme_cls.backgroundColor
-
-        MDScreen:
-            name: "screen A"
-
-            ScrollView:
-
-                MDGridLayout:
-                    id: box
-                    cols: 2
-                    spacing: "12dp"
-                    padding: "12dp"
-                    adaptive_height: True
-
-        MDScreen:
-            name: "screen B"
-            heroes_to: [hero_to]
-
-            MDHeroTo:
-                id: hero_to
-                size_hint: 1, None
-                height: "220dp"
-                pos_hint: {"top": 1}
-
-            MDButton:
-                pos_hint: {"center_x": .5}
-                y: "36dp"
-                on_release:
-                    root.current_heroes = [hero_to.tag]
-                    root.current = "screen A"
-
-                MDButtonText:
-                    text: "Move Hero To Screen A"
-    '''
+                        MDLabel:
+                            text: root.tag
+                            theme_text_color: "Custom"
+                            text_color: "white"
+                            adaptive_height: True
 
 
-    class HeroItem(MDHeroFrom):
-        text = StringProperty()
-        manager = ObjectProperty()
+            MDScreenManager:
+                md_bg_color: self.theme_cls.backgroundColor
 
-        def __init__(self, **kwargs):
-            super().__init__(**kwargs)
-            self.ids.image.ripple_duration_in_fast = 0.05
+                MDScreen:
+                    name: "screen A"
 
-        def on_transform_in(self, instance_hero_widget, duration):
-            for instance in [
-                instance_hero_widget,
-                instance_hero_widget._overlay_container,
-                instance_hero_widget._image,
-            ]:
-                Animation(radius=[0, 0, 0, 0], duration=duration).start(instance)
+                    ScrollView:
 
-        def on_transform_out(self, instance_hero_widget, duration):
-            for instance, radius in {
-                instance_hero_widget: [dp(24), dp(24), dp(24), dp(24)],
-                instance_hero_widget._overlay_container: [0, 0, dp(24), dp(24)],
-                instance_hero_widget._image: [dp(24), dp(24), dp(24), dp(24)],
-            }.items():
-                Animation(
-                    radius=radius,
-                    duration=duration,
-                ).start(instance)
+                        MDGridLayout:
+                            id: box
+                            cols: 2
+                            spacing: "12dp"
+                            padding: "12dp"
+                            adaptive_height: True
 
-        def on_release(self):
-            def switch_screen(*args):
-                self.manager.current_heroes = [self.tag]
-                self.manager.ids.hero_to.tag = self.tag
-                self.manager.current = "screen B"
+                MDScreen:
+                    name: "screen B"
+                    heroes_to: [hero_to]
 
-            Clock.schedule_once(switch_screen, 0.2)
+                    MDHeroTo:
+                        id: hero_to
+                        size_hint: 1, None
+                        height: "220dp"
+                        pos_hint: {"top": 1}
 
+                    MDButton:
+                        pos_hint: {"center_x": .5}
+                        y: "36dp"
+                        on_release:
+                            root.current_heroes = [hero_to.tag]
+                            root.current = "screen A"
 
-    class Example(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
-
-        def on_start(self):
-            for i in range(12):
-                hero_item = HeroItem(
-                    text=f"Item {i + 1}", tag=f"Tag {i}", manager=self.root
-                )
-                if not i % 2:
-                    hero_item.md_bg_color = "lightgrey"
-                self.root.ids.box.add_widget(hero_item)
+                        MDButtonText:
+                            text: "Move Hero To Screen A"
+            '''
 
 
-    Example().run()
+            class HeroItem(MDHeroFrom):
+                text = StringProperty()
+                manager = ObjectProperty()
+
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    self.ids.image.ripple_duration_in_fast = 0.05
+
+                def on_transform_in(self, instance_hero_widget, duration):
+                    for instance in [
+                        instance_hero_widget,
+                        instance_hero_widget._overlay_container,
+                        instance_hero_widget._image,
+                    ]:
+                        Animation(radius=[0, 0, 0, 0], duration=duration).start(instance)
+
+                def on_transform_out(self, instance_hero_widget, duration):
+                    for instance, radius in {
+                        instance_hero_widget: [dp(24), dp(24), dp(24), dp(24)],
+                        instance_hero_widget._overlay_container: [0, 0, dp(24), dp(24)],
+                        instance_hero_widget._image: [dp(24), dp(24), dp(24), dp(24)],
+                    }.items():
+                        Animation(
+                            radius=radius,
+                            duration=duration,
+                        ).start(instance)
+
+                def on_release(self):
+                    def switch_screen(*args):
+                        self.manager.current_heroes = [self.tag]
+                        self.manager.ids.hero_to.tag = self.tag
+                        self.manager.current = "screen B"
+
+                    Clock.schedule_once(switch_screen, 0.2)
+
+
+            class Example(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
+
+                def on_start(self):
+                    for i in range(12):
+                        hero_item = HeroItem(
+                            text=f"Item {i + 1}", tag=f"Tag {i}", manager=self.root
+                        )
+                        if not i % 2:
+                            hero_item.md_bg_color = "lightgrey"
+                        self.root.ids.box.add_widget(hero_item)
+
+
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.animation import Animation
+            from kivy.clock import Clock
+            from kivy.metrics import dp
+            from kivy.properties import StringProperty, ObjectProperty
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.gridlayout import MDGridLayout
+            from kivymd.uix.hero import MDHeroFrom, MDHeroTo
+            from kivymd.uix.imagelist import (
+                MDSmartTile, MDSmartTileImage, MDSmartTileOverlayContainer
+            )
+            from kivymd.uix.label import MDLabel
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.screenmanager import MDScreenManager
+            from kivymd.uix.scrollview import MDScrollView
+
+
+            class HeroItem(MDHeroFrom):
+                text = StringProperty()
+                manager = ObjectProperty()
+
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.size_hint_y = None
+                    self.height = "200dp"
+                    self.radius = "24dp"
+                    Clock.schedule_once(self.build_widgets, 0.4)
+
+                def build_widgets(self, *args):
+                    self.add_widget(
+                        MDSmartTile(
+                            MDSmartTileImage(
+                                id="image",
+                                source="kivymd/images/logo/kivymd-icon-512.png",
+                                radius=dp(24),
+                            ),
+                            MDSmartTileOverlayContainer(
+                                MDLabel(
+                                    text=self.tag,
+                                    theme_text_color="Custom",
+                                    text_color="white",
+                                    adaptive_height=True,
+                                ),
+                                id="overlay",
+                                md_bg_color=(0, 0, 0, .5),
+                                adaptive_height=True,
+                                padding="8dp",
+                                spacing="8dp",
+                                radius=[0, 0, dp(24), dp(24)],
+                            ),
+                            id="tile",
+                            size_hint=(None, None),
+                            size=self.size,
+                            on_release=lambda x: self.on_release(),
+                        )
+                    )
+                    self.get_ids().image.ripple_duration_in_fast = 0.05
+
+                def on_transform_in(self, instance_hero_widget, duration):
+                    for instance in [
+                        instance_hero_widget,
+                        instance_hero_widget._overlay_container,
+                        instance_hero_widget._image,
+                    ]:
+                        Animation(radius=[0, 0, 0, 0], duration=duration).start(instance)
+
+                def on_transform_out(self, instance_hero_widget, duration):
+                    for instance, radius in {
+                        instance_hero_widget: [dp(24), dp(24), dp(24), dp(24)],
+                        instance_hero_widget._overlay_container: [0, 0, dp(24), dp(24)],
+                        instance_hero_widget._image: [dp(24), dp(24), dp(24), dp(24)],
+                    }.items():
+                        Animation(radius=radius, duration=duration).start(instance)
+
+                def on_release(self):
+                    def switch_screen(*args):
+                        self.manager.current_heroes = [self.tag]
+                        self.manager.get_ids().hero_to.tag = self.tag
+                        self.manager.current = "screen B"
+
+                    Clock.schedule_once(switch_screen, 0.2)
+
+
+            class Example(MDApp):
+                def build(self):
+                    return (
+                        MDScreenManager(
+                            MDScreen(
+                                MDScrollView(
+                                    MDGridLayout(
+                                        id="box",
+                                        cols=2,
+                                        spacing="12dp",
+                                        padding="12dp",
+                                        adaptive_height=True,
+                                    )
+                                ),
+                                name="screen A"
+                            ),
+                            MDScreen(
+                                MDHeroTo(
+                                    id="hero_to",
+                                    size_hint=(1, None),
+                                    height="220dp",
+                                    pos_hint={"top": 1},
+                                ),
+                                MDButton(
+                                    MDButtonText(
+                                        text="Move Hero To Screen A"
+                                    ),
+                                    id="button_move_to_screen_a",
+                                    pos_hint={"center_x": .5},
+                                    y="36dp",
+                                ),
+                                id="screen_b",
+                                name="screen B",
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor
+                        )
+                    )
+
+                def go_to_screen(self, *args):
+                    self.root.current_heroes = [self.root.get_ids().hero_to.tag]
+                    self.root.current = "screen A"
+
+                def on_start(self):
+                    self.root.get_ids().screen_b.heroes_to = [self.root.get_ids().hero_to]
+                    self.root.get_ids().button_move_to_screen_a.bind(
+                        on_release=self.go_to_screen
+                    )
+                    for i in range(12):
+                        hero_item = HeroItem(
+                            text=f"Item {i + 1}", tag=f"Tag {i}", manager=self.root
+                        )
+                        if not i % 2:
+                            hero_item.md_bg_color = "lightgrey"
+                        self.root.get_ids().box.add_widget(hero_item)
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hero-usage-with-scrollview.gif
     :align: center
@@ -513,92 +1071,215 @@ Usage with ScrollView
 Using multiple heroes at the same time
 --------------------------------------
 
-.. code-block:: python
+.. tabs::
 
-    from kivy.lang import Builder
+    .. tab:: Declarative python style with KV
 
-    from kivymd.app import MDApp
+        .. code-block:: python
 
-    KV = '''
-    MDScreenManager:
+            from kivy.lang import Builder
 
-        MDScreen:
-            name: "screen A"
-            md_bg_color: "lightblue"
+            from kivymd.app import MDApp
 
-            MDHeroFrom:
-                id: hero_kivymd
-                tag: "kivymd"
-                size_hint: None, None
-                size: "200dp", "200dp"
-                pos_hint: {"top": .98}
-                x: 24
+            KV = '''
+            MDScreenManager:
 
-                FitImage:
-                    source: "avatar.png"
-                    size_hint: None, None
-                    size: hero_kivymd.size
-                    radius: self.height / 2
+                MDScreen:
+                    name: "screen A"
+                    md_bg_color: "lightblue"
 
-            MDHeroFrom:
-                id: hero_kivy
-                tag: "kivy"
-                size_hint: None, None
-                size: "200dp", "200dp"
-                pos_hint: {"top": .98}
-                x: 324
+                    MDHeroFrom:
+                        id: hero_kivymd
+                        tag: "kivymd"
+                        size_hint: None, None
+                        size: "200dp", "200dp"
+                        pos_hint: {"top": .98}
+                        x: "24dp"
 
-                FitImage:
-                    source: "bg.jpg"
-                    size_hint: None, None
-                    size: hero_kivy.size
-                    radius: self.height / 2
+                        FitImage:
+                            source: "kivymd/images/logo/kivymd-icon-512.png"
+                            size_hint: None, None
+                            size: hero_kivymd.size
+                            radius: self.height / 2
 
-            MDButton:
-                pos_hint: {"center_x": .5}
-                y: "36dp"
-                on_release:
-                    root.current_heroes = ["kivymd", "kivy"]
-                    root.current = "screen B"
+                    MDHeroFrom:
+                        id: hero_kivy
+                        tag: "kivy"
+                        size_hint: None, None
+                        size: "200dp", "200dp"
+                        pos_hint: {"top": .98}
+                        x: "324dp"
 
-                MDButtonText:
-                    text: "Move Hero To Screen B"
+                        FitImage:
+                            source: "data/logo/kivy-icon-512.png"
+                            size_hint: None, None
+                            size: hero_kivy.size
+                            radius: self.height / 2
 
-        MDScreen:
-            name: "screen B"
-            heroes_to: hero_to_kivymd, hero_to_kivy
-            md_bg_color: "cadetblue"
+                    MDButton:
+                        pos_hint: {"center_x": .5}
+                        y: "36dp"
+                        on_release:
+                            root.current_heroes = ["kivymd", "kivy"]
+                            root.current = "screen B"
 
-            MDHeroTo:
-                id: hero_to_kivy
-                tag: "kivy"
-                size_hint: None, None
-                pos_hint: {"center_x": .5, "center_y": .5}
+                        MDButtonText:
+                            text: "Move Hero To Screen B"
 
-            MDHeroTo:
-                id: hero_to_kivymd
-                tag: "kivymd"
-                size_hint: None, None
-                pos_hint: {"right": 1, "top": 1}
+                MDScreen:
+                    name: "screen B"
+                    heroes_to: hero_to_kivymd, hero_to_kivy
+                    md_bg_color: "cadetblue"
 
-            MDButton:
-                pos_hint: {"center_x": .5}
-                y: "36dp"
-                on_release:
-                    root.current_heroes = ["kivy", "kivymd"]
-                    root.current = "screen A"
+                    MDHeroTo:
+                        id: hero_to_kivy
+                        tag: "kivy"
+                        size_hint: None, None
+                        pos_hint: {"center_x": .5, "center_y": .5}
 
-                MDButtonText:
-                    text: "Move Hero To Screen A"
-    '''
+                    MDHeroTo:
+                        id: hero_to_kivymd
+                        tag: "kivymd"
+                        size_hint: None, None
+                        pos_hint: {"right": 1, "top": 1}
+
+                    MDButton:
+                        pos_hint: {"center_x": .5}
+                        y: "36dp"
+                        on_release:
+                            root.current_heroes = ["kivy", "kivymd"]
+                            root.current = "screen A"
+
+                        MDButtonText:
+                            text: "Move Hero To Screen A"
+            '''
 
 
-    class Test(MDApp):
-        def build(self):
-            return Builder.load_string(KV)
+            class Example(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
 
 
-    Example().run()
+            Example().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.clock import Clock
+
+            from kivymd.app import MDApp
+            from kivymd.material_resources import dp
+            from kivymd.uix.button import MDButton, MDButtonText
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.hero import MDHeroFrom, MDHeroTo
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.screenmanager import MDScreenManager
+
+
+            class Example(MDApp):
+                def go_to_screen(self, *args):
+                    if self.root.current == "screen A":
+                        self.root.current_heroes = ["kivymd", "kivy"]
+                        self.root.current = "screen B"
+                    else:
+                        self.root.current_heroes = ["kivy", "kivymd"]
+                        self.root.current = "screen A"
+
+                def on_start(self):
+                    def on_start(*args):
+                        logo_kivymd = self.root.get_ids().logo_kivymd
+                        logo_kivy = self.root.get_ids().logo_kivy
+
+                        logo_kivymd.size = self.root.get_ids().hero_kivymd.size
+                        logo_kivymd.radius = logo_kivymd.height / 2
+
+                        logo_kivy.size = self.root.get_ids().hero_kivy.size
+                        logo_kivy.radius = logo_kivy.height / 2
+
+                    self.root.get_ids().button_move_heto_to_screen_b.bind(
+                        on_release=self.go_to_screen
+                    )
+                    self.root.get_ids().button_move_heto_to_screen_a.bind(
+                        on_release=self.go_to_screen
+                    )
+
+                    self.root.get_ids().screen_b.heroes_to = [
+                        self.root.get_ids().hero_to_kivymd, self.root.get_ids().hero_to_kivy
+                    ]
+                    Clock.schedule_once(on_start)
+
+                def build(self):
+                    return (
+                        MDScreenManager(
+                            MDScreen(
+                                MDHeroFrom(
+                                    FitImage(
+                                        id="logo_kivymd",
+                                        source="kivymd/images/logo/kivymd-icon-512.png",
+                                        size_hint=(None, None),
+                                    ),
+                                    id="hero_kivymd",
+                                    tag="kivymd",
+                                    size_hint=(None, None),
+                                    size=("200dp", "200dp"),
+                                    pos_hint={"top": .98},
+                                    x=dp(24),
+                                ),
+                                MDHeroFrom(
+                                    FitImage(
+                                        id="logo_kivy",
+                                        source="data/logo/kivy-icon-512.png",
+                                        size_hint=(None, None),
+                                    ),
+                                    id="hero_kivy",
+                                    tag="kivy",
+                                    size_hint=(None, None),
+                                    size=("200dp", "200dp"),
+                                    pos_hint={"top": .98},
+                                    x="324dp",
+                                ),
+                                MDButton(
+                                    MDButtonText(
+                                        text="Move Hero To Screen B"
+                                    ),
+                                    id="button_move_heto_to_screen_b",
+                                    pos_hint={"center_x": .5},
+                                    y="36dp",
+                                ),
+                                name="screen A",
+                                md_bg_color="lightblue",
+                            ),
+                            MDScreen(
+                                MDHeroTo(
+                                    id="hero_to_kivy",
+                                    tag="kivy",
+                                    size_hint=(None, None),
+                                    pos_hint={"center_x": .5, "center_y": .5},
+                                ),
+                                MDHeroTo(
+                                    id="hero_to_kivymd",
+                                    tag="kivymd",
+                                    size_hint=(None, None),
+                                    pos_hint={"right": 1, "top": 1},
+                                ),
+                                MDButton(
+                                    MDButtonText(
+                                        text="Move Hero To Screen A"
+                                    ),
+                                    id="button_move_heto_to_screen_a",
+                                    pos_hint={"center_x": .5},
+                                    y="36dp",
+                                ),
+                                id="screen_b",
+                                name="screen B",
+                                md_bg_color="cadetblue",
+                            )
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/hero-multiple-heroes.gif
     :align: center
@@ -633,8 +1314,8 @@ class MDHeroFrom(MDBoxLayout):
 
     __events__ = ("on_transform_in", "on_transform_out")
 
-    def __init__(self, **kwargs):
-        super().__init__(**kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
 
     def on_transform_in(self, *args):
         """Fired when the hero flies from screen **A** to screen **B**."""

@@ -278,7 +278,7 @@ Yes, this is not a very good solution, but I think it will be fixed soon.
     to create new issue in the KivyMD repository.
 """
 
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, ListProperty
 from kivy.uix.widget import Widget
 
 
@@ -305,6 +305,180 @@ class DeclarativeBehavior:
     and defaults to `''`.
     """
 
+    widgets = ListProperty()
+    """
+    List of child widgets added declaratively.
+
+    .. versionadded:: 2.0.0
+
+    The `widgets` property allows you to define and manage child widgets in
+    a declarative way. When assigned, the widgets in the list are automatically
+    added to the parent container, and their IDs (if set) are registered
+    internally for later reference.
+
+    This property eliminates the need to call `add_widget()` manually for each
+    child widget.
+
+    .. tabs::
+    
+        .. tab:: Declarative Python style
+    
+            .. code-block:: python
+
+                class CustomListItem(MDListItem):
+                    def __init__(self, **kwargs):
+                        super().__init__(**kwargs)
+                        self.widgets = [
+                            MDListItemLeadingIcon(icon="account"),
+                            MDListItemHeadlineText(text="Title"),
+                            MDListItemSupportingText(text="Subtitle"),
+                            MDListItemTertiaryText(text="Tertiary"),
+                            MDListItemTrailingIcon(icon="lock"),
+                        ]
+
+        .. tab:: Imperative Python style
+    
+            .. code-block:: python
+
+                class CustomListItem(MDListItem):
+                    def __init__(self, **kwargs):
+                        super().__init__(**kwargs)
+                        self.add_widget(MDListItemLeadingIcon(icon="account"))
+                        self.add_widget(MDListItemHeadlineText(text="Title"))
+                        self.add_widget(MDListItemSupportingText(text="Subtitle"))
+                        self.add_widget(MDListItemTertiaryText(text="Tertiary"))
+                        self.add_widget(MDListItemTrailingIcon(icon="lock"))
+
+    Full example
+    ------------
+
+    .. code-block:: python
+
+        from kivymd.app import MDApp
+        from kivymd.uix.list import (
+            MDListItem,
+            MDListItemLeadingIcon,
+            MDListItemHeadlineText,
+            MDListItemSupportingText,
+            MDListItemTertiaryText,
+            MDListItemTrailingIcon,
+        )
+        from kivymd.uix.screen import MDScreen
+
+
+        class CustomListItem(MDListItem):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.widgets = [
+                    MDListItemLeadingIcon(
+                        icon="account"
+                    ),
+                    MDListItemHeadlineText(
+                        text="MDListItemHeadlineText"
+                    ),
+                    MDListItemSupportingText(
+                        text="MDListItemSupportingText"
+                    ),
+                    MDListItemTertiaryText(
+                        text="MDListItemTertiaryText"
+                    ),
+                    MDListItemTrailingIcon(
+                        icon="lock"
+                    )
+                ]
+
+
+        class Example(MDApp):
+            def build(self):
+                return (
+                    MDScreen(
+                        CustomListItem(
+                            pos_hint={"center_x": 0.5, "center_y": 0.5},
+                            size_hint_x=0.5
+                        ),
+                        md_bg_color=self.theme_cls.backgroundColor
+                    )
+                )
+
+
+        Example().run()
+
+    .. warning::
+
+        When using the `widgets` property, it is recommended to only interact
+        with child widgets via their registered IDs.
+
+        .. code-block:: python
+
+            class CustomListItem(MDListItem):
+                def __init__(self, *args, **kwargs):
+                    [...]
+
+                    self.widgets = [
+                        MDListItemLeadingIcon(
+                            id="icon_account",
+                            icon="account"
+                        ),
+
+                        [...]
+                    ]
+
+
+            class Example(MDApp):
+                def change_icon(self, list_item):
+                    # This work.
+                    list_item.get_ids().icon_account.icon = "account-alert"
+            
+                def build(self):
+                    return (
+                        MDScreen(
+                            CustomListItem(
+                                [...]
+                                on_release=self.change_icon,
+                            ),
+                            [...]
+                        )
+                    )
+
+        Adding to or removing items from `self.widgets` directly at runtime 
+        may lead to unexpected behavior.
+
+        .. code-block:: python
+
+            class CustomListItem(MDListItem):
+                def __init__(self, *args, **kwargs):
+                    [...]
+
+                    self.widgets = [
+                        MDListItemLeadingIcon(
+                            id="icon_account",
+                            icon="account"
+                        ),
+
+                        [...]
+                    ]
+
+
+            class Example(MDApp):
+                def remove_icon(self, list_item):
+                    # This won't work.
+                    list_item.widgets.remove(list_item.get_ids().icon_account)
+            
+                def build(self):
+                    return (
+                        MDScreen(
+                            CustomListItem(
+                                [...]
+                                on_release=self.remove_icon,
+                            ),
+                            [...]
+                        )
+                    )
+
+    :attr:`widgets` is a :class:`~kivy.properties.ListProperty`
+    and defaults to an empty list `[]`.
+    """
+
     __ids = _Dict()
 
     def __init__(self, *args, **kwargs):
@@ -326,8 +500,25 @@ class DeclarativeBehavior:
         for child in args:
             if issubclass(child.__class__, Widget):
                 self.add_widget(child)
-                if hasattr(child, "id") and child.id:
-                    self.__ids[child.id] = child
+                self._register_ids(child)
+
+    def on_widgets(self, instance, value) -> None:
+        """
+        Fired when the values of :attr:`widgets` change.
+
+        .. versionadded:: 2.0.0
+        """
+
+        for child in value:
+            if not isinstance(child, Widget):
+                continue
+
+            # Delete ID of widget if it was registered.
+            if hasattr(child, "id") and child.id:
+                self.__ids.pop(child.id, None)
+
+            self.add_widget(child)
+            self._register_ids(child)
 
     def get_ids(self) -> dict:
         """
@@ -336,3 +527,7 @@ class DeclarativeBehavior:
         """
 
         return self.__ids
+
+    def _register_ids(self, widget):
+        if hasattr(widget, "id") and widget.id:
+            self.__ids[widget.id] = widget

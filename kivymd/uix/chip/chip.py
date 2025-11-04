@@ -17,15 +17,36 @@ Components/Chip
 Usage
 -----
 
-.. code-block:: kv
+.. tabs::
 
-    MDChip:
+    .. tab:: Declarative KV style
 
-        MDChipLeadingAvatar:  # MDChipLeadingIcon
+        .. code-block:: kv
 
-        MDChipText:
+            MDChip:
 
-        MDChipTrailingIcon:
+                MDChipLeadingAvatar:  # MDChipLeadingIcon
+
+                MDChipText:
+
+                MDChipTrailingIcon:
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            MDChip(
+                # MDChipLeadingIcon
+                MDChipLeadingAvatar(
+                    ...
+                ),
+                MDChipText(
+                    ...
+                ),
+                MDChipTrailingIcon(
+                    ...
+                ),
+            )
 
 Anatomy
 =======

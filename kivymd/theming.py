@@ -30,6 +30,7 @@ from kivy.core.window import Window
 from kivy.event import EventDispatcher
 from kivy.logger import Logger
 from kivy.properties import (
+    Property,
     AliasProperty,
     BooleanProperty,
     DictProperty,
@@ -53,16 +54,15 @@ from kivymd.material_resources import DEVICE_IOS
 
 
 class ThemeManager(EventDispatcher, DynamicColor):
-    primary_palette = OptionProperty(
-        None,
-        options=[name_color.capitalize() for name_color in hex_colormap.keys()],
-    )
+    primary_palette = Property(None)
     """
     The name of the color scheme that the application will use.
     All major `material` components will have the color
     of the specified color theme.
 
-    See :attr:`kivy.utils.hex_colormap` keys for available values.
+    Works like a :class:`~kivy.properties.ColorProperty`, but also accepts
+    color names from :attr:`kivy.utils.hex_colormap`, including keys with
+    capital letters.
 
     To change the color scheme of an application:
 
@@ -840,6 +840,18 @@ class ThemeManager(EventDispatcher, DynamicColor):
         for style in self.font_styles.keys():
             theme_font_styles.append(style)
 
+    def color_to_rgba(self, color):
+        # convert any supported color form to normalized RGBA [r, g, b, a].
+        if isinstance(color, str):
+            c = color.strip().lower()
+            # check if in map
+            if c in hex_colormap:
+                color = hex_colormap[c]
+            # use Kivy’s parser for hex
+            if color.startswith('#'):
+                return list(get_color_from_hex(color))
+        return color
+
     def _set_application_scheme(
         self,
         color="blue",  # Google default
@@ -849,8 +861,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
         else:
             color = self.primary_palette
 
-        color = get_color_from_hex(hex_colormap[color.lower()])
-        color = Hct.from_int(argb_from_rgba_01(color))
+        color = Hct.from_int(argb_from_rgba_01(self.color_to_rgba(color)))
         color = DislikeAnalyzer.fix_if_disliked(color).to_int()
 
         self._set_color_names(

@@ -8,3 +8,4 @@ Themes
     /themes/material-app/index
     /themes/icon-definitions/index
     /themes/font-definitions/index
+    /themes/color-definitions/index

@@ -75,15 +75,16 @@ def glob_paths(pattern):
     for root, dirs, files in os.walk(src_path):
         for file in files:
             if file.endswith(pattern):
-                filepath = os.path.join(str(Path(*Path(root).parts[1:])), file)
+                filepath = os.path.join(root, file)
+                rel_path = os.path.relpath(filepath, src_path)
 
                 try:
-                    out_files.append(filepath.split(f"kivymd{os.sep}")[1])
-                except IndexError:
-                    out_files.append(filepath)
+                    out_files.append(rel_path)
+                except ValueError:
+                    # This might happen if the file is not within src_path
+                    pass
 
     return out_files
-
 
 if __name__ == "__main__":
     # Static strings are in setup.cfg

@@ -654,9 +654,6 @@ class MDDialog(MDCard, MotionDialogBehavior):
         if not self._scrim:
             self._scrim = MDDialogScrim(color=self.scrim_color)
 
-        # if len(self.ids.headline_container.children) == 0:
-        #     self.ids.container.remove_widget(self.ids.headline_container)
-
         Window.add_widget(self._scrim)
         Window.add_widget(self)
         super().on_open()

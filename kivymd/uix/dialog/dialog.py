@@ -322,7 +322,7 @@ API break
     from kivy.uix.widget import Widget
 
     from kivymd import images_path
-    from kivymd.app import MDApp
+    from kivymd.app import MDApp`
     from kivymd.uix.dialog import MDDialog
     from kivymd.uix.list import OneLineAvatarListItem
 
@@ -654,6 +654,9 @@ class MDDialog(MDCard, MotionDialogBehavior):
         if not self._scrim:
             self._scrim = MDDialogScrim(color=self.scrim_color)
 
+        # if len(self.ids.headline_container.children) == 0:
+        #     self.ids.container.remove_widget(self.ids.headline_container)
+
         Window.add_widget(self._scrim)
         Window.add_widget(self)
         super().on_open()
@@ -737,3 +740,7 @@ class MDDialogButtonContainer(DeclarativeBehavior, BoxLayout):
 class MDDialogScrim(Widget):
     color = ColorProperty(None)
     alpha = NumericProperty(0)
+
+
+class MDDialogSpacer(Widget):
+    pass

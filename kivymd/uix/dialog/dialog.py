@@ -322,7 +322,7 @@ API break
     from kivy.uix.widget import Widget
 
     from kivymd import images_path
-    from kivymd.app import MDApp
+    from kivymd.app import MDApp`
     from kivymd.uix.dialog import MDDialog
     from kivymd.uix.list import OneLineAvatarListItem
 
@@ -737,3 +737,7 @@ class MDDialogButtonContainer(DeclarativeBehavior, BoxLayout):
 class MDDialogScrim(Widget):
     color = ColorProperty(None)
     alpha = NumericProperty(0)
+
+
+class MDDialogSpacer(Widget):
+    pass

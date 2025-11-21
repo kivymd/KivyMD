@@ -1,3 +1,8 @@
+<MDDialogSpacer>
+    height: dp(8)
+    size_hint_y: None
+
+
 <MDDialog>
     radius: root.radius
     pos_hint: {"center_x": .5, "center_y": .5}
@@ -16,9 +21,11 @@
             orientation: "vertical"
             size_hint_y: None
             height: self.minimum_height + button_container.height + dp(24)
-            spacing: "16dp"
-            padding: "24dp"
+            padding: dp(24), dp(0), dp(24), dp(0)
+
             y: button_container.height + dp(24)
+            MDDialogSpacer:
+                height: dp(24) + dp(16)
 
             AnchorLayout:
                 id: icon_container
@@ -26,20 +33,32 @@
                 anchor_x: "center"
                 height: self.children[0].height if self.children else 0
 
+            MDDialogSpacer:
+                height: dp(16) if root.ids.icon_container.children else 0
+
             BoxLayout:
                 id: headline_container
                 size_hint_y: None
                 height: self.minimum_height
+
+            MDDialogSpacer:
+                height: dp(16) if root.ids.headline_container.children else 0
 
             BoxLayout:
                 id: supporting_text_container
                 size_hint_y: None
                 height: self.minimum_height
 
+            MDDialogSpacer:
+                height: dp(16) if root.ids.supporting_text_container.children else 0
+
             BoxLayout:
                 id: content_container
                 size_hint_y: None
                 height: self.minimum_height
+                
+            MDDialogSpacer:
+                height: dp(16)
 
         BoxLayout:
             id: button_container

@@ -457,6 +457,13 @@ class Validator:
     :attr:`date_format` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `None`.
     """
+    def is_number_valid(self, text: str) -> bool:
+        """Checks the validity of a number."""
+        for i in text:
+            if not i.isdigit():
+                return True
+                break
+        return False
 
     def is_email_valid(self, text: str) -> bool:
         """Checks the validity of the email."""
@@ -1489,7 +1496,7 @@ class MDTextField(
     defaults to ''.
     """
 
-    validator = OptionProperty(None, options=["date", "email", "time", "phone"])
+    validator = OptionProperty(None, options=["date", "email", "time", "phone", "number"])
     """
     The type of text field for entering Email, time, etc.
     Automatically sets the type of the text field as "error" if the user input
@@ -2541,6 +2548,7 @@ class MDTextField(
                 "date": self.is_date_valid,
                 "email": self.is_email_valid,
                 "time": self.is_time_valid,
+                "number": self.is_number_valid,
             }[self.validator](self.text)
             return has_error
         if (

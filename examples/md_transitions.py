@@ -53,7 +53,7 @@ class MotionApp(MDApp):
             "easing_accelerated",
             "easing_decelerated",
             "easing_standard",
-            "in_out_cubic",
+            "easing_emphasized",
         ]:  # Add more here for comparison
             print(transition)
             widget = AnimBox()

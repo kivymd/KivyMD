@@ -106,6 +106,10 @@ register("MDSwitch", module="kivymd.uix.selectioncontrol")
 register("MDSlider", module="kivymd.uix.slider")
 register("MDCircularProgressIndicator", module="kivymd.uix.progressindicator")
 register("MDLinearProgressIndicator", module="kivymd.uix.progressindicator")
+register(
+    "MDExCircularProgressIndicator", module="kivymd.uix.exprogressindicator"
+)
+register("MDExLinearProgressIndicator", module="kivymd.uix.exprogressindicator")
 register("MDTabsPrimary", module="kivymd.uix.tab")
 register("MDTabsSecondary", module="kivymd.uix.tab")
 register("MDTabsItem", module="kivymd.uix.tab")

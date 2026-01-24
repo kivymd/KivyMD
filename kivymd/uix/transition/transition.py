@@ -355,19 +355,20 @@ class MDSharedAxisTransition(MDTransitionBase):
     """
 
     switch_animation = OptionProperty(
-        "easing_decelerated",
+        "easing_emphasized",
         options=[
             "easing_standard",
             "easing_decelerated",
             "easing_accelerated",
             "easing_linear",
+            "easing_emphasized",
         ],
     )
     """
     Custom material design animation transition.
 
     :attr:`switch_animation` is a :class:`~kivy.properties.OptionProperty` and
-    defaults to `"easing_decelerated"`.
+    defaults to `"easing_emphasized"`.
     """
 
     slide_distance = NumericProperty(dp(15))

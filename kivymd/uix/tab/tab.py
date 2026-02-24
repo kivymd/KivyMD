@@ -1664,7 +1664,7 @@ class MDTabsPrimary(DeclarativeBehavior, ThemableBehavior, BoxLayout):
             for tab in self.ids.container.children:
                 tab.width = width / number_tabs
 
-        if self._tabs_carousel:
+        if self._tabs_carousel and self._tabs_carousel.current_slide is not None:
             Clock.schedule_once(
                 lambda x: self._tabs_carousel.current_slide.tab_item.dispatch(
                     "on_release"

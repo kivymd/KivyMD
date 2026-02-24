@@ -133,7 +133,7 @@ if __name__ == "__main__":
             "pillow",
             "materialyoucolor>=2.0.7",
             "materialshapes>=0.3",
-            "asynckivy>=0.6,<0.7",
+            "asynckivy>=0.6",
         ],
         setup_requires=[],
         python_requires=">=3.7",

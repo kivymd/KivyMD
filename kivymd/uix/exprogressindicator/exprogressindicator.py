@@ -625,14 +625,14 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
 
     # options
     # discontinuous and contiguous
-    indeterminate_animator = StringProperty("contiguous")
+    indeterminate_animator = StringProperty("discontinuous")
     """
     Name of the indeterminate animator to use for linear mode.
     Available options are: `'contiguous'`, `'discontinuous'`.
 
     :attr:`indeterminate_animator` is a
     :class:`~kivy.properties.StringProperty` and defaults to
-    `'contiguous'`.
+    `'discontinuous'`.
     """
 
     _discts_animator = None
@@ -691,10 +691,10 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
         if self._cont_animator is not None:
             self._cont_animator.len_palette = len(value)
 
-    def on_determinate(self, instance, value):
-        if super().on_determinate(self, value):
-            dot = self.canvas.get_group("dot")[0]
-            dot.rgba = dot.rgba[:-1] + [1 if value else 0]
+    def reset_colors(self, *args):
+        super().reset_colors(*args)
+        dot = self.canvas.get_group("dot")[0]
+        dot.rgba = self.active_track_color[:-1] + [int(self.determinate)]
 
     def on_indeterminate_animator(self, instance, value):
         if value == "discontinuous" and not self.determinate:
@@ -718,7 +718,7 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
         if self.determinate:
             amplitude = self.get_amplitude(amplitude, self.value_normalized)
 
-        k = math.pi / max(0.01, self.wave_length)
+        k = 2 * math.pi / max(0.01, self.wave_length)
         phase = self.wave_speed * self._time
 
         points = []
@@ -881,14 +881,14 @@ class MDExCircularProgressIndicator(MDExBaseProgressBar):
     """
 
     # retreat, advanced
-    indeterminate_animator = StringProperty("advanced")
+    indeterminate_animator = StringProperty("retreat")
     """
     Name of the indeterminate animator to use for circular mode.
     Available options are: `'advanced'`, `'retreat'`.
 
     :attr:`indeterminate_animator` is a
     :class:`~kivy.properties.StringProperty` and defaults to
-    `'advanced'`.
+    `'retreat'`.
     """
     use_color_array = BooleanProperty(False)
     """
@@ -931,7 +931,7 @@ class MDExCircularProgressIndicator(MDExBaseProgressBar):
 
         # angular wave lenght
         if self.wave_length > 0:
-            mode_number = (math.pi * radius) / self.wave_length
+            mode_number = 2 * (math.pi * radius) / self.wave_length
         else:
             # technically at zero should be infinity!
             mode_number = 0

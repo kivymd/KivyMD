@@ -521,7 +521,9 @@ class MDExBaseProgressBar(Widget, DeclarativeBehavior, ThemableBehavior):
         super().__init__(**kwargs)
         self._fctx = {}
         self._time = 0
-        Clock.schedule_once(self._start, 0)
+
+    def on_kv_post(self, base_widget):
+        self._start()
 
     _init = False
 
@@ -676,6 +678,10 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
 
         spacing = self.spacing
         total_g = spacing + thickness
+
+        ellipse = self.canvas.get_group("ellipse")[0]
+        ellipse.pos = [ax_s + ax_size - dp(2) - t_h, center - dp(2)][::inv]
+
         self._fctx = {
             "origin": ax_s + t_h,
             "track_l": track_l,
@@ -690,11 +696,6 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
     def on_color_array(self, instance, value):
         if self._cont_animator is not None:
             self._cont_animator.len_palette = len(value)
-
-    def reset_colors(self, *args):
-        super().reset_colors(*args)
-        dot = self.canvas.get_group("dot")[0]
-        dot.rgba = self.active_track_color[:-1] + [int(self.determinate)]
 
     def on_indeterminate_animator(self, instance, value):
         if value == "discontinuous" and not self.determinate:

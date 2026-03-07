@@ -62,16 +62,8 @@
 
         Color:
             group:"dot"
-            rgba: root.inactive_track_color       
+            rgba: root.active_track_color[:-1] + [int(root.determinate)]
         
         Ellipse:
+            group:"ellipse"
             size: [dp(4)]*2
-            pos:
-                (
-                self.x + self.width - dp(4) - (self.thickness - dp(4))/2,
-                self.center_y - dp(2)
-                ) if self.orientation == "horizontal" else (
-                self.center_x - dp(2),
-                self.y + self.height - dp(4) - (self.thickness - dp(4))/2
-                )
-

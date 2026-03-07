@@ -134,9 +134,11 @@ from kivy.uix.recycleview import RecycleView
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
+from kivymd.uix.scrollview import StretchOverScrollBehavior
 
 
 class MDRecycleView(
+    StretchOverScrollBehavior,
     DeclarativeBehavior,
     ThemableBehavior,
     BackgroundColorBehavior,
@@ -154,3 +156,5 @@ class MDRecycleView(
     :class:`~kivymd.uix.MDAdaptiveWidget`
     classes documentation.
     """
+
+    pass

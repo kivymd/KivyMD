@@ -300,13 +300,17 @@ The stretching effect
 
 from __future__ import annotations
 
-__all__ = ("MDScrollView", "StretchOverScrollStencil")
+__all__ = (
+    "MDScrollView",
+    "StretchOverScrollStencil",
+    "StretchOverScrollBehavior",
+)
 
 import math
 
 from kivy.animation import Animation
 from kivy.effects.scroll import ScrollEffect
-from kivy.graphics import Color, PopMatrix, PushMatrix, Scale
+from kivy.graphics import PopMatrix, PushMatrix, Scale
 from kivy.uix.scrollview import ScrollView
 
 from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
@@ -388,14 +392,35 @@ class StretchOverScrollStencil(ScrollEffect):
         ):
             return False
 
-        self.scroll_scale.origin = [
-            0 if self.scroll_view.scroll_x <= 0.5 else self.scroll_view.width,
-            0 if self.scroll_view.scroll_y <= 0.5 else self.scroll_view.height,
-        ]
+        eps = 1e-4
+        origin = list(self.scroll_scale.origin[:2])
+        tx, ty = self.scroll_view.g_translate.xy
+
+        if self.scale_axis == "y":
+            if self.scroll_view.scroll_y >= 1 - eps:
+                # Top edge in viewport-local coordinates.
+                origin[1] = self.scroll_view.top - ty
+            elif self.scroll_view.scroll_y <= eps:
+                # Bottom edge in viewport-local coordinates.
+                origin[1] = self.scroll_view.y - ty
+            else:
+                return False
+        else:
+            if self.scroll_view.scroll_x <= eps:
+                # Left edge in viewport-local coordinates.
+                origin[0] = self.scroll_view.x - tx
+            elif self.scroll_view.scroll_x >= 1 - eps:
+                # Right edge in viewport-local coordinates.
+                origin[0] = self.scroll_view.right - tx
+            else:
+                return False
+
+        self.scroll_scale.origin = origin
         return True
 
     def absorb_impact(self):
-        self.set_scale_origin()
+        if not self.set_scale_origin():
+            return
         sanitized_velocity = self.clamp(
             abs(self.velocity), 1, self.maximum_velocity
         )
@@ -407,30 +432,49 @@ class StretchOverScrollStencil(ScrollEffect):
         init_anim = Animation(
             **{self.scale_axis: new_scale},
             d=(sanitized_velocity * 4) / 1e6,
+            t="easing_decelerated",
         )
         init_anim.bind(on_complete=self.reset_scale)
         init_anim.start(self.scroll_scale)
 
     def get_component(self, pos):
-        return pos[-1 if self.scale_axis == "y" else 1]
+        if pos is None:
+            return None
+        return pos[1 if self.scale_axis == "y" else 0]
 
-    def convert_overscroll(self, touch):
-        if (
+    def can_stretch_touch(self, touch):
+        return (
             self.scroll_view
             and self.scroll_view.collide_point(*touch.pos)
             and self.is_top_or_bottom()
             and getattr(self.scroll_view, "do_scroll_" + self.scale_axis)
             and self.velocity == 0
-            and self.set_scale_origin()  # sets stretch direction
-        ):
+            and self.set_scale_origin()
+        )
+
+    def convert_overscroll(self, touch):
+        if self.last_touch_pos is None:
+            self.last_touch_pos = touch.pos
+            return
+
+        if self.can_stretch_touch(touch):
+            component = self.get_component(touch.pos)
+            prev_component = self.get_component(self.last_touch_pos)
+            if component is None or prev_component is None:
+                self.last_touch_pos = touch.pos
+                return
+
             # Distance travelled by touch divided by size of scrollview.
-            distance = (
-                abs(
-                    self.get_component(touch.pos)
-                    - self.get_component(self.last_touch_pos)
-                )
-                / self.scroll_view.height
+            axis_size = (
+                self.scroll_view.height
+                if self.scale_axis == "y"
+                else self.scroll_view.width
             )
+            if not axis_size:
+                self.last_touch_pos = touch.pos
+                return
+
+            distance = abs(component - prev_component) / axis_size
             # Constant scale due to distance.
             linear_intensity = self.stretch_intensity * distance
             # Far the touch -> less it stretches.
@@ -448,11 +492,51 @@ class StretchOverScrollStencil(ScrollEffect):
             anim = Animation(
                 **{self.scale_axis: 1},
                 d=0.2,
+                t="easing_standard",
             )
             anim.start(self.scroll_scale)
 
 
-class MDScrollView(DeclarativeBehavior, BackgroundColorBehavior, ScrollView):
+class StretchOverScrollBehavior:
+    """
+    Shared overscroll-stretch setup for ScrollView-based widgets.
+    """
+
+    _internal_scale = None
+
+    def __init__(self, *args, **kwargs):
+        self.effect_cls = StretchOverScrollStencil
+        super().__init__(*args, **kwargs)
+        with self.canvas_viewport.before:
+            PushMatrix()
+            self._internal_scale = Scale()
+        with self.canvas_viewport.after:
+            PopMatrix()
+        self.effect_y.scale_axis = "y"
+        self.effect_x.scale_axis = "x"
+
+    def on_touch_down(self, touch):
+        self.effect_x.last_touch_pos = touch.pos
+        self.effect_y.last_touch_pos = touch.pos
+        return super().on_touch_down(touch)
+
+    def on_touch_move(self, touch):
+        self.effect_x.convert_overscroll(touch)
+        self.effect_y.convert_overscroll(touch)
+        return super().on_touch_move(touch)
+
+    def on_touch_up(self, touch):
+        self.effect_x.reset_scale()
+        self.effect_y.reset_scale()
+        return super().on_touch_up(touch)
+
+
+class MDScrollView(
+    StretchOverScrollBehavior,
+    DeclarativeBehavior,
+    BackgroundColorBehavior,
+    ScrollView,
+):
     """
     An approximate implementation to Material Design's overscorll effect.
 
@@ -463,39 +547,4 @@ class MDScrollView(DeclarativeBehavior, BackgroundColorBehavior, ScrollView):
     classes documentation.
     """
 
-    _internal_scale = None
-
-    def __init__(self, *args, **kwargs):
-        self.effect_cls = StretchOverScrollStencil
-        super().__init__(*args, **kwargs)
-        with self.canvas.before:
-            Color(rgba=self.md_bg_color)
-            PushMatrix()
-            self._internal_scale = Scale()
-        with self.canvas.after:
-            PopMatrix()
-        self.effect_y.scale_axis = "y"
-        self.effect_x.scale_axis = "x"
-
-    def on_touch_down(self, touch):
-        self.effect_x.last_touch_pos = touch.pos
-        self.effect_y.last_touch_pos = touch.pos
-        super().on_touch_down(touch)
-
-    def on_touch_move(self, touch):
-        try:
-            self.effect_x.convert_overscroll(touch)
-            self.effect_y.convert_overscroll(touch)
-        except AttributeError:
-            pass
-
-        super().on_touch_move(touch)
-
-    def on_touch_up(self, touch):
-        try:
-            self.effect_x.reset_scale()
-            self.effect_y.reset_scale()
-        except AttributeError:
-            pass
-
-        super().on_touch_up(touch)
+    pass

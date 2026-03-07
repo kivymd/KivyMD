@@ -504,6 +504,9 @@ class StretchOverScrollBehavior:
 
     _internal_scale = None
 
+    def _touch_key(self):
+        return f"{id(self)}_stretch_active"
+
     def __init__(self, *args, **kwargs):
         self.effect_cls = StretchOverScrollStencil
         super().__init__(*args, **kwargs)
@@ -516,19 +519,30 @@ class StretchOverScrollBehavior:
         self.effect_x.scale_axis = "x"
 
     def on_touch_down(self, touch):
-        self.effect_x.last_touch_pos = touch.pos
-        self.effect_y.last_touch_pos = touch.pos
-        return super().on_touch_down(touch)
+        handled = super().on_touch_down(touch)
+        if handled:
+            touch.ud[self._touch_key()] = True
+            self.effect_x.last_touch_pos = touch.pos
+            self.effect_y.last_touch_pos = touch.pos
+        return handled
 
     def on_touch_move(self, touch):
-        self.effect_x.convert_overscroll(touch)
-        self.effect_y.convert_overscroll(touch)
-        return super().on_touch_move(touch)
+        handled = super().on_touch_move(touch)
+        if (
+            touch.ud.get(self._touch_key())
+            and touch.grab_current in (None, self)
+        ):
+            self.effect_x.convert_overscroll(touch)
+            self.effect_y.convert_overscroll(touch)
+        return handled
 
     def on_touch_up(self, touch):
-        self.effect_x.reset_scale()
-        self.effect_y.reset_scale()
-        return super().on_touch_up(touch)
+        handled = super().on_touch_up(touch)
+        if touch.ud.get(self._touch_key()):
+            self.effect_x.reset_scale()
+            self.effect_y.reset_scale()
+            touch.ud.pop(self._touch_key(), None)
+        return handled
 
 
 class MDScrollView(

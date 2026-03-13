@@ -1364,6 +1364,39 @@ class MDTabsPrimary(DeclarativeBehavior, ThemableBehavior, BoxLayout):
         else:
             return super().add_widget(widget)
 
+    def remove_widget(self, widget, *args, **kwargs):
+        tab_item = None
+
+        # If the widget is the header itself
+        if isinstance(widget, (MDTabsItem, MDTabsItemSecondary)):
+            tab_item = widget
+        # If the widget is the related content (slide)
+        elif hasattr(widget, "tab_item") and isinstance(
+                widget.tab_item, (MDTabsItem, MDTabsItemSecondary)
+        ):
+            tab_item = widget.tab_item
+
+        if tab_item:
+            # 1. Remove the content from the carousel
+            if self._tabs_carousel and tab_item._tab_content:
+                # Use super().remove_widget to avoid recursion if carousel calls this
+                self._tabs_carousel.remove_widget(tab_item._tab_content)
+
+            # 2. Remove the header from the tab bar
+            if tab_item in self.ids.container.children:
+                self.ids.container.remove_widget(tab_item)
+
+            # 3. UI cleanup
+            self.recalculate_tab_widths()
+
+            # 4. Handle tab switching if the active tab was closed
+            if tab_item.active and self.ids.container.children:
+                remaining_tabs = self.get_tabs_list()
+                if remaining_tabs:
+                    self.switch_tab(instance=remaining_tabs[-1])
+        else:
+            super().remove_widget(widget)
+
     def do_autoscroll_tabs(self, instance: MDTabsItem, value: float) -> None:
         """
         Automatically scrolls the list of tabs when swiping the carousel
@@ -1631,7 +1664,7 @@ class MDTabsPrimary(DeclarativeBehavior, ThemableBehavior, BoxLayout):
             for tab in self.ids.container.children:
                 tab.width = width / number_tabs
 
-        if self._tabs_carousel:
+        if self._tabs_carousel and self._tabs_carousel.current_slide is not None:
             Clock.schedule_once(
                 lambda x: self._tabs_carousel.current_slide.tab_item.dispatch(
                     "on_release"

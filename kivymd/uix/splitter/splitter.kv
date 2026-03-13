@@ -1,0 +1,12 @@
+#:import Factory kivy.factory.Factory
+
+<MDSplitterStrip>:
+    background_normal: ''
+    background_down: ''
+    background_color:
+        self.theme_cls.primaryColor if self.state == 'normal' else \
+        self.theme_cls.secondaryColor
+
+<MDSplitter>:
+    strip_cls: Factory.MDSplitterStrip
+    strip_size: '4dp'

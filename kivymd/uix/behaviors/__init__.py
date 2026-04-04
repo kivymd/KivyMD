@@ -16,7 +16,12 @@ from .motion_behavior import (
     MotionDropDownMenuBehavior,
     MotionShackBehavior,
 )
-from .ripple_behavior import CircularRippleBehavior, RectangularRippleBehavior
+from .ripple_behavior import (
+    RectangularRippleBehavior,
+    CircularRippleBehavior,
+    M3RectangularRippleBehavior,
+    M3CircularRippleBehavior,
+)
 from .rotate_behavior import RotateBehavior
 from .scale_behavior import ScaleBehavior
 from .stencil_behavior import StencilBehavior

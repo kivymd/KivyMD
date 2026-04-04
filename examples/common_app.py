@@ -55,10 +55,10 @@ class CommonApp:
     def open_menu(self, menu_button):
         menu_items = []
         for item, method in {
-            "Set palette": lambda: self.set_palette(),
-            "Switch theme style": lambda: self.switch_theme(),
-            "Switch scheme type": lambda: self.set_scheme_type(),
-            "Disabled widgets": lambda: self.disabled_widgets(),
+            "Set palette": lambda *a: self.set_palette(),
+            "Switch theme style": lambda *a: self.switch_theme(),
+            "Switch scheme type": lambda *a: self.set_scheme_type(),
+            "Disabled widgets": lambda *a: self.disabled_widgets(),
         }.items():
             menu_items.append(
                 {
@@ -89,7 +89,9 @@ class CommonApp:
             menu_items.append(
                 {
                     "text": name_palette,
-                    "on_release": lambda x=name_palette: self.switch_palette(x),
+                    "on_release": lambda *a, x=name_palette: self.switch_palette(
+                        x
+                    ),
                 }
             )
         MDDropdownMenu(
@@ -105,7 +107,7 @@ class CommonApp:
             menu_items.append(
                 {
                     "text": scheme_name,
-                    "on_release": lambda x=scheme_name: self.update_scheme_name(
+                    "on_release": lambda *a, x=scheme_name: self.update_scheme_name(
                         x
                     ),
                 }

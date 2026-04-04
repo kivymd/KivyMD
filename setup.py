@@ -100,6 +100,7 @@ if __name__ == "__main__":
                 "images/logo/*.png",
                 "fonts/*.ttf",
                 *glob_paths(".kv"),
+                *glob_paths(".glsl"),
                 *glob_paths(".pot"),
                 *glob_paths(".po"),
             ]

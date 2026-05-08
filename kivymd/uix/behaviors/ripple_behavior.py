@@ -584,7 +584,7 @@ class M3CommonRipple(CommonRipple):
     NOISE_ANIMATION_DURATION = 7000
     PHASE_DIVISOR = 214
 
-    ripple_alpha = NumericProperty(0.8)
+    ripple_alpha = NumericProperty(0.5)
     """
     Alpha channel values for ripple effect.
 
@@ -601,7 +601,7 @@ class M3CommonRipple(CommonRipple):
     and defaults to `0.2`.
     """
 
-    ripple_origin_to_center = BooleanProperty(False)
+    ripple_origin_to_center = BooleanProperty(True)
     """
     Move the ripple origin from the touch position to the widget center while
     the animation progresses.
@@ -868,6 +868,11 @@ class M3CommonRipple(CommonRipple):
         self._update_uniforms()
         self._doing_ripple = False
         self.active_canvas.remove_group("m3_ripple_behavior")
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos) and not self.disabled:
+            self.call_ripple_animation_methods(touch)
+        return super().on_touch_down(touch)
 
 
 class M3RectangularRippleBehavior(M3CommonRipple):

@@ -8,7 +8,12 @@ from kivymd.uix.behaviors import (
     M3CircularRippleBehavior,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.list import MDList, MDListItem, MDListItemHeadlineText, MDListItemSupportingText
+from kivymd.uix.list import (
+    MDList,
+    MDListItem,
+    MDListItemHeadlineText,
+    MDListItemSupportingText,
+)
 from kivymd.uix.scrollview import MDScrollView
 
 KV = """
@@ -33,19 +38,19 @@ MDScreen:
                 text: "Material 3 Ripple"
                 theme_font_style: "Headline"
                 adaptive_height: True
-        Widget:
 
         MDScrollView:
             do_scroll_x: False
             bar_width: "4dp"
 
-            MDList:
+            MDBoxLayout:
                 adaptive_height: True
                 spacing: "16dp"
+                orientation:"vertical"
                 padding: "0dp", "0dp", "0dp", "20dp"
 
                 M3RippleBox:
-                    size_hint_x: 1
+                    size_hint: 1, None
                     height: "120dp"
                     md_bg_color: app.theme_cls.surfaceContainerHighestColor
                     radius: "16dp"
@@ -57,7 +62,7 @@ MDScreen:
                         text_color: 1, 1, 1, 1
 
                 M3RippleBox:
-                    size_hint_x: 1
+                    size_hint: 0.4, None
                     height: "120dp"
                     md_bg_color: app.theme_cls.secondaryContainerColor
                     ripple_color:"#8dffff"
@@ -70,7 +75,7 @@ MDScreen:
 
                 M3RippleCircle:
                     size_hint: None, None
-                    size: [dp(200)]*2
+                    size: [dp(100)]*2
                     pos_hint: {"center_x": .5}
                     ripple_color:app.theme_cls.primaryColor
                     ripple_alpha: 0.7
@@ -100,10 +105,8 @@ MDScreen:
                         text: "Another item"
 
                     MDListItemSupportingText:
-                        text: "Use this to verify nested coordinates"
+                        text: "137"
 
-
-        Widget:
 """
 
 

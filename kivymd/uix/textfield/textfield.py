@@ -2031,6 +2031,8 @@ class MDTextField(
             self.text = re.sub("\n", " ", text) if not self.multiline else text
             self.set_max_text_length()
 
+            Clock.schedule_once(lambda x: self.on_focus(self, self.focus), 0.01)
+
             if self.text and self._get_has_error() or self._get_has_error():
                 self.error = True
             elif self.text and not self._get_has_error():

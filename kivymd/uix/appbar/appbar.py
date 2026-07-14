@@ -1289,6 +1289,7 @@ class MDBottomAppBar(
             self.button_centering_animation(widget)
         elif isinstance(widget, MDFabBottomAppBarButton):
             widget.bind(icon=self.set_fab_icon)
+            self.set_fab_icon(widget, widget.icon)
             self._fab_bottom_app_bar_button = widget
             Clock.schedule_once(self.set_fab_opacity)
             widget.scale_value_x = int(not self.animation)

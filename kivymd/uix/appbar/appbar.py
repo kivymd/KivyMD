@@ -891,7 +891,11 @@ class MDTopAppBar(
         elif isinstance(widget, MDTopAppBarLeadingButtonContainer):
             self._leading_button_container = widget
             widget._appbar = self
-            Clock.schedule_once(lambda x: self.ids.root_box.add_widget(widget, len(self.ids.root_box.children)))
+            Clock.schedule_once(
+                lambda x: self.ids.root_box.add_widget(
+                    widget, len(self.ids.root_box.children)
+                )
+            )
         else:
             return super().add_widget(widget)
 

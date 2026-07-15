@@ -142,11 +142,11 @@ You can inherit the ``MyToggleButton`` class only from the following classes
 __all__ = ("MDToggleButtonBehavior",)
 
 from kivy import Logger
-from kivy.properties import BooleanProperty, ColorProperty
 from kivy.clock import Clock
+from kivy.properties import BooleanProperty, ColorProperty
 from kivy.uix.behaviors import ToggleButtonBehavior
 
-from kivymd.uix.button import MDButton, MDIconButton, MDFabButton
+from kivymd.uix.button import MDButton, MDFabButton, MDIconButton
 
 
 class MDToggleButtonBehavior(ToggleButtonBehavior):

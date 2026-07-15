@@ -528,9 +528,9 @@ class StretchOverScrollBehavior:
 
     def on_touch_move(self, touch):
         handled = super().on_touch_move(touch)
-        if (
-            touch.ud.get(self._touch_key())
-            and touch.grab_current in (None, self)
+        if touch.ud.get(self._touch_key()) and touch.grab_current in (
+            None,
+            self,
         ):
             self.effect_x.convert_overscroll(touch)
             self.effect_y.convert_overscroll(touch)

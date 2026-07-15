@@ -581,12 +581,11 @@ from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import DeclarativeBehavior
 
 from .animators import (
-    LinearIndeterminateDisjointAnimator,
-    LinearIndeterminateContiguousAnimator,
-    CircularIndeterminateRetreatAnimator,
     CircularIndeterminateAdvancedAnimator,
+    CircularIndeterminateRetreatAnimator,
+    LinearIndeterminateContiguousAnimator,
+    LinearIndeterminateDisjointAnimator,
 )
-
 
 with open(
     os.path.join(uix_path, "exprogressindicator", "exprogressindicator.kv"),
@@ -812,11 +811,14 @@ class MDExBaseProgressBar(Widget, DeclarativeBehavior, ThemableBehavior):
         else:
             return self.render_indeterminate_wave()
 
-    def render_determinate_wave(self): ...
+    def render_determinate_wave(self):
+        ...
 
-    def render_indeterminate_wave(self): ...
+    def render_indeterminate_wave(self):
+        ...
 
-    def save_frame_context(self, *args): ...
+    def save_frame_context(self, *args):
+        ...
 
     def on_determinate(self, instance, value):
         if not self._init:

@@ -604,7 +604,7 @@ class BaseTextFieldLabel(MDLabel):
 
                 MDTextField:
                     mode: "filled"
-        
+
                     MDTextFieldHintText:
                         text: "Hint text color normal"
                         text_color_normal: "brown"
@@ -742,7 +742,7 @@ class MDTextFieldHelperText(BaseTextFieldLabel):
                         max_text_length: 5
 
         .. tab:: Declarative Python style
-    
+
             .. code-block:: python
 
                 MDTextField(
@@ -763,7 +763,7 @@ class MDTextFieldHelperText(BaseTextFieldLabel):
     ----------
 
     .. tabs::
-    
+
         .. tab:: Declarative KV style
 
             .. code-block:: kv
@@ -776,7 +776,7 @@ class MDTextFieldHelperText(BaseTextFieldLabel):
                         mode: "persistent"
 
         .. tab:: Declarative Python style
-    
+
             .. code-block:: python
 
                 MDTextField(
@@ -825,7 +825,7 @@ class MDTextFieldMaxLengthText(BaseTextFieldLabel):
                         max_text_length: 10
 
         .. tab:: Declarative Python style
-    
+
             .. code-block:: python
 
                 MDTextField(

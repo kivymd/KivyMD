@@ -910,7 +910,9 @@ class MDNavigationDrawerDivider(BoxLayout):
     """
 
 
-class MDNavigationDrawerHeader(DeclarativeBehavior, MDAdaptiveWidget, BoxLayout):
+class MDNavigationDrawerHeader(
+    DeclarativeBehavior, MDAdaptiveWidget, BoxLayout
+):
     """
     Implements a header class.
 

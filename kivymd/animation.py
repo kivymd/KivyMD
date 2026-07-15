@@ -94,10 +94,11 @@ Adds new transitions to the :class:`~kivy.animation.AnimationTransition` class:
     :align: center
 """
 
+import time
+
 import kivy.animation
 
 from kivymd.utils.cubic_bezier import CubicBezier
-import time
 
 
 class MDAnimationTransition(kivy.animation.AnimationTransition):

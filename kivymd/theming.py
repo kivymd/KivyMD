@@ -30,14 +30,14 @@ from kivy.core.window import Window
 from kivy.event import EventDispatcher
 from kivy.logger import Logger
 from kivy.properties import (
-    Property,
     AliasProperty,
     BooleanProperty,
     DictProperty,
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    StringProperty
+    Property,
+    StringProperty,
 )
 from kivy.utils import get_color_from_hex, hex_colormap, rgba
 from materialyoucolor.dislike.dislike_analyzer import DislikeAnalyzer
@@ -189,10 +189,10 @@ class ThemeManager(EventDispatcher, DynamicColor):
                     MDButton:
                         style: "elevated"
                         pos_hint: {"center_x": .5, "center_y": .5}
-        
+
                         MDButtonIcon:
                             icon: "plus"
-        
+
                         MDButtonText:
                             text: "Elevated"
                 '''
@@ -704,9 +704,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
     """
 
     def _get_dynamic_color_names(self):
-        return [
-            attr for attr in dir(self) if attr.endswith("Color")
-        ]
+        return [attr for attr in dir(self) if attr.endswith("Color")]
 
     dynamic_color_names = AliasProperty(_get_dynamic_color_names)
     """
@@ -848,7 +846,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
             if c in hex_colormap:
                 color = hex_colormap[c]
             # use Kivy’s parser for hex
-            if color.startswith('#'):
+            if color.startswith("#"):
                 return list(get_color_from_hex(color))
         return color
 

@@ -184,8 +184,8 @@ from kivy.uix.scrollview import ScrollView
 from kivy.utils import platform
 
 from kivymd import uix_path
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.behaviors import DeclarativeBehavior
+from kivymd.uix.boxlayout import MDBoxLayout
 
 with open(
     os.path.join(uix_path, "swiper", "swiper.kv"), encoding="utf-8"

@@ -873,19 +873,17 @@ class MDBaseTimePicker(ThemableBehavior, MotionTimePickerBehavior, BoxLayout):
             minute=self._set_current_time,
             am_pm=self._set_current_time,
         )
-        Clock.schedule_once(
-                lambda x: self._set_time_init()
-        )  # default time
+        Clock.schedule_once(lambda x: self._set_time_init())  # default time
 
     def _set_time_init(self):
         """Sets time dialog to current hour/minute/am_pm values at init"""
 
         if int(self.hour) > 12:
-            self.am_pm = 'pm'
+            self.am_pm = "pm"
             self.hour = str(int(self.hour) - 12)
-        elif int(self.hour) == 0: 
-            self.am_pm = 'am'
-            self.hour = '12'
+        elif int(self.hour) == 0:
+            self.am_pm = "am"
+            self.hour = "12"
 
         self._set_time_input(self.hour, self.minute)
         self._set_dial_time(self.hour, self.minute)
@@ -894,17 +892,17 @@ class MDBaseTimePicker(ThemableBehavior, MotionTimePickerBehavior, BoxLayout):
 
     def set_time(self, time_obj: datetime.time) -> None:
         """Manually set time dialog with the specified time."""
-         
+
         hour = time_obj.hour
         minute = time_obj.minute
-        
+
         self._set_time_input(hour, minute)
-        
+
         if hour < 12:
-            mode = 'am'
+            mode = "am"
         else:
-            mode = 'pm'
-        
+            mode = "pm"
+
         if hour == 0:
             hour = 12
         elif hour > 12:
@@ -1210,7 +1208,8 @@ class MDTimePickerCircularSelector(ThemableBehavior, MDCircularLayout):
             touch.ungrab(self)
             return True
 
-    def on_selector_change(self, *args): ...
+    def on_selector_change(self, *args):
+        ...
 
     def _update_labels(self, animate=True, *args):
         """
@@ -1418,7 +1417,8 @@ class MDTimePickerInputContainer(BoxLayout):
         minute = self._minute.text.strip()
         return [hour, minute]
 
-    def on_time_input(self, *args) -> None: ...
+    def on_time_input(self, *args) -> None:
+        ...
 
     def on_minute_select(self, *args) -> None:
         pass

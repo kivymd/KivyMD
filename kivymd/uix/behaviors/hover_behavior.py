@@ -146,8 +146,8 @@ the widget.
 __all__ = ("HoverBehavior",)
 
 from kivy.core.window import Window
-from kivy.properties import BooleanProperty, ObjectProperty
 from kivy.logger import Logger
+from kivy.properties import BooleanProperty, ObjectProperty
 from kivy.uix.widget import Widget
 
 
@@ -223,10 +223,7 @@ class HoverBehavior:
         """
 
         x, y = self.to_window(*self.pos)
-        return (
-            x <= pos[0] <= x + self.width and
-            y <= pos[1] <= y + self.height
-        )
+        return x <= pos[0] <= x + self.width and y <= pos[1] <= y + self.height
 
     def on_detect_visible(self, instance, value):
         Logger.warning(
@@ -278,8 +275,8 @@ class HoverBehavior:
                     # overlap.
                     parent_x, parent_y = parent.to_window(*parent.pos)
                     if not (
-                        parent_x <= pos[0] <= parent_x + parent.width and
-                        parent_y <= pos[1] <= parent_y + parent.height
+                        parent_x <= pos[0] <= parent_x + parent.width
+                        and parent_y <= pos[1] <= parent_y + parent.height
                     ):
                         self.hover_visible = False
                         break
@@ -297,8 +294,8 @@ class HoverBehavior:
                     if isinstance(child, Widget):
                         cx, cy = child.to_window(*child.pos)
                         if (
-                            cx <= pos[0] <= cx + child.width and
-                            cy <= pos[1] <= cy + child.height
+                            cx <= pos[0] <= cx + child.width
+                            and cy <= pos[1] <= cy + child.height
                         ):
                             self.hover_visible = False
                             break

@@ -278,7 +278,7 @@ Yes, this is not a very good solution, but I think it will be fixed soon.
     to create new issue in the KivyMD repository.
 """
 
-from kivy.properties import StringProperty, ListProperty
+from kivy.properties import ListProperty, StringProperty
 from kivy.uix.widget import Widget
 
 
@@ -320,9 +320,9 @@ class DeclarativeBehavior:
     child widget.
 
     .. tabs::
-    
+
         .. tab:: Declarative Python style
-    
+
             .. code-block:: python
 
                 class CustomListItem(MDListItem):
@@ -337,7 +337,7 @@ class DeclarativeBehavior:
                         ]
 
         .. tab:: Imperative Python style
-    
+
             .. code-block:: python
 
                 class CustomListItem(MDListItem):
@@ -428,7 +428,7 @@ class DeclarativeBehavior:
                 def change_icon(self, list_item):
                     # This work.
                     list_item.get_ids().icon_account.icon = "account-alert"
-            
+
                 def build(self):
                     return (
                         MDScreen(
@@ -440,7 +440,7 @@ class DeclarativeBehavior:
                         )
                     )
 
-        Adding to or removing items from `self.widgets` directly at runtime 
+        Adding to or removing items from `self.widgets` directly at runtime
         may lead to unexpected behavior.
 
         .. code-block:: python
@@ -463,7 +463,7 @@ class DeclarativeBehavior:
                 def remove_icon(self, list_item):
                     # This won't work.
                     list_item.widgets.remove(list_item.get_ids().icon_account)
-            
+
                 def build(self):
                     return (
                         MDScreen(

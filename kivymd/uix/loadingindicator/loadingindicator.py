@@ -103,11 +103,10 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
-
 from materialshapes.kivy_widget import MaterialShape
+
 from kivymd import uix_path
-from kivymd.uix.behaviors import DeclarativeBehavior
-from kivymd.uix.behaviors import RotateBehavior
+from kivymd.uix.behaviors import DeclarativeBehavior, RotateBehavior
 
 with open(
     os.path.join(uix_path, "loadingindicator", "loadingindicator.kv"),
@@ -191,7 +190,7 @@ class MDLoadingIndicator(DeclarativeBehavior, AnchorLayout, RotateBehavior):
     and defaults to `0.65`.
     """
 
-    active_indicator_color = ColorProperty([0,0,0,0])
+    active_indicator_color = ColorProperty([0, 0, 0, 0])
     """
     Color of the active (foreground) loading shape.
 
@@ -199,7 +198,7 @@ class MDLoadingIndicator(DeclarativeBehavior, AnchorLayout, RotateBehavior):
     and defaults to `None`.
     """
 
-    container_color = ColorProperty([0,0,0,0])
+    container_color = ColorProperty([0, 0, 0, 0])
     """
     Background container color of the indicator.
 
@@ -262,7 +261,6 @@ class MDLoadingIndicator(DeclarativeBehavior, AnchorLayout, RotateBehavior):
         ).start(self)
 
         self.shape_index += 1
-
 
     def get_shape_names(self):
         """

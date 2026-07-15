@@ -478,12 +478,12 @@ from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
+    BoundedNumericProperty,
     ColorProperty,
     ListProperty,
     StringProperty,
-    BoundedNumericProperty,
 )
-from kivy.uix.behaviors import ToggleButtonBehavior, ButtonBehavior
+from kivy.uix.behaviors import ButtonBehavior, ToggleButtonBehavior
 
 from kivymd import uix_path
 from kivymd.uix.behaviors import CircularRippleBehavior, ScaleBehavior
@@ -687,7 +687,7 @@ class MDCheckbox(
 
     _current_color = ColorProperty([0.0, 0.0, 0.0, 0.0])
 
-    __events__ = ("on_active", )
+    __events__ = ("on_active",)
 
     def __init__(self, **kwargs):
         self.check_anim_out = Animation(
@@ -831,7 +831,9 @@ class Thumb(CircularRippleBehavior, ButtonBehavior, MDFloatLayout):
         )
 
 
-class MDSwitch(ActiveBehavior, StateLayerBehavior, ButtonBehavior, MDFloatLayout):
+class MDSwitch(
+    ActiveBehavior, StateLayerBehavior, ButtonBehavior, MDFloatLayout
+):
     """
     Switch class.
 

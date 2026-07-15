@@ -29,7 +29,6 @@ MDScreen:
 
 
 class ExampleApp(MDApp, CommonApp):
-
     def build(self):
         return Builder.load_string(KV)
 
@@ -38,5 +37,6 @@ class ExampleApp(MDApp, CommonApp):
         print(self.root.ids.indicator.get_shape_names())
         # stop animation
         # Clock.schedule_once(self.root.ids.indicator.stop, 5)
+
 
 ExampleApp().run()

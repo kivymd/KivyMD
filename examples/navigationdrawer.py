@@ -125,7 +125,8 @@ class Example(MDApp, CommonApp):
     def build(self):
         return Builder.load_string(KV)
 
-    def disabled_widgets(self): ...
+    def disabled_widgets(self):
+        ...
 
 
 Example().run()

@@ -87,12 +87,14 @@ MDScreen:
 """
 
 
-class ExpansionPanelItem(MDExpansionPanel): ...
+class ExpansionPanelItem(MDExpansionPanel):
+    ...
 
 
 class TrailingPressedIconButton(
     ButtonBehavior, RotateBehavior, MDListItemTrailingIcon
-): ...
+):
+    ...
 
 
 class Example(MDApp, CommonApp):
@@ -108,7 +110,8 @@ class Example(MDApp, CommonApp):
         self.theme_cls.theme_style = "Dark"
         return Builder.load_string(KV)
 
-    def disabled_widgets(self): ...
+    def disabled_widgets(self):
+        ...
 
     def tap_expansion_chevron(
         self, panel: MDExpansionPanel, chevron: TrailingPressedIconButton

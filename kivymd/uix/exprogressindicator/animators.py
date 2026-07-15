@@ -121,7 +121,9 @@ class LinearIndeterminateDisjointAnimator:
                 )
         """
 
-        time_ms = (time_sec * 1000) % (self.TOTAL_DURATION_IN_MS + self.LOOP_DELAY)
+        time_ms = (time_sec * 1000) % (
+            self.TOTAL_DURATION_IN_MS + self.LOOP_DELAY
+        )
         bar1 = self.compute_bar(time_ms, 0, 1)
         bar2 = self.compute_bar(time_ms, 2, 3)
 
@@ -305,12 +307,16 @@ class CircularIndeterminateRetreatAnimator:
             )
             rotation += self.INTERPOLATOR(f) * self.SPIN_ROTATION_DEGREES
 
-        f_grow = self.get_fraction_in_range(playtime_ms, 0, self.DURATION_GROW_MS)
+        f_grow = self.get_fraction_in_range(
+            playtime_ms, 0, self.DURATION_GROW_MS
+        )
         f_shrink = self.get_fraction_in_range(
             playtime_ms, 3000, self.DURATION_SHRINK_MS
         )
 
-        arc_growth_factor = self.INTERPOLATOR(f_grow) - self.INTERPOLATOR(f_shrink)
+        arc_growth_factor = self.INTERPOLATOR(f_grow) - self.INTERPOLATOR(
+            f_shrink
+        )
         start_fraction = 0.0
         end_fraction = self.END_FRACTION_RANGE[0] + (
             (self.END_FRACTION_RANGE[1] - self.END_FRACTION_RANGE[0])

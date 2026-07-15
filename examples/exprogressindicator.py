@@ -49,9 +49,9 @@ MDScreen:
 
                 MDSlider:
                     min:0
-                    max:100 
+                    max:100
                     step: 1
-                    value:0 
+                    value: 0
                     on_value:
                         linear_indicator_horizontal.value = self.value
                         linear_indicator_vertical.value = self.value
@@ -79,7 +79,7 @@ MDScreen:
                         circular_indicator.amplitude = self.value
 
                     MDSliderHandle:
- 
+
             BoxLayout:
                 orientation: "vertical"
 
@@ -97,7 +97,7 @@ MDScreen:
                         linear_indicator_vertical.wave_length = self.value
                         circular_indicator.wave_length = self.value
 
-                    MDSliderHandle: 
+                    MDSliderHandle:
 
             BoxLayout:
                 orientation: "vertical"
@@ -116,7 +116,7 @@ MDScreen:
                         linear_indicator_vertical.wave_speed = self.value
                         circular_indicator.wave_speed = self.value
 
-                    MDSliderHandle: 
+                    MDSliderHandle:
 
             BoxLayout:
                 orientation: "vertical"
@@ -129,7 +129,7 @@ MDScreen:
                     min: dp(4)
                     max: dp(20)
                     step: 1
-                    value: dp(4) 
+                    value: dp(4)
                     on_value:
                         linear_indicator_horizontal.thickness = self.value
                         linear_indicator_vertical.thickness = self.value
@@ -152,7 +152,7 @@ MDScreen:
                     step: 2
                     value: box.size[0]
                     on_value:
-                        box.size = [self.value] * 2 
+                        box.size = [self.value] * 2
 
                     MDSliderHandle:
 
@@ -160,7 +160,7 @@ MDScreen:
 
             BoxLayout:
                 spacing: "12dp"
-                size_hint_y: None 
+                size_hint_y: None
                 height: dp(50)
 
                 Widget:
@@ -171,7 +171,7 @@ MDScreen:
 
                 MDSwitch:
                     active: True
-                    on_active:               
+                    on_active:
                         linear_indicator_horizontal.determinate = self.active
                         linear_indicator_vertical.determinate = self.active
                         circular_indicator.determinate = self.active
@@ -188,7 +188,7 @@ MDScreen:
                 padding: [dp(10), 0]
                 halign: "center"
                 text: "FPS: "
-                adaptive_size: True 
+                adaptive_size: True
 
             AnchorLayout:
 
@@ -203,7 +203,7 @@ MDScreen:
 
             BoxLayout:
                 spacing: "12dp"
-                size_hint_y: None 
+                size_hint_y: None
                 height: dp(50)
 
                 Widget:
@@ -213,7 +213,7 @@ MDScreen:
                     adaptive_size: True
 
                 MDSwitch:
-                    on_active:               
+                    on_active:
                         circular_indicator.indeterminate_animator = \
                         "retreat" \
                         if self.active else \
@@ -221,7 +221,7 @@ MDScreen:
 
                 Widget:
 
-            MDExLinearProgressIndicator: 
+            MDExLinearProgressIndicator:
                 id: linear_indicator_horizontal
                 color_array: [ \
                 [1.0, 0.0, 0.0, 1.0], \
@@ -243,11 +243,11 @@ MDScreen:
                 [0.2, 0.8, 0.8, 1.0], \
                 [0.3, 0.5, 0.9, 1.0], \
                 [0.1, 0.2, 0.5, 1.0] \
-                ]                
+                ]
 
             BoxLayout:
                 spacing: "12dp"
-                size_hint_y: None 
+                size_hint_y: None
                 height: dp(50)
 
                 Widget:
@@ -257,7 +257,7 @@ MDScreen:
                     adaptive_size: True
 
                 MDSwitch:
-                    on_active:               
+                    on_active:
                         linear_indicator_horizontal.indeterminate_animator = \
                         "discontinuous" \
                         if self.active else \
@@ -265,7 +265,7 @@ MDScreen:
                         linear_indicator_vertical.indeterminate_animator = \
                         "discontinuous" \
                         if self.active else \
-                        "" 
+                        ""
 
                 Widget:
 
@@ -280,7 +280,8 @@ class SelectedItem(MDBoxLayout):
         super().__init__(*args, **kwargs)
         self.register_event_type("on_active")
 
-    def on_active(self, *args): ...
+    def on_active(self, *args):
+        ...
 
 
 class Example(MDApp, CommonApp):
@@ -295,7 +296,8 @@ class Example(MDApp, CommonApp):
     def set_fps(self, dt):
         self.root.ids.fps.text = f"FPS: {Clock.get_rfps()}"
 
-    def disabled_widgets(self): ...
+    def disabled_widgets(self):
+        ...
 
 
 Example().run()

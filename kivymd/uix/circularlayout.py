@@ -242,7 +242,7 @@ if __name__ == "__main__":
     from kivymd.app import MDApp
     from kivymd.uix.label import MDLabel
 
-    KV = '''
+    KV = """
     MDScreen:
         md_bg_color: self.theme_cls.backgroundColor
 
@@ -250,8 +250,7 @@ if __name__ == "__main__":
             id: container
             pos_hint: {"center_x": .5, "center_y": .5}
             row_spacing: min(self.size) * 0.1
-    '''
-
+    """
 
     class Example(MDApp):
         def build(self):
@@ -264,6 +263,4 @@ if __name__ == "__main__":
                     MDLabel(text=f"{x}", adaptive_size=True)
                 )
 
-
     Example().run()
-

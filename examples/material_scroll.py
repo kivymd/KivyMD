@@ -49,6 +49,7 @@ MDScreen:
 class Example(MDApp, CommonApp):
     def build(self):
         self.theme_cls.theme_style = "Dark"
+
         return Builder.load_string(MAIN_KV)
 
     def on_start(self):

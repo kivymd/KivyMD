@@ -8,6 +8,7 @@ from kivymd.uix.slider import MDSlider, MDSliderHandle, MDSliderValueLabel
 class Example(MDApp, CommonApp):
     def build(self):
         self.theme_cls.primary_palette = "Red"
+
         return Builder.load_string(KV)
 
     def on_start(self):

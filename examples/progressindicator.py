@@ -1,5 +1,4 @@
 from kivy.animation import Animation
-from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import BooleanProperty, StringProperty
 
@@ -111,6 +110,7 @@ class Example(MDApp, CommonApp):
     def build(self):
         self.theme_cls.primary_palette = "Olive"
         self.theme_cls.theme_style = "Dark"
+
         return Builder.load_string(KV)
 
     def run_stop_demo(self):

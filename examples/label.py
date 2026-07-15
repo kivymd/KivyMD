@@ -44,6 +44,7 @@ class Example(MDApp, CommonApp):
 
     def create_widgets(self):
         self.root.ids.rv.data = []
+
         for style in theme_font_styles:
             if style != "Icon":
                 for role in theme_font_styles[style]:

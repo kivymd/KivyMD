@@ -114,6 +114,7 @@ class CommonNavigationRailItem(TooltipNavigationRailItem):
 class Example(MDApp, CommonApp):
     def build(self):
         self.theme_cls.primary_palette = "Olive"
+
         return Builder.load_string(KV)
 
     def disabled_widgets(self):

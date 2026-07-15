@@ -18,7 +18,7 @@ UI = """
     size_hint_y: None
     height: dp(100)
     obj_pos: [dp(40), self.pos[-1] + dp(40)]
- 
+
     canvas:
         Color:
             rgba: app.theme_cls.primaryContainerColor

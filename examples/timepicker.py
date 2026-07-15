@@ -126,6 +126,7 @@ class Example(MDApp, CommonApp):
     def build(self):
         self.theme_cls.primary_palette = "Olive"
         self.theme_cls.theme_style = "Dark"
+
         return Builder.load_string(KV)
 
     def set_am_pm(self, time_mode):

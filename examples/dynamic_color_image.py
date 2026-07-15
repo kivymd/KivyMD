@@ -56,6 +56,7 @@ class Example(MDApp):
 
     def on_drop_file(self, sdl: WindowSDL, path_to_file: str) -> None:
         ext = os.path.splitext(path_to_file)[1]
+
         if isinstance(path_to_file, bytes):
             path_to_file = path_to_file.decode()
         if isinstance(ext, bytes):
@@ -67,6 +68,7 @@ class Example(MDApp):
     def build(self):
         self.theme_cls.dynamic_color = True
         self.theme_cls.theme_style = "Dark"
+
         return Builder.load_string(KV)
 
     def theme_switch(self) -> None:
@@ -75,6 +77,7 @@ class Example(MDApp):
 
     def generate_cards(self, *args):
         self.root.ids.card_list.data = []
+
         for name_color in self.theme_cls.current_schemes_color_data:
             self.root.ids.card_list.data.append(
                 {

@@ -11,35 +11,41 @@ Builder.load_string(
     """
 #:import Clipboard kivy.core.clipboard.Clipboard
 
-<DynamicColorInfo>:
+<DynamicColorInfo>
     name: "primaryColor"
-    color:[0,0,0,0]
-    size_hint_y:None
-    height:dp(130)
-    orientation:"vertical"
-    spacing:dp(10)
+    color: [0, 0, 0, 0]
+    size_hint_y: None
+    height: dp(130)
+    orientation: "vertical"
+    spacing: dp(10)
+
     BoxLayout:
-        spacing:dp(10)
+        spacing: dp(10)
+
         MDIconButton:
-            icon:"content-copy"
-            size_hint_x:None
-            width:dp(50)
+            icon: "content-copy"
+            size_hint_x: None
+            width: dp(50)
             on_release:
                 Clipboard.copy(root.name)
-        MDLabel:
-            text:root.name
-            adaptive_height:True
-    MDBoxLayout:
-        md_bg_color:root.color
-        radius:dp(10)
 
-<Container>:
+        MDLabel:
+            text: root.name
+            adaptive_height: True
+
+    MDBoxLayout:
+        md_bg_color: root.color
+        radius: dp(10)
+
+<Container>
+
     ScrollView:
+
         MDBoxLayout:
-            orientation:"vertical"
-            id:main_view
-            adaptive_height:True
-            spacing:dp(20)
+            orientation: "vertical"
+            id: main_view
+            adaptive_height: True
+            spacing: dp(20)
 """
 )
 
@@ -53,6 +59,8 @@ class DynamicColorInfo(BoxLayout):
 
 
 class Example(MDApp, CommonApp):
+    container: Container
+
     def build(self):
         self.theme_cls.dynamic_color = True
         self.theme_cls.path_to_wallpaper = "path_to_some_image.png"
@@ -69,6 +77,7 @@ class Example(MDApp, CommonApp):
         for color in vars(DynamicColor).keys():
             if "__" in color:
                 continue
+
             widget = DynamicColorInfo()
             widget.name = color
             widget.color = getattr(self.theme_cls, color)

@@ -275,6 +275,8 @@ Example of a dynamic color from an image
 
 from kivy.properties import ColorProperty
 
+from materialyoucolor.dynamiccolor.color_spec import COLOR_NAMES
+
 
 class DynamicColor:
     """
@@ -283,12 +285,22 @@ class DynamicColor:
     .. versionadded:: 2.0.0
     """
 
+    current_schemes_color_data = [f"{name}Color" for name in COLOR_NAMES]
+
     # Primary.
     primaryColor = ColorProperty()
     """
     Primary color.
 
     :attr:`primaryColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    primaryDimColor = ColorProperty()
+    """
+    Primary dim color.
+
+    :attr:`primaryDimColor` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -317,12 +329,54 @@ class DynamicColor:
     and defaults to `None`.
     """
 
+    # Primary Fixed.
+    primaryFixedColor = ColorProperty()
+    """
+    Primary fixed color.
+
+    :attr:`primaryFixedColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    primaryFixedDimColor = ColorProperty()
+    """
+    Primary fixed dim color.
+
+    :attr:`primaryFixedDimColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    # On Primary Fixed.
+    onPrimaryFixedColor = ColorProperty()
+    """
+    On primary fixed color.
+
+    :attr:`onPrimaryFixedColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    onPrimaryFixedVariantColor = ColorProperty()
+    """
+    On primary fixed variant color.
+
+    :attr:`onPrimaryFixedVariantColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
     # Secondary.
     secondaryColor = ColorProperty()
     """
     Secondary color.
 
     :attr:`secondaryColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    secondaryDimColor = ColorProperty()
+    """
+    Secondary dim color.
+
+    :attr:`secondaryDimColor` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -351,12 +405,54 @@ class DynamicColor:
     and defaults to `None`.
     """
 
+    # Secondary Fixed.
+    secondaryFixedColor = ColorProperty()
+    """
+    Secondary fixed color.
+
+    :attr:`secondaryFixedColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    secondaryFixedDimColor = ColorProperty()
+    """
+    Secondary fixed dim color.
+
+    :attr:`secondaryFixedDimColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    # On Secondary Fixed.
+    onSecondaryFixedColor = ColorProperty()
+    """
+    On secondary fixed color.
+
+    :attr:`onSecondaryFixedColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    onSecondaryFixedVariantColor = ColorProperty()
+    """
+    On secondary fixed variant color.
+
+    :attr:`onSecondaryFixedVariantColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
     # Tertiary.
     tertiaryColor = ColorProperty()
     """
     Tertiary color.
 
     :attr:`tertiaryColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    tertiaryDimColor = ColorProperty()
+    """
+    Tertiary dim color.
+
+    :attr:`tertiaryDimColor` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -382,6 +478,40 @@ class DynamicColor:
     On tertiary container color.
 
     :attr:`onTertiaryContainerColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    # Tertiary Fixed.
+    tertiaryFixedColor = ColorProperty()
+    """
+    Tertiary fixed color.
+
+    :attr:`tertiaryFixedColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    tertiaryFixedDimColor = ColorProperty()
+    """
+    Tertiary fixed dim color.
+
+    :attr:`tertiaryFixedDimColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    # On Tertiary Fixed.
+    onTertiaryFixedColor = ColorProperty()
+    """
+    On tertiary fixed color.
+
+    :attr:`onTertiaryFixedColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    onTertiaryFixedVariantColor = ColorProperty()
+    """
+    On tertiary fixed variant color.
+
+    :attr:`onTertiaryFixedVariantColor` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 
@@ -543,6 +673,14 @@ class DynamicColor:
     and defaults to `None`.
     """
 
+    errorDimColor = ColorProperty()
+    """
+    Error dim color.
+
+    :attr:`errorDimColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
     errorContainerColor = ColorProperty()
     """
     Error container color.
@@ -599,6 +737,55 @@ class DynamicColor:
     Scrim color.
 
     :attr:`scrimColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    # Palette key colors.
+    primaryPaletteKeyColorColor = ColorProperty()
+    """
+    Primary palette key color.
+
+    :attr:`primaryPaletteKeyColorColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    secondaryPaletteKeyColorColor = ColorProperty()
+    """
+    Secondary palette key color.
+
+    :attr:`secondaryPaletteKeyColorColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    tertiaryPaletteKeyColorColor = ColorProperty()
+    """
+    Tertiary palette key color.
+
+    :attr:`tertiaryPaletteKeyColorColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    neutralPaletteKeyColorColor = ColorProperty()
+    """
+    Neutral palette key color.
+
+    :attr:`neutralPaletteKeyColorColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    neutralVariantPaletteKeyColorColor = ColorProperty()
+    """
+    Neutral variant palette key color.
+
+    :attr:`neutralVariantPaletteKeyColorColor` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    errorPaletteKeyColorColor = ColorProperty()
+    """
+    Error palette key color.
+
+    :attr:`errorPaletteKeyColorColor` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `None`.
     """
 

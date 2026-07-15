@@ -41,6 +41,8 @@ from kivy.properties import (
 )
 from kivy.utils import get_color_from_hex, hex_colormap, rgba
 from materialyoucolor.dislike.dislike_analyzer import DislikeAnalyzer
+from materialyoucolor.dynamiccolor.color_spec import COLOR_NAMES
+from materialyoucolor.dynamiccolor.dynamic_scheme import DynamicScheme
 from materialyoucolor.dynamiccolor.material_dynamic_colors import (
     MaterialDynamicColors,
 )
@@ -54,7 +56,7 @@ from kivymd.material_resources import DEVICE_IOS
 
 
 class ThemeManager(EventDispatcher, DynamicColor):
-    primary_palette = Property(None)
+    primary_palette = Property("Blue")
     """
     The name of the color scheme that the application will use.
     All major `material` components will have the color
@@ -157,7 +159,9 @@ class ThemeManager(EventDispatcher, DynamicColor):
 
     dynamic_color = BooleanProperty(False)
     """
-    Enables or disables dynamic color.
+    If ``True``, generates the application's color scheme from the user's wallpaper instead
+    of :attr:`primary_palette`. If your application targets Android, it is recommended
+    to enable this property.
 
     .. versionadded:: 2.0.0
 
@@ -714,11 +718,13 @@ class ThemeManager(EventDispatcher, DynamicColor):
         • disabledTextColor
         • errorColor
         • errorContainerColor
+        • errorDimColor
+        • errorPaletteKeyColorColor
         • inverseOnSurfaceColor
         • inversePrimaryColor
         • inverseSurfaceColor
-        • neutral_paletteKeyColorColor
-        • neutral_variant_paletteKeyColorColor
+        • neutralPaletteKeyColorColor
+        • neutralVariantPaletteKeyColorColor
         • onBackgroundColor
         • onErrorColor
         • onErrorContainerColor
@@ -741,16 +747,18 @@ class ThemeManager(EventDispatcher, DynamicColor):
         • outlineVariantColor
         • primaryColor
         • primaryContainerColor
+        • primaryDimColor
         • primaryFixedColor
         • primaryFixedDimColor
-        • primary_paletteKeyColorColor
+        • primaryPaletteKeyColorColor
         • rippleColor
         • scrimColor
         • secondaryColor
         • secondaryContainerColor
+        • secondaryDimColor
         • secondaryFixedColor
         • secondaryFixedDimColor
-        • secondary_paletteKeyColorColor
+        • secondaryPaletteKeyColorColor
         • shadowColor
         • surfaceBrightColor
         • surfaceColor
@@ -764,9 +772,10 @@ class ThemeManager(EventDispatcher, DynamicColor):
         • surfaceVariantColor
         • tertiaryColor
         • tertiaryContainerColor
+        • tertiaryDimColor
         • tertiaryFixedColor
         • tertiaryFixedDimColor
-        • tertiary_paletteKeyColorColor
+        • tertiaryPaletteKeyColorColor
         • transparentColor
 
     :attr:`dynamic_color_names` is an :class:`~kivy.properties.AliasProperty`
@@ -794,10 +803,11 @@ class ThemeManager(EventDispatcher, DynamicColor):
                 dark_mode=self._dark_mode(),
                 contrast=self.dynamic_scheme_contrast,
                 dynamic_color_quality=self.dynamic_color_quality,
+                fallback_color=[int(255 * c) for c in self.color_to_rgba(self.primary_palette)],
                 fallback_wallpaper_path=self.path_to_wallpaper,
                 fallback_scheme_name=self.dynamic_scheme_name,
-                message_logger=Logger.info,
-                logger_head="KivyMD",
+                spec_version="2025",
+                logger=Logger,
             )
             if system_scheme:
                 self._set_color_names(system_scheme)
@@ -867,16 +877,14 @@ class ThemeManager(EventDispatcher, DynamicColor):
                 Hct.from_int(color),
                 self._dark_mode(),
                 self.dynamic_scheme_contrast,
+                spec_version="2025",
             )
         )
 
-    def _set_color_names(self, scheme) -> None:
-        for color_name in vars(MaterialDynamicColors).keys():
+    def _set_color_names(self, scheme : DynamicScheme) -> None:
+        for color_name in COLOR_NAMES:
             attr = getattr(MaterialDynamicColors, color_name)
-            if hasattr(attr, "get_hct"):
-                color_value = rgba(attr.get_hct(scheme).to_rgba())
-                setattr(self, f"{color_name}Color", color_value)
-
+            setattr(self, f"{color_name}Color", rgba(attr.get_rgba(scheme)))
         self.disabledTextColor = self._get_disabled_hint_text_color()
         if self.on_colors:
             self.on_colors()

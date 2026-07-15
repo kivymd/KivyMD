@@ -90,7 +90,7 @@ to save time. If you need full commit history, then remove `--depth 1`.
 requirements = python3,
     kivy,
     https://github.com/kivymd/KivyMD/archive/master.zip,
-    materialyoucolor,
+    materialyoucolor==3.0.3,
     materialshapes,
     pycairo,
     pillow,

@@ -14,32 +14,34 @@ class AnimBox(BoxLayout):
 
 UI = """
 <AnimBox>:
-    transition:"in_out_bounce"
-    size_hint_y:None
-    height:dp(100)
-    obj_pos:[dp(40), self.pos[-1] + dp(40)]
+    transition: "in_out_bounce"
+    size_hint_y: None
+    height: dp(100)
+    obj_pos: [dp(40), self.pos[-1] + dp(40)]
+ 
     canvas:
         Color:
-            rgba:app.theme_cls.primaryContainerColor
+            rgba: app.theme_cls.primaryContainerColor
         Rectangle:
-            size:[self.size[0], dp(5)]
-            pos:self.pos[0], self.pos[-1] + dp(50)
+            size: [self.size[0], dp(5)]
+            pos: self.pos[0], self.pos[-1] + dp(50)
         Color:
-            rgba:app.theme_cls.primaryColor
+            rgba: app.theme_cls.primaryColor
         Rectangle:
-            size:[dp(30)] * 2
-            pos:root.obj_pos
+            size: [dp(30)] * 2
+            pos: root.obj_pos
+
     MDLabel:
         adaptive_height:True
         text:root.transition
-        padding:[dp(10), 0]
-        halign:"center"
+        padding: [dp(10), 0]
+        halign: "center"
 
 MDGridLayout:
-    orientation:"lr-tb"
-    cols:1
-    md_bg_color:app.theme_cls.backgroundColor
-    spacing:dp(10)
+    orientation: "lr-tb"
+    cols: 1
+    md_bg_color: app.theme_cls.backgroundColor
+    spacing: dp(10)
 """
 
 
@@ -54,7 +56,7 @@ class MotionApp(MDApp):
             "easing_decelerated",
             "easing_standard",
             "easing_emphasized",
-        ]:  # Add more here for comparison
+        ]:  # add more here for comparison
             print(transition)
             widget = AnimBox()
             widget.transition = transition
@@ -65,10 +67,12 @@ class MotionApp(MDApp):
 
     def run_animation(self, dt):
         x = (self.root.children[0].width - dp(30)) if self._inverse else 0
+
         for widget in self.root.children:
             Animation(
                 obj_pos=[x, widget.obj_pos[-1]], t=widget.transition, d=3
             ).start(widget)
+
         self._inverse = not self._inverse
         Clock.schedule_once(self.run_animation, 3.1)
 

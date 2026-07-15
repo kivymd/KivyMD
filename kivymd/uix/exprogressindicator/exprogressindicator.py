@@ -26,6 +26,7 @@ Terminologies
     :align: center
     :alt: Linear and circular expressive progress indicator variants.
     :width: 400px
+
 - *Amplitude* measures from the center of the resting position to the center of the peak
 
 .. image:: https://github.com/user-attachments/assets/04519538-9e7f-4b11-a434-1eab03fad560
@@ -62,6 +63,7 @@ Linear
                     amplitude: dp(3)
                     wave_length: dp(40)
                     wave_speed: dp(20)
+                    value: 30
             '''
 
 
@@ -93,6 +95,7 @@ Linear
                                 wave_length="40dp",
                                 wave_speed="20dp",
                                 pos_hint={"center_x": .5, "center_y": .5},
+                                value=30,
                             ),
                             md_bg_color=self.theme_cls.backgroundColor,
                         )
@@ -126,6 +129,7 @@ Circular
                     size_hint: None, None
                     size: "48dp", "48dp"
                     pos_hint: {'center_x': .5, 'center_y': .5}
+                    value: 30
             '''
 
 
@@ -155,6 +159,7 @@ Circular
                                 size_hint=(None, None),
                                 size=("48dp", "48dp"),
                                 pos_hint={"center_x": .5, "center_y": .5},
+                                value=30,
                             ),
                             md_bg_color=self.theme_cls.backgroundColor,
                         )
@@ -398,12 +403,15 @@ class MDExBaseProgressBar(Widget, DeclarativeBehavior, ThemableBehavior):
 
     def _set_value(self, value):
         value = max(0, min(self.max, value))
+
         if value != self._value:
             self._value = value
+
             return True
 
     value = AliasProperty(_get_value, _set_value)
-    """Current value used for the slider.
+    """
+    Current value used for the slider.
 
     :attr:`value` is an :class:`~kivy.properties.AliasProperty` that
     returns the value of the progress bar. If the value is < 0 or >
@@ -412,8 +420,10 @@ class MDExBaseProgressBar(Widget, DeclarativeBehavior, ThemableBehavior):
 
     def get_norm_value(self):
         d = self.max
+
         if d == 0:
             return 0
+
         return self.value / float(d)
 
     def set_norm_value(self, value):
@@ -422,7 +432,8 @@ class MDExBaseProgressBar(Widget, DeclarativeBehavior, ThemableBehavior):
     value_normalized = AliasProperty(
         get_norm_value, set_norm_value, bind=("value", "max"), cache=True
     )
-    """Normalized value inside the range 0-1::
+    """
+    Normalized value inside the range 0-1::
 
         >>> pb = ProgressBar(value=50, max=100)
         >>> pb.value
@@ -434,21 +445,24 @@ class MDExBaseProgressBar(Widget, DeclarativeBehavior, ThemableBehavior):
     """
 
     max = NumericProperty(100.0)
-    """Maximum value allowed for :attr:`value`.
+    """
+    Maximum value allowed for :attr:`value`.
 
     :attr:`max` is a :class:`~kivy.properties.NumericProperty` and defaults to
     100.
     """
 
     active_track_color = ColorProperty([0, 0, 0, 0])
-    """Color of active track
+    """
+    Color of active track
 
     :attr:`active_track_color` is a :class:`~kivy.properties.ColorProperty` and defaults to
     None.
     """
 
     inactive_track_color = ColorProperty([0, 0, 0, 0])
-    """Color of inactive track
+    """
+    Color of inactive track
 
     :attr:`inactive_track_color` is a :class:`~kivy.properties.ColorProperty` and defaults to
     None.
@@ -463,51 +477,57 @@ class MDExBaseProgressBar(Widget, DeclarativeBehavior, ThemableBehavior):
     """
 
     spacing = NumericProperty(dp(4))
-    """Spacing between tracks/segments.
+    """
+    Spacing between tracks/segments.
 
     :attr:`spacing` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `dp(4)`.
     """
 
-    # wave params
+    # Wave params.
     amplitude = NumericProperty(dp(3))
-    """Amplitude of the wave effect.
+    """
+    Amplitude of the wave effect.
 
     :attr:`amplitude` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `dp(3)`.
     """
 
     wave_speed = NumericProperty(-dp(40))
-    """Speed of the wave effect.
+    """
+    Speed of the wave effect.
 
     :attr:`wave_speed` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `-dp(40)` per second.
     """
 
     wave_length = NumericProperty(dp(8))
-    """Wavelength of the wave effect.
+    """
+    Wavelength of the wave effect.
 
     :attr:`wave_length` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `dp(40)`.
     """
 
-    # type
+    # Type.
     determinate = BooleanProperty(True)
-    """Switch between determinate and indeterminate modes.
+    """
+    Switch between determinate and indeterminate modes.
 
     :attr:`determinate` is an :class:`~kivy.properties.BooleanProperty`
     and defaults to `False`.
     """
 
-    # each with colors
+    # Each with colors.
     color_array = ListProperty([[1, 0, 0, 1], [0, 1, 0, 1], [0, 0, 1, 1]])
-    """List of RGBA colors used by indeterminate animations.
+    """
+    List of RGBA colors used by indeterminate animations.
 
     :attr:`color_array` is an :class:`~kivy.properties.ListProperty`
     and defaults to three RGBA colors.
     """
 
-    # internal props
+    # Internal props.
     _fctx = {}
     _time = 0
     _ctx_deps = ["center", "spacing", "thickness"]
@@ -543,24 +563,29 @@ class MDExBaseProgressBar(Widget, DeclarativeBehavior, ThemableBehavior):
 
     def color_obj(self, line_name):
         """Get color object from line."""
+
         return self.canvas.get_group(line_name + "_color")[0]
 
     def reset_colors(self):
-        # active lines
+        # Active lines.
         for line in self._active_names:
             self.color_obj(line).rgba = self.active_track_color
-        # inactive lines
+
+        # Inactive lines.
         for line in self._inactive_names:
             self.color_obj(line).rgba = self.inactive_track_color
 
     def refresh_lines(self, line_list):
         """Clears points and returns a reusable queue."""
+
         for line in line_list:
             line.points = []
+
         return line_list[:]
 
     def setup_lines(self, *args):
         """init line objs"""
+
         self._active_line_objs = [
             self.canvas.get_group(name)[0] for name in self._active_names
         ]
@@ -586,19 +611,22 @@ class MDExBaseProgressBar(Widget, DeclarativeBehavior, ThemableBehavior):
     def on_determinate(self, instance, value):
         if not self._init:
             return False
+
         self.setup_lines()
         self.reset_colors()
         self._time = 0
+
         return True
 
     def get_amplitude(self, A, t):
         """fade in/out for amplitude using quadratic easing."""
+
         if t < 0.05:
-            # fade-in: (t/0.05)^2
+            # Fade-in: (t/0.05)^2
             return A * (400.0 * t * t)
 
         if t > 0.95:
-            # fade-out: ((1-t)/0.05)^2
+            # Fade-out: ((1-t)/0.05)^2
             inv_t = 1.0 - t
             return A * (400.0 * inv_t * inv_t)
 
@@ -625,8 +653,7 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
     and defaults to `'horizontal'`.
     """
 
-    # options
-    # discontinuous and contiguous
+    # Options, discontinuous and contiguous.
     indeterminate_animator = StringProperty("discontinuous")
     """
     Name of the indeterminate animator to use for linear mode.
@@ -651,7 +678,7 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
         self._discts_animator = LinearIndeterminateDisjointAnimator()
         self._cont_animator = LinearIndeterminateContiguousAnimator()
         self._cont_animator.len_palette = 3
-        # bind to some values
+        # Bind to some values.
         self.bind(
             **dict.fromkeys(["thickness", "amplitude"], self.on_orientation)
         )
@@ -660,7 +687,9 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
 
     def save_frame_context(self, *args):
         """Pre-calculate geometry and spacing factors for the current frame."""
+
         is_horizontal = self.orientation == "horizontal"
+
         if is_horizontal:
             ax_s = self.x
             ax_size = self.width
@@ -710,12 +739,15 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
             self.size_hint_y = None
             self.size_hint_x = 1
             self.height = self.amplitude * 2 + self.thickness
+
         self.save_frame_context()
 
     def w_seg(self, start, end) -> list:
         """High-performance wave point generator."""
+
         fctx = self._fctx
         amplitude = self.amplitude
+
         if self.determinate:
             amplitude = self.get_amplitude(amplitude, self.value_normalized)
 
@@ -739,6 +771,7 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
     def cleanup_lines(self, line_groups):
         for group in line_groups:
             self.canvas.get_group(group)[0].points = []
+
         return line_groups
 
     def compute_inactive_segments(self, active_bars):
@@ -753,6 +786,7 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
 
         inactive = []
         cur = 0.0
+
         for s, e in valid:
             if s > cur:
                 inactive.append((cur, s))
@@ -760,26 +794,27 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
 
         if cur < 1.0:
             inactive.append((cur, 1.0))
+
         return inactive
 
     def render_determinate_wave(self):
         ctx = self._fctx
         v_n = self.value_normalized
 
-        # active line
+        # Active line.
         s, e = self.get_segment_coords(0.0, v_n)
         dot_size = dp(2)
 
-        # dot when progress is 0
+        # Dot when progress is 0.
         if e - s <= ctx["spacing"]:
             e = s + dot_size
 
         self._active_line_objs[0].points = self.w_seg(s, e)
 
-        # inactive Line
+        # Inactive Line.
         s_i, e_i = self.get_segment_coords(v_n, 1.0, do_fade=False)
 
-        # setup dot at starting
+        # Setup dot at starting.
         _dist = ctx["origin"] + ctx["track_l"]
         s_i = max(
             ctx["origin"] + ctx["gap_p"] * 2 + dot_size,
@@ -796,21 +831,22 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
 
     def get_segment_coords(self, s_f, e_f, do_fade=True):
         """Calculates points ensuring consistent visual gaps."""
+
         fctx = self._fctx
         origin = fctx["origin"]
         track_l = fctx["track_l"]
         gap_p = fctx["gap_p"]
         fade = fctx["fade"] if do_fade else 1
 
-        # calculate distance from edges for the "fade" effect
+        # Calculate distance from edges for the "fade" effect.
         dist_s = s_f * track_l
         dist_e = (1.0 - e_f) * track_l
 
-        # compute stretch factors (0.0 at wall, 1.0 in middle)
+        # Compute stretch factors (0.0 at wall, 1.0 in middle).
         s_fac = dist_s / fade if dist_s < fade else 1.0
         e_fac = dist_e / fade if dist_e < fade else 1.0
 
-        # we add gap_p to the start and subtract from the end
+        # We add gap_p to the start and subtract from the end.
         start = origin + dist_s + (gap_p * s_fac)
         end = origin + (e_f * track_l) - (gap_p * e_fac)
 
@@ -823,7 +859,7 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
         center = ctx["center"]
         inv = ctx["inv"]
 
-        # active
+        # Active.
         pool = self.refresh_lines(self._active_line_objs)
         for s_f, e_f in act_bars:
             s, e = self.get_segment_coords(s_f, e_f)
@@ -831,7 +867,7 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
                 continue
             pool.pop(0).points = self.w_seg(s, e)
 
-        # inactive
+        # Inactive.
         pool = self.refresh_lines(self._inactive_line_objs)
         for s_f, e_f in inact_bars:
             s, e = self.get_segment_coords(s_f, e_f)
@@ -848,7 +884,7 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
         center = ctx["center"]
         inv = ctx["inv"]
 
-        # active
+        # Active.
         pool = self.refresh_lines(
             self._inactive_line_objs + self._active_line_objs
         )
@@ -868,8 +904,7 @@ class MDExLinearProgressIndicator(MDExBaseProgressBar):
         if self.indeterminate_animator == "discontinuous":
             return self.render_discts_wave()
         else:
-            # contiguous
-            return self.render_cont_wave()
+            return self.render_cont_wave()  # contiguous
 
 
 class MDExCircularProgressIndicator(MDExBaseProgressBar):
@@ -881,7 +916,7 @@ class MDExCircularProgressIndicator(MDExBaseProgressBar):
     classes documentation.
     """
 
-    # retreat, advanced
+    # Retreat, advanced.
     indeterminate_animator = StringProperty("retreat")
     """
     Name of the indeterminate animator to use for circular mode.
@@ -891,6 +926,7 @@ class MDExCircularProgressIndicator(MDExBaseProgressBar):
     :class:`~kivy.properties.StringProperty` and defaults to
     `'retreat'`.
     """
+
     use_color_array = BooleanProperty(False)
     """
     Whether to use :attr:`color_array` for circular active track colors.
@@ -905,7 +941,7 @@ class MDExCircularProgressIndicator(MDExBaseProgressBar):
         "center",
         "spacing",
         "thickness",
-        # as we want stuff in angular form
+        # As we want stuff in angular form.
         "wave_length",
         "wave_speed",
     ]
@@ -922,24 +958,23 @@ class MDExCircularProgressIndicator(MDExBaseProgressBar):
         self._advanced_animator.len_palette = len(value)
 
     def save_frame_context(self, *args):
-        # step size for rendering
-        # currently set to maximum quality
+        # Step size for rendering currently set to maximum quality.
         step = 1 / self.width
 
-        # radius of the circle
+        # Radius of the circle.
         thickness = self.thickness
         radius = (self.width - thickness) / 2
 
-        # angular wave lenght
+        # Angular wave length.
         if self.wave_length > 0:
             mode_number = 2 * (math.pi * radius) / self.wave_length
         else:
-            # technically at zero should be infinity!
+            # Technically at zero should be infinity!
             mode_number = 0
 
-        # angluar wave speed
+        # Angluar wave speed.
         ang_wave_speed = (2 * math.pi * self.wave_speed) / radius
-        # spacing in degree
+        # Spacing in degree.
         spacing = (self.spacing + thickness + dp(1)) / radius
 
         self._fctx = {
@@ -984,6 +1019,7 @@ class MDExCircularProgressIndicator(MDExBaseProgressBar):
         num_steps = int((end_rad - start_rad) / ctx["step"]) + 1
         cx, cy, r = ctx["cx"], ctx["cy"], ctx["radius"]
         _sin, _cos = math.sin, math.cos
+
         return [
             coord
             for i in range(num_steps)
@@ -995,6 +1031,7 @@ class MDExCircularProgressIndicator(MDExBaseProgressBar):
         full_angle = 2 * math.pi
         s = init_rad + (s_f * full_angle)
         e = init_rad + (e_f * full_angle)
+
         return s, e
 
     def render_retreat_wave(self):
@@ -1003,19 +1040,20 @@ class MDExCircularProgressIndicator(MDExBaseProgressBar):
         a_s, a_e = self.get_start_and_end(rot_rad, s_f, e_f)
         spacing = ctx["spacing"]
 
-        # active line
+        # Active line.
         self._active_line_objs[0].points = self.w_seg(a_s, a_e)
-
-        # active line color
+        # Active line color.
         color = self.color_obj(self._active_line_objs[0].group)
+
         if self.use_color_array:
             color.rgba = self.color_array[c_idx]
         else:
             color.rgba = self.active_track_color
 
-        # inactive line
+        # Inactive line.
         i_s = a_e + spacing
         i_e = a_s + (2 * math.pi) - spacing
+
         if i_e - i_s <= 0:
             i_e = i_s
         self._inactive_line_objs[0].points = self.get_arc_points(i_s, i_e)
@@ -1034,22 +1072,22 @@ class MDExCircularProgressIndicator(MDExBaseProgressBar):
         a_s, a_e = self.get_start_and_end(rot_rad, s_f, e_f)
         spacing = ctx["spacing"]
 
-        # active line
+        # Active line.
         self._active_line_objs[0].points = self.w_seg(a_s, a_e)
 
-        # active line color
+        # Active line color.
         color = self.color_obj(self._active_line_objs[0].group)
         if self.use_color_array:
             idx_from, idx_to, mix = color_data
             c1 = self.color_array[idx_from]
             c2 = self.color_array[idx_to]
-            # linear mixing
+            # Linear mixing.
             mixed_color = [c1[i] + (c2[i] - c1[i]) * mix for i in range(4)]
             color.rgba = mixed_color
         else:
             color.rgba = self.active_track_color
 
-        # inacitve line
+        # Inactive line.
         i_s = a_e + spacing
         i_e = a_s + (2 * math.pi) - spacing
         self._inactive_line_objs[0].points = self.get_arc_points(i_s, i_e)
@@ -1059,12 +1097,11 @@ class MDExCircularProgressIndicator(MDExBaseProgressBar):
         spacing = ctx["spacing"]
         a_s, a_e = self.get_start_and_end(0, 0, self.value_normalized)
 
-        # persistant inital dot
+        # Persistent initial dot.
         a_e = max(math.radians(2), a_e)
-        # active line
-        self._active_line_objs[0].points = self.w_seg(a_s, a_e)
+        self._active_line_objs[0].points = self.w_seg(a_s, a_e)  # active line
 
-        # inactive line
+        # Inactive line.
         i_s = a_e + spacing
         i_e = (2 * math.pi) - spacing
         self._inactive_line_objs[0].points = self.get_arc_points(i_s, i_e)

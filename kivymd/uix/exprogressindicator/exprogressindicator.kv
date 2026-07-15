@@ -2,68 +2,68 @@
     active_track_color: self.theme_cls.primaryColor
     inactive_track_color: self.theme_cls.surfaceContainerHighestColor
 
+
 <MDExCircularProgressIndicator>:
     canvas:
         Color:
-            group:"active_track_color"
-            rgba: root.active_track_color 
-        Line: 
-            group:"active_track"
-            cap:"round"
-            joint:"round"
-            width: self.thickness/2
+            group: "active_track_color"
+            rgba: root.active_track_color
+        Line:
+            group: "active_track"
+            cap: "round"
+            joint: "round"
+            width: self.thickness / 2
+
         Color:
-            group:"inactive_track_color"
-            rgba:root.inactive_track_color 
-        Line: 
-            group:"inactive_track"
-            cap:"round"
-            width: self.thickness/2
+            group: "inactive_track_color"
+            rgba: root.inactive_track_color
+        Line:
+            group: "inactive_track"
+            cap: "round"
+            width: self.thickness / 2
+
 
 <MDExLinearProgressIndicator>
     canvas:
-        
         Color:
-            rgba:root.inactive_track_color 
+            rgba: root.inactive_track_color
             group:"inactive_track_color"
-        Line: 
-            group:"inactive_track"
-            cap:"round"
-            joint:"round"
-            width: self.thickness/2
+        Line:
+            group:  "inactive_track"
+            cap: "round"
+            joint: "round"
+            width: self.thickness / 2
 
         Color:
-            rgba:root.inactive_track_color 
-            group:"inactive_track_1_color"
-        Line: 
-            group:"inactive_track_1"
-            cap:"round"
-            joint:"round"
-            width: self.thickness/2
-
-
-        Color:
-            group:"active_track_color"
-            rgba:root.active_track_color 
-        Line: 
-            group:"active_track"
-            cap:"round"
-            joint:"round"
-            width: self.thickness/2
-            
-        Color:
-            group:"active_track_1_color"
-            rgba:root.active_track_color
-        Line: 
-            group:"active_track_1"
-            cap:"round"
-            joint:"round"
-            width: self.thickness/2
+            rgba: root.inactive_track_color
+            group: "inactive_track_1_color"
+        Line:
+            group: "inactive_track_1"
+            cap: "round"
+            joint: "round"
+            width: self.thickness / 2
 
         Color:
-            group:"dot"
+            group: "active_track_color"
+            rgba: root.active_track_color
+        Line:
+            group: "active_track"
+            cap: "round"
+            joint: "round"
+            width: self.thickness / 2
+
+        Color:
+            group: "active_track_1_color"
+            rgba: root.active_track_color
+        Line:
+            group: "active_track_1"
+            cap: "round"
+            joint: "round"
+            width: self.thickness / 2
+
+        Color:
+            group: "dot"
             rgba: root.active_track_color[:-1] + [int(root.determinate)]
-        
         Ellipse:
-            group:"ellipse"
-            size: [dp(4)]*2
+            group: "ellipse"
+            size: [dp(4)] * 2

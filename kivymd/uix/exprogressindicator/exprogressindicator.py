@@ -521,14 +521,12 @@ class MDExBaseProgressBar(Widget, DeclarativeBehavior, ThemableBehavior):
         super().__init__(**kwargs)
         self._fctx = {}
         self._time = 0
-
-    def on_kv_post(self, base_widget):
         self._start()
 
     _init = False
 
     def _start(self, *args):
-        if self.canvas is None:
+        if self.canvas is None or len(self.canvas.children) == 0:
             return Clock.schedule_once(self._start, 0)
 
         self._init = True

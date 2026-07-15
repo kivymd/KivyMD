@@ -1,12 +1,42 @@
-from kivymd.utils.cubic_bezier import CubicBezier
+"""
+Animation delegates for Material Design progress indicators.
+
+This module implements the animation algorithms used by the linear and
+circular indeterminate progress indicators. The implementations are based on
+the original Android Material Components library and reproduce the behavior of
+the corresponding Material animations.
+
+The module provides animators for:
+
+- linear indeterminate (disjoint);
+- linear indeterminate (contiguous);
+- circular indeterminate (retreat);
+- circular indeterminate (advanced).
+
+Each animator calculates the current geometry of the animated indicator from
+the elapsed animation time and returns normalized values that can be used by
+the rendering layer.
+
+Ported from the Android Material Components library.
+"""
+
 import math
 
-# Ported from
-# ./lib/java/com/google/android/material/progressindicator/
+from kivymd.utils.cubic_bezier import CubicBezier
 
 
 class LinearIndeterminateDisjointAnimator:
-    # from LinearIndeterminateDisjointAnimatorDelegate.java
+    """
+    Animator for the Material Design linear indeterminate progress indicator
+    using the disjoint animation style.
+
+    The animation consists of two independent line segments whose head and tail
+    positions are animated with individual cubic Bézier interpolators.
+
+    Ported from the Android Material Components implementation
+    (`LinearIndeterminateDisjointAnimatorDelegate`).
+    """
+
     INTERPOLATORS = [
         CubicBezier(0.2, 0.0, 0.8, 1.0).t,  # line1_head
         CubicBezier(0.4, 0.0, 1.0, 1.0).t,  # line1_tail
@@ -20,11 +50,45 @@ class LinearIndeterminateDisjointAnimator:
     LOOP_DELAY = 20
 
     def get_fraction_in_range(self, playtime, start, duration):
+        """
+        Returns the normalized animation fraction for the specified time range.
+
+        :param playtime:
+            Current animation playtime in milliseconds.
+
+        :param start:
+            Start time of the animation interval in milliseconds.
+
+        :param duration:
+            Duration of the animation interval in milliseconds.
+
+        :returns:
+            Normalized value in the range ``[0.0, 1.0]``.
+        """
+
         if duration == 0:
             return 0.0
+
         return max(0.0, min((playtime - start) / duration, 1.0))
 
     def compute_bar(self, playtime, head_idx, tail_idx):
+        """
+        Computes the start and end positions of an animated line segment.
+
+        :param playtime:
+            Current animation playtime in milliseconds.
+
+        :param head_idx:
+            Interpolator index for the segment head.
+
+        :param tail_idx:
+            Interpolator index for the segment tail.
+
+        :returns:
+            Tuple containing the normalized start and end positions of the
+            segment.
+        """
+
         f_head = self.get_fraction_in_range(
             playtime,
             self.DELAY_TO_MOVE_SEGMENT_ENDS[head_idx],
@@ -38,17 +102,44 @@ class LinearIndeterminateDisjointAnimator:
 
         start = self.INTERPOLATORS[head_idx](f_head)
         end = self.INTERPOLATORS[tail_idx](f_tail)
+
         return start, end
 
     def bars(self, time_sec):
+        """
+        Calculates the current state of the disjoint linear indicator.
+
+        :param time_sec:
+            Current animation time in seconds.
+
+        :returns:
+            Two animated line segments represented as::
+
+                (
+                    (start1, end1),
+                    (start2, end2),
+                )
+        """
+
         time_ms = (time_sec * 1000) % (self.TOTAL_DURATION_IN_MS + self.LOOP_DELAY)
         bar1 = self.compute_bar(time_ms, 0, 1)
         bar2 = self.compute_bar(time_ms, 2, 3)
+
         return bar1, bar2
 
 
 class LinearIndeterminateContiguousAnimator:
-    # from LinearIndeterminateContiguousAnimatorDelegate.java
+    """
+    Animator for the Material Design linear indeterminate progress indicator
+    using the contiguous animation style.
+
+    The progress indicator is divided into three connected segments that move
+    continuously across the track while cycling through the color palette.
+
+    Ported from the Android Material Components implementation
+    (`LinearIndeterminateContiguousAnimatorDelegate`).
+    """
+
     INTERPOLATOR = CubicBezier(0.4, 0.0, 0.2, 1.0).t
 
     TOTAL_DURATION_IN_MS = 667
@@ -63,9 +154,41 @@ class LinearIndeterminateContiguousAnimator:
         self.current_indices = [0, 0, 0]
 
     def get_fraction_in_range(self, playtime, start, duration):
+        """
+        Returns the normalized animation fraction for the specified time range.
+
+        :param playtime:
+            Current animation playtime in milliseconds.
+
+        :param start:
+            Start time of the animation interval in milliseconds.
+
+        :param duration:
+            Duration of the animation interval in milliseconds.
+
+        :returns:
+            Animation progress.
+        """
+
         return max(0.0, (playtime - start) / duration)
 
     def bars(self, time_sec):
+        """
+        Calculates the current state of the contiguous linear indicator.
+
+        :param time_sec:
+            Current animation time in seconds.
+
+        :returns:
+            Three contiguous segments represented as::
+
+                (
+                    (start0, end0, color_index0),
+                    (start1, end1, color_index1),
+                    (start2, end2, color_index2),
+                )
+        """
+
         time_ms = time_sec * 1000
         cycle_count = int(time_ms // self.DURATION_PER_CYCLE_IN_MS)
         playtime = time_ms % self.DURATION_PER_CYCLE_IN_MS
@@ -91,7 +214,18 @@ class LinearIndeterminateContiguousAnimator:
 
 
 class CircularIndeterminateRetreatAnimator:
-    # from CircularIndeterminateRetreatAnimatorDelegate.java
+    """
+    Animator for the Material Design circular indeterminate progress indicator
+    using the retreat animation style.
+
+    The animation continuously rotates the indicator while expanding and
+    shrinking the visible arc. The active color changes after each rotation
+    cycle.
+
+    Ported from the Android Material Components implementation
+    (`CircularIndeterminateRetreatAnimatorDelegate`).
+    """
+
     INTERPOLATOR = CubicBezier(0.4, 0.0, 0.2, 1.0).t
 
     TOTAL_DURATION_MS = 6000
@@ -111,14 +245,47 @@ class CircularIndeterminateRetreatAnimator:
         self.len_palette = 0
 
     def get_fraction_in_range(self, playtime, start, duration):
+        """
+        Returns the normalized animation fraction for the specified time range.
+
+        :param playtime:
+            Current animation playtime in milliseconds.
+
+        :param start:
+            Start time of the animation interval in milliseconds.
+
+        :param duration:
+            Duration of the animation interval in milliseconds.
+
+        :returns:
+            Normalized value in the range ``[0.0, 1.0]``.
+        """
+
         if duration == 0:
             return 0.0
+
         return max(0.0, min((playtime - start) / duration, 1.0))
 
     def bars(self, time_sec):
         """
-        Returns: (rotation, (start_fraction, end_fraction, color_index))
+        Calculates the current state of the retreat circular indicator.
+
+        :param time_sec:
+            Current animation time in seconds.
+
+        :returns:
+            Tuple containing::
+
+                (
+                    rotation_in_radians,
+                    (
+                        start_fraction,
+                        end_fraction,
+                        color_index,
+                    ),
+                )
         """
+
         total_playtime_ms = time_sec * 1000
 
         rotation = self.CONSTANT_ROTATION_DEGREES * (
@@ -165,7 +332,17 @@ class CircularIndeterminateRetreatAnimator:
 
 
 class CircularIndeterminateAdvancedAnimator:
-    # from CircularIndeterminateAdvanceAnimatorDelegate.java
+    """
+    Animator for the Material Design circular indeterminate progress indicator
+    using the advanced animation style.
+
+    The animation expands and collapses the arc while smoothly rotating around
+    the circle. Color transitions are synchronized with each animation cycle.
+
+    Ported from the Android Material Components implementation
+    (`CircularIndeterminateAdvanceAnimatorDelegate`).
+    """
+
     INTERPOLATOR = CubicBezier(0.4, 0.0, 0.2, 1.0).t
 
     TOTAL_DURATION_MS = 5400
@@ -188,11 +365,42 @@ class CircularIndeterminateAdvancedAnimator:
         self.len_palette = 0
 
     def get_fraction_in_range(self, playtime, start, duration):
+        """
+        Returns the normalized animation fraction for the specified time range.
+
+        :param playtime:
+            Current animation playtime in milliseconds.
+
+        :param start:
+            Start time of the animation interval in milliseconds.
+
+        :param duration:
+            Duration of the animation interval in milliseconds.
+
+        :returns:
+            Normalized value in the range ``[0.0, 1.0]``.
+        """
+
         if duration == 0:
             return 0.0
+
         return max(0.0, min((playtime - start) / duration, 1.0))
 
     def get_color(self, time_sec, playtime_ms):
+        """
+        Calculates the current color transition.
+
+        :param time_sec:
+            Current animation time in seconds.
+
+        :param playtime_ms:
+            Current animation playtime in milliseconds.
+
+        :returns:
+            Tuple containing the start color index, end color index, and
+            interpolation factor.
+        """
+
         if self.len_palette <= 0:
             return None, None, 0.0
 
@@ -224,9 +432,31 @@ class CircularIndeterminateAdvancedAnimator:
 
     def bars(self, time_sec):
         """
-        Returns: (rotation, (start_fraction, end_fraction, (c_start_idx, c_end_idx, color_lerp)))
-        Note: rotation is 0 because Advance logic builds rotation into the fractions.
+        Calculates the current state of the advanced circular indicator.
+
+        :param time_sec:
+            Current animation time in seconds.
+
+        :returns:
+            Tuple containing::
+
+                (
+                    rotation,
+                    (
+                        start_fraction,
+                        end_fraction,
+                        (
+                            start_color_index,
+                            end_color_index,
+                            color_lerp,
+                        ),
+                    ),
+                )
+
+            The rotation value is always ``0`` because the rotation is already
+            encoded into the calculated arc fractions.
         """
+
         playtime_ms = (time_sec * 1000) % self.TOTAL_DURATION_MS
         animation_fraction = playtime_ms / self.TOTAL_DURATION_MS
 

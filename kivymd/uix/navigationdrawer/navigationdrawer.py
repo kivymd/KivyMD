@@ -977,6 +977,10 @@ class MDNavigationDrawerItem(
         """
 
         self.selected = not self.selected
+
+    def on_selected(self, instance, value):
+        """Fired when the :attr:`selected` value changes"""
+
         self._drawer_menu.update_items_color(self)
 
 

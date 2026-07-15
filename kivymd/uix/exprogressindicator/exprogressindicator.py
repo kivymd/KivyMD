@@ -57,7 +57,6 @@ Linear
                 md_bg_color: self.theme_cls.backgroundColor
 
                 MDExLinearProgressIndicator:
-                    id: linear_indicator
                     size_hint_x: .7
                     pos_hint: {'center_x': .5, 'center_y': .5}
                     amplitude: dp(3)
@@ -192,7 +191,6 @@ transition over linear movement when using :class:`kivy.animation.Animation`.
         .. code-block:: python
 
             from kivy.animation import Animation
-            from kivy.clock import Clock
             from kivy.lang import Builder
 
             from kivymd.app import MDApp
@@ -212,11 +210,9 @@ transition over linear movement when using :class:`kivy.animation.Animation`.
             class Example(MDApp):
                 def build(self):
                     self.theme_cls.theme_style = "Dark"
-                    root = Builder.load_string(KV)
-                    Clock.schedule_once(self.animate, 0)
-                    return root
+                    return Builder.load_string(KV)
 
-                def animate(self, *_):
+                def on_start(self, *_):
                     anim = Animation(
                         value=100,
                         d=1.6,
@@ -232,7 +228,6 @@ transition over linear movement when using :class:`kivy.animation.Animation`.
         .. code-block:: python
 
             from kivy.animation import Animation
-            from kivy.clock import Clock
 
             from kivymd.app import MDApp
             from kivymd.uix.exprogressindicator import MDExLinearProgressIndicator
@@ -242,25 +237,23 @@ transition over linear movement when using :class:`kivy.animation.Animation`.
             class Example(MDApp):
                 def build(self):
                     self.theme_cls.theme_style = "Dark"
-                    self.progress = MDExLinearProgressIndicator(
-                        size_hint_x=.7,
-                        determinate=True,
-                        pos_hint={"center_x": .5, "center_y": .5},
-                    )
-                    root = MDScreen(
-                        self.progress,
+                    return MDScreen(
+                        MDExLinearProgressIndicator(
+                            id="progress",
+                            size_hint_x=0.7,
+                            determinate=True,
+                            pos_hint={"center_x": 0.5, "center_y": 0.5},
+                        ),
                         md_bg_color=self.theme_cls.backgroundColor,
                     )
-                    Clock.schedule_once(self.animate, 0)
-                    return root
 
-                def animate(self, *_):
+                def on_start(self):
                     anim = Animation(
                         value=100,
                         d=1.6,
                         t="easing_emphasized",
                     )
-                    anim.start(self.progress)
+                    anim.start(self.root.get_ids().progress)
 
 
             Example().run()
@@ -286,21 +279,127 @@ Linear indeterminate modes
 
 Set the mode with :attr:`MDExLinearProgressIndicator.indeterminate_animator`.
 
-.. code-block:: python
+.. tabs::
 
-    MDExLinearProgressIndicator(
-        indeterminate_animator="contiguous",
-    )
+    .. tab:: Declarative Python style with KV
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+
+            from kivymd.app import MDApp
+
+
+            KV = '''
+            MDScreen:
+
+                MDExLinearProgressIndicator:
+                    size_hint: None, None
+                    size: "48dp", "48dp"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    determinate: False
+                    indeterminate_animator: "contiguous"
+            '''
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.exprogressindicator import MDExLinearProgressIndicator
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDExLinearProgressIndicator(
+                                size_hint=(None, None),
+                                size=("48dp", "48dp"),
+                                pos_hint={"center_x": .5, "center_y": .5},
+                                determinate=False,
+                                indeterminate_animator="contiguous",
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/user-attachments/assets/5f4fbc91-8507-4098-a388-a85ba90afc30
     :align: center
     :alt: Linear contiguous indeterminate animation.
 
-.. code-block:: python
+.. tabs::
 
-    MDExLinearProgressIndicator(
-        indeterminate_animator="discontinuous",
-    )
+    .. tab:: Declarative Python style with KV
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+
+            from kivymd.app import MDApp
+
+
+            KV = '''
+            MDScreen:
+
+                MDExLinearProgressIndicator:
+                    size_hint: None, None
+                    size: "48dp", "48dp"
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    determinate: False
+                    indeterminate_animator: "discontinuous"
+            '''
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.exprogressindicator import MDExLinearProgressIndicator
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDExLinearProgressIndicator(
+                                size_hint=(None, None),
+                                size=("48dp", "48dp"),
+                                pos_hint={"center_x": .5, "center_y": .5},
+                                determinate=False,
+                                indeterminate_animator="discontinuous",
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/user-attachments/assets/c93a29c4-4ce9-4a18-9836-e40df8ae9554
     :align: center

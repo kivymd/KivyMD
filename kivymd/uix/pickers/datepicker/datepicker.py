@@ -1136,7 +1136,10 @@ class MDBaseDatePicker(ThemableBehavior, MotionDatePickerBehavior, BoxLayout):
         elif self.mode == "range" and self.min_date and self.max_date:
             start, end = self.min_date, self.max_date
             if input_dates:
-                start, end = input_dates[0] or start, input_dates[1] or end
+                if len(input_dates) >= 1:
+                    start = input_dates[0] or start
+                if len(input_dates) >= 2:
+                    end = input_dates[1] or end
             ends = [end for end in (start, end) if end]
             if len(ends) == 0:
                 start_repr, end_repr = "Start", "End"

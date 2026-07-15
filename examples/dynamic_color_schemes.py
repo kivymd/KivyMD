@@ -1,14 +1,14 @@
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.uix.boxlayout import BoxLayout
+from materialyoucolor.utils.platform_utils import COLOR_NAMES
 
 from examples.common_app import KV, CommonApp
 from kivymd.app import MDApp
 from kivymd.dynamic_color import DynamicColor
 from kivymd.uix.boxlayout import MDBoxLayout
 
-Builder.load_string(
-    """
+Builder.load_string("""
 #:import Clipboard kivy.core.clipboard.Clipboard
 
 <DynamicColorInfo>
@@ -46,8 +46,7 @@ Builder.load_string(
             id: main_view
             adaptive_height: True
             spacing: dp(20)
-"""
-)
+""")
 
 
 class Container(MDBoxLayout):
@@ -74,10 +73,7 @@ class Example(MDApp, CommonApp):
         parent_widget.add_widget(self.container)
         self.container.ids.main_view.clear_widgets()
 
-        for color in vars(DynamicColor).keys():
-            if "__" in color:
-                continue
-
+        for color in self.theme_cls.current_schemes_color_data:
             widget = DynamicColorInfo()
             widget.name = color
             widget.color = getattr(self.theme_cls, color)

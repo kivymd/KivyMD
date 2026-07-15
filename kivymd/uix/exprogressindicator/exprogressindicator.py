@@ -314,22 +314,135 @@ Circular indeterminate modes
 
 Set the mode with :attr:`MDExCircularProgressIndicator.indeterminate_animator`.
 
-.. code-block:: python
+.. tabs::
 
-    MDExCircularProgressIndicator(
-        indeterminate_animator="advanced",
-    )
+    .. tab:: Declarative Python style with KV
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+
+            from kivymd.app import MDApp
+
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDExCircularProgressIndicator:
+                    size_hint: None, None
+                    size: [dp(50)] * 2
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    indeterminate_animator: "advanced"
+                    determinate: False
+                    wave_length: 0
+            '''
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.exprogressindicator import MDExCircularProgressIndicator
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDExCircularProgressIndicator(
+                                size_hint=(None, None),
+                                size=[dp(50)] * 2,
+                                pos_hint={'center_x': .5, 'center_y': .5},
+                                indeterminate_animator="advanced",
+                                determinate=False,
+                                wave_length=0,
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/user-attachments/assets/61be6cf2-d98e-46d5-aab9-c824a54e3d16
     :align: center
     :alt: Circular advanced indeterminate animation with color transitions.
 
+.. tabs::
 
-.. code-block:: python
+    .. tab:: Declarative Python style with KV
 
-    MDExCircularProgressIndicator(
-        indeterminate_animator="retreat",
-    )
+        .. code-block:: python
+
+            from kivy.lang import Builder
+
+            from kivymd.app import MDApp
+
+            KV = '''
+            MDScreen:
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MDExCircularProgressIndicator:
+                    size_hint: None, None
+                    size: [dp(50)] * 2
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+                    indeterminate_animator: "retreat"
+                    determinate: False
+                    wave_length: dp(12)
+            '''
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.exprogressindicator import MDExCircularProgressIndicator
+
+
+            class Example(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return (
+                        MDScreen(
+                            MDExCircularProgressIndicator(
+                                size_hint=(None, None),
+                                size=[dp(50)] * 2,
+                                pos_hint={'center_x': .5, 'center_y': .5},
+                                indeterminate_animator="retreat",
+                                determinate=False,
+                                wave_length=dp(12),
+                            ),
+                            md_bg_color=self.theme_cls.backgroundColor,
+                        )
+                    )
+
+
+            Example().run()
 
 .. image:: https://github.com/user-attachments/assets/1ba0b5de-3824-4209-abe3-e3c5dfeef705
     :align: center

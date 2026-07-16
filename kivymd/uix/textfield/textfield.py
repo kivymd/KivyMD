@@ -1501,7 +1501,7 @@ class MDTextField(
     The type of text field for entering Email, time, etc.
     Automatically sets the type of the text field as "error" if the user input
     does not match any of the set validation types.
-    Available options are: `'date'`, `'email'`, `'time'`.
+    Available options are: `'date'`, `'email'`, `'time'`, `'phone'`, `number`.
 
     When using `'date'`, :attr:`date_format` must be defined.
 

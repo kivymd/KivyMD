@@ -1494,7 +1494,9 @@ class MDTextField(
     defaults to ''.
     """
 
-    validator = OptionProperty(None, options=["date", "email", "time", "phone", "number"])
+    validator = OptionProperty(
+        None, options=["date", "email", "time", "phone", "number"]
+    )
     """
     The type of text field for entering Email, time, etc.
     Automatically sets the type of the text field as "error" if the user input

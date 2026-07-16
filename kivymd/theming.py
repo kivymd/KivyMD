@@ -23,7 +23,6 @@ has the :attr:`~kivymd.app.MDApp.theme_cls` attribute, with which you control
 the material properties of your application.
 """
 
-from kivy.logger import Logger
 from kivy import platform
 from kivy.app import App
 from kivy.core.window import Window
@@ -59,7 +58,8 @@ set_dark_mode_listener = None
 if platform == "android":
     try:
         from android.darkmode import set_dark_mode_listener
-        Logger.debug('DARKMODE: Import set_dark_mode_listener')
+
+        Logger.debug("DARKMODE: Import set_dark_mode_listener")
     except ImportError:
         pass
 
@@ -903,10 +903,10 @@ class ThemeManager(EventDispatcher, DynamicColor):
     def on_follow_system_theme(self, instance, value) -> None:
         """Fired when the :attr:`follow_system_theme` value changes."""
 
-        Logger.debug('DARKMODE: Call on_follow_system_theme method')
+        Logger.debug("DARKMODE: Call on_follow_system_theme method")
 
         if set_dark_mode_listener is None:
-            Logger.debug('DARKMODE: Call on_follow_system_theme method. RETURN')
+            Logger.debug("DARKMODE: Call on_follow_system_theme method. RETURN")
             return
 
         set_dark_mode_listener(self.switch_theme_system if value else None)
@@ -940,8 +940,8 @@ class ThemeManager(EventDispatcher, DynamicColor):
         """
 
         Logger.debug(
-            f'DARKMODE: Call switch_theme_system method. '
-            f'is_dark_mode - {is_dark_mode}'
+            f"DARKMODE: Call switch_theme_system method. "
+            f"is_dark_mode - {is_dark_mode}"
         )
         self.theme_style = "Dark" if is_dark_mode else "Light"
 

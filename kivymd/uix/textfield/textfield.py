@@ -457,13 +457,11 @@ class Validator:
     :attr:`date_format` is an :class:`~kivy.properties.OptionProperty`
     and defaults to `None`.
     """
+
     def is_number_valid(self, text: str) -> bool:
-        """Checks the validity of a number."""
-        for i in text:
-            if not i.isdigit():
-                return True
-                break
-        return False
+        """Checks if the text contains only digits."""
+
+        return not text.isdigit()
 
     def is_email_valid(self, text: str) -> bool:
         """Checks the validity of the email."""

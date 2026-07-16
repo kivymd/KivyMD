@@ -40,7 +40,6 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.utils import get_color_from_hex, hex_colormap, rgba
-
 from materialyoucolor.dislike.dislike_analyzer import DislikeAnalyzer
 from materialyoucolor.dynamiccolor.color_spec import COLOR_NAMES
 from materialyoucolor.dynamiccolor.dynamic_scheme import DynamicScheme
@@ -506,11 +505,11 @@ class ThemeManager(EventDispatcher, DynamicColor):
     follow_system_theme = BooleanProperty(False)
     """
     Automatically follows the Android system theme.
-    
+
     When set to ``True``, the application automatically switches between
     ``"Light"`` and ``"Dark"`` theme styles when the Android system
     appearance changes. On other platforms, this property has no effect.
-    
+
     .. versionadded:: 2.0.0
 
     .. tabs::

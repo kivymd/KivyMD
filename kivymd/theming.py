@@ -23,7 +23,7 @@ has the :attr:`~kivymd.app.MDApp.theme_cls` attribute, with which you control
 the material properties of your application.
 """
 
-from kivy import platform
+from kivy import Logger, platform
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.event import EventDispatcher
@@ -57,7 +57,7 @@ set_dark_mode_listener = None
 if platform == "android":
     try:
         from android.darkmode import set_dark_mode_listener
-    except:
+    except Exception:
         pass
 
 

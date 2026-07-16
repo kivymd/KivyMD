@@ -274,7 +274,6 @@ Example of a dynamic color from an image
 """
 
 from kivy.properties import ColorProperty
-
 from materialyoucolor.dynamiccolor.color_spec import COLOR_NAMES
 
 

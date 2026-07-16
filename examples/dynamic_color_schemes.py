@@ -8,7 +8,8 @@ from kivymd.app import MDApp
 from kivymd.dynamic_color import DynamicColor
 from kivymd.uix.boxlayout import MDBoxLayout
 
-Builder.load_string("""
+Builder.load_string(
+    """
 #:import Clipboard kivy.core.clipboard.Clipboard
 
 <DynamicColorInfo>
@@ -46,7 +47,8 @@ Builder.load_string("""
             id: main_view
             adaptive_height: True
             spacing: dp(20)
-""")
+"""
+)
 
 
 class Container(MDBoxLayout):

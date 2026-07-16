@@ -803,7 +803,10 @@ class ThemeManager(EventDispatcher, DynamicColor):
                 dark_mode=self._dark_mode(),
                 contrast=self.dynamic_scheme_contrast,
                 dynamic_color_quality=self.dynamic_color_quality,
-                fallback_color=[int(255 * c) for c in self.color_to_rgba(self.primary_palette)],
+                fallback_color=[
+                    int(255 * c)
+                    for c in self.color_to_rgba(self.primary_palette)
+                ],
                 fallback_wallpaper_path=self.path_to_wallpaper,
                 fallback_scheme_name=self.dynamic_scheme_name,
                 spec_version="2025",
@@ -881,7 +884,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
             )
         )
 
-    def _set_color_names(self, scheme : DynamicScheme) -> None:
+    def _set_color_names(self, scheme: DynamicScheme) -> None:
         for color_name in COLOR_NAMES:
             attr = getattr(MaterialDynamicColors, color_name)
             setattr(self, f"{color_name}Color", rgba(attr.get_rgba(scheme)))

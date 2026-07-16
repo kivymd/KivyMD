@@ -59,9 +59,9 @@ if platform == "android":
     try:
         from android.darkmode import set_dark_mode_listener
 
-        Logger.debug("DARKMODE: Import set_dark_mode_listener")
-    except ImportError:
-        pass
+        Logger.info("DARKMODE: Import set_dark_mode_listener")
+    except:
+        Logger.info("DARKMODE: ModuleNotFoundError")
 
 
 class ThemeManager(EventDispatcher, DynamicColor):
@@ -903,10 +903,10 @@ class ThemeManager(EventDispatcher, DynamicColor):
     def on_follow_system_theme(self, instance, value) -> None:
         """Fired when the :attr:`follow_system_theme` value changes."""
 
-        Logger.debug("DARKMODE: Call on_follow_system_theme method")
+        Logger.info("DARKMODE: Call on_follow_system_theme method")
 
         if set_dark_mode_listener is None:
-            Logger.debug("DARKMODE: Call on_follow_system_theme method. RETURN")
+            Logger.info("DARKMODE: Call on_follow_system_theme method. RETURN")
             return
 
         set_dark_mode_listener(self.switch_theme_system if value else None)
@@ -939,7 +939,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
             otherwise ``False`` for light mode.
         """
 
-        Logger.debug(
+        Logger.info(
             f"DARKMODE: Call switch_theme_system method. "
             f"is_dark_mode - {is_dark_mode}"
         )

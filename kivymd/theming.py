@@ -27,7 +27,6 @@ from kivy import platform
 from kivy.app import App
 from kivy.core.window import Window
 from kivy.event import EventDispatcher
-from kivy.logger import Logger
 from kivy.properties import (
     AliasProperty,
     BooleanProperty,
@@ -58,10 +57,8 @@ set_dark_mode_listener = None
 if platform == "android":
     try:
         from android.darkmode import set_dark_mode_listener
-
-        Logger.info("DARKMODE: Import set_dark_mode_listener")
     except:
-        Logger.info("DARKMODE: ModuleNotFoundError")
+        pass
 
 
 class ThemeManager(EventDispatcher, DynamicColor):
@@ -903,10 +900,7 @@ class ThemeManager(EventDispatcher, DynamicColor):
     def on_follow_system_theme(self, instance, value) -> None:
         """Fired when the :attr:`follow_system_theme` value changes."""
 
-        Logger.info("DARKMODE: Call on_follow_system_theme method")
-
         if set_dark_mode_listener is None:
-            Logger.info("DARKMODE: Call on_follow_system_theme method. RETURN")
             return
 
         set_dark_mode_listener(self.switch_theme_system if value else None)
@@ -939,10 +933,6 @@ class ThemeManager(EventDispatcher, DynamicColor):
             otherwise ``False`` for light mode.
         """
 
-        Logger.info(
-            f"DARKMODE: Call switch_theme_system method. "
-            f"is_dark_mode - {is_dark_mode}"
-        )
         self.theme_style = "Dark" if is_dark_mode else "Light"
 
     def sync_theme_styles(self, *args) -> None:

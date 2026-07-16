@@ -40,6 +40,7 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.utils import get_color_from_hex, hex_colormap, rgba
+
 from materialyoucolor.dislike.dislike_analyzer import DislikeAnalyzer
 from materialyoucolor.dynamiccolor.color_spec import COLOR_NAMES
 from materialyoucolor.dynamiccolor.dynamic_scheme import DynamicScheme
@@ -53,6 +54,14 @@ from materialyoucolor.utils.platform_utils import SCHEMES, get_dynamic_scheme
 from kivymd.dynamic_color import DynamicColor
 from kivymd.font_definitions import theme_font_styles
 from kivymd.material_resources import DEVICE_IOS
+
+set_dark_mode_listener = None
+
+if platform == "android":
+    try:
+        from android.darkmode import set_dark_mode_listener
+    except ImportError:
+        pass
 
 
 class ThemeManager(EventDispatcher, DynamicColor):
@@ -494,6 +503,75 @@ class ThemeManager(EventDispatcher, DynamicColor):
     and defaults to `0.2`.
     """
 
+    follow_system_theme = BooleanProperty(False)
+    """
+    Automatically follows the Android system theme.
+    
+    When set to ``True``, the application automatically switches between
+    ``"Light"`` and ``"Dark"`` theme styles when the Android system
+    appearance changes. On other platforms, this property has no effect.
+    
+    .. versionadded:: 2.0.0
+
+    .. tabs::
+
+        .. tab:: Declarative style with KV
+
+            .. code-block:: python
+
+                from kivy.lang import Builder
+
+                from kivymd.app import MDApp
+
+                KV = '''
+                MDScreen:
+                    md_bg_color: self.theme_cls.backgroundColor
+
+                    MDLabel:
+                        text: "Change the system theme on your device."
+                        pos_hint: {"center_x": .5, "center_y": .5}
+                        adaptive_size: True
+                '''
+
+
+                class Example(MDApp):
+                    def build(self):
+                        self.theme_cls.follow_system_theme = True
+                        return Builder.load_string(KV)
+
+
+                Example().run()
+
+        .. tab:: Declarative python style
+
+            .. code-block:: python
+
+                from kivymd.app import MDApp
+                from kivymd.uix.label import MDLabel
+                from kivymd.uix.screen import MDScreen
+
+
+                class Example(MDApp):
+                    def build(self):
+                        self.theme_cls.follow_system_theme = True
+                        return (
+                            MDScreen(
+                                MDLabel(
+                                    text="Change the system theme on your device.",
+                                    pos_hint={"center_x": .5, "center_y": .5},
+                                    adaptive_size=True,
+                                ),
+                                md_bg_color=self.theme_cls.backgroundColor
+                            )
+                        )
+
+
+                Example().run()
+
+    :attr:`follow_system_theme` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     theme_style = OptionProperty("Light", options=["Light", "Dark"])
     """
     App theme style.
@@ -822,6 +900,14 @@ class ThemeManager(EventDispatcher, DynamicColor):
 
         self.set_colors()
 
+    def on_follow_system_theme(self, instance, value) -> None:
+        """Fired when the :attr:`follow_system_theme` value changes."""
+
+        if set_dark_mode_listener is None:
+            return
+
+        set_dark_mode_listener(self.switch_theme_system if value else None)
+
     def on_dynamic_scheme_name(self, *args) -> None:
         """Fired when the :attr:`dynamic_scheme_name` value changes."""
 
@@ -841,6 +927,16 @@ class ThemeManager(EventDispatcher, DynamicColor):
         """Switches the theme from light to dark."""
 
         self.theme_style = "Dark" if self.theme_style == "Light" else "Light"
+
+    def switch_theme_system(self, is_dark_mode: bool) -> None:
+        """
+        Updates the application theme style according to the system theme.
+
+        :param is_dark_mode: ``True`` if the system is using dark mode,
+            otherwise ``False`` for light mode.
+        """
+
+        self.theme_style = "Dark" if is_dark_mode else "Light"
 
     def sync_theme_styles(self, *args) -> None:
         # Syncs the values from self.font_styles to theme_font_styles

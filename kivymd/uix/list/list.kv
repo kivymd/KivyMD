@@ -8,18 +8,7 @@
     # Divider.
     canvas.after:
         Color:
-            rgba:
-                ( \
-                ( \
-                self.theme_cls.surfaceVariantColor \
-                if not self.disabled else \
-                self.theme_cls.onSurfaceColor \
-                ) \
-                if self.theme_divider_color == "Primary" else \
-                self.divider_color
-                ) \
-
-                if self.divider else self.theme_cls.transparentColor
+            rgba:self.theme_cls.transparentColor
         Line:
             width: 1
             points: self.x ,self.y, self.x + self.width, self.y

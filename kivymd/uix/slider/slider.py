@@ -288,9 +288,11 @@ class MDSlider(DeclarativeBehavior, ThemableBehavior, Slider):
             ) - self.track_active_width / 2
             slider_length = (
                 self.width if self.orientation == "horizontal" else self.height
-            ) - (self.padding * 2)
+            ) - self.padding * 2
             slider_max_value = int(self.max)
-            multiplier = slider_length / slider_max_value
+            multiplier = (
+                slider_length / slider_max_value if slider_max_value > 0 else 0
+            )
             active_track_width = (
                 (
                     self.width
@@ -300,23 +302,22 @@ class MDSlider(DeclarativeBehavior, ThemableBehavior, Slider):
                 - self.padding * 2
             ) * self.value_normalized
 
-            for i in range(0, slider_max_value + 1, step):
-                x = i * multiplier
+            step_int = max(1, int(step)) if step > 0 else 1
 
+            for i in range(0, slider_max_value + 1, step_int):
+                x = i * multiplier
                 if x < active_track_width:
                     points = self._inactive_points
                 else:
                     points = self._active_points
-
                 if self.orientation == "vertical":
                     points.append(y)
-
                 points.append(
                     (self.x if self.orientation == "horizontal" else self.y)
                     + x
                     + self.padding
                     + (
-                        (self.ids.handle_container.width / 2)
+                        self.ids.handle_container.width / 2
                         if i != self.max and i
                         else 0
                     )

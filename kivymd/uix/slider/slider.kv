@@ -94,7 +94,7 @@
         size: self.minimum_size
         pos:
             handle_container.center_x - self.width / 2, \
-            root._value_container_y
+            handle_container.top + dp(10)
 
     # Handle container.
     BoxLayout:
@@ -134,6 +134,12 @@
 
     MDSliderHandleStateLayer:
         id: state_layer
+        size: root.state_layer_size
+        pos:
+            root.x + (root.size[0] - root.state_layer_size[0]) / 2, \
+            root.y + (root.size[1] - root.state_layer_size[1]) / 2
+        scale_value_center:
+            root.state_layer_size[0] / 2, root.state_layer_size[1] / 2
 
         canvas.before:
             Color:
@@ -145,10 +151,8 @@
                     )[:-1] + [0.38]
             SmoothRoundedRectangle:
                 radius: [root.state_layer_size[0] / 2, ]
-                size:  root.state_layer_size
-                pos:
-                    root.x - root.state_layer_size[0] / 4, \
-                    root.y - root.state_layer_size[1] / 4
+                size: root.state_layer_size
+                pos: self.pos
 
 
 <MDSliderValueContainer>
@@ -160,12 +164,15 @@
             pos: self.pos
             size: self.size
 
+        # The triangle is proportional to the size of the container.
+        Color:
+            rgba: app.theme_cls.primaryColor
         SmoothTriangle:
             points:
-                [ \
-                self.x + 18, self.y - 6, \
-                self.x + 32, self.y + 9, \
-                self.x + 5, self.y + 8 \
+                [
+                self.center_x, self.y - self.size[1] * 0.15,
+                self.center_x + self.size[0] * 0.35, self.y + self.size[1] * 0.25,
+                self.center_x - self.size[0] * 0.35, self.y + self.size[1] * 0.25,
                 ]
 
         # Label texture.
@@ -179,23 +186,8 @@
                 None
             pos:
                 ( \
-                ( \
-                # X.
-                self._slider.value_pos[0] \
-                - (self._slider._value_label.texture_size[0] / 2) + dp(10), \
-                # Y.
-                self._slider.center_y + dp(28) \
-                ) \
-                if self._slider.orientation == "horizontal" else \
-                ( \
-                # X.
-                self._slider.center_x \
-                - (self._slider._value_label.texture_size[0] / 2) - dp(2), \
-                # Y.
-                self._slider.value_pos[1] + \
-                self._slider._value_label.texture_size[1] \
-                + self._slider._handle.state_layer_size[1] / 2, \
-                ) \
+                self.center_x - self._slider._value_label.texture_size[0] / 2, \
+                self.center_y - self._slider._value_label.texture_size[1] / 2 \
                 ) \
                 if self._slider and self._slider._value_label else (0, 0)
             size:

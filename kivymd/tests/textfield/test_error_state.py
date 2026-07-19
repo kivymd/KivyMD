@@ -1,16 +1,12 @@
-# Test task:
-#
-# The text field is in an error state due to the fact that the length
-# of the text exceeds the set value in the `max_text_length` parameter.
-#
-# - set the focus on the text field;
-# - delete text characters up to the set value in the `max_text_length`
-#   parameter;
-# - check the color of the text;
-# - check the color of the hint text;
-# - check the color of the helper text;
-# - check the color of the right icon;
-# - check the color of the text max length;
+"""
+Test that MDTextField applies the correct colors in the error state.
+
+The test creates an MDTextField with a maximum text length limit,
+focuses the field, and enters text that exceeds the configured limit.
+It verifies that error colors are applied to the helper text, trailing
+icon, maximum length indicator, and hint text, while the leading icon
+keeps the default surface variant color.
+"""
 
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -75,4 +71,5 @@ class TestErrorState(MDApp):
         Clock.schedule_once(self.set_max_text_length, 2)
 
 
-TestErrorState().run()
+if __name__ == "__main__":
+    TestErrorState().run()

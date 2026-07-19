@@ -1,3 +1,11 @@
+"""
+Test that MDBadge uses the correct default theme colors.
+
+The test creates an MDBadge attached to an MDIcon and verifies that
+the badge text color and background color match the current theme error
+colors.
+"""
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 
@@ -30,4 +38,5 @@ class TestMDIconBadgeColors(MDApp):
         Clock.schedule_once(self.check_badge_colors, 2)
 
 
-TestMDIconBadgeColors().run()
+if __name__ == "__main__":
+    TestMDIconBadgeColors().run()

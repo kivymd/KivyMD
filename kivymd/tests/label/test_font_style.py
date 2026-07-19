@@ -1,3 +1,12 @@
+"""
+Test that MDLabel supports custom font styles registered at runtime.
+
+The test registers a custom font, adds a new font style to the theme
+font styles collection, creates an MDLabel using the custom style, and
+verifies that the configured font size for the selected role matches
+the expected value.
+"""
+
 import os
 
 from kivy.clock import Clock
@@ -63,4 +72,5 @@ class TestFontStyle(MDApp):
         Clock.schedule_once(on_start, 2)
 
 
-TestFontStyle().run()
+if __name__ == "__main__":
+    TestFontStyle().run()

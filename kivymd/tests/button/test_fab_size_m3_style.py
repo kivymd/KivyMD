@@ -1,3 +1,14 @@
+"""
+Test that MDFabButton correctly applies Material 3 size specifications
+for different button styles.
+
+The test creates three MDFabButton instances with "standard", "small",
+and "large" styles, adds them to the layout, and verifies that each
+button has the expected size according to its style.
+
+The application is stopped automatically after successful verification.
+"""
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 
@@ -40,4 +51,5 @@ class TestFabSizeM3Style(MDApp):
         Clock.schedule_once(self.check_size_button, 1.2)
 
 
-TestFabSizeM3Style().run()
+if __name__ == "__main__":
+    TestFabSizeM3Style().run()

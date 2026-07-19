@@ -1,3 +1,12 @@
+"""
+Test that MDBadge restores its theme colors after the parent MDIcon
+is enabled again.
+
+The test creates an MDIcon with an attached MDBadge, enables the icon
+after the initial disabled state, and verifies that the badge text color
+and background color remain equal to the current theme error colors.
+"""
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 
@@ -35,4 +44,5 @@ class TestMDIconBadgeColorsAfterDisabled(MDApp):
         Clock.schedule_once(self.check_badge_colors, 2)
 
 
-TestMDIconBadgeColorsAfterDisabled().run()
+if __name__ == "__main__":
+    TestMDIconBadgeColorsAfterDisabled().run()

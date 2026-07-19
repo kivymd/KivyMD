@@ -72,4 +72,5 @@ class TestHelperTextModeOnFocus(MDApp):
         Clock.schedule_once(self.check_helper_text_focus, 2)
 
 
-TestHelperTextModeOnFocus().run()
+if __name__ == "__main__":
+    TestHelperTextModeOnFocus().run()

@@ -1,3 +1,12 @@
+"""
+Test that MDLabel supports copying text to the clipboard when the
+allow_copy property is enabled.
+
+The test creates an MDLabel with text copying enabled, simulates a
+double-tap event on the label, and verifies that the copied clipboard
+content matches the label text.
+"""
+
 from kivy.clock import Clock
 from kivy.core.clipboard import Clipboard
 from kivy.input.providers.mouse import MouseMotionEvent
@@ -33,4 +42,5 @@ class TestAllowCopy(MDApp):
         Clock.schedule_once(on_start, 1)
 
 
-TestAllowCopy().run()
+if __name__ == "__main__":
+    TestAllowCopy().run()

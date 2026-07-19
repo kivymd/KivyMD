@@ -1,3 +1,13 @@
+"""
+Test that MDTextField updates disabled colors correctly after switching
+the application theme.
+
+The test creates a disabled MDTextField with all supported subcomponents,
+changes the theme style to Dark, and verifies that the disabled colors
+of hint text, helper text, leading and trailing icons, and maximum
+length text are updated to match the current theme.
+"""
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 
@@ -58,4 +68,5 @@ class TestDisabledTextColorSwitchTheme(MDApp):
         Clock.schedule_once(self.change_theme, 2)
 
 
-TestDisabledTextColorSwitchTheme().run()
+if __name__ == "__main__":
+    TestDisabledTextColorSwitchTheme().run()

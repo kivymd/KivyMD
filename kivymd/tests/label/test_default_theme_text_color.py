@@ -1,3 +1,12 @@
+"""
+Test that MDLabel applies the correct text color when using theme
+color values.
+
+The test creates MDLabel instances with different default theme text
+colors, including secondary, hint, and error colors, and verifies that
+the label color property matches the assigned text color value.
+"""
+
 import asynckivy
 
 from kivymd.app import MDApp
@@ -32,4 +41,5 @@ class TestDefaultThemeTextColor(MDApp):
         asynckivy.start(self.generate_labels())
 
 
-TestDefaultThemeTextColor().run()
+if __name__ == "__main__":
+    TestDefaultThemeTextColor().run()

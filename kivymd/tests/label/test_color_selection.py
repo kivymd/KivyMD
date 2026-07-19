@@ -1,3 +1,13 @@
+"""
+Test that MDLabel applies the custom selection color when text
+selection is enabled.
+
+The test creates an MDLabel with text selection enabled and a custom
+selection color, simulates a double-tap event to select the text, and
+verifies that the label background color matches the configured
+selection color.
+"""
+
 from kivy.clock import Clock
 from kivy.input.providers.mouse import MouseMotionEvent
 from kivy.lang.builder import Builder
@@ -31,4 +41,5 @@ class TestColorSelection(MDApp):
         Clock.schedule_once(self.check_selection)
 
 
-TestColorSelection().run()
+if __name__ == "__main__":
+    TestColorSelection().run()

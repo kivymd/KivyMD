@@ -1,3 +1,11 @@
+"""
+Test that MDButton dispatches the on_release event correctly.
+
+The test programmatically dispatches the button release event and
+verifies that the corresponding callback is executed and updates
+the expected application state.
+"""
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.properties import BooleanProperty
@@ -35,4 +43,5 @@ class TestOnRelease(MDApp):
         Clock.schedule_once(self.press_button, 1)
 
 
-TestOnRelease().run()
+if __name__ == "__main__":
+    TestOnRelease().run()

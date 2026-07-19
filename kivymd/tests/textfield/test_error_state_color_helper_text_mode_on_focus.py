@@ -1,8 +1,11 @@
-# Test task:
-#
-# - helper text is not displayed (text fields without focus);
-# - helper text is displayed (red color, text fields with focus);
-# - helper text is not displayed (text fields without focus);
+"""
+Test that MDTextField helper text visibility and color are updated
+correctly when using the "on_focus" helper text mode.
+
+The test verifies that the helper text is hidden when the text field
+does not have focus, becomes visible with the error color when the
+field receives focus, and is hidden again after the focus is removed.
+"""
 
 from kivy.clock import Clock
 from kivy.lang import Builder
@@ -70,4 +73,5 @@ class TestErrorStateColorHelperTextModeOnFocus(MDApp):
         Clock.schedule_once(self.check_helper_text_focus, 2)
 
 
-TestErrorStateColorHelperTextModeOnFocus().run()
+if __name__ == "__main__":
+    TestErrorStateColorHelperTextModeOnFocus().run()

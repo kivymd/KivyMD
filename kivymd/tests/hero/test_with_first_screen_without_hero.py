@@ -1,3 +1,14 @@
+"""
+Test that the hero transition works correctly when the initial screen
+does not contain a hero widget.
+
+The test starts from a screen without a hero, navigates to a screen
+with an MDHeroFrom widget, performs a hero transition to another screen
+with an MDHeroTo widget, and then returns to the screen without a hero.
+It verifies that hero transitions do not raise errors when the first
+screen in the navigation flow does not define any hero widgets.
+"""
+
 # Test for https://github.com/kivymd/KivyMD/issues/1412 issue.
 
 from kivy.clock import Clock
@@ -92,4 +103,5 @@ class TestWithFirstScreenWithoutHero(MDApp):
         Clock.schedule_once(self.set_screen_with_hero_from, 1)
 
 
-TestWithFirstScreenWithoutHero().run()
+if __name__ == "__main__":
+    TestWithFirstScreenWithoutHero().run()

@@ -1,8 +1,13 @@
+"""
+Test that MDLabel applies the correct font size when configured
+programmatically in Python code.
+
+The test creates an MDLabel with a custom font style and role assigned
+during widget initialization and verifies that the resulting font size
+matches the expected value.
+"""
+
 # Test for https://github.com/kivymd/KivyMD/issues/1435:
-#
-# Test task:
-#
-# - check the size of the custom font that was installed in the Python code;
 
 from kivy.clock import Clock
 
@@ -30,4 +35,5 @@ class TestFontSizeInPythonCode(MDApp):
         Clock.schedule_once(self.check_font_size, 1.2)
 
 
-TestFontSizeInPythonCode().run()
+if __name__ == "__main__":
+    TestFontSizeInPythonCode().run()

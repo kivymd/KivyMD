@@ -1,3 +1,11 @@
+"""
+Test that MDLabel applies the correct disabled text color.
+
+The test creates a disabled MDLabel and verifies that the disabled
+color is generated from the current theme surface color and the
+configured disabled text opacity value.
+"""
+
 from kivy.clock import Clock
 from kivy.lang.builder import Builder
 
@@ -30,4 +38,5 @@ class TestDisabledColor(MDApp):
         Clock.schedule_once(self.check_disabled_color, 1)
 
 
-TestDisabledColor().run()
+if __name__ == "__main__":
+    TestDisabledColor().run()

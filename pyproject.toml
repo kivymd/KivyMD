@@ -32,3 +32,6 @@ use_parentheses = true
 force_grid_wrap = 0
 ensure_newline_before_comments = true
 known_third_party = ["setuptools", "kivy", "requests", "PIL", "android", "jnius", "watchdog", "sphinx", "docutils", "autoapi", "unidecode"]
+
+[tool.pytest.ini_options]
+python_files = []

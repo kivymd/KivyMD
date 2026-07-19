@@ -1,6 +1,13 @@
+"""
+Test that MD layouts correctly apply the background color.
+
+The test creates different MD layout widgets with a custom `md_bg_color`
+value. It verifies that each layout adds the background color instruction
+to its canvas and that the rendered color matches the specified value.
+"""
+
 import asynckivy
 from kivy.clock import Clock
-from kivy.graphics import Color
 
 from kivymd.app import MDApp
 from kivymd.uix.anchorlayout import MDAnchorLayout
@@ -51,4 +58,5 @@ class TestMdBgColorLayouts(MDApp):
         ].rgba == [1.0, 0.0, 0.0, 1.0]
 
 
-TestMdBgColorLayouts().run()
+if __name__ == "__main__":
+    TestMdBgColorLayouts().run()

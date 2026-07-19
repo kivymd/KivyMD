@@ -1,3 +1,13 @@
+"""
+Test that MDTextField applies the correct disabled colors to all
+internal components.
+
+The test creates a disabled MDTextField with hint text, helper text,
+leading and trailing icons, and maximum length text. It verifies that
+all disabled elements use the expected disabled text color with the
+correct opacity.
+"""
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 
@@ -53,4 +63,5 @@ class TestDisabledTextColor(MDApp):
         Clock.schedule_once(self.check_colors, 2)
 
 
-TestDisabledTextColor().run()
+if __name__ == "__main__":
+    TestDisabledTextColor().run()

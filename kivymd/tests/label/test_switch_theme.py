@@ -1,3 +1,12 @@
+"""
+Test that MDLabel updates its text color correctly after switching
+the application theme.
+
+The test navigates to another screen where the theme style is changed
+to Dark and verifies that the MDLabel color is updated to match the
+current theme surface color.
+"""
+
 # Test for https://github.com/kivymd/KivyMD/issues/1403 issue.
 
 from kivy.clock import Clock
@@ -45,4 +54,5 @@ class TestSwitchTheme(MDApp):
         return Builder.load_string(UI)
 
 
-TestSwitchTheme().run()
+if __name__ == "__main__":
+    TestSwitchTheme().run()

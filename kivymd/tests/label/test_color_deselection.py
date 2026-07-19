@@ -1,3 +1,13 @@
+"""
+Test that MDLabel restores its background color after text selection
+is canceled.
+
+The test creates an MDLabel with text selection enabled, simulates a
+double-tap event to activate selection, cancels the selection, and
+verifies that the label background color returns to the current theme
+background color.
+"""
+
 from kivy.clock import Clock
 from kivy.input.providers.mouse import MouseMotionEvent
 from kivy.lang.builder import Builder
@@ -33,4 +43,5 @@ class TestColorDeselection(MDApp):
         Clock.schedule_once(self.check_selection)
 
 
-TestColorDeselection().run()
+if __name__ == "__main__":
+    TestColorDeselection().run()

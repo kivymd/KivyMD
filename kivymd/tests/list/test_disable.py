@@ -1,6 +1,13 @@
+"""
+Test that MDListItem supports changing its disabled state.
+
+The test creates several MDListItem widgets with different content,
+disables all list items, then enables them again after a delay.
+It verifies that list items can correctly transition between disabled
+and enabled states without raising errors.
+"""
+
 from kivy.clock import Clock
-from kivy.core.clipboard import Clipboard
-from kivy.input.providers.mouse import MouseMotionEvent
 from kivy.lang.builder import Builder
 
 from kivymd.app import MDApp
@@ -74,4 +81,5 @@ class TestDisableList(MDApp):
         Clock.schedule_once(_disable, 1)
 
 
-TestDisableList().run()
+if __name__ == "__main__":
+    TestDisableList().run()

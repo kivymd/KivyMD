@@ -1,3 +1,13 @@
+"""
+Test that MDIconButton correctly applies the disabled background color.
+
+The test creates a disabled MDIconButton with a custom
+``md_bg_color_disabled`` value, adds it to the screen, and verifies that
+the background color of the button's canvas matches the specified color.
+
+The application is stopped automatically after the verification is complete.
+"""
+
 from kivy.clock import Clock
 
 from kivymd.app import MDApp
@@ -32,4 +42,5 @@ class TestMdIconButtonMdBgColorDisabled(MDApp):
         self.generate_buttons()
 
 
-TestMdIconButtonMdBgColorDisabled().run()
+if __name__ == "__main__":
+    TestMdIconButtonMdBgColorDisabled().run()

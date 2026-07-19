@@ -1,3 +1,11 @@
+"""
+Test that MDButton respects custom dimensions when using size hints.
+
+The test creates an MDButton with a custom height and a horizontal
+size hint, then verifies that the resulting button size matches the
+expected window dimensions.
+"""
+
 from kivy.clock import Clock
 
 from kivymd.app import MDApp
@@ -25,4 +33,5 @@ class TestSizeHint(MDApp):
         self.generate_buttons()
 
 
-TestSizeHint().run()
+if __name__ == "__main__":
+    TestSizeHint().run()

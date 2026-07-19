@@ -1,3 +1,11 @@
+"""
+Test that MDButton applies a custom line color when using the custom
+line color theme option.
+
+The test creates an MDButton with a custom line color and verifies
+that the line color property is set to the expected RGBA value.
+"""
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 
@@ -29,4 +37,5 @@ class TestOutlineButtonCustomColors(MDApp):
         Clock.schedule_once(self.check_button_colors, 1.2)
 
 
-TestOutlineButtonCustomColors().run()
+if __name__ == "__main__":
+    TestOutlineButtonCustomColors().run()

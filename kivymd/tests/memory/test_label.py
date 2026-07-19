@@ -1,3 +1,12 @@
+"""
+Test that MDLabel does not leak theme observers when widgets are
+created and removed repeatedly.
+
+The test continuously replaces the chip widget on a screen, tracks
+the number of theme style observers, and verifies that removing old
+MDLabel instances does not increase the number of registered callbacks.
+"""
+
 from kivy.clock import Clock
 
 from kivymd.app import MDApp
@@ -41,4 +50,5 @@ class TestLabelMemoryLeak(MDApp):
             self.stop()
 
 
-TestLabelMemoryLeak().run()
+if __name__ == "__main__":
+    TestLabelMemoryLeak().run()

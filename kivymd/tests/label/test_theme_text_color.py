@@ -1,3 +1,11 @@
+"""
+Test that MDLabel applies a custom text color when using the custom
+theme text color option.
+
+The test creates an MDLabel with a custom text color and verifies that
+the label text color property matches the specified RGBA value.
+"""
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 
@@ -27,4 +35,5 @@ class TestThemeTextColor(MDApp):
         Clock.schedule_once(on_start, 2)
 
 
-TestThemeTextColor().run()
+if __name__ == "__main__":
+    TestThemeTextColor().run()

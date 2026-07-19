@@ -1,3 +1,12 @@
+"""
+Test that MDIconButton correctly applies a custom icon font size.
+
+The test creates an MDIconButton with a custom font size and verifies that
+the button dimensions are large enough to properly display the icon.
+
+The application is stopped automatically after the verification is complete.
+"""
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 
@@ -30,4 +39,5 @@ class TestMDIconButtonIconSize(MDApp):
         Clock.schedule_once(self.check_icon_size, 1.2)
 
 
-TestMDIconButtonIconSize().run()
+if __name__ == "__main__":
+    TestMDIconButtonIconSize().run()

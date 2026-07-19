@@ -1,3 +1,12 @@
+"""
+Test that MDButton restores its custom line color after being disabled
+and enabled again.
+
+The test creates an MDButton with a custom line color, disables the
+button, then enables it again and verifies that the line color remains
+unchanged after the state transition.
+"""
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 
@@ -42,4 +51,5 @@ class TestOutlineButtonCustomColorsAfterDisabled(MDApp):
         Clock.schedule_once(self.check_button_colors, 1.2)
 
 
-TestOutlineButtonCustomColorsAfterDisabled().run()
+if __name__ == "__main__":
+    TestOutlineButtonCustomColorsAfterDisabled().run()

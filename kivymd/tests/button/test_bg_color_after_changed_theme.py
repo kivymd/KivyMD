@@ -1,3 +1,14 @@
+"""
+Test that the MDButton background color and text color are updated correctly
+after changing the application theme palette.
+
+The test starts the application with the default theme, changes the primary
+palette to "Red", waits for the theme update animation and verifies that the
+button colors match the expected values.
+
+The application is stopped automatically after successful verification.
+"""
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 
@@ -43,4 +54,5 @@ class TestBgColorAfterChangedTheme(MDApp):
         Clock.schedule_once(self.change_palette, 1.2)
 
 
-TestBgColorAfterChangedTheme().run()
+if __name__ == "__main__":
+    TestBgColorAfterChangedTheme().run()

@@ -1,3 +1,12 @@
+"""
+Test that MDTextField displays helper text only when focused.
+
+The test creates an MDTextField with helper text configured in
+`on_focus` mode. It checks that the helper text texture is created
+when the field is not focused, changes the focus state, and verifies
+that helper text remains correctly updated after the focus change.
+"""
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 
@@ -48,4 +57,5 @@ class TestHelperTextModePersistent(MDApp):
         Clock.schedule_once(self.check_helper_text_without_focus, 2)
 
 
-TestHelperTextModePersistent().run()
+if __name__ == "__main__":
+    TestHelperTextModePersistent().run()

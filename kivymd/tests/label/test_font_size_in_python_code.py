@@ -10,6 +10,7 @@ matches the expected value.
 # Test for https://github.com/kivymd/KivyMD/issues/1435:
 
 from kivy.clock import Clock
+from kivy.metrics import sp
 
 from kivymd.app import MDApp
 from kivymd.uix.boxlayout import MDBoxLayout
@@ -18,7 +19,7 @@ from kivymd.uix.label import MDLabel
 
 class TestFontSizeInPythonCode(MDApp):
     def check_font_size(self, *args):
-        assert self.root.get_ids().label.font_size == 57.0
+        assert self.root.get_ids().label.font_size == sp(57)
         self.stop()
 
     def build(self):

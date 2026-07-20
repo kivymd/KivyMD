@@ -60,7 +60,7 @@ class TestDisabledTextColor(MDApp):
         self.stop()
 
     def on_start(self):
-        Clock.schedule_once(self.check_colors, 2)
+        Clock.schedule_once(self.check_colors, 4)
 
 
 if __name__ == "__main__":

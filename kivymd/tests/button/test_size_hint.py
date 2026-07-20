@@ -18,10 +18,7 @@ class TestSizeHint(MDApp):
         return MDScreen()
 
     def generate_buttons(self):
-        button = MDButton(
-            theme_height="Custom",
-            size=self.root.size
-        )
+        button = MDButton(theme_height="Custom", size=self.root.size)
         self.root.clear_widgets()
         self.root.add_widget(button)
         Clock.schedule_once(lambda x: self.check_button_size(button), 1)

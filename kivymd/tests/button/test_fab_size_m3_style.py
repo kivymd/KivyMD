@@ -11,6 +11,7 @@ The application is stopped automatically after successful verification.
 
 from kivy.clock import Clock
 from kivy.lang import Builder
+from kivy.metrics import dp
 
 from kivymd.app import MDApp
 from kivymd.uix.button import MDFabButton
@@ -32,9 +33,9 @@ class TestFabSizeM3Style(MDApp):
 
     def check_size_button(self, *args):
         data = {
-            "large": [96.0, 96.0],
-            "small": [40.0, 40.0],
-            "standard": [56.0, 56.0],
+            "large": [dp(96.0), dp(96.0)],
+            "small": [dp(40.0), dp(40.0)],
+            "standard": [dp(56.0), dp(56.0)],
         }
         for button in self.root.ids.box.children:
             assert button.size == data[button.style]

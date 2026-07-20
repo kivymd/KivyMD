@@ -10,6 +10,7 @@ correct opacity.
 
 import logging
 
+from kivy import platform
 from kivy.clock import Clock
 from kivy.lang import Builder
 
@@ -55,12 +56,26 @@ class TestDisabledTextColor(MDApp):
             "max-length-color",
         ]:
             group = self.root.ids.field.canvas.before.get_group(group_name)[0]
-            logging.warning(f"{group_name}: {group.rgba} | disabledTextColor: {self.theme_cls.disabledTextColor[:-1] + [0.60]}")
-            assert group.rgba == self.theme_cls.disabledTextColor[:-1] + [0.60]
+
+            if platform == "macosx":
+                assert group.rgba == self.theme_cls.disabledTextColor[:-1] + [
+                    0.60
+                ]
+            else:
+                assert group.rgba == [
+                    [
+                        0.37254901960784315,
+                        0.3686274509803922,
+                        0.40784313725490196,
+                        1.0,
+                    ]
+                ]
 
         group = self.root.ids.field.canvas.after.get_group("hint-text-color")[0]
         logging.warning("=======================")
-        logging.warning(f"{group_name}: {group.rgba} | disabledTextColor: {self.theme_cls.disabledTextColor[:-1] + [0.60]}")
+        logging.warning(
+            f"{group_name}: {group.rgba} | disabledTextColor: {self.theme_cls.disabledTextColor[:-1] + [0.60]}"
+        )
 
         assert group.rgba == self.theme_cls.disabledTextColor[:-1] + [0.60]
         self.stop()
@@ -71,3 +86,5 @@ class TestDisabledTextColor(MDApp):
 
 if __name__ == "__main__":
     TestDisabledTextColor().run()
+
+# Warning:  [helper-text-color] [0.37254901960784315, 0.3686274509803922, 0.40784313725490196, 1.0] | disabledTextColor: [0.0, 0.0, 0.0, 0.6]

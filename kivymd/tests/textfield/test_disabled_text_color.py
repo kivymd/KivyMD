@@ -8,6 +8,8 @@ all disabled elements use the expected disabled text color with the
 correct opacity.
 """
 
+import sys
+
 from kivy.clock import Clock
 from kivy.lang import Builder
 
@@ -53,14 +55,18 @@ class TestDisabledTextColor(MDApp):
             "max-length-color",
         ]:
             group = self.root.ids.field.canvas.before.get_group(group_name)[0]
+            print(f"{group_name}: {group.rgba} | disabledTextColor: {self.theme_cls.disabledTextColor[:-1] + [0.60]}")
             assert group.rgba == self.theme_cls.disabledTextColor[:-1] + [0.60]
 
         group = self.root.ids.field.canvas.after.get_group("hint-text-color")[0]
+        print("=======================")
+        print(f"{group_name}: {group.rgba} | disabledTextColor: {self.theme_cls.disabledTextColor[:-1] + [0.60]}")
+
         assert group.rgba == self.theme_cls.disabledTextColor[:-1] + [0.60]
         self.stop()
 
     def on_start(self):
-        Clock.schedule_once(self.check_colors, 4)
+        Clock.schedule_once(self.check_colors, 2)
 
 
 if __name__ == "__main__":

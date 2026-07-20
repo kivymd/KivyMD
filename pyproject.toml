@@ -35,3 +35,4 @@ known_third_party = ["setuptools", "kivy", "requests", "PIL", "android", "jnius"
 
 [tool.pytest.ini_options]
 python_files = []
+addopts = "-s"

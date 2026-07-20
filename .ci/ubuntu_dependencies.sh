@@ -10,7 +10,8 @@ sudo apt-get -y install \
   libgstreamer1.0-dev gstreamer1.0-alsa gstreamer1.0-plugins-base \
   libsmpeg-dev libswscale-dev libavformat-dev libavcodec-dev libjpeg-dev libtiff5-dev libx11-dev libmtdev-dev \
   build-essential libgl1-mesa-dev libgles2-mesa-dev \
-  xvfb pulseaudio xsel
+  xvfb pulseaudio xsel \
+  libcairo2-dev pkg-config
 
 # Pip dependencies
 curl https://bootstrap.pypa.io/get-pip.py -o get-pip.py

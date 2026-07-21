@@ -35,7 +35,7 @@ may be offered to you without asking too.
 [![Open Collective](https://img.shields.io/opencollective/all/kivymd?label=financial%20contributors&logo=open-collective)](https://opencollective.com/kivymd)
 
 [![Coverage status](https://coveralls.io/repos/github/kivymd/KivyMD/badge.svg)](https://coveralls.io/github/kivymd/KivyMD)
-[![Build workflow](https://github.com/kivymd/KivyMD/workflows/Build/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions?query=workflow%3ABuild)
+[![Build workflow](https://github.com/kivymd/KivyMD/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions/workflows/build.yml)
 [![Test workflow](https://github.com/kivymd/KivyMD/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions?query=workflow%3ATest)
 [![Documentation status](https://readthedocs.org/projects/kivymd/badge/?version=latest)](https://kivymd.readthedocs.io)
 [![Repository size](https://img.shields.io/github/repo-size/kivymd/kivymd.svg)](https://github.com/kivymd/KivyMD)

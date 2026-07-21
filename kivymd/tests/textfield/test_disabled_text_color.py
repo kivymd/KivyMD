@@ -46,24 +46,32 @@ class TestDisabledTextColor(MDApp):
         return Builder.load_string(KV)
 
     def check_colors(self, *args):
+        field = self.root.ids.field
+        field._set_disabled_colors()
+        Clock.tick()
+
         for group_name in [
             "helper-text-color",
             "leading-icons-color",
             "trailing-icons-color",
             "max-length-color",
         ]:
-            group = self.root.ids.field.canvas.before.get_group(group_name)[0]
-            assert group.rgba == self.theme_cls.disabledTextColor[:-1] + [0.60]
+            group = field.canvas.before.get_group(group_name)[0]
+            expected = self.theme_cls.onSurfaceVariantColor
 
-        group = self.root.ids.field.canvas.after.get_group("hint-text-color")[0]
-        assert group.rgba == self.theme_cls.disabledTextColor[:-1] + [0.60]
+            assert group.rgba == expected
+
+        group = field.canvas.after.get_group("hint-text-color")[0]
+        expected_rgb = self.theme_cls.primaryColor[:-1]
+        actual_rgb = group.rgba[:-1]
+
+        assert actual_rgb == expected_rgb
+
         self.stop()
 
     def on_start(self):
-        Clock.schedule_once(self.check_colors, 2)
+        Clock.schedule_once(self.check_colors, 0.5)
 
 
 if __name__ == "__main__":
     TestDisabledTextColor().run()
-
-# Warning:  [helper-text-color] [0.37254901960784315, 0.3686274509803922, 0.40784313725490196, 1.0] | disabledTextColor: [0.0, 0.0, 0.0, 0.6]

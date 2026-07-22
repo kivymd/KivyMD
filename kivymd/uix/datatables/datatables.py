@@ -361,18 +361,20 @@ class TableHeader(ThemableBehavior, ScrollView):
                             sorted_order=self.sorted_order,
                         )
                         if len(col_heading) == 4
-                        else CellHeader(
-                            text=col_heading[0],
-                            sort_action=col_heading[2],
-                            width=self.cols_minimum[i],
-                            table_data=self.table_data,
-                        )
-                        if len(col_heading) == 3
-                        else CellHeader(
-                            text=col_heading[0],
-                            sort_action=lambda x: None,
-                            width=self.cols_minimum[i],
-                            table_data=self.table_data,
+                        else (
+                            CellHeader(
+                                text=col_heading[0],
+                                sort_action=col_heading[2],
+                                width=self.cols_minimum[i],
+                                table_data=self.table_data,
+                            )
+                            if len(col_heading) == 3
+                            else CellHeader(
+                                text=col_heading[0],
+                                sort_action=lambda x: None,
+                                width=self.cols_minimum[i],
+                                table_data=self.table_data,
+                            )
                         )
                     )
                 )

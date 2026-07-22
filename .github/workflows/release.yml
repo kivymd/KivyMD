@@ -32,8 +32,7 @@ jobs:
     env:
       PYTHONUNBUFFERED: 1
       KIVY_NO_ARGS: 1
-      SDL_VIDEODRIVER: dummy
-      KIVY_GL_BACKEND: mock
+      DISPLAY: :99
 
     steps:
 
@@ -55,7 +54,14 @@ jobs:
         sudo apt-get install -y \
           libcairo2-dev \
           pkg-config \
-          libmtdev1
+          libmtdev1 \
+          xvfb
+
+    - name: Start Xvfb
+      run: |
+        Xvfb :99 -screen 0 1280x1024x24 &
+        sleep 2
+
 
     - name: Set up environment
       run: |

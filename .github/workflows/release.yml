@@ -43,8 +43,12 @@ jobs:
 
     - name: Set up environment
       run: |
+        sudo apt-get update
+        sudo apt-get install -y libcairo2-dev pkg-config
+    
         git config user.name "KivyMD Bot"
         git config user.email 69076719+KivyMD-Bot@users.noreply.github.com
+    
         pip install -e .
         pip install pre-commit
 

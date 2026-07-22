@@ -1,4 +1,5 @@
 name: Release
+
 on:
   push:
     branches-ignore:
@@ -6,10 +7,12 @@ on:
       - gh-pages
     tags:
       - '**'
+
   pull_request:
     branches-ignore:
       - data
       - gh-pages
+
   workflow_dispatch:
     inputs:
       version:
@@ -19,21 +22,26 @@ on:
         description: Next development version in format n.n.n.devn (1.111.11.dev0). USE ONLY FOR MAJOR DEVELOPMENT VERSIONS (2.0.0.dev0). DON'T WRITE ANYTHING HERE
         required: false
 
+
 jobs:
 
-  # Release job. Runs make_release.py tool. Pushes changes only on dispatch_event
   release:
     name: Release
     runs-on: ubuntu-latest
+
     env:
       PYTHONUNBUFFERED: 1
+      KIVY_NO_ARGS: 1
+      SDL_VIDEODRIVER: dummy
+      KIVY_GL_BACKEND: mock
 
     steps:
+
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v4
       with:
         fetch-depth: 0
-        persist-credentials: ${{ github.event_name != 'workflow_dispatch' }}  # Allow using PAT when making release
+        persist-credentials: ${{ github.event_name != 'workflow_dispatch' }}
 
     - name: Set up Python 3.13
       uses: actions/setup-python@v5
@@ -41,34 +49,45 @@ jobs:
         python-version: '3.13'
         architecture: x64
 
-    - name: Set up environment
+    - name: Install system dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y libcairo2-dev pkg-config
-    
+        sudo apt-get install -y \
+          libcairo2-dev \
+          pkg-config \
+          libmtdev1
+
+    - name: Set up environment
+      run: |
         git config user.name "KivyMD Bot"
         git config user.email 69076719+KivyMD-Bot@users.noreply.github.com
-    
+
+        python -m pip install --upgrade pip
         pip install -e .
         pip install pre-commit
+
 
     - name: Release
       if: github.event_name == 'workflow_dispatch'
       run: |
-        # Use personal token to push (when using GITHUB_TOKEN, it will not run workflows)
         git remote set-url origin https://KivyMD-Bot:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
-        python kivymd/tools/release/make_release.py release "${{ github.event.inputs.version }}" "${{ github.event.inputs.next_version }}" --yes --push
+        python kivymd/tools/release/make_release.py \
+          release \
+          "${{ github.event.inputs.version }}" \
+          "${{ github.event.inputs.next_version }}" \
+          --yes \
+          --push
+
 
     - name: Release preparation
-      if: github.event_name == 'push' && github.ref == 'refs/heads/master' && github.event_name != 'workflow_dispatch'
+      if: github.event_name == 'push' && github.ref == 'refs/heads/master'
       run: |
-        # Use personal token to push
         git remote set-url origin https://KivyMD-Bot:${{ secrets.GH_PAT }}@github.com/${{ github.repository }}
         python kivymd/tools/release/make_release.py prepare --yes --push
         git format-patch origin/master... --stdout
 
     - name: Release test
-      if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/master' && github.event_name != 'workflow_dispatch')
+      if: github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref == 'refs/heads/master')
       run: |
         python kivymd/tools/release/make_release.py test --yes
         git format-patch origin/master... --stdout

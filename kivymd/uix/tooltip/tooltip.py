@@ -471,7 +471,7 @@ class MDTooltip(TouchBehavior):
     def display_tooltip(self, *args) -> None:
         """Adds a tooltip widget to the screen and animates its display."""
 
-        if not self._tooltip or self._tooltip.parent:
+        if not self._tooltip or self._tooltip.parent or not self._tooltip.text:
             return
 
         Window.add_widget(self._tooltip)

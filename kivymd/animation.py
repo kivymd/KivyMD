@@ -15,7 +15,7 @@ Adds new transitions to the :class:`~kivy.animation.AnimationTransition` class:
 
     .. tab:: Imperative python style with KV
 
-        .. code-block:: kv
+        .. code-block:: python
 
             from kivy.lang import Builder
             from kivy.animation import Animation
@@ -100,7 +100,7 @@ Adds new transitions to the :class:`~kivy.animation.AnimationTransition` class:
 
     .. tab:: Declarative python style
 
-        .. code-block:: kv
+        .. code-block:: python
 
             from kivy.core.window import Window
             from kivy.graphics import Color, Rectangle

@@ -116,8 +116,7 @@ __all__ = ("ScaleBehavior",)
 from kivy.lang import Builder
 from kivy.properties import ListProperty, NumericProperty
 
-Builder.load_string(
-    """
+Builder.load_string("""
 <ScaleBehavior>
     canvas.before:
         PushMatrix
@@ -131,8 +130,7 @@ Builder.load_string(
                 self.scale_value_center
     canvas.after:
         PopMatrix
-"""
-)
+""")
 
 
 class ScaleBehavior:

@@ -280,8 +280,7 @@ class SelectedItem(MDBoxLayout):
         super().__init__(*args, **kwargs)
         self.register_event_type("on_active")
 
-    def on_active(self, *args):
-        ...
+    def on_active(self, *args): ...
 
 
 class Example(MDApp, CommonApp):
@@ -296,8 +295,7 @@ class Example(MDApp, CommonApp):
     def set_fps(self, dt):
         self.root.ids.fps.text = f"FPS: {Clock.get_rfps()}"
 
-    def disabled_widgets(self):
-        ...
+    def disabled_widgets(self): ...
 
 
 Example().run()

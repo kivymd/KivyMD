@@ -117,8 +117,7 @@ class Example(MDApp, CommonApp):
 
         return Builder.load_string(KV)
 
-    def disabled_widgets(self):
-        ...
+    def disabled_widgets(self): ...
 
 
 Example().run()

@@ -230,8 +230,7 @@ from kivy.animation import Animation
 from kivy.lang import Builder
 from kivy.properties import NumericProperty
 
-Builder.load_string(
-    """
+Builder.load_string("""
 <MagicBehavior>
     translate_x: 0
     translate_y: 0
@@ -253,8 +252,7 @@ Builder.load_string(
             y: self.scale_y or 1
     canvas.after:
         PopMatrix
-"""
-)
+""")
 
 
 class MagicBehavior:

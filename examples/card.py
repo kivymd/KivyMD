@@ -5,8 +5,7 @@ from examples.common_app import KV, CommonApp
 from kivymd.app import MDApp
 from kivymd.uix.card import MDCard
 
-Builder.load_string(
-    """
+Builder.load_string("""
 <MyCard>
     padding: "4dp"
     size_hint_y: None
@@ -26,8 +25,7 @@ Builder.load_string(
             color: "grey"
             pos: "12dp", "12dp"
             bold: True
-"""
-)
+""")
 
 
 class MyCustomCard(MDCard):

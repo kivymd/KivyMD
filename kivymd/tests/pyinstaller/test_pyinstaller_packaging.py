@@ -17,8 +17,7 @@ def test_datas(tmp_path) -> None:
     workpath = tmp_path / "build"
     distpath = tmp_path / "dist"
     app = tmp_path / (app_name + ".py")
-    app.write_text(
-        """
+    app.write_text("""
 import os
 
 from kivy.core.text import LabelBase
@@ -38,8 +37,7 @@ print(images)
 assert "logo" in images
 assert "folder.png" in images
 assert "transparent.png" in images
-"""
-    )
+""")
     pyi_main.run(
         [
             "--workpath",
@@ -61,8 +59,7 @@ def test_widgets(tmp_path) -> None:
     workpath = tmp_path / "build"
     distpath = tmp_path / "dist"
     app = tmp_path / (app_name + ".py")
-    app.write_text(
-        """
+    app.write_text("""
 import os
 
 import kivymd  # NOQA
@@ -72,8 +69,7 @@ __import__("kivymd.uix.list")
 __import__("kivymd.uix.navigationdrawer")
 
 print(os.listdir(os.path.dirname(kivymd.uix.__path__[0])))
-"""
-    )
+""")
     pyi_main.run(
         [
             "--workpath",

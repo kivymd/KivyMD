@@ -89,7 +89,6 @@ Usage
     :align: center
 """
 
-
 import os
 
 from kivy.animation import Animation

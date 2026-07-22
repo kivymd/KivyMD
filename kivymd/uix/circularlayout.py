@@ -176,7 +176,7 @@ class MDCircularLayout(DeclarativeBehavior, FloatLayout):
         """Returns the angle of given pos."""
 
         center = [self.pos[0] + self.width / 2, self.pos[1] + self.height / 2]
-        (dx, dy) = (center[0] - pos[0], center[1] - pos[1])
+        dx, dy = (center[0] - pos[0], center[1] - pos[1])
         angle = degrees(atan2(float(dy), float(dx)))
         angle += 180
         return angle

@@ -71,8 +71,7 @@ class Example(MDApp, CommonApp):
         self.theme_cls.theme_style = "Dark"
         return Builder.load_string(KV)
 
-    def disabled_widgets(self):
-        ...
+    def disabled_widgets(self): ...
 
 
 Example().run()

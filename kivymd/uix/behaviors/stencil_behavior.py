@@ -89,8 +89,7 @@ __all__ = ("StencilBehavior",)
 from kivy.lang import Builder
 from kivy.properties import VariableListProperty
 
-Builder.load_string(
-    """
+Builder.load_string("""
 <StencilBehavior>
     canvas.before:
         StencilPush
@@ -110,8 +109,7 @@ Builder.load_string(
             #  `GraphicException: Invalid radius value, must be list of tuples/numerics` error
             radius: root.radius if root.radius else [0, 0, 0, 0]
         StencilPop
-"""
-)
+""")
 
 
 class StencilBehavior:

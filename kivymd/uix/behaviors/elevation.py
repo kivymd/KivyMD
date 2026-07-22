@@ -386,8 +386,7 @@ from kivy.properties import (
 )
 from kivy.uix.widget import Widget
 
-Builder.load_string(
-    """
+Builder.load_string("""
 <CommonElevationBehavior>
     canvas.before:
         PushMatrix
@@ -417,8 +416,7 @@ Builder.load_string(
                 root.shadow_radius
     canvas.after:
         PopMatrix
-"""
-)
+""")
 
 
 class CommonElevationBehavior(Widget):

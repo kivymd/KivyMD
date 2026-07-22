@@ -102,8 +102,7 @@ __all__ = ("RotateBehavior",)
 from kivy.lang import Builder
 from kivy.properties import ListProperty, NumericProperty
 
-Builder.load_string(
-    """
+Builder.load_string("""
 <RotateBehavior>
     canvas.before:
         PushMatrix
@@ -113,8 +112,7 @@ Builder.load_string(
             origin: self.center
     canvas.after:
         PopMatrix
-"""
-)
+""")
 
 
 class RotateBehavior:

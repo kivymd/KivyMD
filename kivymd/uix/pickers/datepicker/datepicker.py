@@ -2127,11 +2127,9 @@ class MDModalInputDatePicker(CommonElevationBehavior, MDBaseDatePicker):
         super().__init__(*args, **kwargs)
         Clock.schedule_once(self._check_range, 0.1)
 
-    def generate_list_widgets_days(self) -> None:
-        ...
+    def generate_list_widgets_days(self) -> None: ...
 
-    def update_calendar(self, *args) -> None:
-        ...
+    def update_calendar(self, *args) -> None: ...
 
     def set_input_date(self, input_date: str) -> None:
         split_date = [d for d in input_date.split("/") if d]

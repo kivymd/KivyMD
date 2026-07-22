@@ -36,6 +36,7 @@ may be offered to you without asking too.
 
 [![Coverage status](https://coveralls.io/repos/github/kivymd/KivyMD/badge.svg)](https://coveralls.io/github/kivymd/KivyMD)
 [![Build workflow](https://github.com/kivymd/KivyMD/actions/workflows/build.yml/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions/workflows/build.yml)
+[![Release workflow](https://github.com/kivymd/KivyMD/actions/workflows/release.yml/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions/workflows/release.yml)
 [![Test workflow](https://github.com/kivymd/KivyMD/actions/workflows/test.yml/badge.svg?branch=master)](https://github.com/kivymd/KivyMD/actions?query=workflow%3ATest)
 [![Documentation status](https://readthedocs.org/projects/kivymd/badge/?version=latest)](https://kivymd.readthedocs.io)
 [![Repository size](https://img.shields.io/github/repo-size/kivymd/kivymd.svg)](https://github.com/kivymd/KivyMD)

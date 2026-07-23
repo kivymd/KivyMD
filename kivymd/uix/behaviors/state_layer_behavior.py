@@ -382,7 +382,7 @@ class StateLayerBehavior(StateFocusBehavior):
                 self._bg_color = self.md_bg_color
         elif not self._state:
             if hasattr(self, "elevation_level"):
-                if hasattr(self, "style") and self.style == "tonal":
+                if hasattr(self, "style") and self.style in ["tonal", "filled"]:
                     self.elevation_level = 0
                 else:
                     self.elevation_level = self._elevation_level

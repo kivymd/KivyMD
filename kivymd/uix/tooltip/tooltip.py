@@ -46,8 +46,8 @@ Usage of tooltip plain
 
                 MDTooltipPlain:
                     text:
-                        "Grant value is calculated using the closing stock price \\n" \\
-                        "from the day before the grant date. Amounts do not \\n" \\
+                        "Grant value is calculated using the closing stock price \n"
+                        "from the day before the grant date. Amounts do not \n"
                         "reflect tax witholdings."
 
 
@@ -104,9 +104,11 @@ Usage of tooltip plain
                     super().__init__(**kwargs)
                     self.widgets = [
                         MDTooltipPlain(
-                            text="Grant value is calculated using the closing stock price \n"
-                            "from the day before the grant date. Amounts do not \n"
-                            "reflect tax witholdings.",
+                            text=(
+                                "Grant value is calculated using the closing stock price \n"
+                                "from the day before the grant date. Amounts do not \n"
+                                "reflect tax witholdings."
+                            ),
                         )
                     ]
 

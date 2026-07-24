@@ -184,8 +184,8 @@ Usage of tooltip rich
 
                     MDTooltipRichSupportingText:
                         text:
-                            "Grant value is calculated using the closing stock price \\n" \\
-                            "from the day before the grant date. Amounts do not \\n" \\
+                            "Grant value is calculated using the closing stock price \n"
+                            "from the day before the grant date. Amounts do not \n"
                             "reflect tax witholdings."
 
                     MDTooltipRichActionButton:
@@ -258,9 +258,11 @@ Usage of tooltip rich
                                 text="Add others",
                             ),
                             MDTooltipRichSupportingText(
-                                text="Grant value is calculated using the closing stock price \n"
-                                "from the day before the grant date. Amounts do not \n"
-                                "reflect tax witholdings."
+                                text=(
+                                    "Grant value is calculated using the closing stock price \n"
+                                    "from the day before the grant date. Amounts do not \n"
+                                    "reflect tax witholdings."
+                                ),
                             ),
                             MDTooltipRichActionButton(
                                 MDButtonText(

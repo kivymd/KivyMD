@@ -1,5 +1,5 @@
 release = False
 __version__ = "2.0.1.dev0"
-__hash__ = "bfc96103fa633220550a6863e1a1ad40f4dfa77a"
-__short_hash__ = "bfc9610"
-__date__ = "2026-07-24"
+__hash__ = "e26c43395f3060c9168c529be0318963b83fe8ee"
+__short_hash__ = "e26c433"
+__date__ = "2026-07-27"

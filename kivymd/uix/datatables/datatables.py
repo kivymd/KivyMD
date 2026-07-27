@@ -93,8 +93,8 @@ class TableRecycleGridLayout(
 
         index = selected[-1]
 
-        if index > len(nodes):
-            last = len(nodes)
+        if index >= len(nodes):
+            last = len(nodes) - 1
         else:
             last = nodes.index(index)
 
@@ -131,10 +131,11 @@ class TableRecycleGridLayout(
         self.select_row(nodes)
 
     def select_row(self, nodes):
-        col = self.table_data.recycle_data[self.selected_row]["range"]
+        row_range = self.table_data.recycle_data[self.selected_row]["range"]
 
-        for x in range(col[0], col[1] + 1):
-            self.select_node(nodes[x])
+        for index in nodes:
+            if row_range[0] <= index <= row_range[1]:
+                self.select_node(index)
 
 
 class CellHeader(BoxLayout, HoverBehavior):
@@ -371,7 +372,7 @@ class TableHeader(ThemableBehavior, ScrollView):
                             if len(col_heading) == 3
                             else CellHeader(
                                 text=col_heading[0],
-                                sort_action=lambda x: None,
+                                sort_action=None,
                                 width=self.cols_minimum[i],
                                 table_data=self.table_data,
                             )
@@ -516,7 +517,8 @@ class TableData(RecycleView):
         self.cols_minimum = table_header.cols_minimum
         self.set_row_data()
         self.effect_cls = self._parent.effect_cls
-        Clock.schedule_once(self.set_default_first_row, 0)
+        Clock.schedule_once(self.set_default_first_row, 0.6)
+        Clock.schedule_once(self._update_content_cells_rows, 0.6)
 
     def get_select_row(self, index: int) -> None:
         """Returns the current row with all elements."""
@@ -638,13 +640,7 @@ class TableData(RecycleView):
     def select_all(self, state: str) -> None:
         """Sets the checkboxes of all rows to the active/inactive position."""
 
-        for i in range(0, len(self.recycle_data), self.total_col_headings):
-            cell_row_obj = self.view_adapter.get_visible_view(i)
-
-            if cell_row_obj:
-                self.cell_row_obj_dict[i] = cell_row_obj
-                self.on_mouse_select(cell_row_obj)
-                cell_row_obj.ids.check.state = state
+        self._update_content_cells_rows()
 
         if state == "down":
             # Select all checks on all pages.
@@ -663,10 +659,12 @@ class TableData(RecycleView):
                 )
 
             self.current_selection_check = new_checks
+            self._update_cell_selection_state()
 
             return
 
         self.current_selection_check = {}  # esets all checks on all pages
+        self._update_cell_selection_state()
 
     def check_all(self, state: str) -> bool:
         """Checks if checkboxes of all rows are in the same state."""
@@ -753,6 +751,36 @@ class TableData(RecycleView):
     ) -> None:
         if self._to_value < len(self.row_data):
             self.pagination.ids.button_forward.disabled = False
+
+    def _update_cell_selection_state(self):
+        """Forces an update of the selection state for all visible cells."""
+
+        for i in range(0, len(self.recycle_data), self.total_col_headings):
+            cell_row_obj = self.view_adapter.get_visible_view(i)
+            if cell_row_obj:
+                cell_row_obj.apply_selection(
+                    self, i, i in self.ids.row_controller.selected_nodes
+                )
+
+    def _update_content_cells_rows(self, *args):
+        """
+        Updates the visible cell rows in the table.
+
+        This method iterates through all data rows in `recycle_data` and
+        updates the visible cell row views. For each visible row, it stores a
+        reference to the `CellRow` object in the `cell_row_obj_dict` dictionary
+        and calls the `on_mouse_select` handler to apply the selection state.
+
+        The method is typically called when scrolling the table or updating
+        data to synchronize the state of visible rows with the current data.
+        """
+
+        for i in range(0, len(self.recycle_data), self.total_col_headings):
+            cell_row_obj = self.view_adapter.get_visible_view(i)
+
+            if cell_row_obj:
+                self.cell_row_obj_dict[i] = cell_row_obj
+                self.on_mouse_select(cell_row_obj)
 
     def _split_list_into_equal_parts(self, lst, parts):
         for i in range(0, len(lst), parts):

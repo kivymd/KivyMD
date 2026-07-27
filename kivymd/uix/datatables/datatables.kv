@@ -126,11 +126,15 @@
 
         BoxLayout:
             orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
 
             BoxLayout:
                 id: box
                 padding: "12dp", "8dp", "4dp", 0
                 spacing: "16dp"
+                size_hint_y: None
+                height: self.minimum_height
 
                 BoxLayout:
                     size_hint: None, None

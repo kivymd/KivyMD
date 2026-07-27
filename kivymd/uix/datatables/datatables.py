@@ -404,6 +404,18 @@ class TableHeader(ThemableBehavior, ScrollView):
 class TableData(RecycleView):
     """Implements a list of table data."""
 
+    checked_row_indices = ListProperty()
+    """
+    Indices of rows with checked checkboxes across all pages of the table.
+
+    Unlike `current_selection_check`, this property stores a single flat
+    list of selected row indices, allowing you to retrieve all checked rows
+    regardless of the current pagination page or scroll position.
+
+    :attr:`checked_row_indices` is an :class:`~kivy.properties.ListProperty`
+    and defaults to `[]`.
+    """
+
     recycle_data = ListProperty()
     """
     See :attr:`~kivy.uix.recycleview.RecycleView.data`.
@@ -649,21 +661,28 @@ class TableData(RecycleView):
             full_pages = len(self.row_data) // self.rows_num
             left_over_rows = len(self.row_data) % self.rows_num
             new_checks = {}
+            all_indices = []
 
             for page in range(full_pages):
-                new_checks[page] = list(range(0, rows_num * columns, columns))
+                page_indices = list(range(0, rows_num * columns, columns))
+                new_checks[page] = page_indices
+                all_indices.extend(page_indices)
 
             if left_over_rows:
-                new_checks[full_pages] = list(
-                    range(0, left_over_rows * columns, columns)
-                )
+                page_indices = list(range(0, left_over_rows * columns, columns))
+                new_checks[full_pages] = page_indices
+                all_indices.extend(page_indices)
 
             self.current_selection_check = new_checks
+            self.checked_row_indices = (
+                all_indices  # updated checked_row_indices
+            )
             self._update_cell_selection_state()
 
             return
 
         self.current_selection_check = {}  # esets all checks on all pages
+        self.checked_row_indices = []
         self._update_cell_selection_state()
 
     def check_all(self, state: str) -> bool:
@@ -723,6 +742,7 @@ class TableData(RecycleView):
 
         self.set_row_data()
         self.set_text_from_of(direction)
+        self._restore_check_states()
 
         if self._to_value == len(self.row_data):
             self.pagination.ids.button_forward.disabled = True
@@ -786,33 +806,38 @@ class TableData(RecycleView):
         for i in range(0, len(lst), parts):
             yield lst[i : i + parts]
 
+    def _restore_check_states(self):
+        """Restores the state of checkboxes on the current page."""
+
+        for i in range(0, len(self.recycle_data), self.total_col_headings):
+            cell_row_obj = self.view_adapter.get_visible_view(i)
+
+            if cell_row_obj:
+                # We check whether this index is selected in
+                # `checked_row_indices`.
+                is_checked = i in self.checked_row_indices
+
+                if is_checked:
+                    cell_row_obj.change_check_state_no_notify("down")
+                else:
+                    cell_row_obj.change_check_state_no_notify("normal")
+
     def _get_row_checks(self):
         """Returns all rows that are checked."""
 
-        tmp = []
+        checked_rows = []
 
-        for i in range(0, len(self.recycle_data), self.total_col_headings):
-            if self.cell_row_obj_dict.get(i, None):
-                cell_row_obj = self.cell_row_obj_dict[i]
-            else:
-                cell_row_obj = self.view_adapter.get_visible_view(i)
-                if cell_row_obj:
-                    self.cell_row_obj_dict[i] = cell_row_obj
+        for idx in self.checked_row_indices:
+            row_data = []
 
-            if cell_row_obj and cell_row_obj.ids.check.state == "down":
-                idx = cell_row_obj.index
-                row = []
-                for data in self.recycle_data:
-                    if idx in data["range"]:
-                        row.append(data["text"])
+            for data in self.recycle_data:
+                if idx in data["range"]:
+                    row_data.append(data["text"])
 
-                tmp.append(row)
+            if row_data:
+                checked_rows.append(row_data)
 
-        return tmp
-
-    # def on_pagination(self, instance_table, instance_pagination):
-    #    if len(self._row_data_parts) <= self._to_value:
-    #        instance_pagination.ids.button_forward.disabled = True
+        return checked_rows
 
 
 class TablePagination(BoxLayout):
@@ -2063,6 +2088,13 @@ class CellRow(
         self, instance_table_data: MDDataTable, active: bool
     ) -> None:
         """Called upon activation/deactivation of the checkbox."""
+
+        if active:
+            if self.index not in self.table.checked_row_indices:
+                self.table.checked_row_indices.append(self.index)
+        else:
+            if self.index in self.table.checked_row_indices:
+                self.table.checked_row_indices.remove(self.index)
 
         if active:
             if (

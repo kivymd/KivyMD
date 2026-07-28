@@ -2709,7 +2709,7 @@ class CellRow(
             container.width = 0
             container.opacity = 0
 
-        self.cell_widget = data.get('cell_widget', {})
+        self.cell_widget = data.get("cell_widget", {})
         if self.cell_widget:
             Clock.schedule_once(self._create_widget)
 

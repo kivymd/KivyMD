@@ -28,7 +28,9 @@ from collections import defaultdict
 from typing import Union
 
 from kivy.clock import Clock
+from kivy.factory import Factory
 from kivy.lang import Builder
+from kivy.logger import Logger
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
@@ -69,10 +71,47 @@ with open(
 class TableRecycleGridLayout(
     FocusBehavior, LayoutSelectionBehavior, RecycleGridLayout
 ):
+    """
+    Layout manager for handling row selection in the table.
+
+    Stores the state of the currently selected row and its index.
+    Provides methods for retrieving a list of selectable nodes
+    and selecting a row by its index in the table data.
+    """
+
     selected_row = NumericProperty(0)
+    """
+    Index of the currently selected row in the data..
+
+    :attr:`selected_row` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
+
     table_data = ObjectProperty(None)
+    """
+    Reference to the parent TableData instance.
+
+    :attr:`table_data` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
 
     def get_nodes(self):
+        """
+        Returns the list of selectable nodes and the index of the currently
+        selected row.
+
+        If no row is currently selected, the first row is selected automatically.
+        Clears the current selection before returning.
+
+        Returns:
+            tuple:
+                A tuple containing:
+
+                - **last** (`int` or `None`): Index of the currently selected
+                  node within the selectable nodes list.
+                - **nodes** (`list` or `None`): List of selectable node indices.
+        """
+
         nodes = self.get_selectable_nodes()
 
         if self.nodes_order_reversed:
@@ -103,7 +142,15 @@ class TableRecycleGridLayout(
         return last, nodes
 
     def select_next(self, instance):
-        """Select next row."""
+        """
+        Selects the next row in the table.
+
+        If the last row is currently selected, selection wraps around to the
+        first row.
+
+        Args:
+            instance: The :class:`TableData` instance that owns the selection.
+        """
 
         self.table_data = instance
         last, nodes = self.get_nodes()
@@ -120,7 +167,12 @@ class TableRecycleGridLayout(
         self.select_row(nodes)
 
     def select_current(self, instance):
-        """Select current row."""
+        """
+        Reselects the currently selected row.
+
+        Args:
+            instance: The :class:`TableData` instance that owns the selection.
+        """
 
         self.table_data = instance
         last, nodes = self.get_nodes()
@@ -131,6 +183,14 @@ class TableRecycleGridLayout(
         self.select_row(nodes)
 
     def select_row(self, nodes):
+        """
+        Selects all cells that belong to the currently selected row.
+
+        Args:
+            nodes (list):
+                List of selectable node indices.
+        """
+
         row_range = self.table_data.recycle_data[self.selected_row]["range"]
 
         for index in nodes:
@@ -560,57 +620,56 @@ class TableData(RecycleView):
             for row in self._row_data_parts[self._rows_number]:
                 for i in range(len(row)):
                     data.append([row[i], row[0], [low, high]])
+
                 low += self.total_col_headings
                 high += self.total_col_headings
 
             for j, x in enumerate(data):
-                if x[0] == x[1]:
-                    self.data_first_cells.append(x[2][0])
-                    self.recycle_data.append(
-                        {
-                            "text": str(x[0]),
-                            "Index": str(j),
-                            "range": x[2],
-                            "selectable": True,
-                            "viewclass": "CellRow",
-                            "table": self,
-                            "background_color_cell": self._parent.background_color_cell,
-                            "background_color_selected_cell": self._parent.background_color_selected_cell,
-                        }
-                    )
+                r_data = {
+                    "Index": str(j),
+                    "range": x[2],
+                    "selectable": True,
+                    "viewclass": "CellRow",
+                    "table": self,
+                    "background_color_cell": self._parent.background_color_cell,
+                    "background_color_selected_cell": self._parent.background_color_selected_cell,
+                }
+
+                # We check whether the value is a dictionary with a viewclass
+                # (widget).
+                if isinstance(x[0], dict) and "viewclass" in x[0]:
+                    r_data["cell_widget"] = x[0]
+                    r_data["text"] = ""  # no text, only a widget
+                    r_data["icon"] = ""
+                # We check for the icon with text (existing format).
+                elif (
+                    isinstance(x[0], tuple) or isinstance(x[0], list)
+                ) and len(x[0]) == 3:
+                    r_data["icon"] = x[0][0]
+                    r_data["icon_color"] = x[0][1]
+                    r_data["text"] = str(x[0][2])
+                elif (
+                    isinstance(x[0], tuple) or isinstance(x[0], list)
+                ) and len(x[0]) == 2:
+                    r_data["icon"] = x[0][0]
+                    r_data["text"] = str(x[0][1])
                 else:
-                    r_data = {
-                        "Index": str(j),
-                        "range": x[2],
-                        "selectable": True,
-                        "viewclass": "CellRow",
-                        "table": self,
-                        "background_color_cell": self._parent.background_color_cell,
-                        "background_color_selected_cell": self._parent.background_color_selected_cell,
-                    }
-
-                    if (
-                        isinstance(x[0], tuple) or isinstance(x[0], list)
-                    ) and len(x[0]) == 3:
-                        r_data["icon"] = x[0][0]
-                        r_data["icon_color"] = x[0][1]
-                        r_data["text"] = str(x[0][2])
-                        self.recycle_data.append(r_data)
-
-                    elif (
-                        isinstance(x[0], tuple) or isinstance(x[0], list)
-                    ) and len(x[0]) == 2:
-                        r_data["icon"] = x[0][0]
-                        r_data["text"] = str(x[0][1])
-                        self.recycle_data.append(r_data)
+                    # If x[0] == x[1] (the first cell of the row), etc.
+                    if j % self.total_col_headings == 0:
+                        r_data["text"] = str(x[0])
+                        self.data_first_cells.append(x[2][0])
                     else:
                         r_data["text"] = str(x[0])
-                        self.recycle_data.append(r_data)
+
+                self.recycle_data.append(r_data)
 
             if not self.table_header.column_data:
                 raise ValueError("Set value for column_data in class TableData")
 
-            self.data_first_cells.append(self.table_header.column_data[0][0])
+            if not self.data_first_cells:
+                self.data_first_cells.append(
+                    self.table_header.column_data[0][0]
+                )
 
     def set_text_from_of(self, direction: str) -> None:
         """Sets the text of the numbers of displayed pages in table."""
@@ -1299,6 +1358,356 @@ class MDDataTable(ThemableBehavior, CommonElevationBehavior, AnchorLayout):
 
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-row-data.png
+        :align: center
+
+    Custom widgets in cells.
+
+    .. code-block:: python
+
+        from kivy.metrics import dp
+        from kivy.uix.anchorlayout import AnchorLayout
+
+        from kivymd.app import MDApp
+        from kivymd.uix.button import MDButton, MDButtonText
+        from kivymd.uix.chip import MDChip, MDChipText
+        from kivymd.uix.datatables import MDDataTable
+
+
+        class MyMDChip(MDChip):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.widgets = [
+                    MDChipText(
+                        text="Chip"
+                    ),
+                ]
+
+
+        class MyMDButton(MDButton):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.widgets = [
+                    MDButtonText(
+                        text="Button"
+                    )
+                ]
+
+
+        class Example(MDApp):
+            def build(self):
+                self.theme_cls.theme_style = "Dark"
+                self.theme_cls.primary_palette = "Orange"
+
+                layout = AnchorLayout()
+
+                def on_activate(row_index: int, row_data: list) -> None:
+                    '''
+                    Callback function for the switch widget in the table row.
+
+                    Called when the MDSwitch in a table row is toggled.
+
+                    :param row_index: Index of the row in the table (0-based)
+                    :param row_data: List of data values for the row (all columns)
+
+                    Example:
+                        When a switch is toggled in the "Status" column:
+                        >>> on_activate(0, ['1', 'John Doe', {'viewclass': 'MDSwitch', ...}])
+                        Activate row 0: ['1', 'John Doe', {'viewclass': 'MDSwitch', ...}]
+                    '''
+
+                    print(f"Activate row {row_index}: {row_data}")
+
+                def on_press(row_index: int, row_data: list) -> None:
+                    '''
+                    Callback function for button widgets in the table row.
+                    Called when a button (e.g., MyMDButton) in a table row is pressed/released.
+                    '''
+
+                    print(f"Press button {row_index}: {row_data}")
+
+                def on_release(row_index: int, row_data: list) -> None:
+                    '''
+                    Callback function for check widgets in the table row.
+                    Called when a button (e.g., MyMDChip) in a table row is pressed/released.
+                    '''
+
+                    print(f"Press check {row_index}: {row_data}")
+
+                data_tables = MDDataTable(
+                    size_hint=(0.95, 0.8),
+                    use_pagination=True,
+                    rows_num=5,
+                    check=True,
+                    column_data=[
+                        ("ID", dp(40)),
+                        ("Name", dp(40)),
+                        ("Status", dp(40)),
+                    ],
+                    row_data=[
+                        (
+                            "1",
+                            "John Doe",
+                            {"viewclass": "MyMDButton", "on_press": on_press},
+                        ),
+                        (
+                            "2",
+                            "Jane Smith",
+                            {"viewclass": "MDSwitch", "on_active": on_activate},
+                        ),
+                        (
+                            "3",
+                            "Nicol Andersson",
+                            {"viewclass": "MyMDChip", "on_release": on_release},
+                        ),
+                    ]
+                )
+
+                layout.add_widget(data_tables)
+                return layout
+
+
+        if __name__ == "__main__":
+            Example().run()
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-custom-widgets.png
+        :align: center
+
+    Custom widgets with children in cells.
+
+    .. code-block:: python
+
+        from kivy.metrics import dp
+        from kivy.properties import StringProperty
+        from kivy.uix.anchorlayout import AnchorLayout
+
+        from kivymd.app import MDApp
+        from kivymd.uix.button import MDButton, MDButtonText
+        from kivymd.uix.chip import MDChip, MDChipText
+        from kivymd.uix.datatables import MDDataTable
+        from kivymd.uix.boxlayout import MDBoxLayout  # NOQA
+        from kivymd.uix.button import MDIconButton  # NOQA
+
+
+        class MyMDChip(MDChip):
+            text = StringProperty()
+
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+
+            def on_text(self, instance, value):
+                self.widgets = [
+                    MDChipText(
+                        text=value
+                    ),
+                ]
+
+
+        class MyMDButton(MDButton):
+            def __init__(self, *args, **kwargs):
+                super().__init__(*args, **kwargs)
+                self.widgets = [
+                    MDButtonText(
+                        text="Button"
+                    )
+                ]
+
+
+        class Example(MDApp):
+            def build(self):
+                self.theme_cls.theme_style = "Dark"
+                self.theme_cls.primary_palette = "Orange"
+
+                layout = AnchorLayout()
+
+                def on_activate(row_index: int, row_data: list) -> None:
+                    print(f"Activate row {row_index}: {row_data}")
+
+                def on_press(row_index: int, row_data: list) -> None:
+                    print(f"Press button {row_index}: {row_data}")
+
+                def on_release(row_index: int, row_data: list) -> None:
+                    print(f"Release chip {row_index}: {row_data}")
+
+                def on_edit(row_index: int, row_data: list) -> None:
+                    print(f"Edit row {row_index}: {row_data}")
+
+                def on_delete(row_index: int, row_data: list) -> None:
+                    print(f"Delete row {row_index}: {row_data}")
+
+                def on_view(row_index: int, row_data: list) -> None:
+                    print(f"View row {row_index}: {row_data}")
+
+                data_tables = MDDataTable(
+                    size_hint=(0.95, 0.8),
+                    use_pagination=True,
+                    rows_num=5,
+                    check=True,
+                    column_data=[
+                        ("ID", dp(30)),
+                        ("Name", dp(40)),
+                        ("Status", dp(40)),
+                        ("Actions", dp(40)),
+                    ],
+                    row_data=[
+                        (
+                            "1",
+                            "John Doe",
+                            {"viewclass": "MyMDButton", "on_press": on_press},
+                            {
+                                "viewclass": "MDBoxLayout",
+                                "spacing": dp(4),
+                                "children": [
+                                    {
+                                        "viewclass": "MDIconButton",
+                                        "icon": "eye",
+                                        "on_release": on_view,
+                                    },
+                                    {
+                                        "viewclass": "MDIconButton",
+                                        "icon": "pencil",
+                                        "on_release": on_edit,
+                                    },
+                                    {
+                                        "viewclass": "MDIconButton",
+                                        "icon": "delete",
+                                        "on_release": on_delete,
+                                    },
+                                ]
+                            },
+                        ),
+                        (
+                            "2",
+                            "Jane Smith",
+                            {"viewclass": "MDSwitch", "on_active": on_activate},
+                            {
+                                "viewclass": "MDBoxLayout",
+                                "spacing": dp(4),
+                                "children": [
+                                    {
+                                        "viewclass": "MDIconButton",
+                                        "icon": "eye",
+                                        "on_release": on_view,
+                                    },
+                                    {
+                                        "viewclass": "MDIconButton",
+                                        "icon": "pencil",
+                                        "on_release": on_edit,
+                                    },
+                                    {
+                                        "viewclass": "MDIconButton",
+                                        "icon": "delete",
+                                        "on_release": on_delete,
+                                    },
+                                ]
+                            },
+                        ),
+                        (
+                            "3",
+                            "Nicol Andersson",
+                            {"viewclass": "MyMDChip", "text": "Delete", "on_release": on_release},
+                            {
+                                "viewclass": "MDBoxLayout",
+                                "spacing": dp(4),
+                                "children": [
+                                    {
+                                        "viewclass": "MDIconButton",
+                                        "icon": "eye",
+                                        "on_release": on_view,
+                                    },
+                                    {
+                                        "viewclass": "MDIconButton",
+                                        "icon": "pencil",
+                                        "on_release": on_edit,
+                                    },
+                                    {
+                                        "viewclass": "MDIconButton",
+                                        "icon": "delete",
+                                        "on_release": on_delete,
+                                    },
+                                ]
+                            },
+                        ),
+                        (
+                            "4",
+                            "Alice Brown",
+                            {
+                                "viewclass": "MDBoxLayout",
+                                "spacing": dp(4),
+                                "children": [
+                                    {
+                                        "viewclass": "MyMDChip",
+                                        "text": "Active",
+                                    },
+                                    {
+                                        "viewclass": "MDIconButton",
+                                        "icon": "information",
+                                        "on_release": on_view,
+                                    },
+                                ]
+                            },
+                            {
+                                "viewclass": "MDBoxLayout",
+                                "spacing": dp(4),
+                                "children": [
+                                    {
+                                        "viewclass": "MDIconButton",
+                                        "icon": "pencil",
+                                        "on_release": on_edit,
+                                    },
+                                    {
+                                        "viewclass": "MDIconButton",
+                                        "icon": "delete",
+                                        "on_release": on_delete,
+                                    },
+                                ]
+                            },
+                        ),
+                        (
+                            "5",
+                            "Bob Johnson",
+                            {
+                                "viewclass": "MDBoxLayout",
+                                "spacing": dp(4),
+                                "children": [
+                                    {
+                                        "viewclass": "MyMDChip",
+                                        "text": "Pending",
+                                    },
+                                    {
+                                        "viewclass": "MDIconButton",
+                                        "icon": "information",
+                                        "on_release": on_view,
+                                    },
+                                ]
+                            },
+                            {
+                                "viewclass": "MDBoxLayout",
+                                "spacing": dp(4),
+                                "children": [
+                                    {
+                                        "viewclass": "MDIconButton",
+                                        "icon": "pencil",
+                                        "on_release": on_edit,
+                                    },
+                                    {
+                                        "viewclass": "MDIconButton",
+                                        "icon": "delete",
+                                        "on_release": on_delete,
+                                    },
+                                ]
+                            },
+                        ),
+                    ]
+                )
+
+                layout.add_widget(data_tables)
+                return layout
+
+
+        if __name__ == "__main__":
+            Example().run()
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/data-tables-custom-widgets-children.png
         :align: center
 
     :attr:`row_data` is an :class:`~kivy.properties.ListProperty`
@@ -2254,6 +2663,8 @@ class CellRow(
     and defaults to `None`.
     """
 
+    cell_widget = DictProperty()
+    widget_container = ObjectProperty(None)
     selected = BooleanProperty(False)
     selectable = BooleanProperty(True)
     index = None
@@ -2290,6 +2701,17 @@ class CellRow(
         """
 
         self.index = index
+        container = self.ids.widget_container
+
+        if container:
+            container.clear_widgets()
+            container.size_hint_x = None
+            container.width = 0
+            container.opacity = 0
+
+        self.cell_widget = data.get('cell_widget', {})
+        if self.cell_widget:
+            Clock.schedule_once(self._create_widget)
 
         return super().refresh_view_attrs(instance_table_data, index, data)
 
@@ -2414,6 +2836,122 @@ class CellRow(
             self.table.table_header.ids.check.state = "down"
         else:
             self.table.table_header.ids.check.state = "normal"
+
+    def _create_widget_from_dict(self, widget_dict, row_index=0, row_data=None):
+        """Creates a widget from a dictionary of parameters."""
+
+        if not widget_dict:
+            return None
+
+        viewclass = widget_dict.get("viewclass")
+
+        if not viewclass:
+            return None
+
+        widget_class = Factory.get(viewclass)
+        widget = widget_class()
+
+        # Apply properties.
+        reserved = {
+            "viewclass",
+            "on_release",
+            "on_press",
+            "on_active",
+            "children",
+            "row_index",
+            "row_data",
+        }
+        for key, value in widget_dict.items():
+            if key not in reserved and hasattr(widget, key):
+                try:
+                    setattr(widget, key, value)
+                except Exception as e:
+                    Logger.warning(
+                        f"KivyMD: Could not set '{key}' on {viewclass}: {e}"
+                    )
+
+        # Add children.
+        for child_dict in widget_dict.get("children", []):
+            child_widget = self._create_widget_from_dict(
+                child_dict, row_index, row_data
+            )
+            if child_widget:
+                widget.add_widget(child_widget)
+
+        # Get row data if not provided.
+        if row_data is None:
+            row_data = (
+                self.table.row_data[row_index]
+                if self.table
+                and self.table.row_data
+                and row_index < len(self.table.row_data)
+                else []
+            )
+
+        # Bind events.
+        events = {
+            "on_press": lambda x: widget_dict["on_press"](row_index, row_data),
+            "on_release": lambda x: widget_dict["on_release"](
+                row_index, row_data
+            ),
+            "on_active": lambda x, active: widget_dict["on_active"](
+                row_index, row_data
+            ),
+        }
+
+        for event_name, callback in events.items():
+            if event_name in widget_dict and callable(widget_dict[event_name]):
+                if hasattr(widget, "bind"):
+                    widget.bind(**{event_name: callback})
+
+        return widget
+
+    def _create_child_widget(self, child_dict):
+        """Creates a child widget."""
+
+        return self._create_widget_from_dict(child_dict)
+
+    def _create_widget(self, *args):
+        """Creates the main widget in the cell."""
+
+        if not self.cell_widget:
+            return
+
+        container = self.ids.widget_container
+
+        if not container:
+            return
+
+        container.clear_widgets()
+
+        row_index = (
+            self.index // self.table.total_col_headings
+            if self.table and self.table.total_col_headings > 0
+            else 0
+        )
+        row_data = (
+            self.table.row_data[row_index]
+            if self.table
+            and self.table.row_data
+            and row_index < len(self.table.row_data)
+            else []
+        )
+
+        widget = self._create_widget_from_dict(
+            self.cell_widget, row_index, row_data
+        )
+        if not widget:
+            return
+
+        container.add_widget(widget)
+        container.size_hint_x = None
+        container.width = widget.width if hasattr(widget, "width") else dp(80)
+        container.opacity = 1
+
+        self.ids.icon.opacity = 1
+        self.ids.icon.size = ("24dp", "24dp") if self.icon else (0, 0)
+        self.ids.label.opacity = 1
+        self.ids.label.size = (0, 0) if not self.text else None
 
 
 class SortButton(MDIconButton):

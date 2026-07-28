@@ -1605,6 +1605,270 @@ class MDDataTable(ThemableBehavior, CommonElevationBehavior, AnchorLayout):
 
         self.bind(row_data=self.update_row_data)
 
+    def set_row_checked(self, row_index: int, checked: bool) -> None:
+        """
+        Sets the checkbox state for a specific row by its index.
+
+        .. versionadded:: 2.0.0
+
+        :param row_index: Row index in `row_data`
+        :param checked: True - check the row, False - uncheck the row
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+            from kivy.lang import Builder
+            from kivy.properties import ObjectProperty
+
+            from kivymd.app import MDApp
+            from kivymd.uix.datatables import MDDataTable
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.anchorlayout import MDAnchorLayout
+
+            KV = '''
+            <TableScreen>
+                tablebox: tablebox
+                md_bg_color: self.theme_cls.backgroundColor
+
+                MainCard:
+                    pos_hint: {"center_x": .5, "center_y": .55}
+
+                    TableBox:
+                        id: tablebox
+
+                MDButton:
+                    pos_hint: {"center_x": .5, "center_y": .1}
+                    on_press: root.check_row_0()
+
+                    MDButtonText:
+                        text: "Check row 0"
+
+
+            <TableBox>
+
+
+            <MainCard>
+                size_hint: None, None
+                size: "400dp", "450dp"
+                pos_hint: {"center_x": .5, "center_y": .5}
+                elevation: 3
+                padding: "10dp"
+                spacing: "25dp"
+            '''
+
+            Builder.load_string(KV)
+
+
+            class MainCard(MDScreen): ...
+
+
+            class TableBox(MDAnchorLayout):
+                table: MDDataTable
+
+                def add_table(
+                    self,
+                    column_fields,
+                    table_data,
+                    refresh=False,
+                    use_pagination=True,
+                    use_check=True,
+                    rows_num=10,
+                ):
+                    if refresh:
+                        self.clear_widgets()
+
+                    data_table = MDDataTable(
+                        use_pagination=use_pagination,
+                        check=use_check,
+                        rows_num=rows_num,
+                        column_data=column_fields,
+                        row_data=table_data,
+                    )
+
+                    self.table = data_table
+                    self.add_widget(data_table)
+
+
+            class TableScreen(MDScreen):
+                tablebox = ObjectProperty(None)
+
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    col_fields = ["field1", "field2"]
+                    col_data = [(f, dp(30)) for f in col_fields]
+                    table_data = [(f"col1_{i}", f"col2_{i}") for i in range(30)]
+                    self.tablebox.add_table(col_data, table_data)
+
+                def check_row_0(self):
+                    '''Select the checkbox for row 0.'''
+
+                    self.tablebox.table.set_row_checked(0, True)
+
+
+            class MainApp(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return TableScreen()
+
+
+            if __name__ == "__main__":
+                MainApp().run()
+
+        .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/datatables-use-set_row_checked.gif
+            :align: center
+
+        You can select multiple rows at once:
+
+        .. code-block:: python
+
+            def check_row_0_4(self):
+                '''Select the checkbox for row 0-4.'''
+
+                self.tablebox.table.set_rows_checked([0, 1, 2, 3, 4], True)
+
+        .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/datatables-use-set_row_checked-multiple.gif
+            :align: center
+
+        Or toggle the selected row:
+
+        .. code-block:: python
+
+            def toggle_row_5(self):
+                '''Toggle the checkbox for row 5.'''
+
+                self.tablebox.table.toggle_row_checked(5)
+
+        .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/datatables-use-set_row_checke_toggle.gif
+            :align: center
+        """
+
+        if not self.check:
+            return
+        if row_index < 0 or row_index >= len(self.row_data):
+            raise IndexError(f"Row index {row_index} is out of range")
+
+        first_cell_index = row_index * self.table_data.total_col_headings
+
+        if checked:
+            if first_cell_index not in self.table_data.checked_row_indices:
+                self.table_data.checked_row_indices.append(first_cell_index)
+
+            page = row_index // self.table_data.rows_num
+
+            if page not in self.table_data.current_selection_check:
+                self.table_data.current_selection_check[page] = []
+            if (
+                first_cell_index
+                not in self.table_data.current_selection_check[page]
+            ):
+                self.table_data.current_selection_check[page].append(
+                    first_cell_index
+                )
+        else:
+            if first_cell_index in self.table_data.checked_row_indices:
+                self.table_data.checked_row_indices.remove(first_cell_index)
+
+            page = row_index // self.table_data.rows_num
+
+            if page in self.table_data.current_selection_check:
+                if (
+                    first_cell_index
+                    in self.table_data.current_selection_check[page]
+                ):
+                    self.table_data.current_selection_check[page].remove(
+                        first_cell_index
+                    )
+
+        self.table_data._update_content_cells_rows()
+        self.table_data._update_cell_selection_state()
+
+    def set_rows_checked(self, row_indices: list, checked: bool) -> None:
+        """
+        Sets the checkbox state for multiple rows.
+
+        .. versionadded:: 2.0.0
+
+        :param row_indices: List of row indices in `row_data`
+        :param checked: True - check the rows, False - uncheck the rows
+        """
+
+        for row_index in row_indices:
+            self.set_row_checked(row_index, checked)
+
+    def set_all_rows_checked(self, checked: bool) -> None:
+        """
+        Sets the state of all checkboxes in the table.
+
+        :param checked: True - check all rows, False - uncheck all rows
+        """
+
+        if not self.check:
+            return
+
+        state = "down" if checked else "normal"
+        self.table_data.select_all(state)
+        self.table_data.table_header.ids.check.state = state
+
+    def toggle_row_checked(self, row_index: int) -> None:
+        """
+        Toggles the checkbox state for a specific row.
+
+        .. versionadded:: 2.0.0
+
+        :param row_index: Row index in `row_data`
+        """
+
+        if row_index < 0 or row_index >= len(self.row_data):
+            raise IndexError(f"Row index {row_index} is out of range")
+
+        first_cell_index = row_index * self.table_data.total_col_headings
+        is_checked = first_cell_index in self.table_data.checked_row_indices
+        self.set_row_checked(row_index, not is_checked)
+
+    def is_row_checked(self, row_index: int) -> bool:
+        """
+        Checks if a specific row is checked.
+
+        .. versionadded:: 2.0.0
+
+        :param row_index: Row index in `row_data`
+        :return: True if the row is checked, False otherwise
+        """
+
+        if row_index < 0 or row_index >= len(self.row_data):
+            raise IndexError(f"Row index {row_index} is out of range")
+
+        first_cell_index = row_index * self.table_data.total_col_headings
+
+        return first_cell_index in self.table_data.checked_row_indices
+
+    def get_checked_row_indices(self) -> list:
+        """
+        Returns a list of indices of all checked rows.
+
+        :return: List of checked row indices
+        """
+
+        checked_indices = []
+
+        for idx in sorted(self.table_data.checked_row_indices):
+            row_index = idx // self.table_data.total_col_headings
+
+            if row_index not in checked_indices:
+                checked_indices.append(row_index)
+
+        return checked_indices
+
+    def clear_all_checks(self) -> None:
+        """Unchecks all rows in the table."""
+
+        self.set_all_rows_checked(False)
+
+    def check_all_rows(self) -> None:
+        """Checks all rows in the table."""
+
+        self.set_all_rows_checked(True)
+
     def update_row_data(self, instance_data_table, data: list) -> None:
         """
         Called when a the widget data must be updated.

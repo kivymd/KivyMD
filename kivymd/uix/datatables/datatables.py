@@ -2902,6 +2902,7 @@ class CellRow(
         # Apply properties.
         reserved = {
             "viewclass",
+            "on_ref_press",
             "on_release",
             "on_press",
             "on_active",
@@ -2940,6 +2941,9 @@ class CellRow(
         events = {
             "on_press": lambda x: widget_dict["on_press"](row_index, row_data),
             "on_release": lambda x: widget_dict["on_release"](
+                row_index, row_data
+            ),
+            "on_ref_press": lambda x, uid: widget_dict["on_ref_press"](
                 row_index, row_data
             ),
             "on_active": lambda x, active: widget_dict["on_active"](

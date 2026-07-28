@@ -2482,6 +2482,7 @@ class MDDataTable(ThemableBehavior, CommonElevationBehavior, AnchorLayout):
         """
 
         self.row_data.append(data)
+        Clock.schedule_once(self.table_data._update_content_cells_rows)
 
     def remove_row(self, data: Union[list, tuple]) -> None:
         """

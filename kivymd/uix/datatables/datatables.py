@@ -887,14 +887,23 @@ class TableData(RecycleView):
         checked_rows = []
 
         for idx in self.checked_row_indices:
-            row_data = []
+            # Calculate the row index in row_data.
+            row_index = idx // self.total_col_headings
 
-            for data in self.recycle_data:
-                if idx in data["range"]:
-                    row_data.append(data["text"])
+            if self.row_data and row_index < len(self.row_data):
+                # We return the full row from row_data
+                # (including the tuples with icons).
+                checked_rows.append(self.row_data[row_index])
+            else:
+                # Fallback: assembling from recycle_data
+                row_data = []
 
-            if row_data:
-                checked_rows.append(row_data)
+                for data in self.recycle_data:
+                    if idx in data["range"]:
+                        row_data.append(data["text"])
+
+                if row_data:
+                    checked_rows.append(row_data)
 
         return checked_rows
 
@@ -2485,7 +2494,46 @@ class MDDataTable(ThemableBehavior, CommonElevationBehavior, AnchorLayout):
         .. versionadded:: 1.0.0
         """
 
-        self.row_data.remove(data)
+        # Direct comparison of data.
+        for i, row in enumerate(self.row_data):
+            if list(row) == list(data):
+                self.row_data.pop(i)
+                self.update_row_data(None, self.row_data)
+                # Очищаем чекбоксы
+                self.table_data.checked_row_indices = []
+                self.table_data.current_selection_check = {}
+                self.table_data.table_header.ids.check.state = "normal"
+
+                return
+
+        # If a direct comparison didn't work, we try to find a partial match.
+        for i, row in enumerate(self.row_data):
+            match = True
+            for j, val in enumerate(data):
+                if j >= len(row):
+                    match = False
+                    break
+
+                # If the cell contains a tuple with an icon, compare the text.
+                if isinstance(row[j], (tuple, list)) and len(row[j]) > 1:
+                    if str(row[j][-1]) != str(val):
+                        match = False
+                        break
+                else:
+                    if str(row[j]) != str(val):
+                        match = False
+                        break
+
+            if match:
+                self.row_data.pop(i)
+                self.update_row_data(None, self.row_data)
+                self.table_data.checked_row_indices = []
+                self.table_data.current_selection_check = {}
+                self.table_data.table_header.ids.check.state = "normal"
+
+                return
+
+        raise ValueError(f"Row data {data} not found in table")
 
     def update_row(
         self, old_data: Union[list, tuple], new_data: Union[list, tuple]

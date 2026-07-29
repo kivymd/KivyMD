@@ -336,6 +336,14 @@ class CommonRipple:
             anim.bind(on_complete=self.fade_out)
             anim.start(self)
 
+            Clock.schedule_once(
+                self._check_fade_out, self.ripple_duration_in_slow + 0.1
+            )
+
+    def _check_fade_out(self, dt):
+        if self._doing_ripple and not self._fading_out:
+            self.fade_out()
+
     def finish_ripple(self) -> None:
         if self._doing_ripple and not self._finishing_ripple:
             self._finishing_ripple = True
@@ -440,8 +448,13 @@ class CommonRipple:
         return super().on_touch_move(touch, *args)
 
     def on_touch_up(self, touch):
+        # Always calls finish_ripple if the touch occurred inside the widget.
         if self.collide_point(touch.x, touch.y) and self._doing_ripple:
             self.finish_ripple()
+        elif self._doing_ripple:
+            # If released outside the widget, we also terminate the effect.
+            self.finish_ripple()
+
         return super().on_touch_up(touch)
 
     def _set_ellipse(self, instance, value):
@@ -774,6 +787,14 @@ class M3CommonRipple(CommonRipple):
         self._force_exit = False
         self._event = Clock.schedule_interval(self._tick, 0)
 
+        Clock.schedule_once(
+            self._force_finish, self.ENTER_ANIM_DURATION / 1000 + 0.1
+        )
+
+    def _force_finish(self, dt):
+        if self._anim_state == "hold" or self._anim_state == "start":
+            self.finish_ripple()
+
     _force_exit = False
 
     def finish_ripple(self) -> None:
@@ -781,10 +802,14 @@ class M3CommonRipple(CommonRipple):
             self._anim_time = 0
             self._anim_state = "exit"
         else:
-            self._force_exit = True # trust hold to do itself
+            self._force_exit = True  # trust hold to do itself
+
+        # Forced exit if the animation has not yet started.
+        if self._anim_state == "off":
+            self.anim_complete()
 
     def _tick(self, dt):
-        self._phase += (dt * 1000.0) / self.PHASE_DIVISOR
+        self._phase += dt * 1000.0 / self.PHASE_DIVISOR
         self._anim_time += dt
 
         if self._anim_state == "start":
@@ -803,14 +828,19 @@ class M3CommonRipple(CommonRipple):
                 self._progress = MDAnimationTransition.easing_standard(t) * 0.5
 
         elif self._anim_state == "hold":
+            # A forced exit is processed immediately.
             if self._force_exit:
                 self._anim_state = "exit"
                 self._anim_time = 0
                 self._force_exit = False
+                self._progress = (
+                    0.5  # we are beginning to exit the current position
+                )
 
         elif self._anim_state == "exit":
             t = self._anim_time / (self.EXIT_ANIM_DURATION / 1000.0)
             self._progress = 0.5 + t * 0.5
+
             if t >= 1.0:
                 self.anim_complete()
 
@@ -905,6 +935,7 @@ class M3CommonRipple(CommonRipple):
         self._progress = 1.0
         self._update_uniforms()
         self._doing_ripple = False
+        self._force_exit = False
         self.active_canvas.remove_group("m3_ripple_behavior")
 
     def on_touch_down(self, touch):

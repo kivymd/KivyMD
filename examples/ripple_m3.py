@@ -1,20 +1,12 @@
 from kivy.lang import Builder
-from kivy.uix.behaviors import ButtonBehavior
 
 from examples.common_app import CommonApp
 from kivymd.app import MDApp
 from kivymd.uix.behaviors import (
-    M3RectangularRippleBehavior,
     M3CircularRippleBehavior,
+    M3RectangularRippleBehavior,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
-from kivymd.uix.list import (
-    MDList,
-    MDListItem,
-    MDListItemHeadlineText,
-    MDListItemSupportingText,
-)
-from kivymd.uix.scrollview import MDScrollView
 
 KV = """
 MDScreen:

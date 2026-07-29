@@ -17,10 +17,10 @@ from .motion_behavior import (
     MotionShackBehavior,
 )
 from .ripple_behavior import (
-    RectangularRippleBehavior,
     CircularRippleBehavior,
-    M3RectangularRippleBehavior,
     M3CircularRippleBehavior,
+    M3RectangularRippleBehavior,
+    RectangularRippleBehavior,
 )
 from .rotate_behavior import RotateBehavior
 from .scale_behavior import ScaleBehavior

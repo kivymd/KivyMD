@@ -105,14 +105,14 @@ from kivy.graphics import (
     ClearColor,
     Color,
     Ellipse,
+    Fbo,
     Rectangle,
-    RoundedRectangle,
     RenderContext,
+    RoundedRectangle,
     StencilPop,
     StencilPush,
     StencilUnUse,
     StencilUse,
-    Fbo,
 )
 from kivy.metrics import Metrics
 from kivy.properties import (
@@ -125,8 +125,8 @@ from kivy.properties import (
 )
 from kivy.uix.behaviors import ToggleButtonBehavior
 
-from kivymd.animation import MDAnimationTransition
 from kivymd import glsl_path
+from kivymd.animation import MDAnimationTransition
 
 M3_RIPPLE_FS = os.path.join(glsl_path, "ripple", "ripple.glsl")
 RIPPLE_FS_STRING = None
@@ -322,7 +322,11 @@ class CommonRipple:
 
     @property
     def active_canvas(self):
-        return self.canvas.after if self.ripple_canvas_after else self.canvas.before
+        return (
+            self.canvas.after
+            if self.ripple_canvas_after
+            else self.canvas.before
+        )
 
     def lay_canvas_instructions(self) -> NoReturn:
         raise NotImplementedError
@@ -418,7 +422,9 @@ class CommonRipple:
 
     def call_ripple_animation_methods(self, touch) -> None:
         if self._doing_ripple:
-            Animation.cancel_all(self, "_ripple_rad", "ripple_color", "rect_color")
+            Animation.cancel_all(
+                self, "_ripple_rad", "ripple_color", "rect_color"
+            )
             self.anim_complete()
         self._ripple_rad = self.ripple_rad_default
         self.ripple_pos = (touch.x, touch.y)
@@ -470,7 +476,11 @@ class RectangularRippleBehavior(CommonRipple):
         if not self.ripple_effect:
             return
 
-        with self.canvas.after if self.ripple_canvas_after else self.canvas.before:
+        with (
+            self.canvas.after
+            if self.ripple_canvas_after
+            else self.canvas.before
+        ):
             if hasattr(self, "radius"):
                 if isinstance(self.radius, (float, int)):
                     self.radius = [
@@ -534,7 +544,11 @@ class CircularRippleBehavior(CommonRipple):
         if not self.ripple_effect:
             return
 
-        with self.canvas.after if self.ripple_canvas_after else self.canvas.before:
+        with (
+            self.canvas.after
+            if self.ripple_canvas_after
+            else self.canvas.before
+        ):
             StencilPush(group="circular_ripple_behavior")
             self.stencil = Ellipse(
                 size=(
@@ -558,9 +572,13 @@ class CircularRippleBehavior(CommonRipple):
                 group="circular_ripple_behavior",
             )
             StencilUnUse(group="circular_ripple_behavior")
-            Ellipse(pos=self.pos, size=self.size, group="circular_ripple_behavior")
+            Ellipse(
+                pos=self.pos, size=self.size, group="circular_ripple_behavior"
+            )
             StencilPop(group="circular_ripple_behavior")
-            self.bind(ripple_color=self._set_color, _ripple_rad=self._set_ellipse)
+            self.bind(
+                ripple_color=self._set_color, _ripple_rad=self._set_ellipse
+            )
 
     def _set_ellipse(self, instance, value):
         super()._set_ellipse(instance, value)
@@ -802,7 +820,9 @@ class M3CommonRipple(CommonRipple):
         # - Y is inverted at input time because Kivy's FBO/shader texture
         #   coordinates are vertically flipped relative to widget touch space.
         rc["in_origin"] = (
-            (w * 0.5, h * 0.5) if self.ripple_origin_to_center else (touch_x, touch_y)
+            (w * 0.5, h * 0.5)
+            if self.ripple_origin_to_center
+            else (touch_x, touch_y)
         )
         rc["in_touch"] = (touch_x, touch_y)
         rc["in_maxRadius"] = radius * 2.3

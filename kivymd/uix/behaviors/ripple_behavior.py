@@ -93,13 +93,10 @@ __all__ = (
 )
 
 import os
-import time
 from math import cos, pi, sin, sqrt
-from typing import NoReturn
 
 from kivy.animation import Animation
 from kivy.clock import Clock
-from kivy.core.window import Window
 from kivy.graphics import (
     ClearBuffers,
     ClearColor,
@@ -107,16 +104,13 @@ from kivy.graphics import (
     Ellipse,
     Fbo,
     Rectangle,
-    RenderContext,
     RoundedRectangle,
     StencilPop,
     StencilPush,
     StencilUnUse,
     StencilUse,
 )
-from kivy.metrics import Metrics
 from kivy.properties import (
-    AliasProperty,
     BooleanProperty,
     ColorProperty,
     ListProperty,
@@ -328,7 +322,7 @@ class CommonRipple:
             else self.canvas.before
         )
 
-    def lay_canvas_instructions(self) -> NoReturn:
+    def lay_canvas_instructions(self) -> None:
         raise NotImplementedError
 
     def start_ripple(self) -> None:
@@ -346,6 +340,7 @@ class CommonRipple:
         if self._doing_ripple and not self._finishing_ripple:
             self._finishing_ripple = True
             self._doing_ripple = False
+
             Animation.cancel_all(self, "_ripple_rad")
             anim = Animation(
                 _ripple_rad=self.finish_rad,
@@ -357,8 +352,10 @@ class CommonRipple:
 
     def fade_out(self, *args) -> None:
         rc = self.ripple_color
+
         if not self._fading_out:
             self._fading_out = True
+
             Animation.cancel_all(self, "ripple_color")
             anim = Animation(
                 ripple_color=[rc[0], rc[1], rc[2], 0.0],
@@ -390,10 +387,12 @@ class CommonRipple:
         #  But without this, the list (`ScrollView`) placed in the `MDCard`
         #  widget will not scroll.
         super().on_touch_down(touch)
+
         if touch.is_mouse_scrolling:
             return False
         if not self.collide_point(touch.x, touch.y):
             return False
+
         if not self.disabled:
             self.call_ripple_animation_methods(touch)
             # FIXME: this check is needed for the `MDTabsLabel` object.
@@ -487,6 +486,7 @@ class RectangularRippleBehavior(CommonRipple):
                         self.radius,
                     ]
                 self._round_rad = self.radius
+
             StencilPush(group="rectangular_ripple_behavior")
             RoundedRectangle(
                 pos=self.pos,
@@ -495,6 +495,7 @@ class RectangularRippleBehavior(CommonRipple):
                 group="rectangular_ripple_behavior",
             )
             StencilUse(group="rectangular_ripple_behavior")
+
             self.col_instruction = Color(
                 rgba=self.ripple_color, group="rectangular_ripple_behavior"
             )
@@ -506,6 +507,7 @@ class RectangularRippleBehavior(CommonRipple):
                 ),
                 group="rectangular_ripple_behavior",
             )
+
             StencilUnUse(group="rectangular_ripple_behavior")
             RoundedRectangle(
                 pos=self.pos,
@@ -514,6 +516,7 @@ class RectangularRippleBehavior(CommonRipple):
                 group="rectangular_ripple_behavior",
             )
             StencilPop(group="rectangular_ripple_behavior")
+
         self.bind(ripple_color=self._set_color, _ripple_rad=self._set_ellipse)
 
     def _set_ellipse(self, instance, value):
@@ -550,6 +553,7 @@ class CircularRippleBehavior(CommonRipple):
             else self.canvas.before
         ):
             StencilPush(group="circular_ripple_behavior")
+
             self.stencil = Ellipse(
                 size=(
                     self.width * self.ripple_scale,
@@ -561,7 +565,9 @@ class CircularRippleBehavior(CommonRipple):
                 ),
                 group="circular_ripple_behavior",
             )
+
             StencilUse(group="circular_ripple_behavior")
+
             self.col_instruction = Color(rgba=self.ripple_color)
             self.ellipse = Ellipse(
                 size=(self._ripple_rad, self._ripple_rad),
@@ -571,19 +577,23 @@ class CircularRippleBehavior(CommonRipple):
                 ),
                 group="circular_ripple_behavior",
             )
+
             StencilUnUse(group="circular_ripple_behavior")
             Ellipse(
                 pos=self.pos, size=self.size, group="circular_ripple_behavior"
             )
             StencilPop(group="circular_ripple_behavior")
+
             self.bind(
                 ripple_color=self._set_color, _ripple_rad=self._set_ellipse
             )
 
     def _set_ellipse(self, instance, value):
         super()._set_ellipse(instance, value)
+
         if self.ellipse.size[0] > self.width * 0.6 and not self._fading_out:
             self.fade_out()
+
         self.ellipse.pos = (
             self.center_x - self._ripple_rad / 2.0,
             self.center_y - self._ripple_rad / 2.0,
@@ -646,9 +656,10 @@ class M3CommonRipple(CommonRipple):
     def init_fbos(self):
         self._phase = 0.0
         self.ripple_pos = (0, 0)
-        # remove group also deallocates it from mem?
+        # TODO: Remove group also deallocates it from mem?
         self.fbo = Fbo(size=self.size, group="m3_ripple_behavior")
         self.set_shader(self.fbo)
+
         with self.fbo:
             ClearColor(0, 0, 0, 0)
             ClearBuffers()
@@ -668,9 +679,11 @@ class M3CommonRipple(CommonRipple):
 
     def set_shader(self, obj):
         global RIPPLE_FS_STRING
+
         if RIPPLE_FS_STRING is None:
             with open(M3_RIPPLE_FS, "r", encoding="utf-8") as shader_file:
                 RIPPLE_FS_STRING = "$HEADER$\n" + shader_file.read()
+
         obj.shader.fs = RIPPLE_FS_STRING
 
     _start_event = None
@@ -686,20 +699,23 @@ class M3CommonRipple(CommonRipple):
 
         if self._start_event is not None:
             self._start_event.cancel()
+
         self._start_event = Clock.schedule_once(
             self._call_ripple_animation_methods, 1 / 30
         )
 
-    # TODO: Debug this issue
+    # TODO: Debug this issue.
     _first_startup = False
 
     def _call_ripple_animation_methods(self, dt):
         if not self.ripple_effect:
             return
+
         self._set_ripple_color()
 
         self.anim_complete()
         self.lay_canvas_instructions()
+
         if self._first_startup is False:
             self.anim_complete()
             self.lay_canvas_instructions()
@@ -733,7 +749,7 @@ class M3CommonRipple(CommonRipple):
             instr(**instr_params, **radius_setting)
             StencilUse(group="m3_ripple_behavior")
 
-            # real render is here
+            # Real render is here.
             Color(1, 1, 1, 1, group="m3_ripple_behavior")
             if shape_kind == 1.0:
                 Ellipse(**instr_params, texture=self.fbo.texture)
@@ -765,18 +781,18 @@ class M3CommonRipple(CommonRipple):
             self._anim_time = 0
             self._anim_state = "exit"
         else:
-            # trust hold to do itself
-            self._force_exit = True
+            self._force_exit = True # trust hold to do itself
 
     def _tick(self, dt):
-
         self._phase += (dt * 1000.0) / self.PHASE_DIVISOR
         self._anim_time += dt
 
         if self._anim_state == "start":
             t = self._anim_time / (self.ENTER_ANIM_DURATION / 1000.0)
+
             if t >= 1.0:
                 self._progress = 0.5
+
                 if self._force_exit:
                     self._anim_state = "exit"
                     self._anim_time = 0
@@ -801,16 +817,13 @@ class M3CommonRipple(CommonRipple):
         self._update_uniforms()
 
     def _update_uniforms(self):
-
         if self.fbo is None:
             return
 
         w, h = self._clamp_size(*self.size)
         density_scale = 2.1
         radius = sqrt((w / 2.0) ** 2 + (h / 2.0) ** 2)
-
         touch_x, touch_y = self.ripple_pos
-
         rc = self.fbo
         rc["in_resolutionScale"] = (1.0 / w, 1.0 / h)
 
@@ -830,10 +843,11 @@ class M3CommonRipple(CommonRipple):
         rc["in_noiseScale"] = (density_scale / w, density_scale / h)
         rc["in_noisePhase"] = float(self._phase * 0.001)
         rc["in_turbulencePhase"] = float(self._phase)
-
         r_c = self.ripple_color
+
         if self.ripple_color is None:
             r_c = [1, 1, 1, 1]
+
         rc["in_color"] = [float(c) for c in r_c]
         rc["in_sparkleColor"] = [
             float(c)
@@ -846,6 +860,7 @@ class M3CommonRipple(CommonRipple):
 
         p = self._phase
         scale = 1.5
+
         rc["in_tCircle1"] = (
             scale * 0.5 + (p * 0.01 * cos(scale * 0.55)),
             scale * 0.5 + (p * 0.01 * sin(scale * 0.55)),
@@ -864,11 +879,12 @@ class M3CommonRipple(CommonRipple):
         r1 = p * pr + 1.7 * pi
         r2 = p * pl + 2.0 * pi
         r3 = p * pr + 2.75 * pi
+
         rc["in_tRotation1"] = (cos(r1), sin(r1))
         rc["in_tRotation2"] = (cos(r2), sin(r2))
         rc["in_tRotation3"] = (cos(r3), sin(r3))
 
-        # draw finally
+        # Draw finally.
         for child in self.active_canvas.children:
             if hasattr(child, "size") and child.size != self.size:
                 child.size = self.size
@@ -877,12 +893,14 @@ class M3CommonRipple(CommonRipple):
 
         if self.rect.size != self.size:
             self.rect.size = self.size
+
         self.fbo.ask_update()
 
     def anim_complete(self, *args) -> None:
         if self._event:
             self._event.cancel()
             self._event = None
+
         self._anim_state = "off"
         self._progress = 1.0
         self._update_uniforms()
@@ -892,6 +910,7 @@ class M3CommonRipple(CommonRipple):
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos) and not self.disabled:
             self.call_ripple_animation_methods(touch)
+
         return super().on_touch_down(touch)
 
 

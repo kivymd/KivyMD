@@ -3,8 +3,8 @@ from kivy.lang import Builder
 from examples.common_app import CommonApp
 from kivymd.app import MDApp
 from kivymd.uix.behaviors import (
-    M3RectangularRippleBehavior,
     M3CircularRippleBehavior,
+    M3RectangularRippleBehavior,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
 

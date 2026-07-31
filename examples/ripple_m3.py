@@ -3,8 +3,8 @@ from kivy.lang import Builder
 from examples.common_app import CommonApp
 from kivymd.app import MDApp
 from kivymd.uix.behaviors import (
-    M3CircularRippleBehavior,
     M3RectangularRippleBehavior,
+    M3CircularRippleBehavior,
 )
 from kivymd.uix.boxlayout import MDBoxLayout
 
@@ -19,7 +19,7 @@ MDScreen:
 
         MDBoxLayout:
             adaptive_height: True
-            spacing:dp(20)
+            spacing: dp(20)
 
             MDIconButton:
                 icon: "menu"
@@ -57,7 +57,7 @@ MDScreen:
                     size_hint: 0.4, None
                     height: "120dp"
                     md_bg_color: app.theme_cls.secondaryContainerColor
-                    ripple_color:"#8dffff"
+                    ripple_color: "#8dffff"
                     radius: [dp(60), dp(0), dp(60), 0]
                     ripple_alpha: 0.7
 
@@ -67,7 +67,7 @@ MDScreen:
 
                 M3RippleCircle:
                     size_hint: None, None
-                    size: [dp(100)]*2
+                    size: [dp(100)] * 2
                     pos_hint: {"center_x": .5}
                     ripple_color:app.theme_cls.primaryColor
                     ripple_alpha: 0.7

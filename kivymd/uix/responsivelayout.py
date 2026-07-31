@@ -106,6 +106,129 @@ Usage responsive
     As shown in the example above, such a common component is the
     `CommonComponentLabel` widget.
 
+Usage responsive with multiple screen
+-------------------------------------
+
+.. code-block:: python
+
+    from kivy.lang import Builder
+
+    from kivymd.app import MDApp
+    from kivymd.uix.label import MDLabel
+    from kivymd.uix.responsivelayout import MDResponsiveLayout
+    from kivymd.uix.screen import MDScreen
+
+    KV = '''
+    <CommonComponentLabel>
+        halign: "center"
+
+    # -------------------------------- Log In ---------------------------------
+
+    <LogInMobileView>
+        CommonComponentLabel:
+            text: "Log In Mobile"
+
+
+    <LogInTabletView>
+        CommonComponentLabel:
+            text: "Log In Table"
+
+
+    <LogInDesktopView>
+        CommonComponentLabel:
+            text: "Log In Desktop"
+
+    # ------------------------------- Log Out ---------------------------------
+
+    <LogOutMobileView>
+        CommonComponentLabel:
+            text: "Log Out Mobile"
+
+
+    <LogOutTabletView>
+        CommonComponentLabel:
+            text: "Log Out Table"
+
+
+    <LogOutDesktopView>
+        CommonComponentLabel:
+            text: "Log Out Desktop"
+
+    # -------------------------------------------------------------------------
+
+    MDScreenManager:
+        id: manager
+        md_bg_color: self.theme_cls.backgroundColor
+
+        LogInResponsiveView:
+            name: "login"
+            on_touch_down:
+                if self.collide_point(args[0].x, args[0].y): \
+                manager.current = "logout"
+
+        LogOutResponsiveView:
+            name: "logout"
+            on_touch_down:
+                if self.collide_point(args[0].x, args[0].y): \
+                manager.current = "login"
+    '''
+
+
+    class CommonComponentLabel(MDLabel):
+        pass
+
+
+    # -------------------------------- Log In ---------------------------------
+
+    class LogInMobileView(MDScreen):
+        pass
+
+
+    class LogInTabletView(MDScreen):
+        pass
+
+
+    class LogInDesktopView(MDScreen):
+        pass
+
+
+    class LogInResponsiveView(MDResponsiveLayout, MDScreen):
+        def __init__(self, **kw):
+            super().__init__(**kw)
+            self.mobile_view = LogInMobileView()
+            self.tablet_view = LogInTabletView()
+            self.desktop_view = LogInDesktopView()
+
+    # ------------------------------- Log Out ---------------------------------
+
+    class LogOutMobileView(MDScreen):
+        pass
+
+
+    class LogOutTabletView(MDScreen):
+        pass
+
+
+    class LogOutDesktopView(MDScreen):
+        pass
+
+
+    class LogOutResponsiveView(MDResponsiveLayout, MDScreen):
+        def __init__(self, **kw):
+            super().__init__(**kw)
+            self.mobile_view = LogOutMobileView()
+            self.tablet_view = LogOutTabletView()
+            self.desktop_view = LogOutDesktopView()
+
+    # -------------------------------------------------------------------------
+
+    class Test(MDApp):
+        def build(self):
+            return Builder.load_string(KV)
+
+
+    Test().run()
+
 Perhaps you expected more from the :class:`~MDResponsiveLayout` widget, but
 even `Flutter` uses a similar approach to creating a responsive UI.
 

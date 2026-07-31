@@ -2500,7 +2500,7 @@ class MDDataTable(ThemableBehavior, CommonElevationBehavior, AnchorLayout):
             if list(row) == list(data):
                 self.row_data.pop(i)
                 self.update_row_data(None, self.row_data)
-                # Очищаем чекбоксы
+                # Clear checkboxes.
                 self.table_data.checked_row_indices = []
                 self.table_data.current_selection_check = {}
                 self.table_data.table_header.ids.check.state = "normal"

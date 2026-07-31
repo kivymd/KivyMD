@@ -55,6 +55,7 @@ that inherits from the :class:`~RectangularRippleBehavior` class:
 
     from kivymd.app import MDApp
     from kivymd.uix.behaviors import RectangularRippleBehavior, BackgroundColorBehavior
+    from kivymd.uix.widget import MDWidget
 
     KV = '''
     MDScreen:
@@ -65,11 +66,12 @@ that inherits from the :class:`~RectangularRippleBehavior` class:
             pos_hint: {"center_x": .5, "center_y": .5}
     '''
 
-
     class RectangularRippleButton(
-        RectangularRippleBehavior, ButtonBehavior, BackgroundColorBehavior
+        MDWidget, RectangularRippleBehavior, ButtonBehavior, BackgroundColorBehavior
     ):
-        md_bg_color = [0, 0, 1, 1]
+        def __init__(self, *args, **kwargs):
+            super().__init__(*args, **kwargs)
+            self.md_bg_color = [0, 0, 1, 1]
 
 
     class Example(MDApp):
@@ -115,6 +117,7 @@ from kivy.properties import (
     ColorProperty,
     ListProperty,
     NumericProperty,
+    OptionProperty,
     StringProperty,
 )
 from kivy.uix.behaviors import ToggleButtonBehavior
@@ -132,6 +135,9 @@ class CommonRipple:
     ripple_rad_default = NumericProperty(1)
     """
     The starting value of the radius of the ripple effect.
+
+    .. deprecated:: 2.0.0
+        Do not use this attribute.
 
     .. code-block:: kv
 
@@ -202,41 +208,44 @@ class CommonRipple:
     and defaults to `None`.
     """
 
-    ripple_duration_in_fast = NumericProperty(0.3)
+    ripple_duration_in_fast = NumericProperty(450)
     """
     Ripple duration when touching to widget.
 
     .. code-block:: kv
 
         CircularRippleButton:
-            ripple_duration_in_fast: .1
+            ripple_duration_in_fast: 200
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ripple-duration-in-fast.gif
        :align: center
 
     :attr:`ripple_duration_in_fast` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `0.3`.
+    and defaults to `450`.
     """
 
-    ripple_duration_in_slow = NumericProperty(2)
+    ripple_duration_in_slow = NumericProperty(375)
     """
     Ripple duration when long touching to widget.
 
     .. code-block:: kv
 
         CircularRippleButton:
-            ripple_duration_in_slow: 5
+            ripple_duration_in_slow: 1000
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ripple-duration-in-slow.gif
        :align: center
 
     :attr:`ripple_duration_in_slow` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `2`.
+    and defaults to `375`.
     """
 
     ripple_duration_out = NumericProperty(0.3)
     """
     The duration of the disappearance of the wave effect.
+
+    .. deprecated:: 2.0.0
+        Do not use this attribute.
 
     .. code-block:: kv
 
@@ -255,6 +264,9 @@ class CommonRipple:
     The ripple effect is drawn above/below the content.
 
     .. versionadded:: 1.0.0
+
+    .. deprecated:: 2.0.0
+        Do not use this attribute.
 
     .. code-block:: kv
 
@@ -288,6 +300,9 @@ class CommonRipple:
     """
     Type of animation for ripple in effect.
 
+    .. deprecated:: 2.0.0
+        Use :attr:`ripple_func` instead.
+
     :attr:`ripple_func_in` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'out_quad'`.
     """
@@ -295,6 +310,9 @@ class CommonRipple:
     ripple_func_out = StringProperty("out_quad")
     """
     Type of animation for ripple out effect.
+
+    .. deprecated:: 2.0.0
+        Use :attr:`ripple_func` instead.
 
     :attr:`ripple_func_out` is an :class:`~kivy.properties.StringProperty`
     and defaults to `'ripple_func_out'`.
@@ -620,8 +638,6 @@ class M3CommonRipple(CommonRipple):
     .. versionadded:: 2.0.0
     """
 
-    ENTER_ANIM_DURATION = 450
-    EXIT_ANIM_DURATION = 375
     NOISE_ANIMATION_DURATION = 7000
     PHASE_DIVISOR = 214
 
@@ -657,6 +673,18 @@ class M3CommonRipple(CommonRipple):
 
     :attr:`sparkle_color` is an :class:`~kivy.properties.ColorProperty`
     and defaults to `ripple_color` with alpha set to `1.0`.
+    """
+
+    ripple_func = OptionProperty(
+        "standard", options=["standard", "decelerated", "accelerate", "linear"]
+    )
+    """
+    Type of animation for ripple in effect.
+
+    Available options are: 'standard', 'decelerated', 'accelerate', 'linear'.
+
+    :attr:`ripple_func` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'standard'`.
     """
 
     _progress = NumericProperty(0.0)
@@ -788,7 +816,7 @@ class M3CommonRipple(CommonRipple):
         self._event = Clock.schedule_interval(self._tick, 0)
 
         Clock.schedule_once(
-            self._force_finish, self.ENTER_ANIM_DURATION / 1000 + 0.1
+            self._force_finish, self.ripple_duration_in_fast / 1000 + 0.1
         )
 
     def _force_finish(self, dt):
@@ -813,7 +841,7 @@ class M3CommonRipple(CommonRipple):
         self._anim_time += dt
 
         if self._anim_state == "start":
-            t = self._anim_time / (self.ENTER_ANIM_DURATION / 1000.0)
+            t = self._anim_time / (self.ripple_duration_in_fast / 1000.0)
 
             if t >= 1.0:
                 self._progress = 0.5
@@ -825,7 +853,7 @@ class M3CommonRipple(CommonRipple):
                 else:
                     self._anim_state = "hold"
             else:
-                self._progress = MDAnimationTransition.easing_standard(t) * 0.5
+                self._progress = self._get_amin_func(t) * 0.5
 
         elif self._anim_state == "hold":
             # A forced exit is processed immediately.
@@ -838,7 +866,7 @@ class M3CommonRipple(CommonRipple):
                 )
 
         elif self._anim_state == "exit":
-            t = self._anim_time / (self.EXIT_ANIM_DURATION / 1000.0)
+            t = self._anim_time / (self.ripple_duration_in_slow / 1000.0)
             self._progress = 0.5 + t * 0.5
 
             if t >= 1.0:
@@ -868,7 +896,9 @@ class M3CommonRipple(CommonRipple):
             else (touch_x, touch_y)
         )
         rc["in_touch"] = (touch_x, touch_y)
-        rc["in_maxRadius"] = radius * 2.3
+        rc["in_maxRadius"] = radius * (
+            2.3 if not self.ripple_scale else self.ripple_scale
+        )
         rc["in_progress"] = float(self._progress)
         rc["in_noiseScale"] = (density_scale / w, density_scale / h)
         rc["in_noisePhase"] = float(self._phase * 0.001)
@@ -926,6 +956,23 @@ class M3CommonRipple(CommonRipple):
 
         self.fbo.ask_update()
 
+    def _get_amin_func(self, progress: float) -> float:
+        """Return the eased value based on ripple_func property."""
+
+        amin_map = {
+            "standard": MDAnimationTransition.easing_standard,
+            "decelerated": MDAnimationTransition.easing_decelerated,
+            "accelerate": MDAnimationTransition.easing_accelerated,
+            "linear": MDAnimationTransition.easing_linear,
+        }
+        anim_func = amin_map.get(self.ripple_func)
+
+        if anim_func is None:
+            # By default, we use the standard one.
+            return MDAnimationTransition.easing_standard
+
+        return anim_func(progress)
+
     def anim_complete(self, *args) -> None:
         if self._event:
             self._event.cancel()
@@ -946,12 +993,28 @@ class M3CommonRipple(CommonRipple):
 
 
 class M3RectangularRippleBehavior(M3CommonRipple):
+    """Material 3 rectangular ripple behavior."""
+
     def _get_shape_kind(self) -> float:
+        """
+        Return the shape kind for rectangular ripple.
+
+        :return: 0.0 for rectangular.
+        """
+
         return 0.0
 
 
 class M3CircularRippleBehavior(M3CommonRipple):
+    """Material 3 circular ripple behavior."""
+
     def _get_shape_kind(self) -> float:
+        """
+        Return the shape kind for circular ripple.
+
+        :return: 1.0 for circular.
+        """
+
         return 1.0
 
 

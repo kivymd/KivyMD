@@ -1505,28 +1505,36 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
         self.menu = self.ids.md_menu
         self.target_height = 0
 
+        self._initial_width = self.width
+
     def adjust_width(self) -> None:
         """
         Adjust the width of the menu if the width of the menu goes beyond
         the boundaries of the parent window from  starting point.
         """
 
+        # Use the saved initial width.
+        width = self._initial_width
+
         if self._start_coords[0] >= Window.width / 2:
-            if self.width > self._start_coords[0]:
+            if width > self._start_coords[0]:
                 self.width = (
                     self._start_coords[0]
                     - self.border_margin
                     - (
-                        (self.caller.width / 2 + self.border_margin)
+                        self.caller.width / 2 + self.border_margin
                         if self.position in ["right", "left"]
                         else 0
                     )
                 )
+            else:
+                self.width = width
+        elif Window.width - self._start_coords[0] < width:
+            self.width = (
+                Window.width - self._start_coords[0] - self.border_margin
+            )
         else:
-            if Window.width - self._start_coords[0] < self.width:
-                self.width = (
-                    Window.width - self._start_coords[0] - self.border_margin
-                )
+            self.width = width
 
     def check_ver_growth(self) -> None:
         """
@@ -1830,13 +1838,15 @@ if __name__ == "__main__":
     from kivymd.uix.screen import MDScreen
 
     class Example(MDApp):
+        menu: MDDropdownMenu
+
         def __init__(self, **kwargs):
             super().__init__(**kwargs)
             self.screen = MDScreen(md_bg_color=self.theme_cls.backgroundColor)
-            menu_items = [{"text": f"Item {i}"} for i in range(55)]
-            self.menu = MDDropdownMenu(items=menu_items, width_mult=4)
+            self.menu_items = [{"text": f"Item {i}"} for i in range(55)]
 
         def open_menu(self, caller):
+            self.menu = MDDropdownMenu(items=self.menu_items, width_mult=4)
             self.menu.caller = caller
             self.menu.open()
 

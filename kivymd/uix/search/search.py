@@ -77,12 +77,12 @@ from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
+    BooleanProperty,
     ColorProperty,
     ListProperty,
     NumericProperty,
     ObjectProperty,
     StringProperty,
-    BooleanProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
@@ -96,7 +96,9 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDIcon
 from kivymd.utils import next_frame
 
-with open(os.path.join(uix_path, "search", "search.kv"), encoding="utf-8") as kv_file:
+with open(
+    os.path.join(uix_path, "search", "search.kv"), encoding="utf-8"
+) as kv_file:
     Builder.load_string(kv_file.read())
 
 
@@ -193,7 +195,9 @@ class MDSearchViewContainer(BoxLayout):
 
     def show_child(self, anim_time):
         self._children.opacity = 0
-        next_frame(Animation(opacity=1, d=self._d).start, self._children, t=anim_time)
+        next_frame(
+            Animation(opacity=1, d=self._d).start, self._children, t=anim_time
+        )
         next_frame(super().add_widget, self._children, t=anim_time)
 
     def hide_child(self):
@@ -355,7 +359,9 @@ class MDSearchWidget(RelativeLayout):
             self.ids.text_input.focus = False
 
         self.state = new_state
-        Clock.schedule_once(lambda dt: setattr(self, "switching_state", False), self._d)
+        Clock.schedule_once(
+            lambda dt: setattr(self, "switching_state", False), self._d
+        )
 
     def clean_header(self):
         for child in self.ids.header.children:

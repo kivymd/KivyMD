@@ -1,13 +1,16 @@
 from kivy.lang import Builder
-from kivymd.app import MDApp
-from kivymd.uix.list import MDListItem
-from examples.common_app import CommonApp
 from kivy.properties import StringProperty
+
+from examples.common_app import CommonApp
+from kivymd.app import MDApp
 from kivymd.icon_definitions import md_icons
+from kivymd.uix.list import MDListItem
+
 
 class IconItem(MDListItem):
     icon = StringProperty()
     text = StringProperty()
+
 
 MAIN_KV = """
 #: import images_path kivymd.images_path
@@ -26,13 +29,13 @@ MDScreen:
     BoxLayout:
         padding:[dp(10), dp(30), dp(10), dp(10)]
         orientation:"vertical"
-        
+
         MDSearchBar:
             id: search_bar
             supporting_text: "Search in text"
             view_root: root
             on_text: app.set_list_md_icons(text=args[-1], search=True)
-            
+
             # Search Bar items
             MDSearchBarLeadingContainer:
                 MDSearchLeadingIcon:
@@ -44,7 +47,7 @@ MDScreen:
                     icon:"microphone"
                 MDSearchTrailingAvatar:
                     source:f"{images_path}/logo/kivymd-icon-128.png"
-            
+
             # Search View
             MDSearchViewLeadingContainer:
                 MDSearchLeadingIcon:
@@ -82,13 +85,14 @@ MDScreen:
                 on_active:search_bar.docked = args[-1]
 """
 
+
 class Example(MDApp, CommonApp):
 
     def build(self):
         return Builder.load_string(MAIN_KV)
 
     def on_start(self):
-        self.set_list_md_icons()    
+        self.set_list_md_icons()
 
     def set_list_md_icons(self, text="", search=False):
         def add_icon_item(name_icon):
@@ -108,5 +112,6 @@ class Example(MDApp, CommonApp):
                     add_icon_item(name_icon)
             else:
                 add_icon_item(name_icon)
+
 
 Example().run()

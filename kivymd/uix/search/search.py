@@ -73,13 +73,10 @@ import os
 
 from kivy.animation import Animation
 from kivy.clock import Clock
-from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
     BooleanProperty,
-    ColorProperty,
-    ListProperty,
     NumericProperty,
     ObjectProperty,
     StringProperty,
@@ -92,7 +89,6 @@ from kivy.uix.widget import Widget
 
 from kivymd import uix_path
 from kivymd.font_definitions import theme_font_styles
-from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.label import MDIcon
 from kivymd.utils import next_frame
 
@@ -273,7 +269,7 @@ class MDSearchWidget(RelativeLayout):
     def _open(self, opacity_down, opacity_up):
         h_d = self._d / 2
 
-        # container
+        # Container.
         self.root._view_container.size_hint_y = 1
         self.root._view_container.opacity = 0
         self.root._view_container.padding = [0] * 4
@@ -284,7 +280,7 @@ class MDSearchWidget(RelativeLayout):
             size=self.size, pos=self.pos, radius=[0] * 4, t=self._t, d=self._d
         ).start(self.ids.root_container)
 
-        # header
+        # Header.
         Animation(height=dp(70), t=self._t, d=self._d).start(self.ids.header)
         self.icons_open(opacity_up, opacity_down, h_d)
         self.root._view_container.show_child(self._d)
@@ -292,7 +288,7 @@ class MDSearchWidget(RelativeLayout):
     def _close(self, opacity_down, opacity_up):
         h_d = self._d / 2
 
-        # container
+        # Container.
         self.root._view_container.size_hint_y = 1
         self.root._view_container.opacity = 1
 
@@ -315,7 +311,7 @@ class MDSearchWidget(RelativeLayout):
             d=self._d,
         ).start(self.ids.root_container)
 
-        # header
+        # Header.
         Animation(height=dp(56), t=self._t, d=self._d).start(self.ids.header)
         self.icons_close(opacity_up, opacity_down, h_d)
         self.root._view_container.hide_child()
@@ -343,6 +339,7 @@ class MDSearchWidget(RelativeLayout):
     def switch_state(self, new_state):
         if self.switching_state or new_state == self.state:
             return
+
         self.switching_state = True
 
         opacity_down = Animation(opacity=0, d=self._d / 2)
@@ -376,7 +373,6 @@ class MDSearchWidget(RelativeLayout):
             self.root.size_hint_x = 1
 
         self.ids.root_container.size = [self.root.width, dp(56)]
-
         self.update_state_closed()
 
     def update_state_opened(self, *args):
@@ -452,7 +448,7 @@ class MDSearchBar(Widget):
 
     """
 
-    # internal props
+    # Internal props.
     _search_widget = None
     _bar_leading_container = None
     _bar_trailing_container = None
@@ -491,6 +487,7 @@ class MDSearchBar(Widget):
     def on_view_root(self, *args):
         if self._search_widget.parent:
             self._search_widget.parent.remove_widget(self._search_widget)
+
         self.view_root.add_widget(self._search_widget)
         self._search_widget.init_state()
         self._search_widget.update_bar()

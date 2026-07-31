@@ -481,14 +481,12 @@ class MDNavigationRailMenuButton(MDIconButton):
     """
 
 
-class MDNavigationRailItemIcon(RectangularRippleBehavior, MDIcon):
+class MDNavigationRailItemIcon(MDIcon):
     """
     Implements an icon for the :class:`~MDNavigationRailItem` class.
 
-    For more information, see in the
-    :class:`~kivymd.uix.behaviors.ripple_behavior.RectangularRippleBehavior` and
-    :class:`~kivymd.uix.label.label.MDIcon`
-    classes documentation.
+    For more information, see in the :class:`~kivymd.uix.label.label.MDIcon`
+    class documentation.
 
     .. versionchanged:: 2.0.0
     """
@@ -507,57 +505,6 @@ class MDNavigationRailItemIcon(RectangularRippleBehavior, MDIcon):
     _navigation_item = ObjectProperty()
     _layer_color = ColorProperty([0, 0, 0, 0])
     _selected_region_width = NumericProperty(dp(0))
-
-    def anim_complete(self, *args):
-        super().anim_complete()
-        self._navigation_rail.set_active_item(self._navigation_item)
-
-    def lay_canvas_instructions(self) -> None:
-        if not self.ripple_effect:
-            return
-
-        canvas_rectangle = self.canvas.before.get_group(
-            "navigation-rail-rounded-rectangle"
-        )[0]
-
-        with (
-            self.canvas.after
-            if self.ripple_canvas_after
-            else self.canvas.before
-        ):
-            if hasattr(self, "radius"):
-                self.radius = [
-                    canvas_rectangle.radius[0][0],
-                ]
-                self._round_rad = self.radius
-            StencilPush(group="rectangular_ripple_behavior")
-            RoundedRectangle(
-                pos=canvas_rectangle.pos,
-                size=canvas_rectangle.size,
-                radius=self._round_rad,
-                group="rectangular_ripple_behavior",
-            )
-            StencilUse(group="rectangular_ripple_behavior")
-            self.col_instruction = Color(
-                rgba=self.ripple_color, group="rectangular_ripple_behavior"
-            )
-            self.ellipse = Ellipse(
-                size=(self._ripple_rad, self._ripple_rad),
-                pos=(
-                    self.ripple_pos[0] - self._ripple_rad / 2.0,
-                    self.ripple_pos[1] - self._ripple_rad / 2.0,
-                ),
-                group="rectangular_ripple_behavior",
-            )
-            StencilUnUse(group="rectangular_ripple_behavior")
-            RoundedRectangle(
-                pos=self.pos,
-                size=self.size,
-                radius=self._round_rad,
-                group="rectangular_ripple_behavior",
-            )
-            StencilPop(group="rectangular_ripple_behavior")
-        self.bind(ripple_color=self._set_color, _ripple_rad=self._set_ellipse)
 
 
 class MDNavigationRailItemLabel(ScaleBehavior, MDLabel):

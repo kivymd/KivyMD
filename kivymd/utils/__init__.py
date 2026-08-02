@@ -1,5 +1,6 @@
 from kivy.clock import Clock
 
+
 def next_frame(func, *args, **kwargs):
     if time := kwargs.get("t"):
         del kwargs["t"]

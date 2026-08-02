@@ -6,7 +6,7 @@ import os
 import sys
 from pathlib import Path
 
-# Don't allow Kivy to handle args
+# Don't allow Kivy to handle args.
 os.environ["KIVY_NO_ARGS"] = "true"
 os.environ["READTHEDOCS"] = "true"
 
@@ -14,9 +14,9 @@ sys.path.insert(0, os.path.abspath("_extensions"))
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath("."))))
 try:
     kivymd_path = Path(__file__).parent.parent.parent / "kivymd"
-    # this is a hack for now, will implement a better solution later
+    # This is a hack for now, will implement a better solution later
     # __version__ is defined in _version.py, imported by exec() below
-    # this is just so linter doesn't complain
+    # this is just so linter doesn't complain.
     __version__ = ""
     with open(kivymd_path / "_version.py", encoding="utf-8") as f:
         exec(f.read())
@@ -27,8 +27,8 @@ import autoapi_kivymd  # NOQA. from _extensions
 
 # Project information.
 project = "KivyMD"
-copyright = "2024, Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
-author = "Andrés Rodríguez, Ivanov Yuri, Artem Bulgakov and KivyMD contributors"
+copyright = "2026, Andrés Rodríguez, Ivanov Yuri, Ansh Dadwal, Artem Bulgakov and KivyMD contributors"
+author = "Andrés Rodríguez, Ivanov Yuri, Ansh Dadwal, Artem Bulgakov and KivyMD contributors"
 version = __version__
 release = __version__
 

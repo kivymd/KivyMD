@@ -2,6 +2,8 @@
 Components/Search
 =================
 
+.. versionadded:: 2.0.0
+
 .. seealso::
 
     `Material Design spec, Search <https://m3.material.io/components/search/overview>`_

@@ -2,6 +2,8 @@
 Components/LoadingIndicator
 ===========================
 
+.. versionadded:: 2.0.0
+
 .. seealso::
 
     `Material Design spec, Loading indicator <https://m3.material.io/components/loading-indicator/overview>`_

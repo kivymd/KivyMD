@@ -2,6 +2,8 @@
 Components/ExProgressIndicator
 ==============================
 
+.. versionadded:: 2.0.0
+
 .. seealso::
 
     `Material Design spec, Progress indicators <https://m3.material.io/components/progress-indicators/overview>`_

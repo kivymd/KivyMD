@@ -332,7 +332,7 @@ class MDCarousel(MDWidget):
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/carousel-full-screen-vertical.gif
         :align: center
-        :scale: 50%
+        :width: 60%
 
     Full-screen-horizontal
     ----------------------
@@ -344,7 +344,7 @@ class MDCarousel(MDWidget):
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/carousel-full-screen-horizontal.gif
         :align: center
-        :scale: 50%
+        :width: 60%
     """
 
     uncontained_item_width = NumericProperty(dp(280))

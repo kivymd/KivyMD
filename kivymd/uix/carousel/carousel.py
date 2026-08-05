@@ -156,7 +156,7 @@ class MDCarouselItem(MDCard):
     """
     Implements a item for :class:`~MDCarousel` class.
 
-    For more information, see in the :class:`~kivymd.uix.card.MDCard`
+    For more information, see in the :class:`~kivymd.uix.card.card.MDCard`
     class documentation.
 
     :Events:
@@ -209,7 +209,7 @@ class MDCarousel(MDWidget):
     """
     Implements a custom Material Design 3 carousel.
 
-    For more information, see in the :class:`~kivymd.uix.widget.MDWidget`
+    For more information, see in the :class:`~kivymd.uix.widget.widget.MDWidget`
     class documentation.
     """
 

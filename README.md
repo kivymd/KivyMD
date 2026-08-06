@@ -47,11 +47,6 @@ may be offered to you without asking too.
 pip install kivymd==2.0.0
 ```
 
-> [!NOTE]
-> KivyMD 2.0.0 has not yet been published on `PyPI`. To use the latest
-> features and fixes, install the development version from the `master`
-> branch.
-
 ### Dependencies:
 
 - [Kivy](https://github.com/kivy/kivy) >= 2.3.0 ([Installation](https://kivy.org/doc/stable/gettingstarted/installation.html))

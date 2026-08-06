@@ -8,10 +8,6 @@ Unreleased
        pip install https://github.com/kivymd/KivyMD/archive/master.zip
 
 * Bug fixes and other minor improvements.
-* [`compare <https://github.com/kivymd/KivyMD/compare/3bf651d53ab2...6623c8d0f310>`_] Add supports `Google's Material Design 3` and the `Material You` concept.
-* [`commit 25f242e <https://github.com/kivymd/KivyMD/commit/25f242ed22b825deac4f02bc057be2415357e343>`_] Add the feature to use icons from custom fonts.
-* [`pull 1584 <https://github.com/kivymd/KivyMD/pull/1584>`_] Implement bitmap scale down.
-* [`commit 8ba6af9 <https://github.com/kivymd/KivyMD/commit/8ba6af95f484e3b0d3885ebf3eb5fa85ee5bd151>`_] Fix [`issue 1593 <https://github.com/kivymd/KivyMD/issues/1593>`_].
 * [`commit b34b07f <https://github.com/kivymd/KivyMD/commit/b34b07f1d7935ce526bcecd306675c2afcf76bea>`_] Fix elevation properties.
 * [`commit cb01c01 <https://github.com/kivymd/KivyMD/commit/cb01c01e2e407ed3a91073262540da93dcaef25d>`_] Fixed an infinite loop when typing text fast in the `MDTextfield` widget.
 * Issues closed:
@@ -50,7 +46,9 @@ Unreleased
 * [`issue 1586 <https://github.com/kivymd/KivyMD/issues/1586>`_] Issue #1586
 * [`issue 1472 <https://github.com/kivymd/KivyMD/issues/1472>`_] Issue #1472
 * [`issue 1536 <https://github.com/kivymd/KivyMD/issues/1536>`_] Issue #1536
+* [`issue 1536 <https://github.com/kivymd/KivyMD/issues/1593>`_] Issue #1593
 * [`issue 1493 <https://github.com/kivymd/KivyMD/issues/1493>`_] Issue #1493
+* [`issue 1493 <https://github.com/kivymd/KivyMD/issues/1600>`_] Issue #1600
 * [`issue 1852 <https://github.com/kivymd/KivyMD/issues/1852>`_] Issue #1852
 * [`issue 1853 <https://github.com/kivymd/KivyMD/issues/1853>`_] Issue #1853
 * [`issue 1857 <https://github.com/kivymd/KivyMD/issues/1857>`_] Issue #1857
@@ -63,9 +61,12 @@ Unreleased
 * [`issue 1598 <https://github.com/kivymd/KivyMD/issues/1598>`_] Issue #1598
 * [`issue 1803 <https://github.com/kivymd/KivyMD/issues/1803>`_] Issue #1803
 * New feature:
+* [`commit 25f242e <https://github.com/kivymd/KivyMD/commit/25f242ed22b825deac4f02bc057be2415357e343>`_] Add the feature to use icons from custom fonts.
+* [`compare <https://github.com/kivymd/KivyMD/compare/3bf651d53ab2...6623c8d0f310>`_] Add supports `Google's Material Design 3` and the `Material You` concept.
+* [`PR 1584 <https://github.com/kivymd/KivyMD/pull/1584>`_] Implement bitmap scale down
 * [`PR 1854 <https://github.com/kivymd/KivyMD/pull/1854>`_] New `M3` ripple effect
 * [`PR 1825 <https://github.com/kivymd/KivyMD/pull/1825>`_] New widget `MDLoadingIndicator`
+* [`PR 1825 <https://github.com/kivymd/KivyMD/pull/1890>`_] New widget `MDCarousel`
 * [`PR 1629 <https://github.com/kivymd/KivyMD/pull/1629>`_] Implement material design specifications for `MDScrollView`
 * [`PR 1673 <https://github.com/kivymd/KivyMD/pull/1673>`_] Add material transition for `MDScreenManager`
 * API break. Implement declarative style for all KivyMD widgents.
-* Implement material palette in `M3` style.

@@ -13,7 +13,7 @@ class BaseMDNavigationItem(MDNavigationItem):
     text = StringProperty()
 
 
-KV = '''
+KV = """
 #:import MDSharedAxisTransition kivymd.uix.transition.MDSharedAxisTransition
 
 <BaseMDNavigationItem>
@@ -224,7 +224,7 @@ MDBoxLayout:
         BaseMDNavigationItem
             icon: "account-outline"
             text: "Profile"
-'''
+"""
 
 
 class Example(MDApp):

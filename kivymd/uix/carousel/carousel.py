@@ -603,7 +603,8 @@ class MDCarousel(MDWidget):
                 else:
                     item.opacity = 1
 
-                # При скролле: 28dp на отошедших краях, 0dp на тех, что у границы
+                # When scrolling: 28dp at the edges that have moved away,
+                # 0dp at those against the boundary.
                 top_r = (
                     item.full_screen_radius
                     if (y + avail_h < start_y + avail_h)

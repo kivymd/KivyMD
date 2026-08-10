@@ -89,6 +89,17 @@ from kivymd.uix.behaviors import DeclarativeBehavior, StencilBehavior
 
 
 class FitImage(DeclarativeBehavior, StencilBehavior, MaterialShape, AsyncImage):
+    """
+    Fit image class.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.uix.behaviors.stencil_behavior.StencilBehavior` and
+    :class:`~materialshapes.kivy_widget.MaterialShape` and
+    :class:`~kivy.uix.image.AsyncImage` and
+    classes documentation.
+    """
+
     fit_mode = OptionProperty(
         "cover", options=["scale-down", "fill", "contain", "cover"]
     )

@@ -341,9 +341,15 @@ class MagicBehavior:
 
         (
             (
-                Animation(scale_y=0.1, t="out_quad", d=0.03 / self.magic_speed)
+                Animation(
+                    scale_y=self.scale_value,
+                    t="out_quad",
+                    d=0.03 / self.magic_speed,
+                )
                 & Animation(
-                    scale_x=0.2, t="out_quad", d=0.03 / self.magic_speed
+                    scale_x=self.scale_value,
+                    t="out_quad",
+                    d=0.03 / self.magic_speed,
                 )
             )
             + (

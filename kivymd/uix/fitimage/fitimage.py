@@ -83,9 +83,9 @@ __all__ = ("FitImage",)
 
 from kivy.properties import OptionProperty
 from kivy.uix.image import AsyncImage
+from materialshapes.kivy_widget import MaterialShape
 
 from kivymd.uix.behaviors import DeclarativeBehavior, StencilBehavior
-from materialshapes.kivy_widget import MaterialShape
 
 
 class FitImage(DeclarativeBehavior, StencilBehavior, MaterialShape, AsyncImage):

@@ -9,3 +9,6 @@ Unreleased
 
 * Issues closed:
 * [`fix(behaviors): resolve magic behavior effects on touch and MDIconButton <https://github.com/kivymd/KivyMD/issues/1891>`_] Issue #1891
+
+* New feature:
+* [`PR 1893 <https://github.com/kivymd/KivyMD/pull/1893>`_] Integrate `MaterialShape` support to `FitImage` widget

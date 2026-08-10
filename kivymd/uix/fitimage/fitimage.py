@@ -382,6 +382,19 @@ class FitImage(DeclarativeBehavior, StencilBehavior, MaterialShape, AsyncImage):
         self.image = value
 
     def update_texture(self, *args):
+        """
+        Updates the widget texture.
+
+        If a custom Material :attr:`shape` is set, delegates texture generation
+        to :meth:`materialshapes.kivy_widget.MaterialShape.update_texture`.
+        This builds a Cairo surface based on the target shape dimensions,
+        applies the image pattern (or fill color), and renders the resulting
+        vector mask directly to the Kivy :attr:`texture`.
+
+        If :attr:`shape` is ``None``, execution falls back to standard GPU
+        texture rendering via :class:`~kivy.uix.image.AsyncImage`.
+        """
+
         # If the Material shape is specified, we use the MaterialShape logic.
         if self.shape:
             super().update_texture(*args)

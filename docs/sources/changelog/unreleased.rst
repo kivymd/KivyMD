@@ -7,4 +7,5 @@ Unreleased
 
        pip install https://github.com/kivymd/KivyMD/archive/master.zip
 
-* Bug fixes and other minor improvements.
+* Issues closed:
+* [`fix(behaviors): resolve magic behavior effects on touch and MDIconButton <https://github.com/kivymd/KivyMD/issues/1891>`_] Issue #1891

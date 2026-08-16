@@ -6,7 +6,6 @@ Components/Dialog
 
     `Material Design spec, Dialogs <https://m3.material.io/components/dialogs/overview>`_
 
-
 .. rubric:: Dialogs provide important prompts in a user flow.
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/dialog-preview.png
@@ -235,6 +234,187 @@ Example
     :align: center
 
 .. warning:: Do not try to use the MDDialog widget in KV files.
+
+iOS liquid glass dialog
+=======================
+
+.. tabs::
+
+    .. tab:: Imperative Python Style
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+            from kivy.properties import StringProperty, ColorProperty
+
+            from kivymd.app import MDApp
+            from kivymd.uix.dialog import (
+                IOSDialog,
+                IOSDialogButtonContainer,
+                IOSDialogMessage,
+                IOSDialogTitle,
+                IOSDialogButton,
+            )
+
+
+            KV = '''
+            <CommonIOSDialogButton>
+
+                IOSDialogButtonText:
+                    text: root.text
+                    theme_text_color: "Custom"
+                    text_color: root.color
+
+
+            MDScreen:
+
+                FitImage:
+                    id: bg_image
+                    source: "https://picsum.photos/800/600?random=2"
+
+                IOSButton:
+                    target_background: bg_image
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    border_radius: [dp(22)] * 4
+                    on_release: app.show_dialog()
+
+                    IOSButtonText:
+                        text: "Open iOS Dialog"
+            '''
+
+
+            class CommonIOSDialogButton(IOSDialogButton):
+                text = StringProperty()
+                color = ColorProperty("white")
+
+
+            class Example(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
+
+                def show_dialog(self, *args):
+                    dialog = IOSDialog(target_background=self.root)
+                    dialog.add_widget(IOSDialogTitle(text="Delete application?", bold=True))
+                    dialog.add_widget(
+                        IOSDialogMessage(
+                            text=(
+                                "This will also result in the deletion of all data "
+                                "associated with it."
+                            )
+                        )
+                    )
+
+                    button_container = IOSDialogButtonContainer(orientation="vertical")
+
+                    cancel_btn = CommonIOSDialogButton(text="Cancel")
+                    cancel_btn.bind(on_release=lambda x: dialog.dismiss())
+
+                    delete_btn = CommonIOSDialogButton(text="Delete", color="red")
+                    delete_btn.bind(on_release=lambda x: dialog.dismiss())
+
+                    button_container.add_widget(cancel_btn)
+                    button_container.add_widget(delete_btn)
+
+                    dialog.add_widget(button_container)
+                    dialog.open()
+
+
+            if __name__ == "__main__":
+                Example().run()
+
+    .. tab:: Declarative Python Style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+            from kivy.properties import StringProperty, ColorProperty
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import IOSButton, IOSButtonText
+            from kivymd.uix.dialog import (
+                IOSDialog,
+                IOSDialogButtonContainer,
+                IOSDialogMessage,
+                IOSDialogTitle,
+                IOSDialogButton,
+                IOSDialogButtonText,
+            )
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.screen import MDScreen
+
+            class CommonIOSDialogButton(IOSDialogButton):
+                text = StringProperty()
+                color = ColorProperty("white")
+
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+                    self.widgets = [
+                        IOSDialogButtonText(
+                            text=self.text,
+                            theme_text_color="Custom",
+                            text_color=self.color,
+                        )
+                    ]
+
+
+            class Example(MDApp):
+                dialog = IOSDialog
+
+                def build(self):
+                    image = FitImage(source="https://picsum.photos/800/600?random=2")
+
+                    return (
+                        MDScreen(
+                            image,
+                            IOSButton(
+                                IOSButtonText(
+                                    text="Open iOS Dialog",
+                                ),
+                                target_background=image,
+                                pos_hint={"center_x": .5, "center_y": .5},
+                                border_radius=[dp(22)] * 4,
+                                on_release=lambda x: self.show_dialog(),
+                            )
+                        )
+                    )
+
+                def dialog_dismiss(self, *args):
+                    self.dialog.dismiss()
+
+                def show_dialog(self, *args):
+                    self.dialog = IOSDialog(
+                        IOSDialogTitle(
+                            text="Delete application?",
+                            bold=True,
+                        ),
+                        IOSDialogMessage(
+                            text=(
+                                "This will also result in the deletion of all data "
+                                "associated with it."
+                            )
+                        ),
+                        IOSDialogButtonContainer(
+                            CommonIOSDialogButton(
+                                text="Cancel",
+                                on_release=lambda x: self.dialog_dismiss(),
+                            ),
+                            CommonIOSDialogButton(
+                                text="Delete",
+                                color="red",
+                                on_release=lambda x: self.dialog_dismiss(),
+                            ),
+                            orientation="vertical",
+                        ),
+                        target_background=self.root,
+                    )
+                    self.dialog.open()
+
+
+            if __name__ == "__main__":
+                Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-dialog-example.gif
+    :align: center
 
 API break
 =========
@@ -508,16 +688,27 @@ API break
 """
 
 __all__ = [
+    # MD
     "MDDialog",
     "MDDialogIcon",
     "MDDialogHeadlineText",
     "MDDialogSupportingText",
     "MDDialogContentContainer",
     "MDDialogButtonContainer",
+    # IOS
+    "IOSDialog",
+    "IOSDialogButton",
+    "IOSDialogButtonText",
+    "IOSDialogTitle",
+    "IOSDialogMessage",
+    "IOSDialogContentContainer",
+    "IOSDialogButtonContainer",
 ]
 
 import os
 
+from kivy.animation import Animation
+from kivy.clock import Clock
 from kivy.core.window import Window
 from kivy.lang import Builder
 from kivy.metrics import dp
@@ -526,14 +717,23 @@ from kivy.properties import (
     ColorProperty,
     NumericProperty,
     ObjectProperty,
+    StringProperty,
     VariableListProperty,
 )
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.widget import Widget
 
 from kivymd import uix_path
-from kivymd.material_resources import DEVICE_TYPE
-from kivymd.uix.behaviors import DeclarativeBehavior, MotionDialogBehavior
+from kivymd.uix.behaviors import (
+    DeclarativeBehavior,
+    IOSButtonBehavior,
+    IOSGlassBehavior,
+    MotionDialogBehavior,
+    ScaleBehavior,
+    StencilBehavior,
+)
+from kivymd.uix.button import MDButton, MDButtonText
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDIcon, MDLabel
 
@@ -543,13 +743,31 @@ with open(
     Builder.load_string(kv_file.read())
 
 
-class MDDialog(MDCard, MotionDialogBehavior):
+class BaseDialog:
+    def on_pre_open(self, *args) -> None:
+        """Fired when a dialog pre opened."""
+
+    def on_open(self, *args) -> None:
+        """Fired when a dialog opened."""
+
+    def on_dismiss(self, *args) -> None:
+        """Fired when a dialog dismiss."""
+
+    def on_pre_dismiss(self, *args) -> None:
+        """Fired when a dialog pre-dismiss."""
+
+
+# ----------------------------------- MD ----------------------------------
+
+
+class MDDialog(MDCard, MotionDialogBehavior, BaseDialog):
     """
     Dialog class.
 
     For more information, see in the
     :class:`~kivymd.uix.card.card.MDCard` and
     :class:`~kivymd.uix.behaviors.motion_behavior.MotionDialogBehavior`
+    :class:`~BaseDialog`
     classes documentation.
 
     :Events:
@@ -659,23 +877,13 @@ class MDDialog(MDCard, MotionDialogBehavior):
         super().on_open()
         self.dispatch("on_open")
 
-    def on_pre_open(self, *args) -> None:
-        """Fired when a dialog pre opened."""
-
-    def on_open(self, *args) -> None:
-        """Fired when a dialog opened."""
-
-    def on_dismiss(self, *args) -> None:
-        """Fired when a dialog dismiss."""
-
-    def on_pre_dismiss(self, *args) -> None:
-        """Fired when a dialog pre-dismiss."""
-
     def on_touch_down(self, touch):
         if not self.collide_point(*touch.pos) and self.auto_dismiss:
             self.dismiss()
             return True
+
         super().on_touch_down(touch)
+
         return True
 
     def dismiss(self, *args) -> None:
@@ -741,3 +949,337 @@ class MDDialogScrim(Widget):
 
 class MDDialogSpacer(Widget):
     pass
+
+
+# ---------------------------------- IOS ----------------------------------
+
+
+class IOSDialog(
+    DeclarativeBehavior,
+    IOSGlassBehavior,
+    IOSButtonBehavior,
+    ScaleBehavior,
+    StencilBehavior,
+    BaseDialog,
+    FloatLayout,
+):
+    """
+    iOS style dialog class.
+
+    ..versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior`,
+    :class:`~kivymd.uix.behaviors.stencil_behavior.StencilBehavior`,
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior`,
+    :class:`~BaseDialog`, and
+    :class:`~kivy.uix.floatlayout.FloatLayout`
+    classes documentation.
+
+    :Events:
+        `on_pre_open`:
+            Fired before the IOSDialog is opened. When this event is fired
+            IOSDialog is not yet added to window.
+        `on_open`:
+            Fired when the IOSDialog is opened.
+        `on_pre_dismiss`:
+            Fired before the IOSDialog is closed.
+        `on_dismiss`:
+            Fired when the IOSDialog is closed. If the callback returns True,
+            the dismiss will be canceled.
+    """
+
+    radius = VariableListProperty([dp(18)] * 4)
+    """
+    Dialog corners rounding value.
+
+    :attr:`radius` is a :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[dp(18), dp(18), dp(18), dp(18)]`.
+    """
+
+    scrim_color = ColorProperty([0, 0, 0, 0.4])
+    """
+    Color for scrim in (r, g, b, a) format.
+
+    :attr:`scrim_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `[0, 0, 0, 0.4]`.
+    """
+
+    auto_dismiss = BooleanProperty(True)
+    """
+    This property determines if the dialog is automatically
+    dismissed when the user clicks outside it.
+
+    :attr:`auto_dismiss` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `True`.
+    """
+
+    show_transition = StringProperty("easing_standard")
+    """
+    Animation transition type for dialog open.
+
+    :attr:`show_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'easing_standard'`.
+    """
+
+    show_duration = NumericProperty(0.2)
+    """
+    Animation duration for dialog open in seconds.
+
+    :attr:`show_duration` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.2`.
+    """
+
+    hide_transition = StringProperty("easing_accelerated")
+    """
+    Animation transition type for dialog close.
+
+    :attr:`hide_transition` is a :class:`~kivy.properties.StringProperty`
+    and defaults to `'easing_accelerated'`.
+    """
+
+    hide_duration = NumericProperty(0.15)
+    """
+    Animation duration for dialog close in seconds.
+
+    :attr:`hide_duration` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.15`.
+    """
+
+    _scrim = ObjectProperty(None)
+    _is_open = BooleanProperty(False)
+    __events__ = ("on_open", "on_pre_open", "on_dismiss", "on_pre_dismiss")
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.opacity = 0
+        self.pos_hint = {}
+        self.bind(size=self._recenter)
+        Window.bind(size=self._on_window_resize)
+
+    def add_widget(self, widget, *args, **kwargs):
+        if isinstance(widget, IOSDialogTitle):
+            self.ids.title_container.add_widget(widget)
+        elif isinstance(widget, IOSDialogMessage):
+            self.ids.message_container.add_widget(widget)
+        elif isinstance(widget, IOSDialogContentContainer):
+            self.ids.custom_content_container.add_widget(widget)
+        elif isinstance(widget, IOSDialogButtonContainer):
+            self.ids.button_container.add_widget(widget)
+        elif isinstance(widget, IOSDialogButton):
+            self.ids.button_container.add_widget(widget)
+        else:
+            super().add_widget(widget, *args, **kwargs)
+
+    def open(self) -> None:
+        """Show the dialog."""
+
+        if self._is_open:
+            return
+
+        self.dispatch("on_pre_open")
+        self._is_open = True
+
+        if not self._scrim:
+            self._scrim = IOSDialogScrim(color=self.scrim_color)
+
+        if self.parent:
+            self.parent.remove_widget(self)
+
+        Window.add_widget(self._scrim)
+        Window.add_widget(self)
+
+        Clock.unschedule(self._setup_glass_fbo)
+        self._setup_glass_fbo()
+
+        self.opacity = 0
+        self.scale_value_y = 0.85
+        self.scale_value_x = 0.85
+
+        Clock.schedule_once(self._start_open_animation, 0)
+        self.dispatch("on_open")
+
+    def dismiss(self, *args) -> None:
+        """Closes the dialog."""
+
+        if not self._is_open:
+            return
+
+        self.dispatch("on_pre_dismiss")
+
+        def remove_dialog(*args):
+            Window.unbind(size=self._on_window_resize)
+            Window.remove_widget(self)
+
+            if self._scrim and self._scrim.parent:
+                Window.remove_widget(self._scrim)
+
+        if self._scrim:
+            Animation(alpha=0, d=self.hide_duration).start(self._scrim)
+
+        anim = Animation(
+            opacity=0,
+            scale_value_y=0.85,
+            scale_value_x=0.85,
+            t=self.hide_transition,
+            d=self.hide_duration,
+        )
+        anim.bind(on_complete=remove_dialog)
+        anim.start(self)
+
+        self._is_open = False
+        self.dispatch("on_dismiss")
+
+    def on_touch_down(self, touch):
+        if not self._is_open:
+            return super().on_touch_down(touch)
+
+        if self.collide_point(*touch.pos):
+            super().on_touch_down(touch)
+
+            return True
+
+        if self.auto_dismiss:
+            self.dismiss()
+
+        return True
+
+    def on_touch_move(self, touch):
+        if self._is_open:
+            super().on_touch_move(touch)
+
+            return True
+
+        return super().on_touch_move(touch)
+
+    def on_touch_up(self, touch):
+        if self._is_open:
+            super().on_touch_up(touch)
+
+            return True
+
+        return super().on_touch_up(touch)
+
+    def _start_open_animation(self, dt):
+        if hasattr(self, "_setup_glass_fbo"):
+            self._setup_glass_fbo()
+
+        anim = Animation(
+            opacity=1,
+            scale_value_y=1,
+            scale_value_x=1,
+            t=self.show_transition,
+            d=self.show_duration,
+        )
+        anim.start(self)
+
+        if self._scrim:
+            Animation(alpha=1, d=self.show_duration).start(self._scrim)
+
+    def _recenter(self, *args):
+        self.pos_hint = {}
+        self.pos = (
+            round((Window.width - self.width) / 2),
+            round((Window.height - self.height) / 2),
+        )
+        self.scale_value_center = self.center
+
+    def _on_window_resize(self, *args):
+        if self._scrim:
+            self._scrim.size = Window.size
+        self._recenter()
+
+
+class IOSDialogScrim(Widget):
+    """
+    iOS dialog scrim class.
+
+    ..versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivy.uix.widget.Widget` class documentation.
+    """
+
+    color = ColorProperty([0, 0, 0, 0.4])
+    """
+    Color for scrim in (r, g, b, a) format.
+
+    :attr:`color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `[0, 0, 0, 0.4]`.
+    """
+
+    alpha = NumericProperty(1)
+    """
+    Scrim transparency value.
+
+    :attr:`alpha` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `1`.
+    """
+
+
+class IOSDialogTitle(MDLabel):
+    """
+    iOS dialog title class.
+
+    ..versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.MDLabel` class documentation.
+    """
+
+
+class IOSDialogMessage(MDLabel):
+    """
+    iOS dialog message class.
+
+    ..versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.MDLabel` class documentation.
+    """
+
+
+class IOSDialogContentContainer(DeclarativeBehavior, BoxLayout):
+    """
+    iOS custom content container.
+
+    ..versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivy.uix.boxlayout.BoxLayout` classes documentation.
+    """
+
+
+class IOSDialogButtonContainer(DeclarativeBehavior, BoxLayout):
+    """
+    iOS custom button container class.
+
+    ..versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivy.uix.boxlayout.BoxLayout` classes documentation.
+    """
+
+
+class IOSDialogButton(MDButton):
+    """
+    iOS dialog button class.
+
+    ..versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.button.MDButton` class documentation.
+    """
+
+
+class IOSDialogButtonText(MDButtonText):
+    """
+    iOS dialog button text class.
+
+    ..versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.button.MDButtonText` class documentation.
+    """

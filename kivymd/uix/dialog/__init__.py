@@ -1,4 +1,11 @@
-from .dialog import (  # NOQA F401
+from .dialog import (  # NOQA F401;; IOS; MD
+    IOSDialog,
+    IOSDialogButton,
+    IOSDialogButtonContainer,
+    IOSDialogButtonText,
+    IOSDialogContentContainer,
+    IOSDialogMessage,
+    IOSDialogTitle,
     MDDialog,
     MDDialogButtonContainer,
     MDDialogContentContainer,

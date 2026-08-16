@@ -24,6 +24,10 @@ KivyMD provides the following button classes for use:
 7. Segmented button
 8. Floating action button (FAB)
 9. Extended FAB
+10. iOS button style
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/liquid-glass-button-preview.png
+    :align: center
 
 Common buttons
 ==============
@@ -578,6 +582,264 @@ Without icon
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/extended-fab-button-without-icon.png
     :align: center
 
+iOS liquid glass button
+=======================
+
+.. rubric:: Interactive buttons with an iOS-inspired liquid glass effect. They
+    combine real-time background blurring, adaptive specular highlights, and
+    fluid touch-scaling animations for modern glassmorphism UI.
+
+.. seealso::
+
+    `iOS buttons <https://developer.apple.com/design/human-interface-guidelines/buttons>`_
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-buttons-intro.png
+    :align: center
+
+1. Button icon and label text
+2. Button icon
+3. Button label
+
+Button icon and label text
+--------------------------
+
+.. tabs::
+
+    .. tab:: Imperative Python style
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+
+            from kivymd.app import MDApp
+
+
+            KV = '''
+            MDScreen:
+
+                FitImage:
+                    id: bg_image
+                    source: "https://picsum.photos/800/600?random=2"
+
+                IOSButton:
+                    target_background: bg_image
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    border_radius: [dp(20)] * 4
+
+                    IOSIconButton:
+                        icon: "account"
+
+                    IOSButtonText:
+                        text: "iOS Button"
+            '''
+
+
+            class Example(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import IOSButton, IOSButtonText, IOSIconButton
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    bg_image = FitImage(
+                        source="https://picsum.photos/800/600?random=2"
+                    )
+
+                    return MDScreen(
+                        bg_image,
+                        IOSButton(
+                            IOSIconButton(
+                                icon="account",
+                            ),
+                            IOSButtonText(
+                                text="iOS Button",
+                            ),
+                            target_background=bg_image,
+                            pos_hint={"center_x": 0.5, "center_y": 0.5},
+                            border_radius=[dp(20)] * 4,
+                        ),
+                    )
+
+
+            Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-button-icon-label.png
+    :align: center
+
+Button icon
+-----------
+
+.. tabs::
+
+    .. tab:: Imperative Python style
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+
+            from kivymd.app import MDApp
+
+
+            KV = '''
+            MDScreen:
+
+                FitImage:
+                    id: bg_image
+                    source: "https://picsum.photos/800/600?random=2"
+
+                IOSButton:
+                    target_background: bg_image
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    size_hint: None, None
+                    size: dp(56), dp(56)
+                    border_radius: [dp(28)] * 4
+
+                    IOSIconButton:
+                        icon: "account"
+            '''
+
+
+            class Example(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import IOSButton, IOSIconButton
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.screen import MDScreen
+
+
+            class CommonIOSButton(IOSButton):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+
+                    self.size_hint = (None, None)
+                    self.size = (dp(56), dp(56))
+                    self.border_radius = [dp(28)] * 4
+
+
+            class Example(MDApp):
+                def build(self):
+                    bg_image = FitImage(
+                        source="https://picsum.photos/800/600?random=2"
+                    )
+
+                    return MDScreen(
+                        bg_image,
+                        CommonIOSButton(
+                            IOSIconButton(
+                                icon="account",
+                            ),
+                            target_background=bg_image,
+                            pos_hint={"center_x": 0.5, "center_y": 0.5},
+
+                        ),
+                    )
+
+
+            Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-button-icon.png
+    :align: center
+
+Button label
+------------
+
+.. tabs::
+
+    .. tab:: Imperative Python style
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+
+            from kivymd.app import MDApp
+
+
+            KV = '''
+            MDScreen:
+
+                FitImage:
+                    id: bg_image
+                    source: "https://picsum.photos/800/600?random=2"
+
+                IOSButton:
+                    target_background: bg_image
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    border_radius: [dp(22)] * 4
+
+                    IOSButtonText:
+                        text: "IOS Button"
+            '''
+
+
+            class Example(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import IOSButton, IOSButtonText
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    bg_image = FitImage(
+                        source="https://picsum.photos/800/600?random=2"
+                    )
+
+                    return MDScreen(
+                        bg_image,
+                        IOSButton(
+                            IOSButtonText(
+                                text="IOS Button",
+                            ),
+                            target_background=bg_image,
+                            pos_hint={"center_x": 0.5, "center_y": 0.5},
+                            border_radius=[dp(22)] * 4,
+
+                        ),
+                    )
+
+
+            Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-button-label.png
+    :align: center
+
 API break
 =========
 
@@ -664,6 +926,7 @@ API break
 from __future__ import annotations
 
 __all__ = (
+    # MD.
     "MDIconButton",
     "MDButtonText",
     "MDButtonIcon",
@@ -674,6 +937,10 @@ __all__ = (
     "MDButton",
     "BaseButton",
     "BaseFabButton",
+    # IOS.
+    "IOSIconButton",
+    "IOSButtonText",
+    "IOSButton",
 )
 
 import os
@@ -689,6 +956,7 @@ from kivy.properties import (
     OptionProperty,
     VariableListProperty,
 )
+from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.relativelayout import RelativeLayout
 
@@ -698,6 +966,8 @@ from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
     CommonElevationBehavior,
     DeclarativeBehavior,
+    IOSButtonBehavior,
+    IOSGlassBehavior,
     RectangularRippleBehavior,
 )
 from kivymd.uix.behaviors.motion_behavior import MotionExtendedFabButtonBehavior
@@ -1201,6 +1471,9 @@ class MDExtendedFabButtonIcon(MDIcon):
     Implements an icon for the :class:`~MDExtendedFabButton` class.
 
     .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDIcon` class documentation.
     """
 
 
@@ -1209,6 +1482,9 @@ class MDExtendedFabButtonText(MDLabel):
     Implements the text for the class :class:`~MDExtendedFabButton` class.
 
     .. versionadded:: 2.0.0
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDIcon` class documentation.
     """
 
 
@@ -1311,3 +1587,53 @@ class MDExtendedFabButton(
             self._label.opacity = 1
             self.width = self._label.texture_size[0] + dp(32)
             self._label.pos_hint = {"center_x": 0.5}
+
+
+# ------------------------------------ IOS ------------------------------------
+
+
+class IOSIconButton(MDIcon):
+    """
+    Implements an icon for the :class:`~IOSButton` class.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDIcon` class documentation.
+    """
+
+
+class IOSButtonText(MDLabel):
+    """
+    The class implements the text for the :class:`~IOSButton` class.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDLabel` class documentation.
+    """
+
+
+class IOSButton(
+    DeclarativeBehavior, IOSButtonBehavior, IOSGlassBehavior, AnchorLayout
+):
+    """
+    IOSButton class.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.button_behavior.IOSButtonBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.glass_behavior.IOSGlassBehavior` and
+    :class:`~kivy.uix.anchorlayout.AnchorLayout`
+    classes documentation.
+    """
+
+    def add_widget(self, widget, index=0, canvas=None):
+        # Redirect all child widgets (except _content_box itself) to
+        # content_box.
+        if "content_box" in self.ids and widget is not self.ids.content_box:
+            self.ids.content_box.add_widget(widget, index=index, canvas=canvas)
+        else:
+            super().add_widget(widget, index=index, canvas=canvas)

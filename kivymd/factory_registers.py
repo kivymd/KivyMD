@@ -5,6 +5,8 @@ Register KivyMD widgets to use without import.
 from kivy.factory import Factory
 
 register = Factory.register
+
+# MD.
 register("MDCarousel", module="kivymd.uix.carousel")
 register("MDCarouselItem", module="kivymd.uix.carousel")
 register("MDDataTable", module="kivymd.uix.datatables")
@@ -149,3 +151,15 @@ register("MDSearchBarLeadingContainer", module="kivymd.uix.search")
 register("MDSearchBarTrailingContainer", module="kivymd.uix.search")
 register("MDSearchViewLeadingContainer", module="kivymd.uix.search")
 register("MDSearchViewTrailingContainer", module="kivymd.uix.search")
+
+# IOS.
+register("IOSButton", module="kivymd.uix.button")
+register("IOSIconButton", module="kivymd.uix.button")
+register("IOSButtonText", module="kivymd.uix.button")
+register("IOSDialogTitle", module="kivymd.uix.dialog")
+register("IOSDialogMessage", module="kivymd.uix.dialog")
+register("IOSDialogContentContainer", module="kivymd.uix.dialog")
+register("IOSDialogButtonContainer", module="kivymd.uix.dialog")
+register("IOSDialog", module="kivymd.uix.dialog")
+register("IOSDialogButton", module="kivymd.uix.dialog")
+register("IOSDialogButtonText", module="kivymd.uix.dialog")

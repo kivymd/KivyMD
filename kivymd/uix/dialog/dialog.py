@@ -540,7 +540,7 @@ API break
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/3-dialog-api-break-1-2-0.png
     :align: center
 
-2.2.0 version
+2.0.0 version
 -------------
 
 .. code-block:: python

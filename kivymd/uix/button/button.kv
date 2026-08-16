@@ -393,7 +393,7 @@
 # ------------------------------------ IOS ------------------------------------
 
 <IOSIconButton>
-    pos_hint: {"center_y": .5}
+    pos_hint: {"center_x": .5, "center_y": .5}
     icon_color: self.theme_cls.onSurfaceColor
 
 
@@ -409,12 +409,13 @@
 
 <IOSButton>
     size_hint: None, None
-    height: dp(44)
+    height: dp(44) if root.orientation == "horizontal" else dp(72)
     width: max(self.height, content_box.width + dp(32))
     radius: [self.height / 2] * 4
 
     BoxLayout:
         id: content_box
+        orientation: root.orientation
         size_hint: None, None
         spacing: dp(8)
         pos_hint: {"center_x": 0.5, "center_y": 0.5}

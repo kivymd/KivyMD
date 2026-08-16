@@ -389,3 +389,33 @@
         if not self.icon_color_disabled else self.icon_color_disabled \
         ) \
         if self._button else self.theme_cls.transparentColor
+
+# ------------------------------------ IOS ------------------------------------
+
+<IOSIconButton>
+    pos_hint: {"center_y": .5}
+    icon_color: self.theme_cls.onSurfaceColor
+
+
+<IOSButtonText>
+    adaptive_size: True
+    pos_hint: {"center_y": .5}
+    font_style: "Label"
+    role: "large"
+    markup: True
+    text_color: self.theme_cls.onSurfaceColor
+    adaptive_size: True
+
+
+<IOSButton>
+    size_hint: None, None
+    height: dp(44)
+    width: max(self.height, content_box.width + dp(32))
+    radius: [self.height / 2] * 4
+
+    BoxLayout:
+        id: content_box
+        size_hint: None, None
+        spacing: dp(8)
+        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+        size: self.minimum_size

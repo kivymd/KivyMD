@@ -1630,6 +1630,16 @@ class IOSButton(
     classes documentation.
     """
 
+    orientation = OptionProperty("horizontal", options=("horizontal", "vertical"))
+    """
+    Orientation of the button.
+
+    Available options are: 'horizontal', 'vertical'.
+
+    :attr:`orientation` is an :class:`~kivy.properties.OptionProperty` and
+    defaults to `'horizontal'`.
+    """
+
     def add_widget(self, widget, index=0, canvas=None):
         # Redirect all child widgets (except _content_box itself) to
         # content_box.

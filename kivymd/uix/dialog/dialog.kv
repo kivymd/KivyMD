@@ -1,3 +1,5 @@
+# ----------------------------------- MD ----------------------------------
+
 <MDDialogSpacer>
     height: dp(8)
     size_hint_y: None
@@ -129,3 +131,104 @@
         Rectangle:
             pos: self.pos
             size: self.size
+
+# ---------------------------------- IOS ----------------------------------
+
+<IOSDialogScrim>
+    size_hint: 1, 1
+    pos_hint: {'x': 0, 'y': 0}
+
+    canvas:
+        Color:
+            rgba: 0, 0, 0, 0.4 * root.alpha
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+
+<IOSDialogButtonText>
+    pos_hint: {"center_x": .5, "center_y": .5}
+
+
+<IOSDialogButton>
+    style: "text"
+    theme_width: "Custom"
+    size_hint_x: 1
+
+
+<IOSDialogTitle>
+    halign: "center"
+    valign: "middle"
+    font_style: "Title"
+    role: "medium"
+    bold: True
+    adaptive_height: True
+
+
+<IOSDialogMessage>
+    adaptive_height: True
+    halign: "center"
+    valign: "middle"
+
+
+<IOSDialogContentContainer>
+    orientation: "vertical"
+    size_hint_y: None
+    height: self.minimum_height
+
+
+<IOSDialogButtonContainer>
+    size_hint_y: None
+    height: self.minimum_height
+    padding: dp(12), 0, dp(12), dp(12)
+
+
+<IOSDialog>
+    size_hint: None, None
+    width: dp(270)
+    height: main_box.height
+
+    BoxLayout:
+        id: main_box
+        orientation: "vertical"
+        size_hint: None, None
+        width: root.width
+        height: self.minimum_height
+        pos: root.pos
+
+        BoxLayout:
+            id: content_box
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+            padding: dp(16), dp(18), dp(16), dp(16)
+            spacing: dp(6)
+
+            BoxLayout:
+                id: title_container
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+
+            BoxLayout:
+                id: message_container
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+
+            BoxLayout:
+                id: custom_content_container
+                orientation: "vertical"
+                size_hint_y: None
+                height: self.minimum_height
+
+        BoxLayout:
+            id: button_wrapper
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+
+            BoxLayout:
+                id: button_container
+                size_hint_y: None
+                height: self.minimum_height

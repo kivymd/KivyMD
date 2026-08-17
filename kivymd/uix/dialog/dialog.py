@@ -812,7 +812,7 @@ class MDDialog(MDCard, MotionDialogBehavior, BaseDialog):
     This property determines if the dialog is automatically
     dismissed when the user clicks outside it.
 
-    ..versionadded:: 2.0.0
+    .. versionadded:: 2.0.0
 
     :attr:`auto_dismiss` is a :class:`~kivy.properties.BooleanProperty` and
     defaults to True.
@@ -966,7 +966,7 @@ class IOSDialog(
     """
     iOS style dialog class.
 
-    ..versionadded:: 2.0.1
+    .. versionadded:: 2.0.1
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior`,
@@ -1196,7 +1196,7 @@ class IOSDialogScrim(Widget):
     """
     iOS dialog scrim class.
 
-    ..versionadded:: 2.0.1
+    .. versionadded:: 2.0.1
 
     For more information, see in the
     :class:`~kivy.uix.widget.Widget` class documentation.
@@ -1223,7 +1223,7 @@ class IOSDialogTitle(MDLabel):
     """
     iOS dialog title class.
 
-    ..versionadded:: 2.0.1
+    .. versionadded:: 2.0.1
 
     For more information, see in the
     :class:`~kivymd.uix.label.MDLabel` class documentation.
@@ -1234,7 +1234,7 @@ class IOSDialogMessage(MDLabel):
     """
     iOS dialog message class.
 
-    ..versionadded:: 2.0.1
+    .. versionadded:: 2.0.1
 
     For more information, see in the
     :class:`~kivymd.uix.label.MDLabel` class documentation.
@@ -1245,7 +1245,7 @@ class IOSDialogContentContainer(DeclarativeBehavior, BoxLayout):
     """
     iOS custom content container.
 
-    ..versionadded:: 2.0.1
+    .. versionadded:: 2.0.1
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
@@ -1257,7 +1257,7 @@ class IOSDialogButtonContainer(DeclarativeBehavior, BoxLayout):
     """
     iOS custom button container class.
 
-    ..versionadded:: 2.0.1
+    .. versionadded:: 2.0.1
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
@@ -1269,7 +1269,7 @@ class IOSDialogButton(MDButton):
     """
     iOS dialog button class.
 
-    ..versionadded:: 2.0.1
+    .. versionadded:: 2.0.1
 
     For more information, see in the
     :class:`~kivymd.uix.button.MDButton` class documentation.
@@ -1280,7 +1280,7 @@ class IOSDialogButtonText(MDButtonText):
     """
     iOS dialog button text class.
 
-    ..versionadded:: 2.0.1
+    .. versionadded:: 2.0.1
 
     For more information, see in the
     :class:`~kivymd.uix.button.MDButtonText` class documentation.

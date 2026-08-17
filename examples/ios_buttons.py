@@ -18,9 +18,7 @@ class CommonIOSButton(IOSButton):
 
 class Example(MDApp):
     def build(self):
-        bg_image = FitImage(
-            source="https://picsum.photos/800/600?random=2"
-        )
+        bg_image = FitImage(source="https://picsum.photos/800/600?random=2")
 
         return MDScreen(
             bg_image,

@@ -100,29 +100,31 @@ Example
     :align: center
 """
 
-__all__ = (
-    "IOSGlassBehavior",
-)
+__all__ = ("IOSGlassBehavior",)
 
 import os
 
 from kivy.clock import Clock
 from kivy.core.window import Window
-from kivy.graphics import RenderContext, Fbo, SmoothRectangle
+from kivy.graphics import Fbo, RenderContext, SmoothRectangle
 from kivy.metrics import dp
 from kivy.properties import (
-    VariableListProperty,
     ColorProperty,
-    NumericProperty,
     ListProperty,
+    NumericProperty,
     ObjectProperty,
+    VariableListProperty,
 )
 
 from kivymd import glsl_path
 
 GLSL_IOS_BUTTON_PATH = os.path.join(glsl_path, "ios", "glass")
-GLSL_IOS_BUTTON_VS_PATH = os.path.join(GLSL_IOS_BUTTON_PATH, "liquid_glass_vs.glsl")
-GLSL_IOS_BUTTON_FS_PATH = os.path.join(GLSL_IOS_BUTTON_PATH, "liquid_glass_fs.glsl")
+GLSL_IOS_BUTTON_VS_PATH = os.path.join(
+    GLSL_IOS_BUTTON_PATH, "liquid_glass_vs.glsl"
+)
+GLSL_IOS_BUTTON_FS_PATH = os.path.join(
+    GLSL_IOS_BUTTON_PATH, "liquid_glass_fs.glsl"
+)
 
 _SHARED_FBOS = {}
 
@@ -652,7 +654,7 @@ class IOSGlassBehavior:
 
             for prop in ("scroll_y", "scroll_x", "pos", "size", "texture"):
                 if hasattr(w, prop) or (
-                        hasattr(w, "properties") and prop in w.properties()
+                    hasattr(w, "properties") and prop in w.properties()
                 ):
                     try:
                         w.unbind(**{prop: self._on_bg_update_scheduled})

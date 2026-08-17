@@ -1867,9 +1867,9 @@ class IOSDropdownMenu(IOSGlassBehavior, IOSButtonBehavior, MDDropdownMenu):
     .. versionadded:: 2.0.1
 
     For more information, see in the
-    :class:`~kivymd.uix.behaviors.motion_behavior.MotionDropDownMenuBehavior` and
-    :class:`~kivymd.uix.behaviors.stencil_behavior.StencilBehavior` and
-    :class:`~kivymd.uix.card.card.MDCard`
+    :class:`~kivymd.uix.behaviors.ios.glass_behavior.IOSGlassBehavior`,
+    :class:`~kivymd.uix.behaviors.ios.button_behavior.IOSButtonBehavior`,
+    :class:`~kivymd.uix.menu.MDDropdownMenu`
     classes documentation.
     """
 

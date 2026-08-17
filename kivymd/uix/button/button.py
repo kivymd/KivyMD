@@ -1630,7 +1630,9 @@ class IOSButton(
     classes documentation.
     """
 
-    orientation = OptionProperty("horizontal", options=("horizontal", "vertical"))
+    orientation = OptionProperty(
+        "horizontal", options=("horizontal", "vertical")
+    )
     """
     Orientation of the button.
 

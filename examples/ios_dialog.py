@@ -1,15 +1,15 @@
 from kivy.metrics import dp
-from kivy.properties import StringProperty, ColorProperty
+from kivy.properties import ColorProperty, StringProperty
 
 from kivymd.app import MDApp
 from kivymd.uix.button import IOSButton, IOSButtonText
 from kivymd.uix.dialog import (
     IOSDialog,
+    IOSDialogButton,
     IOSDialogButtonContainer,
+    IOSDialogButtonText,
     IOSDialogMessage,
     IOSDialogTitle,
-    IOSDialogButton,
-    IOSDialogButtonText,
 )
 from kivymd.uix.fitimage import FitImage
 from kivymd.uix.screen import MDScreen
@@ -36,19 +36,17 @@ class Example(MDApp):
     def build(self):
         image = FitImage(source="https://picsum.photos/800/600?random=2")
 
-        return (
-            MDScreen(
-                image,
-                IOSButton(
-                    IOSButtonText(
-                        text="Open iOS Dialog",
-                    ),
-                    target_background=image,
-                    pos_hint={"center_x": .5, "center_y": .5},
-                    border_radius=[dp(22)] * 4,
-                    on_release=lambda x: self.show_dialog(),
-                )
-            )
+        return MDScreen(
+            image,
+            IOSButton(
+                IOSButtonText(
+                    text="Open iOS Dialog",
+                ),
+                target_background=image,
+                pos_hint={"center_x": 0.5, "center_y": 0.5},
+                border_radius=[dp(22)] * 4,
+                on_release=lambda x: self.show_dialog(),
+            ),
         )
 
     def dialog_dismiss(self, *args):

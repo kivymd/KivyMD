@@ -126,9 +126,7 @@ Example
             ...
 """
 
-__all__ = (
-    "IOSButtonBehavior",
-)
+__all__ = ("IOSButtonBehavior",)
 
 from kivy.animation import Animation
 from kivy.graphics import PopMatrix, PushMatrix, Scale

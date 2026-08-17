@@ -50,6 +50,7 @@
                 root.trailing_text_color
 
     MDDivider:
+        opacity: 1 if root.divider else 0
         md_bg_color:
             ( \
             app.theme_cls.outlineVariantColor \
@@ -115,6 +116,7 @@
                 root.trailing_text_color
 
     MDDivider:
+        opacity: 1 if root.divider else 0
         md_bg_color:
             ( \
             app.theme_cls.outlineVariantColor \
@@ -172,6 +174,7 @@
                 root.trailing_icon_color
 
     MDDivider:
+        opacity: 1 if root.divider else 0
         md_bg_color:
             ( \
             app.theme_cls.outlineVariantColor \
@@ -246,6 +249,7 @@
             trailing_icon_color: root.trailing_icon_color
 
     MDDivider:
+        opacity: 1 if root.divider else 0
         md_bg_color:
             ( \
             app.theme_cls.outlineVariantColor \
@@ -272,6 +276,7 @@
             root.text_color
 
     MDDivider:
+        opacity: 1 if root.divider else 0
         md_bg_color:
             ( \
             app.theme_cls.outlineVariantColor \
@@ -334,6 +339,7 @@
             trailing_text_color: root.trailing_text_color
 
     MDDivider:
+        opacity: 1 if root.divider else 0
         md_bg_color:
             ( \
             app.theme_cls.outlineVariantColor \
@@ -404,6 +410,7 @@
                 root.trailing_icon_color
 
     MDDivider:
+        opacity: 1 if root.divider else 0
         md_bg_color:
             ( \
             app.theme_cls.outlineVariantColor \
@@ -458,6 +465,7 @@
                 root.text_color
 
     MDDivider:
+        opacity: 1 if root.divider else 0
         md_bg_color:
             ( \
             app.theme_cls.outlineVariantColor \
@@ -477,11 +485,6 @@
     shadow_softness: 1.5
     shadow_radius: 4
     theme_bg_color: root.theme_bg_color
-#    md_bg_color:
-#        app.theme_cls.surfaceContainerColor \
-#        if root.theme_bg_color == "Primary" else \
-#        root.md_bg_color
-
 
     MDBoxLayout:
         id: content_header

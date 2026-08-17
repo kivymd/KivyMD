@@ -575,6 +575,12 @@ class IOSGlassBehavior:
         if not bg or not hasattr(bg, "canvas"):
             return
 
+        # Clearing the FBO before re-rendering.
+        fbo.bind()
+        fbo.clear_color = (0, 0, 0, 0)
+        fbo.clear_buffer()
+        fbo.release()
+
         bg_canvas = bg.canvas
         parent_widget = bg.parent
 

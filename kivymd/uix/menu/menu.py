@@ -1234,7 +1234,6 @@ class MDTrailingTextContainer(BaseDropdownItem, MDLabel):
 
     For more information, see in the
     :class:`~BaseDropdownItem` and
-    :class:`~kivymd.uix.list.IRightBody` and
     :class:`~kivymd.uix.label.MDLabel` classes.
     """
 
@@ -1247,7 +1246,6 @@ class MDTrailingIconTextContainer(BaseDropdownItem, MDBoxLayout):
 
     For more information, see in the
     :class:`~BaseDropdownItem` and
-    :class:`~kivymd.uix.list.IRightBody` and
     :class:`~kivymd.uix.boxlayout.MDBoxLayout` classes.
     """
 

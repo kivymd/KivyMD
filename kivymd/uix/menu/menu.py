@@ -789,6 +789,29 @@ Center position
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/menu-position-center.gif
     :align: center
 
+iOS liquid glass menu
+=====================
+
+.. rubric:: Interactive dropdown menus with an iOS-inspired liquid glass effect.
+    They combine real-time background blurring, adaptive specular highlights, and
+    fluid expansion animations for modern glassmorphism UI.
+
+.. seealso::
+
+    `iOS menu <https://developer.apple.com/design/human-interface-guidelines/menus>`_
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-menus-intro.png
+    :align: center
+
+.. note::
+
+    Use :class:`~kivymd.uix.menu.IOSDropdownMenu` instead of the standard
+    :class:`~kivymd.uix.menu.MDDropdownMenu` to enable the iOS liquid glass
+    effect.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-menu-preview.png
+    :align: center
+
 API break
 =========
 
@@ -1039,6 +1062,7 @@ from __future__ import annotations
 __all__ = (
     "BaseDropdownItem",
     "MDDropdownMenu",
+    "IOSDropdownMenu",
     "MDDropdownTextItem",
     "MDDropdownLeadingIconItem",
     "MDDropdownTrailingIconItem",
@@ -1068,7 +1092,12 @@ from kivy.uix.recycleview import RecycleView
 from kivy.uix.widget import Widget
 
 from kivymd import uix_path
-from kivymd.uix.behaviors import RectangularRippleBehavior, StencilBehavior
+from kivymd.uix.behaviors import (
+    IOSButtonBehavior,
+    IOSGlassBehavior,
+    RectangularRippleBehavior,
+    StencilBehavior,
+)
 from kivymd.uix.behaviors.motion_behavior import MotionDropDownMenuBehavior
 from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
@@ -1747,8 +1776,9 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
 
         items = []
         viewclass = "MDDropdownTextItem"
+        total_items = len(value)
 
-        for data in value:
+        for i, data in enumerate(value):
             if "viewclass" not in data:
                 if (
                     "leading_icon" not in data
@@ -1804,10 +1834,14 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
             if "height" not in data:
                 data["height"] = dp(48)
 
+            # Disable the divider for the last element.
+            data["divider"] = "Full" if i < total_items - 1 else None
+
             items.append(data)
 
         self._items = items
-        # Update items in view
+
+        # Update items in view.
         if hasattr(self, "menu"):
             self.menu.data = self._items
 
@@ -1845,6 +1879,36 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
     def _remove_menu(self, *args):
         Window.remove_widget(self)
         self.set_scale()
+
+
+class IOSDropdownMenu(IOSGlassBehavior, IOSButtonBehavior, MDDropdownMenu):
+    """
+    Dropdown menu class in iOS style.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.motion_behavior.MotionDropDownMenuBehavior` and
+    :class:`~kivymd.uix.behaviors.stencil_behavior.StencilBehavior` and
+    :class:`~kivymd.uix.card.card.MDCard`
+    classes documentation.
+    """
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        self.theme_elevation_level = "Custom"
+        self.elevation_level = 0
+        self.theme_bg_color = "Custom"
+        self.md_bg_color = [0, 0, 0, 0]
+        self.theme_shadow_color = "Custom"
+        self.shadow_color = [0, 0, 0, 0]
+        self.theme_line_color = "Custom"
+        self.line_color = [0, 0, 0, 0]
+
+    def open(self) -> None:
+        super().open()
+        Clock.schedule_once(lambda dt: self._setup_glass_fbo(), 0)
 
 
 if __name__ == "__main__":

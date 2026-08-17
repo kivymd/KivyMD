@@ -1130,6 +1130,7 @@ class BaseDropdownItem(RectangularRippleBehavior, ButtonBehavior, MDBoxLayout):
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.ripple_behavior.RectangularRippleBehavior` and
+    :class:`~kivy.uix.behaviors.button_behavior.ButtonBehavior` and
     :class:`~kivymd.uix.boxlayout.MDBoxLayout` classes.
     """
 

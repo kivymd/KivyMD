@@ -969,9 +969,11 @@ class IOSDialog(
     ..versionadded:: 2.0.1
 
     For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior`,
+    :class:`~kivymd.uix.behaviors.ios.glass_behavior.IOSGlassBehavior`,
+    :class:`~kivymd.uix.behaviors.ios.button_behavior.IOSButtonBehavior`,
     :class:`~kivymd.uix.behaviors.scale_behavior.ScaleBehavior`,
     :class:`~kivymd.uix.behaviors.stencil_behavior.StencilBehavior`,
-    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior`,
     :class:`~BaseDialog`, and
     :class:`~kivy.uix.floatlayout.FloatLayout`
     classes documentation.

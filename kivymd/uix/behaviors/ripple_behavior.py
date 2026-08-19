@@ -698,14 +698,14 @@ class M3CommonRipple(CommonRipple):
         self._phase = 0.0
         self.ripple_pos = (0, 0)
         # TODO: Remove group also deallocates it from mem?
-        self.fbo = Fbo(size=self.size, group="m3_ripple_behavior")
+        self.fbo = Fbo(size=[50]*2, group="m3_ripple_behavior")
         self.set_shader(self.fbo)
 
         with self.fbo:
             ClearColor(0, 0, 0, 0)
             ClearBuffers()
             Color(1, 1, 1, 1)
-            self.rect = Rectangle(pos=(0, 0), size=self.size)
+            self.rect = Rectangle(pos=(0, 0), size=[50]*2)
 
     def _get_actual_radius(self):
         if hasattr(self, "radius"):
@@ -950,6 +950,9 @@ class M3CommonRipple(CommonRipple):
                 child.size = self.size
             if hasattr(child, "pos") and child.pos != self.pos:
                 child.pos = self.pos
+
+        if self.fbo.size != self.size:
+            self.fbo.size = self.size
 
         if self.rect.size != self.size:
             self.rect.size = self.size

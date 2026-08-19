@@ -720,6 +720,432 @@ You can switch tabs by icon name, by tab name, and by tab objects:
         instance=instance_tabs_item  # MDTabsItem
     )
 
+iOS liquid glass tab bar
+========================
+
+.. seealso::
+
+    `Human Interface, Tab bars <https://developer.apple.com/design/human-interface-guidelines/tab-bars>`_
+
+.. rubric:: A tab bar lets people navigate between top-level sections of your
+    app.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-tab-bar-intro.png
+    :align: center
+
+KivyMD for iOS provides horizontal and vertical tab bars:
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-tab-bar-provides.png
+    :align: center
+
+Anatomy horizontal tab bar
+==========================
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-tab-bars-anatomy.png
+    :align: center
+
+Example vertical tab bar
+--------------------------
+
+.. tabs::
+
+    .. tab:: Imperative Python Style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import IOSIconButton
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.tab import (
+                IOSTabBarButton,
+                IOSTabBarItem,
+                IOSTabBarItemIcon,
+                IOSTabBarLayout,
+                IOSTabBarVertical,
+            )
+
+
+            class TabBarVertical(IOSTabBarVertical):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+
+                    items_data = [
+                        "home",
+                        "compass",
+                        "bell",
+                        "account",
+                    ]
+
+                    for icon in items_data:
+                        item = IOSTabBarItem(
+                            IOSTabBarItemIcon(
+                                icon=icon
+                            ),
+                            inactive_color=self.theme_cls.primaryColor,
+                            active_color="#CD853F",
+                        )
+                        self.add_widget(item)
+
+
+            class HomeScreen(MDScreen):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+
+                    image = FitImage(
+                        source="bg.png",
+                        opacity=0.3,
+                    )
+                    self.add_widget(image)
+
+                    self.tab_bar = TabBarVertical(
+                        target_background=image,
+                        blur_amount=20,
+                    )
+
+                    search_btn = IOSTabBarButton(
+                        IOSIconButton(
+                            icon="magnify"
+                        ),
+                        size=(self.tab_bar.width, self.tab_bar.width),
+                        border_radius=[self.tab_bar.width / 2] * 4,
+                        target_background=image,
+                        on_release=lambda btn: print("Search pressed!"),
+                    )
+
+                    self.tab_layout = IOSTabBarLayout(
+                        orientation="vertical",
+                        pos_hint={"center_x": 0.5, "center_y": 0.5},
+                        size_hint=(None, None),
+                    )
+
+                    self.tab_layout.add_widget(self.tab_bar)
+                    self.tab_layout.add_widget(search_btn)
+                    self.add_widget(self.tab_layout)
+
+
+            class MainApp(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Olive"
+                    return HomeScreen()
+
+
+            if __name__ == "__main__":
+                MainApp().run()
+
+    .. tab:: Declarative Python Style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import IOSIconButton
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.tab import (
+                IOSTabBarButton,
+                IOSTabBarItem,
+                IOSTabBarItemIcon,
+                IOSTabBarItemText,
+                IOSTabBarLayout,
+                IOSTabBarVertical,
+            )
+
+
+            class TabBarVertical(IOSTabBarVertical):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+
+                    items_data = [
+                        "home",
+                        "compass",
+                        "bell",
+                        "account",
+                    ]
+
+                    self.widgets = [
+                        IOSTabBarItem(
+                            IOSTabBarItemIcon(
+                                icon=icon
+                            ),
+                            inactive_color=self.theme_cls.primaryColor,
+                            active_color="#CD853F",
+                        ) for icon in items_data
+                    ]
+
+
+            class HomeScreen(MDScreen):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+
+                    image = FitImage(
+                        source="bg.png",
+                        opacity=0.3,
+                    )
+
+                    self.tab_bar = TabBarVertical(
+                        target_background=image,
+                        blur_amount=20,
+                    )
+                    search_btn = IOSTabBarButton(
+                        IOSIconButton(
+                            icon="magnify"
+                        ),
+                        size=(self.tab_bar.width, self.tab_bar.width),
+                        border_radius=[self.tab_bar.width / 2] * 4,
+                        on_release=lambda btn: print("Search pressed!"),
+                    )
+
+                    self.widgets = [
+                        image,
+                        IOSTabBarLayout(
+                            self.tab_bar,
+                            search_btn,
+                            orientation="vertical",
+                            pos_hint={"center_x": 0.5, "center_y": 0.5},
+                        )
+                    ]
+
+
+            class MainApp(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Olive"
+                    return HomeScreen()
+
+
+            if __name__ == "__main__":
+                MainApp().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-tab-example-vertical.png
+    :align: center
+
+.. note::
+    In vertical mode, the text for Tab Bar elements is ignored.
+
+    .. python::
+
+        items_data = [
+            ("home", "Home"),
+            ("compass", "View"),
+            ("bell", "Message"),
+            ("account", "Account"),
+        ]
+
+        self.widgets = [
+            IOSTabBarItem(
+                IOSTabBarItemIcon(
+                    icon=icon
+                ),
+                IOSTabBarItemText(
+                    text=text
+                ),
+                inactive_color=self.theme_cls.primaryColor,
+                active_color="#CD853F",
+            ) for icon, text in items_data
+        ]
+
+    Only the element icon will be added.
+
+Example horizontal tab bar
+--------------------------
+
+.. tabs::
+
+    .. tab:: Imperative Python Style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import IOSIconButton
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.tab import (
+                IOSTabBarButton,
+                IOSTabBarHorizontal,
+                IOSTabBarItem,
+                IOSTabBarItemIcon,
+                IOSTabBarItemText,
+                IOSTabBarLayout,
+            )
+
+
+            class TabBarHorizontal(IOSTabBarHorizontal):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+
+                    items_data = [
+                        ("home", "Home"),
+                        ("compass", "View"),
+                        ("bell", "Message"),
+                        ("account", "Account"),
+                    ]
+
+                    for icon, text in items_data:
+                        item = IOSTabBarItem(
+                            IOSTabBarItemIcon(
+                                icon=icon
+                            ),
+                            IOSTabBarItemText(
+                                text=text
+                            ),
+                            inactive_color=self.theme_cls.primaryColor,
+                            active_color="#CD853F",
+                        )
+                        self.add_widget(item)
+
+
+            class HomeScreen(MDScreen):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+
+                    image = FitImage(
+                        source="bg.png",
+                        opacity=0.3,
+                    )
+                    self.add_widget(image)
+
+                    self.tab_bar = TabBarHorizontal(
+                        target_background=image,
+                        blur_amount=20,
+                    )
+
+                    search_btn = IOSTabBarButton(
+                        IOSIconButton(
+                            icon="magnify"
+                        ),
+                        size=(self.tab_bar.height, self.tab_bar.height),
+                        border_radius=[self.tab_bar.height / 2] * 4,
+                        target_background=image,
+                        on_release=lambda btn: print("Search pressed!"),
+                    )
+
+                    self.tab_layout = IOSTabBarLayout(
+                        orientation="horizontal",
+                        pos_hint={"center_x": 0.5, "center_y": 0.5},
+                        size_hint=(None, None),
+                    )
+
+                    self.tab_layout.add_widget(self.tab_bar)
+                    self.tab_layout.add_widget(search_btn)
+                    self.add_widget(self.tab_layout)
+
+
+            class MainApp(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Olive"
+                    return HomeScreen()
+
+
+            if __name__ == "__main__":
+                MainApp().run()
+
+    .. tab:: Declarative Python Style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import IOSIconButton
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.tab import (
+                IOSTabBarButton,
+                IOSTabBarItem,
+                IOSTabBarItemIcon,
+                IOSTabBarItemText,
+                IOSTabBarLayout,
+                IOSTabBarHorizontal,
+            )
+
+
+            class TabBarHorizontal(IOSTabBarHorizontal):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+
+                    items_data = [
+                        ("home", "Home"),
+                        ("compass", "View"),
+                        ("bell", "Message"),
+                        ("account", "Account"),
+                    ]
+
+                    self.widgets = [
+                        IOSTabBarItem(
+                            IOSTabBarItemIcon(
+                                icon=icon
+                            ),
+                            IOSTabBarItemText(
+                                text=text
+                            ),
+                            inactive_color=self.theme_cls.primaryColor,
+                            active_color="#CD853F",
+                        ) for icon, text in items_data
+                    ]
+
+
+            class HomeScreen(MDScreen):
+                def __init__(self, **kwargs):
+                    super().__init__(**kwargs)
+                    image = FitImage(
+                        source="bg.png",
+                        opacity=0.3,
+                    )
+
+                    self.tab_bar = TabBarHorizontal(
+                        target_background=image,
+                        blur_amount=20,
+                    )
+                    search_btn = IOSTabBarButton(
+                        IOSIconButton(
+                            icon="magnify"
+                        ),
+                        size=(self.tab_bar.height, self.tab_bar.height),
+                        border_radius=[self.tab_bar.height / 2] * 4,
+                        on_release=lambda btn: print("Search pressed!"),
+                    )
+
+                    self.widgets = [
+                        image,
+                        IOSTabBarLayout(
+                            self.tab_bar,
+                            search_btn,
+                            orientation="horizontal",
+                            pos_hint={"center_x": 0.5, "center_y": 0.5},
+                        )
+                    ]
+
+
+            class MainApp(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    self.theme_cls.primary_palette = "Olive"
+                    return HomeScreen()
+
+
+            if __name__ == "__main__":
+                MainApp().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-tab-example-horizontal.png
+    :align: center
+
+Example tab bar event
+---------------------
+
+.. code-block:: python
+
+    def on_ios_tab_switch(
+        self,
+        tab_bar: Union[IOSTabBarVertical, IOSTabBarHorizontal],
+        tab_item: IOSTabBarItem,
+        item_index: int,
+    ):
+        ...
+
+    IOSTabBarVertical(
+        on_tab_switch=lambda *args: self.on_ios_tab_switch(*args)
+    )
+
 API break
 =========
 
@@ -902,6 +1328,7 @@ API break
 from __future__ import annotations
 
 __all__ = (
+    # MD.
     "MDTabsPrimary",
     "MDTabsSecondary",
     "MDTabsItem",
@@ -910,12 +1337,22 @@ __all__ = (
     "MDTabsItemText",
     "MDTabsCarousel",
     "MDTabsBadge",
+    # IOS.
+    "IOSTabBarButton",
+    "IOSTabBarLayout",
+    "IOSTabBarItem",
+    "IOSTabBarItemIcon",
+    "IOSTabBarItemText",
+    "IOSTabBarIndicator",
+    "IOSTabBarHorizontal",
+    "IOSTabBarVertical",
 )
 
 import os
 
 from kivy.animation import Animation
 from kivy.clock import Clock
+from kivy.graphics import PopMatrix, PushMatrix
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
@@ -931,6 +1368,7 @@ from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.carousel import Carousel
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.scrollview import ScrollView
 from kivy.uix.widget import Widget
 from kivy.utils import boundary
@@ -941,9 +1379,12 @@ from kivymd.uix.badge import MDBadge
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
     DeclarativeBehavior,
+    IOSButtonBehavior,
+    IOSGlassBehavior,
     RectangularRippleBehavior,
 )
 from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
+from kivymd.uix.button import IOSButton, IOSButtonText, IOSIconButton
 from kivymd.uix.label import MDIcon, MDLabel
 
 with open(os.path.join(uix_path, "tab", "tab.kv"), encoding="utf-8") as kv_file:
@@ -1811,3 +2252,732 @@ class MDTabsSecondary(MDTabsPrimary):
 
     def _check_panel_height(self, *args):
         self.ids.tab_scroll.height = dp(48)
+
+
+###############################################################################
+#
+#                                  IOS CLASSES
+#
+###############################################################################
+
+
+class IOSTabBarButton(IOSButton):
+    """
+    Standalone floating Liquid Glass button for use inside
+    :class:`~IOSTabBarLayout`.
+
+    Typically used to create additional floating actions
+    (e.g., search or action buttons) alongside the main tab bar.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.button.IOSButton` class documentation.
+    """
+
+    def __init__(self, *args, **kwargs):
+        size_hint = kwargs.pop("size_hint", (None, None))
+        size = kwargs.pop("size", (dp(65), dp(65)))
+        border_radius = kwargs.pop("border_radius", [dp(32.5)] * 4)
+        glass_color = kwargs.pop("glass_color", [1.0, 1.0, 1.0, 0.18])
+        blur_amount = kwargs.pop("blur_amount", 6.0)
+
+        super().__init__(*args, **kwargs)
+
+        self.size_hint = size_hint
+        self.size = size
+        self.border_radius = border_radius
+        self.glass_color = glass_color
+        self.blur_amount = blur_amount
+
+    def add_widget(self, widget, index=0, canvas=None):
+        if isinstance(widget, IOSIconButton):
+            widget.pos_hint = {"center_x": 0.5, "center_y": 0.5}
+
+        super().add_widget(widget, index=index, canvas=canvas)
+
+
+class IOSTabBarLayout(DeclarativeBehavior, BoxLayout):
+    """
+    Layout container for grouping :class:`~IOSTabBarVertical` or
+    :class:`~IOSTabBarVertical` with standalone :class:`~IOSTabBarButton`
+    widgets.
+
+    Automatically adapts orientation and passes the :attr:`target_background`
+    reference to child buttons.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivy.uix.Bboxlayout.BoxLayout`
+    classes documentation.
+    """
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("size_hint", (None, None))
+        kwargs.setdefault("spacing", dp(8))
+        kwargs.setdefault("orientation", "horizontal")
+
+        super().__init__(*args, **kwargs)
+
+        self.bind(minimum_size=self.setter("size"))
+
+    def add_widget(self, widget, index=0, canvas=None):
+        if isinstance(widget, IOSTabBarVertical):
+            self.orientation = "vertical"
+
+        if isinstance(widget, IOSTabBarButton):
+            if self.orientation == "vertical":
+                widget.pos_hint = {"center_x": 0.5}
+
+            tab_bar = next(
+                (
+                    children
+                    for children in self.children
+                    if isinstance(children, IOSBaseTabBar)
+                ),
+                None,
+            )
+
+            if (
+                tab_bar
+                and tab_bar.target_background
+                and not widget.target_background
+            ):
+                widget.target_background = tab_bar.target_background
+
+        super().add_widget(widget, index=index, canvas=canvas)
+
+
+class IOSTabBarItemIcon(IOSIconButton):
+    """
+    Icon widget for a tab bar item :class:`~IOSTabBarItem`.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.button.IOSIconButton` class documentation.
+    """
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("theme_text_color", "Custom")
+        kwargs.setdefault("pos_hint", {"center_x": 0.5})
+
+        super().__init__(*args, **kwargs)
+
+
+class IOSTabBarItemText(IOSButtonText):
+    """
+    Text label widget for a tab bar item :class:`~IOSTabBarItem`.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.button.IOSButtonText` class documentation.
+    """
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("theme_text_color", "Custom")
+        kwargs.setdefault("font_style", "Label")
+        kwargs.setdefault("role", "small")
+        kwargs.setdefault("pos_hint", {"center_x": 0.5})
+
+        super().__init__(*args, **kwargs)
+
+
+class IOSTabBarIndicator(DeclarativeBehavior, IOSGlassBehavior, Widget):
+    """
+    Animated Liquid Glass indicator highlighting the active tab.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.glass_behavior.IOSGlassBehavior` and
+    :class:`~kivy.uix.widget.Widget`
+    classes documentation.
+    """
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("size_hint", (None, None))
+        kwargs.setdefault("border_radius", [dp(28)] * 4)
+        kwargs.setdefault("glass_color", [1.0, 1.0, 1.0, 0.28])
+        kwargs.setdefault("blur_amount", 0.0)
+
+        super().__init__(*args, **kwargs)
+
+        self.canvas.before.insert(0, PopMatrix())
+        self.canvas.after.add(PushMatrix())
+
+
+class IOSTabBarItem(DeclarativeBehavior, ButtonBehavior, BoxLayout):
+    """
+    Tab bar item containing an icon and/or label text.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivy.uix.behaviors.ButtonBehavior` and
+    :class:`~kivy.uix.boxlayout.BoxLayout`
+    classes documentation.
+    """
+
+    active = BooleanProperty(False)
+    """
+    Indicates whether this tab item is currently active.
+
+    :attr:`active` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    active_color = ColorProperty([0.0, 0.48, 1.0, 1.0])
+    """
+    Color of the item's icon and text in the active state.
+
+    :attr:`active_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `[0.0, 0.48, 1.0, 1.0]` (iOS System Blue).
+    """
+
+    inactive_color = ColorProperty([0.45, 0.45, 0.47, 1.0])
+    """
+    Color of the item's icon and text in the inactive state.
+
+    :attr:`inactive_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `[0.45, 0.45, 0.47, 1.0]` (iOS Secondary Label).
+    """
+
+    target_background = ObjectProperty(None, allownone=True)
+    """
+    Background widget used to compute the Liquid Glass blur effect.
+
+    :attr:`target_background` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault("orientation", "vertical")
+        kwargs.setdefault("size_hint", (None, 1))
+
+        self.icon_widget = None
+        self.text_widget = None
+
+        super().__init__(*args, **kwargs)
+
+        self._configure_layout()
+
+        # Привязываем обновление цвета на изменение любых связанных свойств
+        self.bind(
+            active=self._update_colors,
+            active_color=self._update_colors,
+            inactive_color=self._update_colors,
+            state=self._on_state_change,
+        )
+
+    def add_widget(self, widget, index=0, canvas=None):
+        if isinstance(widget, IOSTabBarItemIcon):
+            self.icon_widget = widget
+            widget.theme_icon_color = "Custom"
+        elif isinstance(widget, IOSTabBarItemText):
+            self.text_widget = widget
+            widget.theme_text_color = "Custom"
+
+        super().add_widget(widget, index=index, canvas=canvas)
+
+        Clock.schedule_once(lambda dt: self._update_colors(self, self.active))
+
+    @property
+    def has_text(self):
+        """Returns `True` if the item has a non-empty text label."""
+
+        return self.text_widget is not None and bool(
+            self.text_widget.text.strip()
+        )
+
+    def _configure_layout(self):
+        if self.text_widget:
+            self.width = dp(80)
+            self.padding = [0, dp(6), 0, dp(6)]
+            self.spacing = dp(2)
+        else:
+            self.width = dp(57)
+            self.padding = [0, 0, 0, 0]
+            self.spacing = 0
+
+            if self.icon_widget and len(self.children) == 1:
+                icon = self.icon_widget
+                self.clear_widgets()
+
+                super().add_widget(Widget(size_hint_y=1))
+                super().add_widget(icon)
+                super().add_widget(Widget(size_hint_y=1))
+
+    def _on_state_change(self, instance, value):
+        self.opacity = 0.6 if value == "down" else 1.0
+
+    def _update_colors(self, *args):
+        color = self.active_color if self.active else self.inactive_color
+
+        if self.icon_widget:
+            Animation.stop_all(self.icon_widget)
+
+            if self.icon_widget.icon_color is None:
+                self.icon_widget.icon_color = self.inactive_color
+            if self.icon_widget.text_color is None:
+                self.icon_widget.text_color = self.inactive_color
+
+            Animation(
+                icon_color=color, text_color=color, d=0.2, t="linear"
+            ).start(self.icon_widget)
+
+        if self.text_widget:
+            Animation.stop_all(self.text_widget)
+
+            if self.text_widget.text_color is None:
+                self.text_widget.text_color = self.inactive_color
+
+            Animation(text_color=color, d=0.2, t="linear").start(
+                self.text_widget
+            )
+
+
+class IOSBaseTabBar(ThemableBehavior, IOSButtonBehavior, FloatLayout):
+    """
+    Base abstract class for creating iOS-style tab bars.
+
+    .. versionadded:: 2.0.1
+
+    :Events:
+        :`on_tab_switch`: (item, index)
+            Fired when switching the active tab.
+
+    For more information, see in the
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.button_behavior.IOSButtonBehavior` and
+    :class:`~kivy.uix.floatlayout.FloatLayout`
+    classes documentation.
+    """
+
+    current_index = NumericProperty(0)
+    """
+    Index of the currently selected tab.
+
+    :attr:`current_index` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
+
+    current_item = ObjectProperty(None, allownone=True)
+    """
+    The :class:`IOSTabBarItem` instance of the currently selected tab.
+
+    :attr:`current_item` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    target_background = ObjectProperty(None, allownone=True)
+    """
+    Reference to the background widget (e.g., :class:`~kivymd.uix.scrollview.MDScrollView`)
+    used for generating the glass blur effect.
+
+    :attr:`target_background` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    padding = VariableListProperty([dp(4), dp(4), dp(4), dp(4)])
+    """
+    Internal padding of the tab bar `[padding_left, padding_top, padding_right, padding_bottom]`.
+
+    :attr:`padding` is a :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[dp(4), dp(4), dp(4), dp(4)]`.
+    """
+
+    spacing = NumericProperty(dp(4))
+    """
+    Spacing between tab items inside the bar.
+
+    :attr:`spacing` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(4)`.
+    """
+
+    def __init__(self, **kwargs):
+        self.register_event_type("on_tab_switch")
+
+        kwargs.setdefault("size_hint", (None, None))
+        kwargs.setdefault("border_radius", [dp(32)] * 4)
+        kwargs.setdefault("glass_color", [1.0, 1.0, 1.0, 0.18])
+        kwargs.setdefault("blur_amount", 6.0)
+
+        self._animating = False
+
+        super().__init__(**kwargs)
+
+        self.indicator = IOSTabBarIndicator(
+            target_background=self.target_background,
+            glass_color=[1.0, 1.0, 1.0, 0.28],
+            blur_amount=6.0,
+            size=(0, 0),
+            pos=(0, 0),
+        )
+        super().add_widget(self.indicator)
+
+        self.bind(
+            target_background=self._on_target_background,
+            padding=self._on_padding_change,
+            spacing=self._on_spacing_change,
+        )
+
+    def get_tab_items(self):
+        """
+        Returns a list of all child tab items of type :class:`~IOSTabBarItem`.
+        """
+
+        return [
+            w
+            for w in reversed(self.items_box.children)
+            if isinstance(w, IOSTabBarItem)
+        ]
+
+    def on_tab_switch(self, item, index):
+        """Event handler fired when a tab is selected."""
+
+    def _on_padding_change(self, instance, value):
+        if hasattr(self, "items_box"):
+            self.items_box.padding = value
+            Clock.schedule_once(lambda dt: self._snap_if_not_animating(), 0)
+
+    def _on_spacing_change(self, instance, value):
+        if hasattr(self, "items_box"):
+            self.items_box.spacing = value
+            Clock.schedule_once(lambda dt: self._snap_if_not_animating(), 0)
+
+    def _on_target_background(self, instance, value):
+        if hasattr(self, "indicator"):
+            self.indicator.target_background = value
+
+    def _on_anim_complete(self, anim, instance):
+        self._animating = False
+
+    def _on_item_release(self, item):
+        self.select_tab(item)
+
+    def _snap_indicator_to_current(self):
+        if not self._check_first_layout_done():
+            return
+
+        tx, ty, tw, th, radius = self._get_indicator_geometry()
+        if tw <= 0 or th <= 0:
+            return
+
+        self.indicator.border_radius = radius
+        self.indicator.pos = (tx, ty)
+        self.indicator.size = (tw, th)
+
+    def _animate_indicator(self, animated=True, *args):
+        if not self._check_first_layout_done():
+            return
+
+        tx, ty, tw, th, radius = self._get_indicator_geometry()
+        if tw <= 0 or th <= 0:
+            return
+
+        if not animated:
+            Animation.stop_all(self.indicator)
+            self._animating = False
+            self.indicator.border_radius = radius
+            self.indicator.pos = (tx, ty)
+            self.indicator.size = (tw, th)
+        else:
+            Animation.stop_all(self.indicator)
+            self._animating = True
+            anim = Animation(
+                pos=(tx, ty),
+                size=(tw, th),
+                border_radius=radius,
+                d=0.25,
+                t="out_cubic",
+            )
+            anim.bind(on_complete=self._on_anim_complete)
+            anim.start(self.indicator)
+
+    def _select_tab(self, index_or_item):
+        items = self.get_tab_items()
+
+        if not items:
+            return False, False
+
+        target_item = None
+        target_index = 0
+
+        if isinstance(index_or_item, int) and 0 <= index_or_item < len(items):
+            target_index = index_or_item
+            target_item = items[index_or_item]
+        elif (
+            isinstance(index_or_item, IOSTabBarItem) and index_or_item in items
+        ):
+            target_item = index_or_item
+            target_index = items.index(index_or_item)
+
+        if not target_item:
+            return False, False
+
+        for item in items:
+            item.active = item == target_item
+
+        self.current_index = target_index
+        self.current_item = target_item
+
+        return target_item, target_index
+
+
+###############################################################################
+#
+#                               IOS TAB HORIZONTAL
+#
+###############################################################################
+
+
+class IOSTabBarHorizontal(DeclarativeBehavior, IOSGlassBehavior, IOSBaseTabBar):
+    """
+    Horizontal floating Liquid Glass tab bar for bottom navigation.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.glass_behavior.IOSGlassBehavior` and
+    :class:`~IOSBaseTabBar`
+    classes documentation.
+    """
+
+    def __init__(self, **kwargs):
+        kwargs.setdefault("height", dp(65))
+
+        super().__init__(**kwargs)
+
+        self.items_box = BoxLayout(
+            orientation="horizontal",
+            spacing=self.spacing,
+            padding=self.padding,
+            size_hint=(None, 1),
+            pos_hint={"x": 0, "y": 0},
+        )
+        self.items_box.bind(minimum_width=self._update_bar_width)
+
+        super().add_widget(self.items_box)
+
+    def add_widget(self, widget, index=0, canvas=None):
+        if isinstance(widget, IOSTabBarItem):
+            widget.bind(
+                on_release=self._on_item_release,
+                pos=lambda *a: Clock.schedule_once(
+                    lambda dt: self._snap_if_not_animating(), 0
+                ),
+                size=lambda *a: Clock.schedule_once(
+                    lambda dt: self._snap_if_not_animating(), 0
+                ),
+            )
+            self.items_box.add_widget(widget, index=index, canvas=canvas)
+
+            items = self.get_tab_items()
+            if len(items) == 1:
+                Clock.schedule_once(lambda dt: self.select_tab(0), 0)
+        else:
+            super().add_widget(widget, index=index, canvas=canvas)
+
+    def do_layout(self, *largs):
+        super().do_layout(*largs)
+
+        if not self._animating:
+            self._snap_indicator_to_current()
+
+    def _get_indicator_geometry(self):
+        if not self.current_item or self.current_item.width <= 0:
+            return 0, 0, 0, 0, [0] * 4
+
+        item = self.current_item
+        target_h = item.height
+
+        if getattr(item, "has_text", False):
+            target_w = item.width
+            target_x = item.x
+            target_y = item.y
+            radius = [target_h / 2] * 4
+        else:
+            target_w = target_h
+            target_x = item.center_x - target_w / 2
+            target_y = item.y
+            radius = [target_h / 2] * 4
+
+        return target_x, target_y, target_w, target_h, radius
+
+    def _check_first_layout_done(self):
+        return True
+
+    def _update_bar_width(self, instance, value):
+        self.width = value
+        self.items_box.width = value
+
+    def _snap_if_not_animating(self):
+        if not self._animating:
+            self._snap_indicator_to_current()
+
+    def select_tab(self, index_or_item):
+        """
+        Programmatically switches active tab by index or
+        :class:`~IOSTabBarItem` instance.
+        """
+
+        target_item, target_index = self._select_tab(index_or_item)
+
+        if not target_item and target_index:
+            return
+
+        if self.indicator.width == 0:
+            Clock.schedule_once(
+                lambda dt: self._animate_indicator(animated=False), 0
+            )
+        else:
+            self._animate_indicator(animated=True)
+
+        self.dispatch("on_tab_switch", target_item, target_index)
+
+
+###############################################################################
+#
+#                                IOS TAB VERTICAL
+#
+###############################################################################
+
+
+class IOSTabBarVertical(DeclarativeBehavior, IOSGlassBehavior, IOSBaseTabBar):
+    """
+    Vertical floating Liquid Glass tab bar for bottom navigation.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.glass_behavior.IOSGlassBehavior` and
+    :class:`~IOSBaseTabBar`
+    classes documentation.
+    """
+
+    def __init__(self, **kwargs):
+        kwargs.setdefault("width", dp(65))
+        self._first_layout_done = False
+
+        super().__init__(**kwargs)
+
+        self.indicator.opacity = 0
+
+        self.items_box = BoxLayout(
+            orientation="vertical",
+            spacing=self.spacing,
+            padding=self.padding,
+            size_hint=(1, None),
+            pos_hint={"x": 0, "y": 0},
+        )
+        self.items_box.bind(minimum_height=self._update_bar_height)
+
+        super().add_widget(self.items_box)
+
+    def do_layout(self, *largs):
+        super().do_layout(*largs)
+
+        if not self._animating:
+            tx, ty, tw, th, radius = self._get_indicator_geometry()
+
+            if (
+                tw > 0
+                and th > 0
+                and self.current_item
+                and self.current_item.y > 0
+            ):
+                self.indicator.border_radius = radius
+                self.indicator.pos = (tx, ty)
+                self.indicator.size = (tw, th)
+
+                if not self._first_layout_done:
+                    self._first_layout_done = True
+                    Clock.schedule_once(self._show_indicator, 0)
+
+    def _show_indicator(self, dt):
+        self.indicator.opacity = 1.0
+
+    def _get_indicator_geometry(self):
+        if not self.current_item or self.current_item.height <= 0:
+            return 0, 0, 0, 0, [0] * 4
+
+        item = self.current_item
+        size = min(item.width, item.height)
+        target_w = size
+        target_h = size
+        target_x = item.center_x - target_w / 2
+        target_y = item.center_y - target_h / 2
+        radius = [size / 2] * 4
+
+        return target_x, target_y, target_w, target_h, radius
+
+    def _check_first_layout_done(self):
+        if not self._first_layout_done:
+            return False
+
+        return True
+
+    def _update_bar_height(self, instance, value):
+        self.height = value
+        self.items_box.height = value
+
+    def add_widget(self, widget, index=0, canvas=None):
+        if isinstance(widget, IOSTabBarItem):
+            # If an IOSTabBarItemText was passed to the tab, remove it.
+            if widget.text_widget:
+                widget.remove_widget(widget.text_widget)
+                widget.text_widget = None
+
+            # Adjusting the tab layout for the "icon-only" variant.
+            widget._configure_layout()
+
+            widget.size_hint = (1, None)
+            widget.height = dp(53)
+
+            widget.bind(
+                on_release=self._on_item_release,
+                pos=lambda *a: Clock.schedule_once(
+                    lambda dt: self._snap_if_not_animating(), 0
+                ),
+                size=lambda *a: Clock.schedule_once(
+                    lambda dt: self._snap_if_not_animating(), 0
+                ),
+            )
+            self.items_box.add_widget(widget, index=index, canvas=canvas)
+
+            items = self.get_tab_items()
+
+            if len(items) == 1:
+                self.current_index = 0
+                self.current_item = items[0]
+                items[0].active = True
+        else:
+            super().add_widget(widget, index=index, canvas=canvas)
+
+    def _snap_if_not_animating(self):
+        if not self._animating and self._first_layout_done:
+            self._snap_indicator_to_current()
+
+    def select_tab(self, index_or_item):
+        """
+        Programmatically switches active tab by index or
+        :class:`~IOSTabBarItem` instance.
+        """
+
+        target_item, target_index = self._select_tab(index_or_item)
+
+        if not target_item and target_index:
+            return
+
+        if self._first_layout_done:
+            self._animate_indicator(animated=True)
+
+        self.dispatch("on_tab_switch", target_item, target_index)

@@ -396,7 +396,7 @@ class IOSWheelPickerUnitLabel(MDLabel):
     Text label widget used for column unit indicators.
 
     For more information, see in the
-    :class:`~kivymd.uix.label.MDLabel` class documentation.
+    :class:`~kivymd.uix.label.label.MDLabel` class documentation.
     """
 
     def __init__(self, **kwargs):
@@ -413,7 +413,7 @@ class IOSWheelPickerLabel(MDLabel):
     relative to its center point.
 
     For more information, see in the
-    :class:`~kivymd.uix.label.MDLabel` class documentation.
+    :class:`~kivymd.uix.label.label.MDLabel` class documentation.
     """
 
     selected_color = ColorProperty([0.2, 0.8, 1, 1])

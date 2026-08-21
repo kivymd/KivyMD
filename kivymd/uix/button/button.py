@@ -1185,7 +1185,7 @@ class MDButton(BaseButton, CommonElevationBehavior, RelativeLayout):
     """
     Base class for all buttons.
 
-    .. versionadded:: 2.2.0
+    .. versionadded:: 2.0.0
 
     For more information, see in the
     :class:`~kivymd.uix.behaviors.elevation.CommonElevationBehavior` and

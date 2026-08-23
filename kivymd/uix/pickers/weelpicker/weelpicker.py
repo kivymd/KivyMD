@@ -985,9 +985,6 @@ class IOSWheelPicker(DeclarativeBehavior, RelativeLayout):
 
     __events__ = ("on_select",)
 
-    label: IOSWheelPickerLabel | None = None
-    unit_label: IOSWheelPickerUnitLabel | None = None
-
     selection_bg_color = ColorProperty([1, 1, 1, 0.18])
     """
     Background color of the central active row selection glass bar in HEX/RGBA
@@ -996,6 +993,9 @@ class IOSWheelPicker(DeclarativeBehavior, RelativeLayout):
     :attr:`selection_bg_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[1, 1, 1, 0.18]`.
     """
+
+    _label: IOSWheelPickerLabel | None = None
+    _unit_label: IOSWheelPickerUnitLabel | None = None
 
     def __init__(
         self,
@@ -1100,16 +1100,16 @@ class IOSWheelPicker(DeclarativeBehavior, RelativeLayout):
 
     def add_widget(self, widget, *args, **kwargs):
         if isinstance(widget, IOSWheelPickerLabel):
-            self.label = widget
+            self. _label = widget
             self._build_columns()
         elif isinstance(widget, IOSWheelPickerUnitLabel):
-            self.unit_label = widget
+            self. _unit_label = widget
             self._build_columns()
         else:
             super().add_widget(widget, *args, **kwargs)
 
     def _build_columns(self):
-        """Creates or rebuilds columns with the current label/unit_label."""
+        """Creates or rebuilds columns with the current  _label/ _unit_label."""
 
         if not hasattr(self, "columns_box"):
             return
@@ -1131,8 +1131,8 @@ class IOSWheelPicker(DeclarativeBehavior, RelativeLayout):
 
             col = IOSColumnWrapper(
                 col_data=col_data,
-                label=self.label,
-                unit_label=self.unit_label,
+                label=self. _label,
+                unit_label=self. _unit_label,
                 selected_color=self.selected_color,
                 normal_color=self.normal_color,
                 side=side,

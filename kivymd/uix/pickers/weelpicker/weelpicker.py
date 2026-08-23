@@ -387,6 +387,7 @@ from kivy.properties import BooleanProperty, ColorProperty, NumericProperty
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.relativelayout import RelativeLayout
 
+from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import DeclarativeBehavior
 from kivymd.uix.label import MDLabel
 
@@ -399,12 +400,43 @@ class IOSWheelPickerUnitLabel(MDLabel):
     :class:`~kivymd.uix.label.label.MDLabel` class documentation.
     """
 
+    normal_color = ColorProperty(None, allownone=True)
+    """
+    The text color the unit label.
+
+    :attr:`normal_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
     def __init__(self, **kwargs):
+        self._user_normal_color = kwargs.pop("_user_normal_color", False)
+
+        if not self._user_normal_color:
+            self._user_normal_color = "normal_color" in kwargs
+
         super().__init__(**kwargs)
 
         # FIXME: It's just a workaround, since the marker isn't positioned in
         #  the center.
         self.padding = [0, dp(4), 0, 0]
+
+        self.bind(normal_color=self._update_text_color)
+        self.theme_cls.bind(
+            theme_style=self._on_theme_style_change,
+            primary_palette=self._on_theme_style_change,
+        )
+
+        if not self._user_normal_color:
+            self.normal_color = self.theme_cls.primaryColor
+
+        self._update_text_color()
+
+    def _update_text_color(self, *args):
+        self.text_color = self.normal_color
+
+    def _on_theme_style_change(self, instance, value):
+        if not self._user_normal_color:
+            self.normal_color = self.theme_cls.primaryColor
 
 
 class IOSWheelPickerLabel(MDLabel):
@@ -416,24 +448,32 @@ class IOSWheelPickerLabel(MDLabel):
     :class:`~kivymd.uix.label.label.MDLabel` class documentation.
     """
 
-    selected_color = ColorProperty([0.2, 0.8, 1, 1])
+    selected_color = ColorProperty(None)
     """
     The text color when the label is currently selected
     (e.g., inside the picker selection zone).
 
     :attr:`selected_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `[0.2, 0.8, 1, 1]`.
+    and defaults to `None`.
     """
 
-    normal_color = ColorProperty([0.75, 0.75, 0.75, 1])
+    normal_color = ColorProperty(None)
     """
     The text color when the label is in its unselected or idle state.
 
     :attr:`normal_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `[0.75, 0.75, 0.75, 1]`.
+    and defaults to `None`.
     """
 
     def __init__(self, **kwargs):
+        self._user_selected_color = kwargs.pop("_user_selected_color", False)
+        self._user_normal_color = kwargs.pop("_user_normal_color", False)
+
+        if not self._user_selected_color:
+            self._user_selected_color = "selected_color" in kwargs
+        if not self._user_normal_color:
+            self._user_normal_color = "normal_color" in kwargs
+
         super().__init__(**kwargs)
 
         with self.canvas.before:
@@ -442,6 +482,22 @@ class IOSWheelPickerLabel(MDLabel):
             self.scale_inst = Scale(1, 1, 1)
         with self.canvas.after:
             PopMatrix()
+
+        self.theme_cls.bind(
+            theme_style=self._on_theme_style_change,
+            primary_palette=self._on_theme_style_change,
+        )
+
+        if not self._user_normal_color:
+            self.normal_color = list(self.theme_cls.secondaryColor)
+        if not self._user_selected_color:
+            self.selected_color = list(self.theme_cls.primaryColor)
+
+    def _on_theme_style_change(self, instance, value):
+        if not self._user_selected_color:
+            self.selected_color = list(self.theme_cls.primaryColor)
+        if not self._user_normal_color:
+            self.normal_color = list(self.theme_cls.secondaryColor)
 
     def apply_3d_transform(self, scale_x, scale_y) -> None:
         """
@@ -457,13 +513,15 @@ class IOSWheelPickerLabel(MDLabel):
         self.scale_inst.origin = self.center
 
 
-class IOSWheelPickerColumn(RelativeLayout):
+class IOSWheelPickerColumn(ThemableBehavior, RelativeLayout):
     """
     Implements a 3D cylindrical wheel column widget for pickers, supporting
     smooth inertial touch scrolling, label pooling, and selection highlighting.
 
     For more information, see in the
-    :class:`~kivy.uix.relativelayout.RelativeLayout` class documentation.
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.relativelayout.RelativeLayout`
+    classes documentation.
 
     :Events:
         :attr:`on_select`
@@ -546,15 +604,15 @@ class IOSWheelPickerColumn(RelativeLayout):
     and defaults to `0.0`.
     """
 
-    selected_color = ColorProperty([0.2, 0.8, 1, 1])
+    selected_color = ColorProperty(None)
     """
     The highlight text color applied when an item enters the selection zone.
 
     :attr:`selected_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `[0.2, 0.8, 1, 1]`.
+    and defaults to `None`.
     """
 
-    normal_color = ColorProperty([0.75, 0.75, 0.75, 1])
+    normal_color = ColorProperty(None)
     """
     The default text color for unselected items outside the central zone.
 
@@ -570,7 +628,11 @@ class IOSWheelPickerColumn(RelativeLayout):
         normal_color=None,
         **kwargs,
     ):
+        self._user_selected_color = selected_color is not None
+        self._user_normal_color = normal_color is not None
+
         self.items_list = items
+        self.label_template = label_template
 
         if selected_color:
             kwargs["selected_color"] = selected_color
@@ -600,17 +662,74 @@ class IOSWheelPickerColumn(RelativeLayout):
         self.pool_size = self.visible_count + 4
         self.label_pool = []
 
-        if label_template:
+        if self.label_template:
             for _ in range(self.pool_size):
-                lbl = _create_label_from_template(label_template)
+                lbl = _create_label_from_template(self.label_template)
                 lbl.size_hint = (None, None)
                 self.label_pool.append(lbl)
                 self.add_widget(lbl)
 
+        self.theme_cls.bind(
+            theme_style=self._on_theme_style_change,
+            primary_palette=self._on_theme_style_change,
+        )
         self.bind(scroll_offset=self.update_3d_transforms)
         self.bind(size=self._on_size)
 
         Clock.schedule_once(self.update_3d_transforms)
+
+    def _on_theme_style_change(self, instance, value):
+        if self.label_template and hasattr(
+            self.label_template, "_on_theme_style_change"
+        ):
+            self.label_template._on_theme_style_change(instance, value)
+
+        for lbl in self.label_pool:
+            if hasattr(lbl, "_on_theme_style_change"):
+                lbl._on_theme_style_change(instance, value)
+
+        self.update_3d_transforms()
+
+    def _resolve_color(self, lbl, is_selected: bool):
+        if is_selected:
+            if (
+                hasattr(lbl, "_user_selected_color")
+                and lbl._user_selected_color
+            ):
+                if lbl.selected_color is not None:
+                    return lbl.selected_color
+
+            if self._user_selected_color:
+                if self.selected_color is not None:
+                    return self.selected_color
+
+            if (
+                self.label_template
+                and hasattr(self.label_template, "_user_selected_color")
+                and self.label_template._user_selected_color
+                and hasattr(self.label_template, "selected_color")
+            ):
+                return list(self.label_template.selected_color)
+
+            return list(self.theme_cls.primaryColor)
+        else:
+            if hasattr(lbl, "_user_normal_color") and lbl._user_normal_color:
+                if lbl.normal_color is not None:
+                    return lbl.normal_color
+
+            if self._user_normal_color:
+                if self.normal_color is not None:
+                    return self.normal_color
+
+            if (
+                self.label_template
+                and hasattr(self.label_template, "_user_normal_color")
+                and self.label_template._user_normal_color
+                and hasattr(self.label_template, "normal_color")
+            ):
+                return list(self.label_template.normal_color)
+
+            return list(self.theme_cls.secondaryColor)
 
     def _on_size(self, *args):
         pad_right = dp(6) if self.has_unit else 0
@@ -769,14 +888,13 @@ class IOSWheelPickerColumn(RelativeLayout):
             lbl.apply_3d_transform(scale_x, scale_y)
 
             in_selection_glass = abs_dist < (self.item_height / 2.5)
+            lbl.text_color = self._resolve_color(
+                lbl, is_selected=in_selection_glass
+            )
 
             if in_selection_glass:
-                active_c = getattr(lbl, "selected_color", self.selected_color)
-                lbl.color = active_c
                 lbl.opacity = 1.0
             else:
-                norm_c = getattr(lbl, "normal_color", self.normal_color)
-                lbl.color = norm_c
                 lbl.opacity = max(0.0, alpha)
 
 
@@ -883,8 +1001,8 @@ class IOSWheelPicker(DeclarativeBehavior, RelativeLayout):
         self,
         *args,
         columns=None,
-        selected_color=(0.2, 0.8, 1, 1),
-        normal_color=(0.7, 0.7, 0.7, 1),
+        selected_color=None,
+        normal_color=None,
         visible_count=5,
         item_height=dp(36),
         curve_factor=dp(30),
@@ -1049,29 +1167,59 @@ class IOSWheelPicker(DeclarativeBehavior, RelativeLayout):
             )
 
 
-def _apply_template_to_widget(widget, template):
+def _get_template_kwargs(template) -> dict:
     if not template:
-        return
+        return {}
     if isinstance(template, dict):
-        for k, v in template.items():
-            setattr(widget, k, v)
-    elif hasattr(template, "properties"):
+        return template.copy()
+
+    kwargs = {}
+
+    if hasattr(template, "properties"):
         for prop_name in template.properties():
             if prop_name in ("id", "parent", "children", "canvas", "proxy_ref"):
                 continue
             try:
-                setattr(widget, prop_name, getattr(template, prop_name))
+                kwargs[prop_name] = getattr(template, prop_name)
             except Exception:
                 pass
 
+    return kwargs
+
 
 def _create_label_from_template(template) -> IOSWheelPickerLabel:
-    lbl = IOSWheelPickerLabel()
-    _apply_template_to_widget(lbl, template)
+    if not template:
+        return IOSWheelPickerLabel()
+
+    kwargs = _get_template_kwargs(template)
+
+    for flag in ("_user_selected_color", "_user_normal_color"):
+        if hasattr(template, flag):
+            kwargs[flag] = getattr(template, flag)
+
+    lbl = IOSWheelPickerLabel(**kwargs)
+
+    for color_prop in ("selected_color", "normal_color"):
+        val = getattr(template, color_prop, None)
+        if val is not None:
+            setattr(lbl, color_prop, list(val))
+
     return lbl
 
 
 def _create_unit_label_from_template(template) -> IOSWheelPickerUnitLabel:
-    unit_lbl = IOSWheelPickerUnitLabel()
-    _apply_template_to_widget(unit_lbl, template)
-    return unit_lbl
+    if not template:
+        return IOSWheelPickerUnitLabel()
+
+    kwargs = _get_template_kwargs(template)
+
+    if hasattr(template, "_user_normal_color"):
+        kwargs["_user_normal_color"] = template._user_normal_color
+
+    lbl = IOSWheelPickerUnitLabel(**kwargs)
+
+    if getattr(template, "normal_color", None) is not None:
+        lbl.normal_color = template.normal_color
+        lbl._user_normal_color = True
+
+    return lbl

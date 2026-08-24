@@ -145,6 +145,58 @@ class IOSGlassBehavior:
     refraction, and touch response.
     """
 
+    lens_power = NumericProperty(0.08)
+    """
+    Magnification power at the center of the lens.
+
+    .. code-block:: python
+
+        IOSButton(
+            lens_power=0.45,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/glass-behavior-lens-power-045.png
+        :align: center
+
+    .. code-block:: python
+
+        IOSButton(
+            lens_power=0.15,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/glass-behavior-lens-power-015.png
+        :align: center
+
+    :attr:`lens_power` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.08`.
+    """
+
+    bevel_power = NumericProperty(0.15)
+    """
+    Light refraction power at the bevel/edges.
+
+    .. code-block:: python
+
+        IOSButton(
+            bevel_power=0.55,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/glass-behavior-bevel-power-055.png
+        :align: center
+
+    .. code-block:: python
+
+        IOSButton(
+            bevel_power=0.15,
+        )
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/glass-behavior-bevel-power-015.png
+        :align: center
+
+    :attr:`bevel_power` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.15`.
+    """
+
     border_radius = VariableListProperty([dp(12)] * 4)
     """
     Border radius for the glass corners in the order (Top-Left, Top-Right,
@@ -451,6 +503,8 @@ class IOSGlassBehavior:
             border_radius=self._update_glass_uniforms,
             glass_color=self._update_glass_uniforms,
             blur_amount=self._update_glass_uniforms,
+            lens_power=self._update_glass_uniforms,
+            bevel_power=self._update_glass_uniforms,
             _press_factor=self._update_glass_uniforms,
             _scale_factor=self._update_glass_uniforms,
             _touch_pos=self._update_glass_uniforms,
@@ -572,6 +626,8 @@ class IOSGlassBehavior:
         g_col = [float(c) for c in self.glass_color]
         self._glass_rc["u_glass_color"] = g_col
         self._glass_rc["u_blur_amount"] = float(self.blur_amount)
+        self._glass_rc["u_lens_power"] = float(self.lens_power)
+        self._glass_rc["u_bevel_power"] = float(self.bevel_power)
         self._glass_rc["u_pressed"] = float(self._press_factor)
         self._glass_rc["u_touch_pos"] = [
             float(self._touch_pos[0]),

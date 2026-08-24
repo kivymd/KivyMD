@@ -556,7 +556,8 @@ class IOSGlassBehavior:
         self._glass_rc["u_pos"] = [scaled_x, scaled_y]
         self._glass_rc["u_size"] = [scaled_w, scaled_h]
         self._glass_rc["u_radius"] = radius_vec
-        self._glass_rc["u_glass_color"] = list(self.glass_color)
+        g_col = [float(c) for c in self.glass_color]
+        self._glass_rc["u_glass_color"] = g_col
         self._glass_rc["u_blur_amount"] = float(self.blur_amount)
         self._glass_rc["u_pressed"] = float(self._press_factor)
         self._glass_rc["u_touch_pos"] = [

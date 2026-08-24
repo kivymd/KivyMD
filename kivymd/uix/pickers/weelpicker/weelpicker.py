@@ -809,7 +809,6 @@ class IOSWheelPickerColumn(ThemableBehavior, RelativeLayout):
         idx = int(round(self.scroll_offset)) % self.n_items
         return self.items_list[idx] if self.items_list else idx + self.range_min
 
-
     def update_3d_transforms(self, *args):
         """
         Recalculates and applies 3D cylindrical spatial positioning, scaling,
@@ -872,7 +871,9 @@ class IOSWheelPickerColumn(ThemableBehavior, RelativeLayout):
             lbl.apply_3d_transform(scale_x, scale_y)
 
             in_selection_glass = abs_dist < (self.item_height / 2.5)
-            lbl.text_color = self._resolve_color(lbl, is_selected=in_selection_glass)
+            lbl.text_color = self._resolve_color(
+                lbl, is_selected=in_selection_glass
+            )
 
             lbl.opacity = 1.0 if in_selection_glass else max(0.0, alpha)
 
@@ -1089,10 +1090,10 @@ class IOSWheelPicker(DeclarativeBehavior, RelativeLayout):
 
     def add_widget(self, widget, *args, **kwargs):
         if isinstance(widget, IOSWheelPickerLabel):
-            self. _label = widget
+            self._label = widget
             self._build_columns()
         elif isinstance(widget, IOSWheelPickerUnitLabel):
-            self. _unit_label = widget
+            self._unit_label = widget
             self._build_columns()
         else:
             super().add_widget(widget, *args, **kwargs)

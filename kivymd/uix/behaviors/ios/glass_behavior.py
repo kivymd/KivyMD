@@ -115,6 +115,7 @@ from kivy.properties import (
     ObjectProperty,
     VariableListProperty,
 )
+from kivy.uix.video import Video
 
 from kivymd import glsl_path
 
@@ -464,12 +465,17 @@ class IOSGlassBehavior:
         if hasattr(self, "_attached_bg") and self._attached_bg:
             self._unbind_bg_events(self._attached_bg)
             self._attached_bg = None
+            Clock.unschedule(self._update_video_frame)
 
         if not value:
             return
 
         # 2. We attach the new background.
         self._attached_bg = value
+
+        # If the background is a Video, start an interval to update the FBO.
+        if isinstance(value, Video):
+            Clock.schedule_interval(self._update_video_frame, 1 / 60)
 
         def _bind_widget(w):
             if not hasattr(w, "bind"):
@@ -503,6 +509,13 @@ class IOSGlassBehavior:
                 _bind_widget(child)
 
         Clock.schedule_once(lambda dt: self._setup_glass_fbo(), 0.4)
+
+    def _update_video_frame(self, dt):
+        """Redraws the FBO every video playback frame."""
+
+        if self._fbo and self.target_background:
+            self._draw_bg_to_fbo(self._fbo, self.target_background)
+            self._update_glass_uniforms()
 
     def on_parent(self, instance, parent):
         """Cleanup when removing a widget from the layout."""

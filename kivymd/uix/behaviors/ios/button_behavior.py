@@ -240,24 +240,7 @@ class IOSButtonBehavior(ButtonBehavior):
     def on_touch_down(self, touch):
         if self.collide_point(*touch.pos):
             self._touch_pos = list(touch.pos)
-
-            Animation.cancel_all(self, "_press_factor", "_scale_factor")
-
-            # Glint from a finger touch animation.
-            anim_press = Animation(
-                _press_factor=1.0,
-                d=0.14,
-                t="easing_decelerated",
-            )
-            # Container scaling animation.
-            anim_scale = Animation(
-                _scale_factor=1.1,
-                d=self.press_scale_duration,
-                t=self.press_scale_transition,
-            )
-
-            anim_press.start(self)
-            anim_scale.start(self)
+            self._do_animation_down()
 
         return super().on_touch_down(touch)
 
@@ -268,6 +251,30 @@ class IOSButtonBehavior(ButtonBehavior):
         return super().on_touch_move(touch)
 
     def on_touch_up(self, touch):
+        self._do_animation_up()
+
+        return super().on_touch_up(touch)
+
+    def _do_animation_down(self):
+        Animation.cancel_all(self, "_press_factor", "_scale_factor")
+
+        # Glint from a finger touch animation.
+        anim_press = Animation(
+            _press_factor=1.0,
+            d=0.14,
+            t="easing_decelerated",
+        )
+        # Container scaling animation.
+        anim_scale = Animation(
+            _scale_factor=1.1,
+            d=self.press_scale_duration,
+            t=self.press_scale_transition,
+        )
+
+        anim_press.start(self)
+        anim_scale.start(self)
+
+    def _do_animation_up(self):
         Animation.cancel_all(self, "_press_factor", "_scale_factor")
 
         # Glint from a finger touch animation.
@@ -285,5 +292,3 @@ class IOSButtonBehavior(ButtonBehavior):
 
         anim_release.start(self)
         anim_scale_back.start(self)
-
-        return super().on_touch_up(touch)

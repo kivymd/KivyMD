@@ -1,5 +1,6 @@
 #:import theme_font_styles kivymd.font_definitions.theme_font_styles
 
+# ------------------------------------- MD ------------------------------------
 
 <MDTextField>
     input_filter: self.field_filter
@@ -429,3 +430,38 @@
     font_style: "Body"
     role: "small"
     theme_text_color: "Custom"
+
+# ------------------------------------ IOS ------------------------------------
+
+<IOSTextFieldIcon>:
+    size_hint: None, None
+    size: dp(24), dp(24)
+
+
+<IOSTextField>:
+    size_hint_y: None
+    height: dp(40)
+    border_radius: [self.height / 2] * 4
+    background_normal: ""
+    background_active: ""
+    background_disabled_normal: ""
+    background_color: 0, 0, 0, 0
+    foreground_color: self.theme_cls.onSurfaceVariantColor
+
+    canvas.after:
+        Color:
+            rgba:
+                ( \
+                self.cursor_color[:3] \
+                if self.cursor_color[:3] != [0, 0, 0] \
+                else self.theme_cls.primaryColor[:3] \
+                ) + \
+                [ \
+                (self.cursor_color[3] if self.cursor_color[3] != 0 else 1) \
+                if self.focus and self._blink_state \
+                else 0 \
+                ]
+        Rectangle:
+            group: "ios-rectangle-cursor-blink"
+            pos: (int(x) for x in self.cursor_pos)
+            size: self.cursor_width, -self.line_height

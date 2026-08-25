@@ -231,6 +231,203 @@ Example
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/text-fields-example.png
     :align: center
 
+iOS liquid glass text field
+===========================
+
+.. seealso::
+
+    `Human interface guidelines, Text fields <https://developer.apple.com/design/human-interface-guidelines/text-fields>`_
+
+.. rubric:: A text field is a rectangular area in which people enter or edit
+    small, specific pieces of text.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-text-field-intro.png
+    :align: center
+
+Anatomy
+=======
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-text-field-anatomy.png
+    :align: center
+
+Example
+=======
+
+.. tabs::
+
+    .. tab:: Imperative Python style
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+
+            from kivymd.app import MDApp
+            from kivymd.uix.list import (
+                MDListItem,
+                MDListItemHeadlineText,
+                MDListItemLeadingAvatar,
+                MDListItemSupportingText,
+                MDListItemTrailingCheckbox,
+            )
+
+            from faker import Faker  # pip install Faker
+
+            KV = '''
+            <CommonIOSButton>
+                size_hint: None, None
+                width: "56dp"
+                height: "56dp"
+                border_radius: [dp(28), dp(28), dp(28), dp(28)]
+                glass_color: [1.0, 1.0, 1.0, 0.08]
+                blur_amount: 3.0
+
+                IOSIconButton:
+                    icon: root.icon
+
+            MDScreen:
+
+                MDScrollView:
+                    id: scroll
+
+                    MDGridLayout:
+                        id: grid
+                        size_hint_y: None
+                        height: self.minimum_height
+                        cols: 1
+
+                IOSTextField:
+                    id: field
+                    target_background: scroll
+                    hint_text: "Message"
+                    size_hint_x: .9
+                    pos_hint: {"center_x": .5, "center_y": .1}
+
+                    IOSTextFieldTrailingIcon:
+                        icon: "trash-can"
+                        on_release: app.clear_field()
+            '''
+
+
+            class TestApp(MDApp):
+                def clear_field(self, *args):
+                    self.root.ids.field.text = ""
+
+                def on_start(self):
+                    fake = Faker("en_US")
+
+                    for i in range(40):
+                        bg_color = (0.2, 0.2, 0.2, 0.4) if i % 2 == 0 else (0, 0, 0, 0)
+                        list_item = MDListItem(
+                            theme_bg_color="Custom", md_bg_color=bg_color
+                        )
+                        leading_avatar = MDListItemLeadingAvatar(
+                            source=f"https://picsum.photos/800/600?random={i}"
+                        )
+                        headline_text = MDListItemHeadlineText(text=fake.name())
+                        supporting_text = MDListItemSupportingText(text=fake.job())
+                        trailing_checkbox = MDListItemTrailingCheckbox()
+
+                        list_item.add_widget(leading_avatar)
+                        list_item.add_widget(headline_text)
+                        list_item.add_widget(supporting_text)
+                        list_item.add_widget(trailing_checkbox)
+
+                        self.root.ids.grid.add_widget(list_item)
+
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return Builder.load_string(KV)
+
+
+            if __name__ == "__main__":
+                TestApp().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.gridlayout import MDGridLayout
+            from kivymd.uix.list import (
+                MDListItem,
+                MDListItemHeadlineText,
+                MDListItemLeadingAvatar,
+                MDListItemSupportingText,
+                MDListItemTrailingCheckbox,
+            )
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.scrollview import MDScrollView
+
+            from faker import Faker  # pip install Faker
+
+            from kivymd.uix.textfield import (
+                IOSTextField,
+                IOSTextFieldTrailingIcon,
+            )
+
+
+            class MyScreen(MDScreen):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+
+                    scroll = MDScrollView(
+                        MyGridLayout()
+                    )
+
+                    self.widgets = [
+                        scroll,
+                        IOSTextField(
+                            IOSTextFieldTrailingIcon(
+                                icon="trash-can",
+                                on_release=self.clear_field,
+                            ),
+                            id="field",
+                            target_background=scroll,
+                            hint_text="Message",
+                            size_hint_x=0.9,
+                            pos_hint={"center_x": 0.5, "center_y": 0.1},
+                        )
+                    ]
+
+                def clear_field(self, *args):
+                    self.get_ids().field.text = ""
+
+
+            class MyGridLayout(MDGridLayout):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+
+                    self.cols = 1
+                    self.size_hint_y = None
+                    self.bind(minimum_height=self.setter("height"))
+
+                    fake = Faker("en_US")
+                    self.widgets = [
+                        MDListItem(
+                            MDListItemLeadingAvatar(
+                                source=f"https://picsum.photos/800/600?random={i}"
+                            ),
+                            MDListItemHeadlineText(text=fake.name()),
+                            MDListItemSupportingText(text=fake.job()),
+                            MDListItemTrailingCheckbox(),
+                            theme_bg_color="Custom",
+                            md_bg_color=(0.2, 0.2, 0.2, 0.4) if i % 2 == 0 else (0, 0, 0, 0),
+                        ) for i in range(40)
+                    ]
+
+
+            class TestApp(MDApp):
+                def build(self):
+                    self.theme_cls.theme_style = "Dark"
+                    return MyScreen()
+
+
+            if __name__ == "__main__":
+                TestApp().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-text-field-example.png
+    :align: center
+
 API break
 =========
 
@@ -304,6 +501,7 @@ API break
 from __future__ import annotations
 
 __all__ = (
+    # MD.
     "BaseTextFieldIcon",
     "BaseTextFieldLabel",
     "Validator",
@@ -314,6 +512,10 @@ __all__ = (
     "MDTextFieldHintText",
     "MDTextFieldLeadingIcon",
     "MDTextFieldTrailingIcon",
+    # IOS.
+    "IOSTextField",
+    "IOSTextFieldLeadingIcon",
+    "IOSTextFieldTrailingIcon",
 )
 
 import os
@@ -334,12 +536,18 @@ from kivy.properties import (
     StringProperty,
     VariableListProperty,
 )
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.textinput import TextInput
 
 from kivymd import uix_path
 from kivymd.font_definitions import theme_font_styles
 from kivymd.theming import ThemableBehavior, ThemeManager
-from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
+from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
+    DeclarativeBehavior,
+    IOSButtonBehavior,
+    IOSGlassBehavior,
+)
 from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
 from kivymd.uix.label import MDIcon, MDLabel
 
@@ -2576,3 +2784,196 @@ class MDTextField(
 
     def _refresh_hint_text(self):
         """Method override to avoid duplicate hint text texture."""
+
+
+# ------------------------------------ IOS ------------------------------------
+
+
+class IOSTextFieldIcon(ButtonBehavior, MDIcon):
+    """
+    Implements the base icon of the text field.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDIcon` class documentation.
+    """
+
+
+class IOSTextFieldLeadingIcon(IOSTextFieldIcon):
+    """
+    Implements the left icon of the text field.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDIcon` class documentation.
+    """
+
+
+class IOSTextFieldTrailingIcon(IOSTextFieldIcon):
+    """
+    Implements the right icon of the text field.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.label.label.MDIcon` class documentation.
+    """
+
+
+class IOSTextField(
+    DeclarativeBehavior,
+    ThemableBehavior,
+    IOSGlassBehavior,
+    IOSButtonBehavior,
+    TextInput,
+):
+    """
+    Implements an iOS-style liquid glass field.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.glass_behavior.IOSGlassBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.button_behavior.IOSButtonBehavior` and
+    :class:`~kivy.uix.textinput.TextInput`
+    classes documentation.
+    """
+
+    cursor_color = ColorProperty([0, 0, 0, 0])
+    """
+    Current color of the cursor, in (r, g, b, a), HEX or M3 format.
+
+    :attr:`cursor_color` is a :class:`~kivy.properties.ColorProperty` and
+    defaults to `[0, 0, 0, 0]`.
+    """
+
+    _leading_icon = ObjectProperty(None, allownone=True)
+    _trailing_icon = ObjectProperty(None, allownone=True)
+    _blink_state = BooleanProperty(True)
+
+    def __init__(self, *args, **kwargs):
+        self._user_padding = kwargs.get(
+            "padding", [dp(20), dp(8), dp(20), dp(8)]
+        )
+        self._updating_padding = False
+
+        super().__init__(*args, **kwargs)
+
+        self._is_pressed = False
+
+        self.bind(
+            pos=self._schedule_update,
+            size=self._schedule_update,
+            center_x=self._schedule_update,
+            center_y=self._schedule_update,
+            _scale_factor=self._update_icons_pos,
+            _cursor_blink=self._update_blink_state,
+            line_height=self._update_internal_padding,
+        )
+        Clock.schedule_once(self._schedule_update, 0)
+
+    def on_padding(self, instance, value) -> None:
+        """Fired when the : attr:`padding` value changes."""
+
+        if self._updating_padding:
+            return
+
+        if len(value) == 2:
+            self._user_padding = [value[0], value[1], value[0], value[1]]
+        elif len(value) == 4:
+            self._user_padding = list(value)
+
+        self._update_internal_padding()
+
+    def add_widget(self, widget, index=0, canvas=None):
+        if isinstance(
+            widget, (IOSTextFieldLeadingIcon, IOSTextFieldTrailingIcon)
+        ):
+            canvas = "after"
+
+            if isinstance(widget, IOSTextFieldLeadingIcon):
+                self._leading_icon = widget
+            elif isinstance(widget, IOSTextFieldTrailingIcon):
+                self._trailing_icon = widget
+
+        super().add_widget(widget, index=index, canvas=canvas)
+        self._update_all()
+
+    def on_touch_down(self, touch):
+        if not self.collide_point(*touch.pos):
+            return TextInput.on_touch_down(self, touch)
+
+        self._is_pressed = True
+        self._touch_pos = list(touch.pos)
+        self._do_animation_down()
+
+        for icon in (self._leading_icon, self._trailing_icon):
+            if icon and icon.collide_point(*touch.pos):
+                return icon.dispatch("on_touch_down", touch)
+
+        return TextInput.on_touch_down(self, touch)
+
+    def on_touch_up(self, touch):
+        if self._is_pressed:
+            self._is_pressed = False
+            self._do_animation_up()
+
+        for icon in (self._leading_icon, self._trailing_icon):
+            if icon and icon.collide_point(*touch.pos):
+                if icon in touch.ud:
+                    return icon.dispatch("on_touch_up", touch)
+
+        return TextInput.on_touch_up(self, touch)
+
+    def _update_internal_padding(self, *args):
+        self._updating_padding = True
+
+        l_pad = self._user_padding[0]
+        r_pad = self._user_padding[2] if len(self._user_padding) > 2 else l_pad
+        gap = dp(8)
+
+        left = l_pad + (
+            self._leading_icon.width + gap if self._leading_icon else 0
+        )
+        right = r_pad + (
+            self._trailing_icon.width + gap if self._trailing_icon else 0
+        )
+
+        v_pad = max(0, (self.height - self.line_height) / 2)
+
+        self.padding = [left, v_pad, right, v_pad]
+        self._updating_padding = False
+
+    def _update_icons_pos(self, *args):
+        scale = getattr(self, "_scale_factor", 1.0)
+        center_x, center_y = self.center_x, self.center_y
+        left_pad = self._user_padding[0]
+        right_pad = (
+            self._user_padding[2] if len(self._user_padding) > 2 else left_pad
+        )
+
+        if self._leading_icon:
+            base_x = self.x + left_pad
+            self._leading_icon.x = center_x + (base_x - center_x) * scale
+            self._leading_icon.center_y = center_y
+
+        if self._trailing_icon:
+            base_right = self.right - right_pad
+            self._trailing_icon.right = (
+                center_x + (base_right - center_x) * scale
+            )
+            self._trailing_icon.center_y = center_y
+
+    def _update_blink_state(self, instance, value):
+        self._blink_state = not value
+
+    def _schedule_update(self, *args):
+        Clock.schedule_once(self._update_all)
+
+    def _update_all(self, *args):
+        self._update_internal_padding()
+        self._update_icons_pos()

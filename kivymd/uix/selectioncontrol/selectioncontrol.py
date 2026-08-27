@@ -14,6 +14,7 @@ Components/SelectionControls
 
 - MDCheckbox_
 - MDSwitch_
+- IOSSwitch_
 
 .. MDCheckbox:
 
@@ -466,9 +467,105 @@ Usage
 
 .. Note:: Control state of :class:`~MDSwitch` same way as in
     :class:`~MDCheckbox`.
+
+.. IOSSwitch:
+
+IOSSwitch
+---------
+
+.. seealso::
+
+    `Human Interface Guidelines, Toggles <https://developer.apple.com/design/human-interface-guidelines/toggles>`_
+
+.. rubric:: A toggle lets people choose between a pair of opposing states, like
+    on and off, using a different appearance to indicate each state.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-toggles-intro.png
+    :align: center
+
+Usage
+-----
+
+.. tabs::
+
+    .. tab:: Declarative KV style
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+
+            from kivymd.app import MDApp
+            from kivymd.uix.screen import MDScreen
+
+            KV = '''
+            <MyScreen>
+
+                FitImage:
+                    source: "bg.png"
+
+                IOSSwitch:
+                    active: True
+                    target_background: root
+                    pos_hint: {'center_x': .5, 'center_y': .5}
+            '''
+
+
+            class MyScreen(MDScreen):
+                pass
+
+
+            class Example(MDApp):
+                def build(self):
+                    Builder.load_string(KV)
+                    return MyScreen()
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivymd.app import MDApp
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.selectioncontrol import IOSSwitch
+
+
+            class MyScreen(MDScreen):
+                def __init__(self, *args, **kwargs):
+                    super().__init__(*args, **kwargs)
+
+                    self.widgets = [
+                        FitImage(
+                            source="bg.png",
+                        ),
+                        IOSSwitch(
+                            active=True,
+                            target_background=self,
+                            pos_hint={'center_x': .5, 'center_y': .5},
+                        ),
+                    ]
+
+
+            class Example(MDApp):
+                def build(self):
+                    return MyScreen()
+
+
+            Example().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-switch-usage.gif
+    :align: center
 """
 
-__all__ = ("MDCheckbox", "MDSwitch")
+__all__ = [
+    "MDCheckbox",
+    "MDSwitch",
+    "IOSSwitch",
+    "BaseSwitch",
+    "ActiveBehavior",
+]
 
 import os
 
@@ -481,12 +578,20 @@ from kivy.properties import (
     BoundedNumericProperty,
     ColorProperty,
     ListProperty,
+    NumericProperty,
+    ObjectProperty,
     StringProperty,
 )
 from kivy.uix.behaviors import ButtonBehavior, ToggleButtonBehavior
+from kivy.uix.floatlayout import FloatLayout
 
 from kivymd import uix_path
-from kivymd.uix.behaviors import CircularRippleBehavior, ScaleBehavior
+from kivymd.theming import ThemableBehavior
+from kivymd.uix.behaviors import (
+    CircularRippleBehavior,
+    IOSGlassBehavior,
+    ScaleBehavior,
+)
 from kivymd.uix.behaviors.state_layer_behavior import StateLayerBehavior
 from kivymd.uix.floatlayout import MDFloatLayout
 from kivymd.uix.label import MDIcon
@@ -496,6 +601,139 @@ with open(
     encoding="utf-8",
 ) as kv_file:
     Builder.load_string(kv_file.read())
+
+
+class BaseSwitch:
+    """Base class for MD and iOS switches."""
+
+    thumb_color_active = ColorProperty(None)
+    """
+    The color in (r, g, b, a) or string format of the thumb when the switch is active.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSwitch:
+            active: True
+            thumb_color_active: "brown"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-thumb-color-active.png
+        :align: center
+
+    :attr:`thumb_color_active` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    thumb_color_inactive = ColorProperty(None)
+    """
+    The color in (r, g, b, a) or string format of the thumb when the switch is inactive.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSwitch:
+            thumb_color_inactive: "brown"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-thumb-color-inactive.png
+        :align: center
+
+    :attr:`thumb_color_inactive` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    thumb_color_disabled = ColorProperty(None)
+    """
+    The color in (r, g, b, a) or string format of the thumb when the switch is
+    in the disabled state.
+
+    .. code-block:: kv
+
+        MDSwitch:
+            active: True
+            thumb_color_disabled: "brown"
+            disabled: True
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-thumb-color-disabled.png
+        :align: center
+
+    :attr:`thumb_color_disabled` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    track_color_active = ColorProperty(None)
+    """
+    The color in (r, g, b, a) or string format of the track when the switch is active.
+
+    .. code-block:: kv
+
+        MDSwitch:
+            active: True
+            track_color_active: "red"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-track-color-active.png
+        :align: center
+
+    :attr:`track_color_active` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    track_color_inactive = ColorProperty(None)
+    """
+    The color in (r, g, b, a) or string format of the track when the switch is inactive.
+
+    .. versionadded:: 1.0.0
+
+    .. code-block:: kv
+
+        MDSwitch:
+            track_color_inactive: "red"
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-track-color-inactive.png
+        :align: center
+
+    :attr:`track_color_inactive` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    track_color_disabled = ColorProperty(None)
+    """
+    The color in (r, g, b, a) or string format of the track when the switch is
+    in the disabled state.
+
+    .. code-block:: kv
+
+        MDSwitch:
+            track_color_disabled: "lightgrey"
+            disabled: True
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-track-color-disabled.png
+        :align: center
+
+    :attr:`track_color_disabled` is an :class:`~kivy.properties.ColorProperty`
+    and default to `None`.
+    """
+
+    disable_animation = BooleanProperty(False)
+    """
+    Disable the switch animation.
+
+    .. versionadded:: 2.0.0
+
+    .. code-block:: kv
+
+        MDSwitch:
+            focus_behavior: False
+            ripple_effect: False
+            disable_animation: True
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-disable-animation.gif
+        :align: center
+
+    :attr:`disable_animation` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
 
 
 class ActiveBehavior:
@@ -533,12 +771,16 @@ class ActiveBehavior:
     and defaults to `False`.
     """
 
+    __events__ = ("on_active",)
+
     def __init__(self, **kwargs):
         callback = kwargs.pop("on_active", None)
+
         super().__init__(**kwargs)
 
         if callback:
             self.bind(on_active=callback)
+
         self.bind(active=self._trigger_on_active)
 
     def _trigger_on_active(self, instance, value):
@@ -707,8 +949,6 @@ class MDCheckbox(
 
     _current_color = ColorProperty([0.0, 0.0, 0.0, 0.0])
 
-    __events__ = ("on_active",)
-
     def __init__(self, **kwargs):
         self.check_anim_out = Animation(
             scale_value_x=0, scale_value_y=0, duration=0.1, t="out_quad"
@@ -716,7 +956,9 @@ class MDCheckbox(
         self.check_anim_in = Animation(
             scale_value_x=1, scale_value_y=1, duration=0.1, t="out_quad"
         )
+
         super().__init__(**kwargs)
+
         self.check_anim_out.bind(
             on_complete=lambda *x: self.check_anim_in.start(self)
         )
@@ -758,6 +1000,7 @@ class MDCheckbox(
 
     def set_root_active(self) -> None:
         root_checkbox = self.get_widgets("root")
+
         if root_checkbox:
             MDCheckbox.__allow_root_checkbox_active = False
             root_checkbox[0].active = True in [
@@ -768,6 +1011,7 @@ class MDCheckbox(
     def set_child_active(self, active: bool):
         for child in self.get_widgets("child"):
             child.active = active
+
         MDCheckbox.__allow_child_checkboxes_active = True
 
     def on_state(self, *args) -> None:
@@ -808,16 +1052,17 @@ class MDCheckbox(
             if MDCheckbox.__allow_child_checkboxes_active:
                 self.set_root_active()
 
-    # FIXME: https://github.com/kivymd/KivyMD/issues/1574
     def on_touch_down(self, touch):
         if self.collide_point(touch.x, touch.y):
             if self.group and self.group == "root":
                 MDCheckbox.__allow_child_checkboxes_active = False
+
         return super().on_touch_down(touch)
 
     def _release_group(self, current):
         if self.group and self.group in ["root", "child"]:
             return
+
         super()._release_group(current)
 
 
@@ -845,6 +1090,7 @@ class Thumb(CircularRippleBehavior, ButtonBehavior, MDFloatLayout):
 
     def _set_ellipse(self, instance, value):
         self.ellipse.size = (self._ripple_rad, self._ripple_rad)
+
         if self.ellipse.size[0] > self.width * 1.5 and not self._fading_out:
             self.fade_out()
         self.ellipse.pos = (
@@ -858,15 +1104,21 @@ class Thumb(CircularRippleBehavior, ButtonBehavior, MDFloatLayout):
 
 
 class MDSwitch(
-    ActiveBehavior, StateLayerBehavior, ButtonBehavior, MDFloatLayout
+    BaseSwitch,
+    ActiveBehavior,
+    StateLayerBehavior,
+    ButtonBehavior,
+    MDFloatLayout,
 ):
     """
     Switch class.
 
     For more information, see in the
+    :class:`~BaseSwitch` and
+    :class:`~ActiveBehavior` and
     :class:`~kivymd.uix.behaviors.state_layer_behavior.StateLayerBehavior` and
     :class:`~kivy.uix.behaviors.ButtonBehavior` and
-    :class:`~kivymd.uix.floatlayout.MDFloatLayout`
+    :class:`~kivymd.uix.floatlayout.MDFloatLayout` and
     classes documentation.
     """
 
@@ -972,115 +1224,6 @@ class MDSwitch(
     and defaults to `None`.
     """
 
-    thumb_color_active = ColorProperty(None)
-    """
-    The color in (r, g, b, a) or string format of the thumb when the switch is active.
-
-    .. versionadded:: 1.0.0
-
-    .. code-block:: kv
-
-        MDSwitch:
-            active: True
-            thumb_color_active: "brown"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-thumb-color-active.png
-        :align: center
-
-    :attr:`thumb_color_active` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
-    """
-
-    thumb_color_inactive = ColorProperty(None)
-    """
-    The color in (r, g, b, a) or string format of the thumb when the switch is inactive.
-
-    .. versionadded:: 1.0.0
-
-    .. code-block:: kv
-
-        MDSwitch:
-            thumb_color_inactive: "brown"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-thumb-color-inactive.png
-        :align: center
-
-    :attr:`thumb_color_inactive` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
-    """
-
-    thumb_color_disabled = ColorProperty(None)
-    """
-    The color in (r, g, b, a) or string format of the thumb when the switch is
-    in the disabled state.
-
-    .. code-block:: kv
-
-        MDSwitch:
-            active: True
-            thumb_color_disabled: "brown"
-            disabled: True
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-thumb-color-disabled.png
-        :align: center
-
-    :attr:`thumb_color_disabled` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
-    """
-
-    track_color_active = ColorProperty(None)
-    """
-    The color in (r, g, b, a) or string format of the track when the switch is active.
-
-    .. code-block:: kv
-
-        MDSwitch:
-            active: True
-            track_color_active: "red"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-track-color-active.png
-        :align: center
-
-    :attr:`track_color_active` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
-    """
-
-    track_color_inactive = ColorProperty(None)
-    """
-    The color in (r, g, b, a) or string format of the track when the switch is inactive.
-
-    .. versionadded:: 1.0.0
-
-    .. code-block:: kv
-
-        MDSwitch:
-            track_color_inactive: "red"
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-track-color-inactive.png
-        :align: center
-
-    :attr:`track_color_inactive` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
-    """
-
-    track_color_disabled = ColorProperty(None)
-    """
-    The color in (r, g, b, a) or string format of the track when the switch is
-    in the disabled state.
-
-    .. code-block:: kv
-
-        MDSwitch:
-            track_color_disabled: "lightgrey"
-            disabled: True
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-track-color-disabled.png
-        :align: center
-
-    :attr:`track_color_disabled` is an :class:`~kivy.properties.ColorProperty`
-    and default to `None`.
-    """
-
     line_color_disabled = ColorProperty(None)
     """
     The color of the outline in the disabled state
@@ -1091,26 +1234,6 @@ class MDSwitch(
     and defaults to `None`.
     """
 
-    disable_animation = BooleanProperty(False)
-    """
-    Disable the switch animation.
-
-    .. versionadded:: 2.0.0
-
-    .. code-block:: kv
-
-        MDSwitch:
-            focus_behavior: False
-            ripple_effect: False
-            disable_animation: True
-
-    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/switch-disable-animation.gif
-        :align: center
-
-    :attr:`disable_animation` is a :class:`~kivy.properties.BooleanProperty`
-    and defaults to `False`.
-    """
-
     _thumb_pos = ListProperty([0, 0])
     _line_color = ColorProperty(None)
 
@@ -1118,6 +1241,7 @@ class MDSwitch(
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
+
         self.bind(icon_active=self.set_icon, icon_inactive=self.set_icon)
         Clock.schedule_once(lambda x: self.on_active(self, self.active))
 
@@ -1146,6 +1270,11 @@ class MDSwitch(
 
     def on_active(self, *args) -> None:
         """Fired when the values of :attr:`active` change."""
+
+        thumb = self.ids.get("thumb")
+
+        if not thumb:
+            return
 
         if len(args) == 2:
             active_value = args[1]
@@ -1221,3 +1350,388 @@ class MDSwitch(
                 ).start(self)
             else:
                 self._thumb_pos = _thumb_pos
+
+
+# ------------------------------------ IOS ------------------------------------
+
+
+class IOSThumb(IOSGlassBehavior, ThemableBehavior, FloatLayout):
+    """
+    Implements a iOS-style thumb for the :class:`~IOSSwitch` widget.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.ios.glass_behavior.IOSGlassBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.floatlayout.FloatLayout`
+    classes documentation.
+    """
+
+    _color = ColorProperty(None)
+
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+
+        self.lens_power = 0.05
+        self.bevel_power = 0.15
+        self.blur_amount = 2
+
+    def on_pos(self, *args) -> None:
+        """Fired when the value :attr:`pos` change."""
+
+        self._on_bg_update()
+
+    def on_size(self, *args) -> None:
+        """Fired when the value :attr:`size` change."""
+
+        self.border_radius = [self.height / 2.0] * 4
+        self._on_bg_update()
+
+
+class IOSSwitch(
+    BaseSwitch,
+    ThemableBehavior,
+    ActiveBehavior,
+    ButtonBehavior,
+    FloatLayout,
+):
+    """
+    IOSSwitch – iOS-style toggle switch with animated thumb.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~BaseSwitch` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~ActiveBehavior` and
+    :class:`~kivy.uix.behaviors.ButtonBehavior` and
+    :class:`~kivy.uix.floatlayout.FloatLayout`
+    classes documentation.
+    """
+
+    target_background = ObjectProperty(None)
+    """
+    Reference to a background widget to which the switch applies.
+
+    :attr:`target_background` is a :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    track_width = NumericProperty(dp(60))
+    """
+    Width of the switch track.
+
+    :attr:`track_width` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(60)`.
+    """
+
+    track_height = NumericProperty(dp(24))
+    """
+    Height of the switch track.
+
+    :attr:`track_height` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(24)`.
+    """
+
+    padding = NumericProperty(dp(2))
+    """
+    Thumb padding from the track edges in the resting state.
+
+    :attr:`padding` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(2)`.
+    """
+
+    thumb_width = NumericProperty(dp(30))
+    """
+    Width of the thumb in the resting (unpressed) state.
+
+    :attr:`thumb_width` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(30)`.
+    """
+
+    pressed_expansion = NumericProperty(dp(24))
+    """
+    Additional width expansion of the thumb when pressed or dragged.
+
+    :attr:`pressed_expansion` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(24)`.
+    """
+
+    pressed_expansion_height = NumericProperty(dp(18))
+    """
+    Additional height expansion of the thumb when pressed or dragged.
+
+    :attr:`pressed_expansion_height` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(18)`.
+    """
+
+    __events__ = ("on_active",)
+
+    _thumb_w = NumericProperty(0)
+    _thumb_h = NumericProperty(0)
+    _thumb_x = NumericProperty(0)
+    _thumb_y = NumericProperty(0)
+
+    def __init__(self, **kwargs):
+        # List of properties for IOSThumb (IOSGlassBehavior).
+        thumb_keys = ("lens_power", "bevel_power", "blur_amount", "glass_color")
+        self._thumb_custom_kwargs = {
+            key: kwargs.pop(key) for key in thumb_keys if key in kwargs
+        }
+
+        self._touch_dragging = False
+        self._start_touch_x = 0
+        self._initial_thumb_x = 0
+        self._has_moved = False
+
+        super().__init__(**kwargs)
+
+        Clock.schedule_once(lambda dt: self._apply_thumb_properties())
+
+        self.size = (self.track_width, self.track_height)
+
+        self.bind(
+            track_width=self._update_geometry,
+            track_height=self._update_geometry,
+        )
+        self.bind(
+            padding=lambda *args: self._sync_thumb(),
+            thumb_width=lambda *args: self._sync_thumb(),
+            pressed_expansion=lambda *args: self._sync_thumb(),
+            pressed_expansion_height=lambda *args: self._sync_thumb(),
+        )
+
+        Clock.schedule_once(lambda dt: self._sync_thumb())
+
+    def on_touch_down(self, touch):
+        if self.collide_point(*touch.pos) and not self.disabled:
+            touch.grab(self)
+            self._touch_dragging = True
+            self._start_touch_x = touch.x
+            self._initial_thumb_x = self._thumb_x
+            self._has_moved = False
+
+            if not self.disable_animation:
+                self._animate_press()
+
+            return True
+
+        return super().on_touch_down(touch)
+
+    def on_touch_move(self, touch):
+        if touch.grab_current is self:
+            if not self._has_moved:
+                if abs(touch.x - self._start_touch_x) > dp(3):
+                    self._has_moved = True
+
+                    Animation.stop_all(
+                        self, "_thumb_w", "_thumb_h", "_thumb_x", "_thumb_y"
+                    )
+                    Animation.stop_all(
+                        self.ids.ios_thumb, "_press_factor", "_scale_factor"
+                    )
+
+                    self._initial_thumb_x = self._thumb_x
+                    self._start_touch_x = touch.x
+
+            if self._has_moved:
+                exp_w, exp_h = self._get_expanded_size()
+                dx = touch.x - self._start_touch_x
+
+                min_limit = -self.pressed_expansion
+                max_limit = self.track_width + self.pressed_expansion - exp_w
+
+                new_x = max(
+                    min_limit, min(self._initial_thumb_x + dx, max_limit)
+                )
+                self._thumb_x = new_x
+
+                min_x = self.padding
+                max_x = self.track_width - self.padding - exp_w
+                mid_point = min_x + (max_x - min_x) / 2
+
+                new_active = self._thumb_x > mid_point
+
+                if self.active != new_active:
+                    self.active = new_active
+
+            return True
+
+        return super().on_touch_move(touch)
+
+    def on_touch_up(self, touch):
+        if touch.grab_current is self:
+            touch.ungrab(self)
+            self._touch_dragging = False
+
+            if not self._has_moved:
+                self.active = not self.active
+            else:
+                exp_w, _ = self._get_expanded_size()
+                min_x = self.padding
+                max_x = self.track_width - self.padding - exp_w
+                mid_point = min_x + (max_x - min_x) / 2
+
+                self.active = self._thumb_x > mid_point
+                self._animate_toggle()
+
+            return True
+
+        return super().on_touch_up(touch)
+
+    def on_active(self, *args):
+        """Fired when the values of :attr:`active` change."""
+
+        if not self._touch_dragging:
+            self._animate_toggle()
+
+    def _update_geometry(self, *args):
+        self.size = (self.track_width, self.track_height)
+        self._sync_thumb()
+
+    def _get_normal_size(self):
+        h = max(dp(10), self.track_height - self.padding * 2)
+        w = max(h, self.thumb_width)
+
+        return w, h
+
+    def _get_expanded_size(self):
+        norm_w, norm_h = self._get_normal_size()
+        w = norm_w + self.pressed_expansion
+        h = norm_h + self.pressed_expansion_height
+
+        return w, h
+
+    def _animate_press(self):
+        thumb = self.ids.get("ios_thumb")
+
+        if not thumb:
+            return
+
+        Animation.stop_all(self, "_thumb_w", "_thumb_h", "_thumb_x", "_thumb_y")
+        Animation.stop_all(thumb, "_press_factor", "_scale_factor")
+
+        exp_w, exp_h = self._get_expanded_size()
+
+        if self.active:
+            target_x = self.track_width + self.pressed_expansion - exp_w
+        else:
+            target_x = -self.pressed_expansion
+
+        target_y = (self.track_height - exp_h) / 2
+
+        # Если анимации отключены — сразу ставим целевые значения
+        if self.disable_animation:
+            self._thumb_w = exp_w
+            self._thumb_h = exp_h
+            self._thumb_x = target_x
+            self._thumb_y = target_y
+            thumb._press_factor = 1.0
+            thumb._scale_factor = 1.0
+            return
+
+        anim_switch = Animation(
+            _thumb_w=exp_w,
+            _thumb_h=exp_h,
+            _thumb_x=target_x,
+            _thumb_y=target_y,
+            d=0.14,
+            t="out_quad",
+        )
+        anim_glass = Animation(
+            _press_factor=1.0, _scale_factor=1.0, d=0.14, t="out_quad"
+        )
+
+        anim_switch.start(self)
+        anim_glass.start(thumb)
+
+    def _animate_toggle(self):
+        thumb = self.ids.get("ios_thumb")
+
+        if not thumb:
+            return
+
+        Animation.stop_all(self, "_thumb_w", "_thumb_h", "_thumb_x", "_thumb_y")
+        Animation.stop_all(thumb, "_press_factor", "_scale_factor")
+
+        norm_w, norm_h = self._get_normal_size()
+        exp_w, exp_h = self._get_expanded_size()
+
+        norm_y = (self.track_height - norm_h) / 2
+        exp_y = (self.track_height - exp_h) / 2
+
+        if self.active:
+            overreach_x = self.track_width + self.pressed_expansion - exp_w
+            final_x = self.track_width - self.padding - norm_w
+        else:
+            overreach_x = -self.pressed_expansion
+            final_x = self.padding
+
+        # If animations are disabled, set the final state immediately.
+        if self.disable_animation:
+            self._thumb_w = norm_w
+            self._thumb_h = norm_h
+            self._thumb_x = final_x
+            self._thumb_y = norm_y
+            thumb._press_factor = 0.0
+            thumb._scale_factor = 1.0
+
+            return
+
+        anim_move = Animation(
+            _thumb_x=overreach_x,
+            _thumb_w=exp_w,
+            _thumb_h=exp_h,
+            _thumb_y=exp_y,
+            d=0.25,
+            t="easing_decelerated",
+        )
+
+        anim_shrink = Animation(
+            _thumb_w=norm_w,
+            _thumb_h=norm_h,
+            _thumb_x=final_x,
+            _thumb_y=norm_y,
+            d=0.3,
+            t="easing_accelerated",
+        )
+
+        anim_glass_on = Animation(_press_factor=1.0, d=0.1, t="out_quad")
+        anim_glass_off = Animation(
+            _press_factor=0.0, _scale_factor=1.0, d=0.12, t="out_quad"
+        )
+
+        (anim_move + anim_shrink).start(self)
+        (anim_glass_on + anim_glass_off).start(thumb)
+
+    def _sync_thumb(self):
+        thumb = self.ids.get("ios_thumb")
+
+        if not thumb:
+            return
+
+        Animation.stop_all(self, "_thumb_w", "_thumb_h", "_thumb_x", "_thumb_y")
+        Animation.stop_all(thumb, "_press_factor", "_scale_factor")
+
+        norm_w, norm_h = self._get_normal_size()
+
+        self._thumb_w = norm_w
+        self._thumb_h = norm_h
+        self._thumb_x = (
+            (self.track_width - self.padding - norm_w)
+            if self.active
+            else self.padding
+        )
+        self._thumb_y = (self.track_height - norm_h) / 2
+
+        thumb._press_factor = 0.0
+        thumb._scale_factor = 1.0
+
+    def _apply_thumb_properties(self):
+        thumb = self.ids.get("ios_thumb")
+
+        if thumb:
+            for key, val in self._thumb_custom_kwargs.items():
+                if hasattr(thumb, key):
+                    setattr(thumb, key, val)

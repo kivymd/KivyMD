@@ -1,1 +1,7 @@
-from .selectioncontrol import MDCheckbox, MDSwitch, Thumb  # NOQA F401
+from .selectioncontrol import (  # NOQA F401
+    IOSSwitch,
+    IOSThumb,
+    MDCheckbox,
+    MDSwitch,
+    Thumb,
+)

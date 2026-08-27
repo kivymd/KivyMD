@@ -168,3 +168,83 @@
             root.pos[0] + (self.width / 2) + root._thumb_pos[0] \
             + dp(6 if root.icon_inactive else 0), \
             root.pos[1] + (root.height / 2 - self.height / 2) + root._thumb_pos[1]
+
+# ------------------------------------ IOS ------------------------------------
+
+<IOSThumb>
+    size_hint: None, None
+
+    canvas.before:
+        Color:
+            rgba:
+                (root._color[:-1] + [1 - self._press_factor]) \
+                if root._color else \
+                [0, 0, 0, 0]
+        SmoothRoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [self.height / 2] * 4
+
+
+<IOSSwitch>
+    size_hint: None, None
+    size: self.track_width, self.track_height
+
+    canvas.before:
+        Color:
+            rgba:
+                ( \
+                ( \
+                self.track_color_active \
+                if self.track_color_active else \
+                [0.2, 0.84, 0.29, 1] \
+                ) \
+                if self.active else \
+                ( \
+                self.track_color_inactive \
+                if self.track_color_inactive else \
+                [0.45, 0.45, 0.48, 0.8] \
+                ) \
+                ) if not self.disabled else \
+                ( \
+                ( \
+                self.track_color_disabled \
+                if self.track_color_disabled else \
+                ( \
+                self.theme_cls.onSurfaceColor \
+                if self.active else self.theme_cls.surfaceContainerHighestColor \
+                ) \
+                ) \
+                )
+        SmoothRoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [self.height / 2]
+
+    IOSThumb:
+        id: ios_thumb
+        size: root._thumb_w, root._thumb_h
+        pos: root.x + root._thumb_x, root.y + root._thumb_y
+        target_background: root.target_background
+        _color:
+            ( \
+            root.thumb_color_disabled \
+            if root.thumb_color_disabled else \
+            ( \
+            root.theme_cls.surfaceColor \
+            if root.active else root.theme_cls.onSurfaceColor \
+            ) \
+            ) \
+            if root.disabled else \
+            ( \
+            (root.thumb_color_active \
+            if root.thumb_color_active else \
+            root.theme_cls.onPrimaryColor \
+            ) \
+            if root.active else \
+            ( \
+            root.thumb_color_inactive \
+            if root.thumb_color_inactive else \
+            self.theme_cls.onPrimaryColor \
+            ) \
+            )

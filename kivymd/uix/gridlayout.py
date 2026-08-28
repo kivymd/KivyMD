@@ -69,6 +69,33 @@ MDGridLayout
 
             MyApp().run()
 
+IOSGridLayout
+-------------
+
+.. tabs::
+
+    .. tab:: Imperative python style with KV
+
+        .. code-block:: kv
+
+            IOSGridLayout:
+                bg_color: app.theme_cls.primaryColor
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.gridlayout import IOSGridLayout
+            from kivymd.app import MDApp
+
+            class MyApp(App):
+                def build(self):
+                    return IOSGridLayout(
+                        bg_color=self.theme_cls.primaryColor
+                    )
+
+            MyApp().run()
+
 Available options are:
 ----------------------
 
@@ -125,13 +152,20 @@ Equivalent
     size: self.minimum_size
 """
 
-__all__ = ("MDGridLayout",)
+__all__ = (
+    "MDGridLayout",
+    "IOSGridLayout",
+)
 
 from kivy.uix.gridlayout import GridLayout
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
+from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
+    DeclarativeBehavior,
+    IOSBackgroundColorBehavior,
+)
 
 
 class MDGridLayout(
@@ -148,6 +182,28 @@ class MDGridLayout(
     :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivymd.theming.ThemableBehavior` and
     :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
+    :class:`~kivy.uix.gridlayout.GridLayout` and
+    :class:`~kivymd.uix.MDAdaptiveWidget`
+    classes documentation.
+    """
+
+
+class IOSGridLayout(
+    DeclarativeBehavior,
+    ThemableBehavior,
+    IOSBackgroundColorBehavior,
+    GridLayout,
+    MDAdaptiveWidget,
+):
+    """
+    iOS Grid layout class.
+
+    .. versionadded:: 2.0.1
+
+    For more information see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.backgroundcolor_behavior.IOSBackgroundColorBehavior` and
     :class:`~kivy.uix.gridlayout.GridLayout` and
     :class:`~kivymd.uix.MDAdaptiveWidget`
     classes documentation.

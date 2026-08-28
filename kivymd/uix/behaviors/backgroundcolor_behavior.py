@@ -7,7 +7,10 @@ Behaviors/Background Color
 
 from __future__ import annotations
 
-__all__ = ("BackgroundColorBehavior",)
+__all__ = (
+    "BackgroundColorBehavior",
+    "BaseBackgroundColorBehavior",
+)
 
 from kivy.animation import Animation
 from kivy.lang import Builder
@@ -73,7 +76,12 @@ Builder.load_string(
 )
 
 
-class BackgroundColorBehavior:
+class BaseBackgroundColorBehavior:
+    """
+    An abstract base class for managing the graphical properties of a widget's
+    background.
+    """
+
     background = StringProperty()
     """
     Background image path.
@@ -164,6 +172,21 @@ class BackgroundColorBehavior:
     _background_origin = ReferenceListProperty(_background_x, _background_y)
     _md_bg_color = ColorProperty([0, 0, 0, 0])
 
+    def update_background_origin(self, instance, pos: list) -> None:
+        """Fired when the values of :attr:`pos` change."""
+
+        if self.background_origin:
+            self._background_origin = self.background_origin
+        else:
+            self._background_origin = self.center
+
+
+class BackgroundColorBehavior(BaseBackgroundColorBehavior):
+    """
+    A behavior class that implements the rendering and animation logic for a
+    widget's background.
+    """
+
     def __init__(self, **kwarg):
         super().__init__(**kwarg)
         self.bind(pos=self.update_background_origin)
@@ -183,11 +206,3 @@ class BackgroundColorBehavior:
             ).start(self)
         else:
             self._md_bg_color = color
-
-    def update_background_origin(self, instance, pos: list) -> None:
-        """Fired when the values of :attr:`pos` change."""
-
-        if self.background_origin:
-            self._background_origin = self.background_origin
-        else:
-            self._background_origin = self.center

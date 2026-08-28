@@ -302,6 +302,7 @@ from __future__ import annotations
 
 __all__ = (
     "MDScrollView",
+    "IOSScrollView",
     "StretchOverScrollStencil",
     "StretchOverScrollBehavior",
 )
@@ -313,7 +314,11 @@ from kivy.effects.scroll import ScrollEffect
 from kivy.graphics import PopMatrix, PushMatrix, Scale
 from kivy.uix.scrollview import ScrollView
 
-from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
+from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
+    DeclarativeBehavior,
+    IOSBackgroundColorBehavior,
+)
 
 
 class StretchOverScrollStencil(ScrollEffect):
@@ -351,8 +356,9 @@ class StretchOverScrollStencil(ScrollEffect):
     scale_axis = "y"  # axis of effect
     last_touch_pos = None  # used to calculate distance
 
-    def __init__(self, *arg, **kwargs):
-        super().__init__(*arg, **kwargs)
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
         self.friction = self.scroll_friction
 
     def clamp(self, value, min_val=0, max_val=0):
@@ -365,6 +371,7 @@ class StretchOverScrollStencil(ScrollEffect):
 
     def on_value(self, stencil, scroll_distance):
         super().on_value(stencil, scroll_distance)
+
         if self.target_widget:
             if not all([self.scroll_view, self.scroll_scale]):
                 self.scroll_view = self.target_widget.parent
@@ -416,11 +423,13 @@ class StretchOverScrollStencil(ScrollEffect):
                 return False
 
         self.scroll_scale.origin = origin
+
         return True
 
     def absorb_impact(self):
         if not self.set_scale_origin():
             return
+
         sanitized_velocity = self.clamp(
             abs(self.velocity), 1, self.maximum_velocity
         )
@@ -440,6 +449,7 @@ class StretchOverScrollStencil(ScrollEffect):
     def get_component(self, pos):
         if pos is None:
             return None
+
         return pos[1 if self.scale_axis == "y" else 0]
 
     def can_stretch_touch(self, touch):
@@ -455,13 +465,16 @@ class StretchOverScrollStencil(ScrollEffect):
     def convert_overscroll(self, touch):
         if self.last_touch_pos is None:
             self.last_touch_pos = touch.pos
+
             return
 
         if self.can_stretch_touch(touch):
             component = self.get_component(touch.pos)
             prev_component = self.get_component(self.last_touch_pos)
+
             if component is None or prev_component is None:
                 self.last_touch_pos = touch.pos
+
                 return
 
             # Distance travelled by touch divided by size of scrollview.
@@ -472,6 +485,7 @@ class StretchOverScrollStencil(ScrollEffect):
             )
             if not axis_size:
                 self.last_touch_pos = touch.pos
+
                 return
 
             distance = abs(component - prev_component) / axis_size
@@ -487,7 +501,9 @@ class StretchOverScrollStencil(ScrollEffect):
     def reset_scale(self, *arg):
         if not self.scroll_scale:
             return
+
         _scale = getattr(self.scroll_scale, self.scale_axis)
+
         if _scale > 1:
             anim = Animation(
                 **{self.scale_axis: 1},
@@ -510,38 +526,46 @@ class StretchOverScrollBehavior:
     def __init__(self, *args, **kwargs):
         self.effect_cls = StretchOverScrollStencil
         super().__init__(*args, **kwargs)
+
         with self.canvas_viewport.before:
             PushMatrix()
             self._internal_scale = Scale()
         with self.canvas_viewport.after:
             PopMatrix()
+
         self.effect_y.scale_axis = "y"
         self.effect_x.scale_axis = "x"
 
     def on_touch_down(self, touch):
         handled = super().on_touch_down(touch)
+
         if handled:
             touch.ud[self._touch_key()] = True
             self.effect_x.last_touch_pos = touch.pos
             self.effect_y.last_touch_pos = touch.pos
+
         return handled
 
     def on_touch_move(self, touch):
         handled = super().on_touch_move(touch)
+
         if touch.ud.get(self._touch_key()) and touch.grab_current in (
             None,
             self,
         ):
             self.effect_x.convert_overscroll(touch)
             self.effect_y.convert_overscroll(touch)
+
         return handled
 
     def on_touch_up(self, touch):
         handled = super().on_touch_up(touch)
+
         if touch.ud.get(self._touch_key()):
             self.effect_x.reset_scale()
             self.effect_y.reset_scale()
             touch.ud.pop(self._touch_key(), None)
+
         return handled
 
 
@@ -561,4 +585,22 @@ class MDScrollView(
     classes documentation.
     """
 
-    pass
+
+# TODO: Implement the iOS scrolling effect.
+class IOSScrollView(
+    StretchOverScrollBehavior,
+    DeclarativeBehavior,
+    IOSBackgroundColorBehavior,
+    ScrollView,
+):
+    """
+    iOS Scroll view.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.backgroundcolor_behavior.IOSBackgroundColorBehavior` and
+    :class:`~kivy.uix.scrollview.ScrollView`
+    classes documentation.
+    """

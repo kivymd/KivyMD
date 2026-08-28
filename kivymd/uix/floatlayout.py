@@ -69,6 +69,33 @@ MDFloatLayout
 
             MyApp().run()
 
+IOSFloatLayout
+--------------
+
+.. tabs::
+
+    .. tab:: Imperative python style with KV
+
+        .. code-block:: kv
+
+            IOSFloatLayout:
+                bg_color: app.theme_cls.primaryColor
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.floatlayout import IOSFloatLayout
+            from kivymd.app import MDApp
+
+            class MyApp(App):
+                def build(self):
+                    return IOSFloatLayout(
+                        bg_color=self.theme_cls.primaryColor
+                    )
+
+            MyApp().run()
+
 .. Warning:: For a :class:`~kivy.uix.floatlayout.FloatLayout`, the
     ``minimum_size`` attributes are always 0, so you cannot use
     ``adaptive_size`` and related options.
@@ -129,13 +156,20 @@ Equivalent
     size: self.minimum_size
 """
 
-__all__ = ("MDFloatLayout",)
+__all__ = (
+    "MDFloatLayout",
+    "IOSFloatLayout",
+)
 
 from kivy.uix.floatlayout import FloatLayout
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
+from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
+    DeclarativeBehavior,
+    IOSBackgroundColorBehavior,
+)
 
 
 class MDFloatLayout(
@@ -152,6 +186,28 @@ class MDFloatLayout(
     :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivymd.theming.ThemableBehavior` and
     :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
+    :class:`~kivy.uix.floatlayout.FloatLayout` and
+    :class:`~kivymd.uix.MDAdaptiveWidget`
+    classes documentation.
+    """
+
+
+class IOSFloatLayout(
+    DeclarativeBehavior,
+    ThemableBehavior,
+    IOSBackgroundColorBehavior,
+    FloatLayout,
+    MDAdaptiveWidget,
+):
+    """
+    iOS Float layout class.
+
+    .. versionadded:: 2.0.1
+
+    For more information see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.backgroundcolor_behavior.IOSBackgroundColorBehavior` and
     :class:`~kivy.uix.floatlayout.FloatLayout` and
     :class:`~kivymd.uix.MDAdaptiveWidget`
     classes documentation.

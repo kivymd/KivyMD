@@ -90,6 +90,33 @@ MDScreenManager
 
             MyApp().run()
 
+IOSScreenManager
+----------------
+
+.. tabs::
+
+    .. tab:: Imperative python style with KV
+
+        .. code-block:: kv
+
+            IOSScreenManager:
+                bg_color: app.theme_cls.primaryColor
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.sreenmanager import IOSScreenManager
+            from kivymd.app import MDApp
+
+            class MyApp(App):
+                def build(self):
+                    return IOSScreenManager(
+                        bg_color=self.theme_cls.primaryColor
+                    )
+
+            MyApp().run()
+
 Available options are:
 ----------------------
 
@@ -146,7 +173,11 @@ Equivalent
     size: self.minimum_size
 """
 
-__all__ = ("MDScreenManager",)
+__all__ = (
+    "BaseScreenManager",
+    "MDScreenManager",
+    "IOSScreenManager",
+)
 
 from kivy import Logger
 from kivy.clock import Clock
@@ -155,28 +186,22 @@ from kivy.uix.screenmanager import ScreenManager
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
+from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
+    DeclarativeBehavior,
+    IOSBackgroundColorBehavior,
+)
 from kivymd.uix.hero import MDHeroFrom
 
 
-class MDScreenManager(
-    DeclarativeBehavior,
-    ThemableBehavior,
-    BackgroundColorBehavior,
-    ScreenManager,
-    MDAdaptiveWidget,
-):
+class BaseScreenManager(ScreenManager):
     """
-    Screen manager. This is the main class that will control your
-    :class:`~kivymd.uix.screen.MDScreen` stack and memory.
+    Base Screen for :class:`~MDScreenManager` and :class:`~IOSScreenManager`
+    classes.
 
-    For more information, see in the
-    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
-    :class:`~kivymd.theming.ThemableBehavior` and
-    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
-    :class:`~kivy.uix.screenmanager.ScreenManager` and
-    :class:`~kivymd.uix.MDAdaptiveWidget`
-    classes documentation.
+    For more information see in the
+    :class:`~kivy.uix.screenmanager.ScreenManager
+    class documentation.
     """
 
     current_hero = StringProperty(None, deprecated=True)
@@ -287,3 +312,47 @@ class MDScreenManager(
                 self._heroes_data.append(child)
             else:
                 find_hero_widget(child)
+
+
+class MDScreenManager(
+    DeclarativeBehavior,
+    ThemableBehavior,
+    BackgroundColorBehavior,
+    BaseScreenManager,
+    MDAdaptiveWidget,
+):
+    """
+    Screen manager. This is the main class that will control your
+    :class:`~kivymd.uix.screen.MDScreen` stack and memory.
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
+    :class:`~BaseScreenManager` and
+    :class:`~kivymd.uix.MDAdaptiveWidget`
+    classes documentation.
+    """
+
+
+class IOSScreenManager(
+    DeclarativeBehavior,
+    ThemableBehavior,
+    IOSBackgroundColorBehavior,
+    BaseScreenManager,
+    MDAdaptiveWidget,
+):
+    """
+    Screen manager. This is the main class that will control your
+    :class:`~kivymd.uix.screen.IOSScreen` stack and memory.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.backgroundcolor_behavior.IOSBackgroundColorBehavior` and
+    :class:`~BaseScreenManager` and
+    :class:`~kivymd.uix.MDAdaptiveWidget`
+    classes documentation.
+    """

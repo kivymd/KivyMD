@@ -71,6 +71,33 @@ MDRecycleView
 
             MyApp().run()
 
+IOSRecycleView
+--------------
+
+.. tabs::
+
+    .. tab:: Imperative python style with KV
+
+        .. code-block:: kv
+
+            IOSRecycleView:
+                bg_color: app.theme_cls.primaryColor
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.recycleview import IOSRecycleView
+            from kivymd.app import MDApp
+
+            class MyApp(App):
+                def build(self):
+                    return IOSRecycleView(
+                        bg_color=self.theme_cls.primaryColor
+                    )
+
+            MyApp().run()
+
 Available options are:
 ----------------------
 
@@ -127,13 +154,20 @@ Equivalent
     size: self.minimum_size
 """
 
-__all__ = ("MDRecycleView",)
+__all__ = (
+    "MDRecycleView",
+    "IOSRecycleView",
+)
 
 from kivy.uix.recycleview import RecycleView
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
+from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
+    DeclarativeBehavior,
+    IOSBackgroundColorBehavior,
+)
 from kivymd.uix.scrollview import StretchOverScrollBehavior
 
 
@@ -157,4 +191,25 @@ class MDRecycleView(
     classes documentation.
     """
 
-    pass
+
+class IOSRecycleView(
+    StretchOverScrollBehavior,
+    DeclarativeBehavior,
+    ThemableBehavior,
+    IOSBackgroundColorBehavior,
+    RecycleView,
+    MDAdaptiveWidget,
+):
+    """
+    iOS Recycle view class.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.backgroundcolor_behavior.IOSBackgroundColorBehavior` and
+    :class:`~kivy.uix.recycleview.RecycleView` and
+    :class:`~kivymd.uix.MDAdaptiveWidget`
+    classes documentation.
+    """

@@ -5,12 +5,15 @@ Behaviors
 Modules and classes implementing various behaviors for buttons etc.
 """
 
-from .backgroundcolor_behavior import BackgroundColorBehavior
+from .backgroundcolor_behavior import (
+    BackgroundColorBehavior,
+    BaseBackgroundColorBehavior,
+)
 
 # flake8: NOQA
 from .declarative_behavior import DeclarativeBehavior
 from .elevation import CommonElevationBehavior
-from .ios import IOSButtonBehavior, IOSGlassBehavior
+from .ios import IOSBackgroundColorBehavior, IOSButtonBehavior, IOSGlassBehavior
 from .magic_behavior import MagicBehavior
 from .motion_behavior import (
     MotionDialogBehavior,

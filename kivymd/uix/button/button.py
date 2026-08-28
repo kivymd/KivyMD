@@ -1642,6 +1642,14 @@ class IOSButton(
     defaults to `'horizontal'`.
     """
 
+    spacing = NumericProperty(0)
+    """
+    Spacing between children, in pixels.
+
+    :attr:`spacing` is a :class:`~kivy.properties.NumericProperty` and
+    defaults to `0`.
+    """
+
     def add_widget(self, widget, index=0, canvas=None):
         # Redirect all child widgets (except _content_box itself) to
         # content_box.

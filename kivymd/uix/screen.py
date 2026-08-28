@@ -69,6 +69,33 @@ MDScreen
 
             MyApp().run()
 
+IOSScreen
+---------
+
+.. tabs::
+
+    .. tab:: Imperative python style with KV
+
+        .. code-block:: kv
+
+            IOSScreen:
+                bg_color: app.theme_cls.primaryColor
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivymd.uix.screen import IOSScreen
+            from kivymd.app import MDApp
+
+            class MyApp(App):
+                def build(self):
+                    return IOSScreen(
+                        bg_color=self.theme_cls.primaryColor
+                    )
+
+            MyApp().run()
+
 Available options are:
 ----------------------
 
@@ -125,35 +152,32 @@ Equivalent
     size: self.minimum_size
 """
 
-__all__ = ("MDScreen",)
+__all__ = (
+    "BaseScreen",
+    "MDScreen",
+    "IOSScreen",
+)
 
 from kivy.properties import ListProperty, ObjectProperty
 from kivy.uix.screenmanager import Screen
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
+from kivymd.uix.behaviors import (
+    BackgroundColorBehavior,
+    DeclarativeBehavior,
+    IOSBackgroundColorBehavior,
+)
 from kivymd.uix.hero import MDHeroTo
 
 
-class MDScreen(
-    DeclarativeBehavior,
-    ThemableBehavior,
-    BackgroundColorBehavior,
-    Screen,
-    MDAdaptiveWidget,
-):
+class BaseScreen(Screen):
     """
-    Screen is an element intended to be used with a
-    :class:`~kivymd.uix.screenmanager.MDScreenManager`.
+    Base Screen for :class:`~MDScreen` and :class:`~IOSScreen` classes.
 
     For more information see in the
-    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
-    :class:`~kivymd.theming.ThemableBehavior` and
-    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
-    :class:`~kivy.uix.screenmanager.Screen` and
-    :class:`~kivymd.uix.MDAdaptiveWidget`
-    classes documentation.
+    :class:`~kivy.uix.screen.Screen
+    class documentation.
     """
 
     hero_to = ObjectProperty(deprecated=True)
@@ -192,3 +216,47 @@ class MDScreen(
                 f"class or inherited from this class"
             )
         self.heroes_to = [widget]
+
+
+class MDScreen(
+    DeclarativeBehavior,
+    ThemableBehavior,
+    BackgroundColorBehavior,
+    BaseScreen,
+    MDAdaptiveWidget,
+):
+    """
+    Screen is an element intended to be used with a
+    :class:`~kivymd.uix.screenmanager.MDScreenManager`.
+
+    For more information see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.backgroundcolor_behavior.BackgroundColorBehavior` and
+    :class:`~BaseScreen` and
+    :class:`~kivymd.uix.MDAdaptiveWidget`
+    classes documentation.
+    """
+
+
+class IOSScreen(
+    DeclarativeBehavior,
+    ThemableBehavior,
+    IOSBackgroundColorBehavior,
+    BaseScreen,
+    MDAdaptiveWidget,
+):
+    """
+    iOS Screen is an element intended to be used with a
+    :class:`~kivymd.uix.screenmanager.MDScreenManager`.
+
+    .. versionadded:: 2.0.1
+
+    For more information see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.backgroundcolor_behavior.IOSBackgroundColorBehavior` and
+    :class:`~BaseScreen` and
+    :class:`~kivymd.uix.MDAdaptiveWidget`
+    classes documentation.
+    """

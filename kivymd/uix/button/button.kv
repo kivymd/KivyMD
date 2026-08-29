@@ -394,7 +394,10 @@
 
 <IOSIconButton>
     pos_hint: {"center_x": .5, "center_y": .5}
-    icon_color: self.theme_cls.onSurfaceColor
+    icon_color:
+        self.theme_cls.onSurfaceColor \
+        if self.theme_icon_color == "Primary" \
+        else self.icon_color
 
 
 <IOSButtonText>

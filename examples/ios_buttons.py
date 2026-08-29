@@ -31,6 +31,7 @@ class Example(MDApp):
                     IOSButtonText(
                         text="iOS Button",
                     ),
+                    adaptive_size=True,
                     target_background=bg_image,
                     pos_hint={"center_x": 0.5},
                     border_radius=[dp(20)] * 4,
@@ -43,6 +44,7 @@ class Example(MDApp):
                         text="iOS Button",
                     ),
                     orientation="vertical",
+                    adaptive_size=True,
                     target_background=bg_image,
                     pos_hint={"center_x": 0.5},
                     border_radius=[dp(20)] * 4,
@@ -51,11 +53,13 @@ class Example(MDApp):
                     IOSButtonText(
                         text="IOS Button",
                     ),
+                    adaptive_size=True,
                     target_background=bg_image,
                     pos_hint={"center_x": 0.5},
                     border_radius=[dp(22)] * 4,
                 ),
                 orientation="vertical",
+
                 pos_hint={"center_x": 0.5, "center_y": 0.5},
                 adaptive_size=True,
                 spacing=dp(12),

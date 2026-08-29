@@ -444,7 +444,10 @@
     background_active: ""
     background_disabled_normal: ""
     background_color: 0, 0, 0, 0
-    foreground_color: self.theme_cls.onSurfaceVariantColor
+    foreground_color:
+        self.theme_cls.onSurfaceVariantColor \
+        if self.theme_text_color == "Primary" \
+        else self.foreground_color
 
     canvas.after:
         Color:

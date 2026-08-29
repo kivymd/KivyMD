@@ -59,7 +59,6 @@ class Example(MDApp):
                     border_radius=[dp(22)] * 4,
                 ),
                 orientation="vertical",
-
                 pos_hint={"center_x": 0.5, "center_y": 0.5},
                 adaptive_size=True,
                 spacing=dp(12),

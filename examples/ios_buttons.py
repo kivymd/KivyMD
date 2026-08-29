@@ -7,15 +7,6 @@ from kivymd.uix.fitimage import FitImage
 from kivymd.uix.screen import MDScreen
 
 
-class CommonIOSButton(IOSButton):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-
-        self.size_hint = (None, None)
-        self.size = (dp(56), dp(56))
-        self.border_radius = [dp(28)] * 4
-
-
 class Example(MDApp):
     def build(self):
         bg_image = FitImage(source="https://picsum.photos/800/600?random=2")
@@ -23,10 +14,13 @@ class Example(MDApp):
         return MDScreen(
             bg_image,
             MDBoxLayout(
-                CommonIOSButton(
+                IOSButton(
                     IOSIconButton(
                         icon="account",
                     ),
+                    size=(dp(56), dp(56)),
+                    adaptive_size=False,
+                    border_radius=[dp(28)] * 4,
                     target_background=bg_image,
                     pos_hint={"center_x": 0.5},
                 ),

@@ -954,10 +954,11 @@ from kivy.properties import (
     NumericProperty,
     ObjectProperty,
     OptionProperty,
-    VariableListProperty,
+    VariableListProperty, BooleanProperty,
 )
 from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.relativelayout import RelativeLayout
 
 from kivymd import uix_path
@@ -1615,7 +1616,7 @@ class IOSButtonText(MDLabel):
 
 
 class IOSButton(
-    DeclarativeBehavior, IOSButtonBehavior, IOSGlassBehavior, AnchorLayout
+    DeclarativeBehavior, IOSButtonBehavior, IOSGlassBehavior, BoxLayout
 ):
     """
     IOSButton class.
@@ -1626,7 +1627,7 @@ class IOSButton(
     :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivymd.uix.behaviors.ios.button_behavior.IOSButtonBehavior` and
     :class:`~kivymd.uix.behaviors.ios.glass_behavior.IOSGlassBehavior` and
-    :class:`~kivy.uix.anchorlayout.AnchorLayout`
+    :class:`~kivy.uix.boxlayout.BoxLayout`
     classes documentation.
     """
 
@@ -1642,6 +1643,27 @@ class IOSButton(
     defaults to `'horizontal'`.
     """
 
+    border_radius = VariableListProperty([])
+    """
+    Border radius for the glass corners in the order (Top-Left, Top-Right,
+    Bottom-Right, Bottom-Left).
+
+    :attr:`border_radius` is an :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[]`.
+    """
+
+    padding = VariableListProperty([dp(16), dp(8), dp(16), dp(8)])
+    """
+    Padding between the widget box and its children, in pixels:
+    [padding_left, padding_top, padding_right, padding_bottom].
+
+    padding also accepts a two argument form [padding_horizontal,
+    padding_vertical] and a one argument form [padding].
+
+    :attr:`padding` is a :class:`~kivy.properties.VariableListProperty`
+    and defaults to `[[dp(16), dp(8), dp(16), dp(8)]`.
+    """
+
     spacing = NumericProperty(0)
     """
     Spacing between children, in pixels.
@@ -1650,10 +1672,10 @@ class IOSButton(
     defaults to `0`.
     """
 
-    def add_widget(self, widget, index=0, canvas=None):
-        # Redirect all child widgets (except _content_box itself) to
-        # content_box.
-        if "content_box" in self.ids and widget is not self.ids.content_box:
-            self.ids.content_box.add_widget(widget, index=index, canvas=canvas)
-        else:
-            super().add_widget(widget, index=index, canvas=canvas)
+    adaptive_size = BooleanProperty(True)
+    """
+    Automatically computed minimum width needed to contain all children.
+
+    :attr:`adaptive_size` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `FalTruese`.
+    """

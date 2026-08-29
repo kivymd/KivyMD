@@ -963,6 +963,7 @@ from kivy.uix.relativelayout import RelativeLayout
 
 from kivymd import uix_path
 from kivymd.theming import ThemableBehavior
+from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
     CommonElevationBehavior,
@@ -1616,7 +1617,11 @@ class IOSButtonText(MDLabel):
 
 
 class IOSButton(
-    DeclarativeBehavior, IOSButtonBehavior, IOSGlassBehavior, BoxLayout
+    DeclarativeBehavior,
+    IOSButtonBehavior,
+    IOSGlassBehavior,
+    BoxLayout,
+    MDAdaptiveWidget,
 ):
     """
     IOSButton class.
@@ -1627,7 +1632,8 @@ class IOSButton(
     :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivymd.uix.behaviors.ios.button_behavior.IOSButtonBehavior` and
     :class:`~kivymd.uix.behaviors.ios.glass_behavior.IOSGlassBehavior` and
-    :class:`~kivy.uix.boxlayout.BoxLayout`
+    :class:`~kivy.uix.boxlayout.BoxLayout` and
+    :class:`~kivymd.uix.MDAdaptiveWidget`
     classes documentation.
     """
 
@@ -1670,12 +1676,4 @@ class IOSButton(
 
     :attr:`spacing` is a :class:`~kivy.properties.NumericProperty` and
     defaults to `0`.
-    """
-
-    adaptive_size = BooleanProperty(True)
-    """
-    Automatically computed minimum width needed to contain all children.
-
-    :attr:`adaptive_size` is an :class:`~kivy.properties.BooleanProperty`
-    and defaults to `FalTruese`.
     """

@@ -1048,6 +1048,22 @@ class IOSDialog(
     and defaults to `0.15`.
     """
 
+    lens_power = NumericProperty(0.01)
+    """
+    Magnification power at the center of the lens.
+
+    :attr:`lens_power` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.08`.
+    """
+
+    bevel_power = NumericProperty(0.05)
+    """
+    Light refraction power at the bevel/edges.
+
+    :attr:`bevel_power` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.15`.
+    """
+
     _scrim = ObjectProperty(None)
     _is_open = BooleanProperty(False)
     __events__ = ("on_open", "on_pre_open", "on_dismiss", "on_pre_dismiss")

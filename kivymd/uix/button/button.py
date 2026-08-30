@@ -599,6 +599,7 @@ iOS liquid glass button
 1. Button icon and label text
 2. Button icon
 3. Button label
+4. Button icon and label text (vertical)
 
 Button icon and label text
 --------------------------
@@ -625,6 +626,7 @@ Button icon and label text
                     target_background: bg_image
                     pos_hint: {"center_x": .5, "center_y": .5}
                     border_radius: [dp(20)] * 4
+                    adaptive_width: True
 
                     IOSIconButton:
                         icon: "account"
@@ -671,6 +673,7 @@ Button icon and label text
                             target_background=bg_image,
                             pos_hint={"center_x": 0.5, "center_y": 0.5},
                             border_radius=[dp(20)] * 4,
+                            adaptive_width=True,
                         ),
                     )
 
@@ -790,6 +793,7 @@ Button label
                     target_background: bg_image
                     pos_hint: {"center_x": .5, "center_y": .5}
                     border_radius: [dp(22)] * 4
+                    adaptive_width: True
 
                     IOSButtonText:
                         text: "IOS Button"
@@ -830,6 +834,7 @@ Button label
                             target_background=bg_image,
                             pos_hint={"center_x": 0.5, "center_y": 0.5},
                             border_radius=[dp(22)] * 4,
+                            adaptive_width=True,
 
                         ),
                     )
@@ -839,6 +844,87 @@ Button label
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-button-label.png
     :align: center
+
+Button icon and label text (vertical)
+-------------------------------------
+
+.. tabs::
+
+    .. tab:: Imperative Python style
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+
+            from kivymd.app import MDApp
+
+
+            KV = '''
+            MDScreen:
+
+                FitImage:
+                    id: bg_image
+                    source: "https://picsum.photos/800/600?random=2"
+
+                IOSButton:
+                    orientation: "vertical"
+                    target_background: bg_image
+                    pos_hint: {"center_x": .5, "center_y": .5}
+                    border_radius: [dp(20)] * 4
+                    adaptive_size: True
+
+                    IOSIconButton:
+                        icon: "account"
+
+                    IOSButtonText:
+                        text: "iOS Button"
+            '''
+
+
+            class Example(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
+
+
+            Example().run()
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.button import IOSButton, IOSButtonText, IOSIconButton
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.screen import MDScreen
+
+
+            class Example(MDApp):
+                def build(self):
+                    bg_image = FitImage(
+                        source="https://picsum.photos/800/600?random=2"
+                    )
+
+                    return MDScreen(
+                        bg_image,
+                        IOSButton(
+                            IOSIconButton(
+                                icon="account",
+                            ),
+                            IOSButtonText(
+                                text="iOS Button",
+                            ),
+                            orientation="vertical",
+                            target_background=bg_image,
+                            pos_hint={"center_x": 0.5, "center_y": 0.5},
+                            border_radius=[dp(20)] * 4,
+                            adaptive_size=True,
+                        ),
+                    )
+
+
+            Example().run()
 
 API break
 =========

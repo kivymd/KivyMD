@@ -2,9 +2,9 @@
  * ============================================================================
  * Liquid Glass UI Fragment Shader (iOS-Style Refraction & Blur)
  * ============================================================================
- * 
+ *
  * Description:
- *   Renders an interactive glassmorphic UI element with dynamic physical 
+ *   Renders an interactive glassmorphic UI element with dynamic physical
  *   effects including:
  *     1. Signed Distance Field (SDF) rounded rectangle clipping with AA.
  *     2. Golden angle multi-sample Gaussian/disk background blur.
@@ -259,9 +259,15 @@ void main() {
             halfSize.y
         );
 
+    float bevelWidth =
+        min(
+            24.0,
+            heightRef * 0.4
+        );
+
     float bevelMask =
         smoothstep(
-            -heightRef * 0.4,
+            -bevelWidth,
             0.0,
             sdf
         );

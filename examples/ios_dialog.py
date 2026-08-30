@@ -43,6 +43,7 @@ class Example(MDApp):
                     text="Open iOS Dialog",
                 ),
                 target_background=image,
+                adaptive_width=True,
                 pos_hint={"center_x": 0.5, "center_y": 0.5},
                 border_radius=[dp(22)] * 4,
                 on_release=lambda x: self.show_dialog(),

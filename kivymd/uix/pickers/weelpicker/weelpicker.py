@@ -320,7 +320,7 @@ Customization
                 (months, "August"),
             ]
 
-            bg_image = FitImage(source="/Users/ivanovyuri/Pictures/Screenshoots/111.png")
+            bg_image = FitImage(source="bg.png")
 
             self.widgets = [
                 bg_image,

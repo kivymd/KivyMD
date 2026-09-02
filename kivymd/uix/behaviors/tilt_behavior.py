@@ -31,31 +31,25 @@ Base example
 
             from kivy.lang import Builder
             from kivy.uix.widget import Widget
-            from kivy.graphics import Color, Rectangle
 
             from kivymd.app import MDApp
             from kivymd.uix.behaviors import TiltBehavior
 
 
             class TiltCard(TiltBehavior, Widget):
-                def __init__(self, **kwargs):
-                    super().__init__(**kwargs)
-
-                    with self.canvas:
-                        Color(1, 0, 0, 1)
-                        self.rect = Rectangle(
-                            size=self.card_size,
-                            pos=(-self.card_size[0] / 2, -self.card_size[1] / 2),
-                        )
-
-                    self.bind(card_size=self._update_rect)
-
-                def _update_rect(self, instance, value):
-                    self.rect.size = value
-                    self.rect.pos = (-value[0] / 2, -value[1] / 2)
+                ...
 
 
             KV = '''
+            <TiltCard>
+                canvas:
+                    Color:
+                        rgba: 1, 0, 0, 1
+                    Rectangle:
+                        size: self.card_size
+                        pos: -self.card_size[0] / 2, -self.card_size[1] / 2
+
+
             MDScreen:
                 md_bg_color: self.theme_cls.backgroundColor
 
@@ -71,6 +65,7 @@ Base example
             class TiltExample(MDApp):
                 def build(self):
                     self.theme_cls.theme_style = "Dark"
+
                     return Builder.load_string(KV)
 
 
@@ -303,6 +298,8 @@ class TiltBehavior:
     """
 
     def __init__(self, **kwargs):
+        self._update_clock_event = None
+
         self.canvas = RenderContext(use_parent_projection=False)
 
         with open(TILT_VS_SHADER, "r", encoding="utf-8") as shader_file:
@@ -337,10 +334,7 @@ class TiltBehavior:
         )
 
         self._update_z_depth()
-        Window.bind(mouse_pos=self.on_mouse_move)
-
         self.update_matrices()
-        Clock.schedule_interval(self.update_transform, 1 / 60.0)
 
     def update_matrices(self, *args):
         """
@@ -353,6 +347,21 @@ class TiltBehavior:
         proj = Matrix()
         proj.perspective(self.fov, asp, 1.0, 5000.0)
         self.canvas["projection_mat"] = proj
+
+    def on_parent(self, widget, parent):
+        if parent is not None:
+            Window.bind(mouse_pos=self.on_mouse_move)
+
+            if self._update_clock_event is None:
+                self._update_clock_event = Clock.schedule_interval(
+                    self.update_transform, 1 / 60.0
+                )
+        else:
+            Window.unbind(mouse_pos=self.on_mouse_move)
+
+            if self._update_clock_event is not None:
+                self._update_clock_event.cancel()
+                self._update_clock_event = None
 
     def on_mouse_move(self, window, pos):
         """

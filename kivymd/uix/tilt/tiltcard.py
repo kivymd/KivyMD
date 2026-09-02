@@ -143,12 +143,7 @@ Base example
 """
 
 from kivy.clock import Clock
-from kivy.graphics import (
-    MatrixInstruction,
-    PopMatrix,
-    PushMatrix,
-    RenderContext,
-)
+from kivy.graphics import MatrixInstruction, RenderContext
 from kivy.graphics.transformation import Matrix
 from kivy.metrics import dp
 from kivy.properties import ListProperty, ObjectProperty, StringProperty
@@ -313,13 +308,11 @@ class TiltCard(DeclarativeBehavior, TiltBehavior, Widget):
             )
 
             with self._text_context:
-                PushMatrix()
                 self._text_transform = MatrixInstruction()
                 self._text_transform.matrix = Matrix().translate(
                     start_x, start_y, self.text_z_offset
                 )
                 self._text_context.add(self.container.canvas)
-                PopMatrix()
 
             self.canvas.after.add(self._text_context)
         else:

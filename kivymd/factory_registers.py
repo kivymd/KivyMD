@@ -6,6 +6,10 @@ from kivy.factory import Factory
 
 register = Factory.register
 
+# Common.
+register("TiltCard", module="kivymd.uix.tilt")
+register("TiltTextContainer", module="kivymd.uix.tilt")
+
 # MD.
 register("MDCarousel", module="kivymd.uix.carousel")
 register("MDCarouselItem", module="kivymd.uix.carousel")

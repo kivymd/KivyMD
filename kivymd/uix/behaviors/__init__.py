@@ -29,6 +29,7 @@ from .ripple_behavior import (
 from .rotate_behavior import RotateBehavior
 from .scale_behavior import ScaleBehavior
 from .stencil_behavior import StencilBehavior
+from .tilt_behavior import TiltBehavior
 from .touch_behavior import TouchBehavior
 
 from .hover_behavior import HoverBehavior  # isort:skip

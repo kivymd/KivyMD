@@ -303,8 +303,31 @@ class TiltBehavior:
     """
 
     static_tilt = BooleanProperty(False)
+    """
+    Determines whether the widget uses a fixed static tilt angle instead of
+    responding dynamically to cursor or touch movement.
+
+    :attr:`static_tilt` is an :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
     tilt_angle_x = NumericProperty(0)
+    """
+    Fixed rotation angle in degrees around the X-axis when :attr:`static_tilt`
+    is set to `True`.
+
+    :attr:`tilt_angle_x` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
+
     tilt_angle_y = NumericProperty(0)
+    """
+    Fixed rotation angle in degrees around the Y-axis when :attr:`static_tilt`
+    is set to `True`.
+
+    :attr:`tilt_angle_y` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
 
     def __init__(self, **kwargs):
         self._update_clock_event = None
@@ -378,7 +401,7 @@ class TiltBehavior:
         glare position, and parallax offset if the mouse is over the widget.
         """
 
-        # If static tilt is enabled, mouse movements are ignored..
+        # If static tilt is enabled, mouse movements are ignored.
         if self.static_tilt:
             return
 

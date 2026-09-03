@@ -9,6 +9,9 @@ register = Factory.register
 # Common.
 register("TiltCard", module="kivymd.uix.tilt")
 register("TiltTextContainer", module="kivymd.uix.tilt")
+register("TiltParallaxCard", module="kivymd.uix.tilt")
+register("TiltBackgroundImage", module="kivymd.uix.tilt")
+register("TiltForegroundImage", module="kivymd.uix.tilt")
 
 # MD.
 register("MDCarousel", module="kivymd.uix.carousel")

@@ -135,7 +135,12 @@ from kivy.core.window import Window
 from kivy.graphics import RenderContext
 from kivy.graphics.transformation import Matrix
 from kivy.metrics import dp
-from kivy.properties import ColorProperty, ListProperty, NumericProperty
+from kivy.properties import (
+    BooleanProperty,
+    ColorProperty,
+    ListProperty,
+    NumericProperty,
+)
 
 __all__ = ("TiltBehavior",)
 
@@ -171,14 +176,14 @@ class TiltBehavior:
     and defaults to `45.0`.
     """
 
-    max_tilt_angle = NumericProperty(2.0)
+    max_tilt_angle = NumericProperty(45.0)
     """
     Maximum tilt angle in degrees when hovering over the edges.
 
     .. code-block:: python
 
         TiltCard(
-            max_tilt_angle=20,
+            max_tilt_angle=360,
         )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tilt-behavior-max-tilt-angle-20.gif
@@ -187,14 +192,14 @@ class TiltBehavior:
     .. code-block:: python
 
         TiltCard(
-            max_tilt_angle=2,
+            max_tilt_angle=45,
         )
 
     .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/tilt-behavior-max-tilt-angle-2.gif
         :align: center
 
     :attr:`max_tilt_angle` is an :class:`~kivy.properties.NumericProperty`
-    and defaults to `2.0`.
+    and defaults to `45.0`.
     """
 
     smoothness = NumericProperty(0.06)
@@ -297,6 +302,10 @@ class TiltBehavior:
     and defaults to `0.0`.
     """
 
+    static_tilt = BooleanProperty(False)
+    tilt_angle_x = NumericProperty(0)
+    tilt_angle_y = NumericProperty(0)
+
     def __init__(self, **kwargs):
         self._update_clock_event = None
 
@@ -369,10 +378,11 @@ class TiltBehavior:
         glare position, and parallax offset if the mouse is over the widget.
         """
 
-        card_w, card_h = self.card_size
+        # If static tilt is enabled, mouse movements are ignored..
+        if self.static_tilt:
+            return
 
-        # Use standard Kivy widget center coordinates for positioning
-        # calculations.
+        card_w, card_h = self.card_size
         center_x = self.center_x
         center_y = self.center_y
 
@@ -383,29 +393,24 @@ class TiltBehavior:
         half_w = card_w / 2.0
         half_h = card_h / 2.0
 
-        # Check if the mouse cursor is inside the boundaries of the card.
         if (-half_w <= rel_x <= half_w) and (-half_h <= rel_y <= half_h):
             dx = rel_x / half_w
             dy = rel_y / half_h
 
-            # Calculate target rotations (inverted on X-axis for natural feel).
             self._target_rot_x = -dy * self.max_tilt_angle
             self._target_rot_y = dx * self.max_tilt_angle
 
-            # Calculate target parallax offset
             self._target_parallax = [
                 -dx * self.parallax_strength,
                 dy * self.parallax_strength,
             ]
 
-            # Calculate UV coordinates for the glare effect (0.0 to 1.0).
             u = (rel_x + half_w) / card_w
             v = 1.0 - ((rel_y + half_h) / card_h)
 
             self._target_glare_pos = [u, v]
             self._target_glare_opacity = 1.0
         else:
-            # Reset variables when the mouse leaves the widget area.
             self._target_rot_x = 0.0
             self._target_rot_y = 0.0
             self._target_glare_opacity = 0.0
@@ -419,7 +424,15 @@ class TiltBehavior:
 
         s = self.smoothness
 
-        # Smooth interpolation for rotations.
+        if self.static_tilt:
+            self._target_rot_x = self.tilt_angle_x
+            self._target_rot_y = self.tilt_angle_y
+
+        # Smooth interpolation for rotations
+        self._current_rot_x += (self._target_rot_x - self._current_rot_x) * s
+        self._current_rot_y += (self._target_rot_y - self._current_rot_y) * s
+
+        # Smooth interpolation for rotations
         self._current_rot_x += (self._target_rot_x - self._current_rot_x) * s
         self._current_rot_y += (self._target_rot_y - self._current_rot_y) * s
 
@@ -442,7 +455,7 @@ class TiltBehavior:
             self._target_parallax[1] - self._current_parallax[1]
         ) * s
 
-        # Pass updated variables to the fragment shader.
+        # Uniforms for shaders
         self.canvas["u_mouse"] = self._current_glare_pos
         self.canvas["u_glare_opacity"] = self._current_glare_opacity
         self.canvas["u_glare_radius"] = float(self.glare_radius)
@@ -460,19 +473,52 @@ class TiltBehavior:
         tx = self.center_x - (Window.width / 2.0)
         ty = self.center_y - (Window.height / 2.0)
 
-        # Build the modelview matrix applying translation and rotations.
+        # Converting angles from degrees to radians.
+        rot_x_rad = math.radians(self._current_rot_x)
+        rot_y_rad = math.radians(self._current_rot_y)
+
         modelview = Matrix()
 
         # Apply standard Kivy positioning via translation.
         modelview = modelview.translate(tx, ty, self._z_depth)
 
-        # Apply rotations (Flip, X-axis tilt, Y-axis tilt).
-        modelview = modelview.rotate(self.flip_angle, 0, 1, 0)
-        modelview = modelview.rotate(self._current_rot_x, 1, 0, 0)
-        modelview = modelview.rotate(self._current_rot_y, 0, 1, 0)
+        # Rotation using angles in radians.
+        modelview = modelview.rotate(rot_y_rad, 0, 1, 0)
+        modelview = modelview.rotate(rot_x_rad, 1, 0, 0)
+        modelview = modelview.rotate(math.radians(self.flip_angle), 0, 1, 0)
 
         # Pass the matrix to the vertex shader.
         self.canvas["modelview_mat"] = modelview
+
+    def _apply_static_tilt(self):
+        """
+        Applies a fixed 3D tilt transformation and offsets child foreground and
+        text layers based on static rotation angles.
+
+        This method calculates the visual parallax offsets from
+        :attr:`tilt_angle_x` and :attr:`tilt_angle_y` without requiring active
+        mouse or touch movement. It updates transformation matrices for inner
+        components like `_fg_transform` and `_text_transform` to maintain
+        structural layer depth.
+        """
+
+        rad_y = self.tilt_angle_y / 45.0
+        rad_x = self.tilt_angle_x / 45.0
+
+        fg_shift_x = rad_y * self.parallax_x_offset
+        fg_shift_y = rad_x * self.parallax_y_offset
+
+        if hasattr(self, "_fg_transform"):
+            self._fg_transform.matrix = Matrix().translate(
+                fg_shift_x, fg_shift_y, self.foreground_z_offset
+            )
+
+        if hasattr(self, "_text_transform"):
+            text_shift_x = self._start_x + (fg_shift_x * 0.4)
+            text_shift_y = self._start_y + (fg_shift_y * 0.4)
+            self._text_transform.matrix = Matrix().translate(
+                text_shift_x, text_shift_y, self.text_z_offset
+            )
 
     def _update_z_depth(self):
         """

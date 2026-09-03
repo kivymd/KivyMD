@@ -50,7 +50,7 @@ Base example
                     text_z_offset: dp(50)
                     corner_radius: dp(24)
                     pos_hint: {"center_x": .5, "center_y": .5}
-                    max_tilt_angle: 1
+                    max_tilt_angle: 45
 
                     TiltBackgroundImage:
                         source: "background.png"
@@ -160,7 +160,7 @@ Base example
                             text_z_offset="50dp",
                             corner_radius="24dp",
                             pos_hint={"center_x": 0.5, "center_y": 0.5},
-                            max_tilt_angle=1,
+                            max_tilt_angle=45,
                         )
                     ]
 

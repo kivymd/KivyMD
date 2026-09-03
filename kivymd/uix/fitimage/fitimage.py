@@ -172,25 +172,25 @@ class FitImage(DeclarativeBehavior, StencilBehavior, MaterialShape, AsyncImage):
     defaults to `None`.
 
     .. tabs::
-    
+
         .. tab:: Imperative Python Styles
-    
+
             .. code-block:: python
 
                 from kivy.lang import Builder
                 from kivy.metrics import dp
-                
+
                 from kivymd.app import MDApp
                 from kivymd.uix.boxlayout import MDBoxLayout
                 from kivymd.uix.fitimage import FitImage
                 from kivymd.uix.label import MDLabel
-                
+
                 KV = '''
                 MDScreen:
                     md_bg_color: app.theme_cls.surfaceColor
-                
+
                     MDScrollView:
-                
+
                         MDGridLayout:
                             id: shape_grid
                             cols: 6
@@ -278,11 +278,11 @@ class FitImage(DeclarativeBehavior, StencilBehavior, MaterialShape, AsyncImage):
                     ExampleApp().run()
 
         .. tab:: Declarative Python Styles
-    
+
             .. code-block:: python
 
                 from kivy.metrics import dp
-                
+
                 from kivymd.app import MDApp
                 from kivymd.uix.boxlayout import MDBoxLayout
                 from kivymd.uix.fitimage import FitImage

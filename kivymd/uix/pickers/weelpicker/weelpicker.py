@@ -666,6 +666,22 @@ class IOSWheelPickerColumn(ThemableBehavior, RelativeLayout):
 
         Clock.schedule_once(self.update_3d_transforms)
 
+    def set_selected_value(self, val: float, animated: bool = False) -> None:
+        """Смещение колеса к точному значению."""
+        target_offset = float(val - self.range_min)
+
+        if animated:
+            if self._anim:
+                self._anim.cancel(self)
+            self._anim = Animation(scroll_offset=target_offset, d=0.1,
+                                   t="linear")
+            self._anim.start(self)
+        else:
+            if self._anim:
+                self._anim.cancel(self)
+                self._anim = None
+            self.scroll_offset = target_offset
+
     def _instantiate_label(self) -> IOSWheelPickerLabel:
         if not self.label_template:
             return IOSWheelPickerLabel(size_hint=(None, None))
@@ -676,10 +692,15 @@ class IOSWheelPickerColumn(ThemableBehavior, RelativeLayout):
         lbl = cls(
             bold=tmpl.bold,
             font_style=tmpl.font_style,
+            theme_font_size=tmpl.theme_font_size,
             font_size=tmpl.font_size,
             font_name=tmpl.font_name,
             size_hint=(None, None),
         )
+
+        if tmpl.theme_font_size == "Custom":
+            lbl.theme_font_size = "Custom"
+            lbl.font_size = tmpl.font_size
 
         if tmpl._user_selected_color:
             lbl.selected_color = tmpl.selected_color

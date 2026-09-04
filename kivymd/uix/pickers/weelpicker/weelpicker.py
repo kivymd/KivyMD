@@ -667,19 +667,23 @@ class IOSWheelPickerColumn(ThemableBehavior, RelativeLayout):
         Clock.schedule_once(self.update_3d_transforms)
 
     def set_selected_value(self, val: float, animated: bool = False) -> None:
-        """Смещение колеса к точному значению."""
+        """Shifting the wheel to the exact value."""
+
         target_offset = float(val - self.range_min)
 
         if animated:
             if self._anim:
                 self._anim.cancel(self)
-            self._anim = Animation(scroll_offset=target_offset, d=0.1,
-                                   t="linear")
+
+            self._anim = Animation(
+                scroll_offset=target_offset, d=0.1, t="linear"
+            )
             self._anim.start(self)
         else:
             if self._anim:
                 self._anim.cancel(self)
                 self._anim = None
+
             self.scroll_offset = target_offset
 
     def _instantiate_label(self) -> IOSWheelPickerLabel:

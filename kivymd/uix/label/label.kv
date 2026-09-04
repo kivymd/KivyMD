@@ -11,8 +11,12 @@
         if self.text_color else \
         self.theme_cls.onSurfaceColor
     disabled_color:
+        ( \
         app.theme_cls.onSurfaceColor[:-1] + \
-        [self.label_opacity_value_disabled_text]
+        [self.label_opacity_value_disabled_text] \
+        ) \
+        if not self.text_color_disabled \
+        else self.text_color_disabled
     font_size:
         self.theme_cls.font_styles[self.font_style][self.role]["font-size"] \
         if self.theme_font_size == "Primary" else self.font_size

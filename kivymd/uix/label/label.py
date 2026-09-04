@@ -988,6 +988,16 @@ class MDLabel(
     and defaults to `None`.
     """
 
+    text_color_disabled = ColorProperty(None)
+    """
+    Label text color in (r, g, b, a) or string format.
+
+    .. versionadded:: 2.0.1
+
+    :attr:`text_color_disabled` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
     allow_copy = BooleanProperty(False)
     """
     Allows you to copy text to the clipboard by double-clicking on the label.

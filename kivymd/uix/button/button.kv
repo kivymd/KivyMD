@@ -328,6 +328,7 @@
         )
     disabled_color:
         ( \
+        ( \
         { \
         "elevated": self.theme_cls.onSurfaceColor[:-1] + \
         [self.button_elevated_opacity_value_disabled_text], \
@@ -341,7 +342,10 @@
         [self.button_text_opacity_value_disabled_text], \
         }[self._button.style] \
         ) \
-        if self._button else self.theme_cls.transparentColor
+        if self._button else self.theme_cls.transparentColor \
+        ) \
+        if not self.text_color_disabled \
+        else self.text_color_disabled
 
 
 <MDButtonIcon>

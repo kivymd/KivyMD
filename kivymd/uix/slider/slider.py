@@ -60,9 +60,65 @@ Anatomy
 
 .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/slider-anatomy.png
     :align: center
+
+IOS Slider
+----------
+
+.. seealso::
+
+    `Human Interface Guidelines, Sliders <https://developer.apple.com/design/human-interface-guidelines/sliders>`_
+
+.. rubric:: A slider is a horizontal track with a control, called a thumb,
+    that people can adjust between a minimum and maximum value.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/ios-components-slider-intro.png
+    :align: center
+
+IOS Usage
+---------
+
+.. tabs::
+
+    .. tab:: Declarative Python style
+
+        .. code-block:: python
+
+            bg_image = FitImage(source="bg.png")
+            MDScreen(
+                bg_image,
+                IOSSlider(
+                    min=0,
+                    max=100,
+                    value=45,
+                    target_background=bg_image,
+                ),
+            )
+
+    .. tab:: Declarative KV style
+
+        .. code-block:: kv
+
+            MDScreen:
+
+                FitImage:
+                    id: bg_image
+                    source: "bg.png"
+
+                IOSSlider:
+                    min: 0
+                    max: 100
+                    value: 45
+                    target_background: bg_image
 """
 
-__all__ = ("MDSlider", "MDSliderHandle", "MDSliderValueLabel")
+__all__ = (
+    # MD.
+    "MDSlider",
+    "MDSliderHandle",
+    "MDSliderValueLabel",
+    # IOS.
+    "IOSSlider",
+)
 
 import os
 
@@ -71,13 +127,16 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
+    BooleanProperty,
     ColorProperty,
     ListProperty,
     NumericProperty,
     ObjectProperty,
+    OptionProperty,
     StringProperty,
     VariableListProperty,
 )
+from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.slider import Slider
 from kivy.uix.widget import Widget
 
@@ -86,6 +145,7 @@ from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
     DeclarativeBehavior,
+    IOSGlassBehavior,
     ScaleBehavior,
 )
 from kivymd.uix.behaviors.focus_behavior import StateFocusBehavior
@@ -599,3 +659,499 @@ class MDSliderValueContainer(ScaleBehavior, Widget):
     """
 
     _slider = ObjectProperty()  # MDSlider object
+
+
+# ------------------------------------ IOS ------------------------------------
+
+
+class IOSSliderThumb(IOSGlassBehavior, ThemableBehavior, FloatLayout):
+    """
+    Thumb widget with glassmorphism visual effect for :class:`~IOSSlider`.
+
+    .. versionadded:: 2.0.1
+    """
+
+    _color = ColorProperty(None)  # internal color of the thumb
+    # Press factor controlling glass refraction adjustments
+    # (0.0 for released, 1.0 for pressed).
+    _press_factor = NumericProperty(0.0)
+
+    def on_pos(self, *args) -> None:
+        """
+        Position change event handler. Updates corner radius and syncs shader
+        FBO.
+        """
+
+        self.border_radius = [self.height / 2.0] * 4
+        self._sync_glass()
+
+    def on_size(self, *args) -> None:
+        """
+        Size change event handler. Recalculates border radius to maintain
+        circular/oval shape.
+        """
+
+        self.border_radius = [self.height / 2.0] * 4
+        self._sync_glass()
+
+    def _sync_glass(self):
+        """Forces an update of the FBO blur shader matrix and texture."""
+
+        if hasattr(self, "_on_bg_update"):
+            self._on_bg_update()
+
+
+class IOSSlider(DeclarativeBehavior, ThemableBehavior, FloatLayout):
+    """
+    iOS-style Liquid Glass Slider with animated thumb expansion on touch
+    interaction.
+
+    .. versionadded:: 2.0.1
+
+    For more information, see in the
+    :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
+    :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivy.uix.floatLayout.FloatLayout`
+    classes documentation.
+    """
+
+    min = NumericProperty(0.0)
+    """
+    Minimum value of the slider.
+
+    :attr:`min` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.0`.
+    """
+
+    max = NumericProperty(100.0)
+    """
+    Maximum value of the slider.
+
+    :attr:`max` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `100.0`.
+    """
+
+    value = NumericProperty(0.0)
+    """
+    Current value of the slider.
+
+    :attr:`value` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.0`.
+    """
+
+    step = NumericProperty(0.0)
+    """
+    Step size for value increments. If `0`, value changes continuously.
+
+    :attr:`step` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.0`.
+    """
+
+    orientation = OptionProperty(
+        "horizontal", options=["horizontal", "vertical"]
+    )
+    """
+    Slider orientation. Available options are: `'horizontal'`, `'vertical'`.
+
+    :attr:`orientation` is an :class:`~kivy.properties.OptionProperty`
+    and defaults to `'horizontal'`.
+    """
+
+    disabled = BooleanProperty(False)
+    """
+    Disables touch interaction with the slider when set to `True`.
+
+    :attr:`disabled` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    disable_animation = BooleanProperty(False)
+    """
+    Disables thumb expansion animations on press.
+
+    :attr:`disable_animation` is a :class:`~kivy.properties.BooleanProperty`
+    and defaults to `False`.
+    """
+
+    target_background = ObjectProperty(None)
+    """
+    Target widget captured for background sampling and glass effect rendering.
+
+    :attr:`target_background` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `None`.
+    """
+
+    track_height = NumericProperty(dp(6))
+    """
+    Thickness of the slider track line.
+
+    :attr:`track_height` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(6)`.
+    """
+
+    padding = NumericProperty(dp(16))
+    """
+    Padding along the slider track edges to keep the thumb within bounds.
+
+    :attr:`padding` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(16)`.
+    """
+
+    thumb_width = NumericProperty(dp(42))
+    """
+    Default width of the thumb in idle state.
+
+    :attr:`thumb_width` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(28)`.
+    """
+
+    thumb_height = NumericProperty(dp(28))
+    """
+    Default height of the thumb in idle state.
+
+    :attr:`thumb_height` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(28)`.
+    """
+
+    pressed_expansion_width = NumericProperty(dp(10))
+    """
+    Delta increase in thumb width when pressed.
+
+    :attr:`pressed_expansion_width` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(10)`.
+    """
+
+    pressed_expansion_height = NumericProperty(dp(4))
+    """
+    Delta increase in thumb height when pressed.
+
+    :attr:`pressed_expansion_height` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `dp(4)`.
+    """
+
+    track_active_color = ColorProperty(None)
+    """
+    Color of the active (filled) section of the track.
+
+    :attr:`track_active_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    track_inactive_color = ColorProperty(None)
+    """
+    Color of the inactive (unfilled) section of the track.
+
+    :attr:`track_inactive_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    thumb_color = ColorProperty(None)
+    """
+    Base color tint of the thumb.
+
+    :attr:`thumb_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    thumb_color_disabled = ColorProperty(None)
+    """
+    Color tint of the thumb when disabled (`disabled=True`).
+
+    :attr:`thumb_color_disabled` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `None`.
+    """
+
+    value_normalized = NumericProperty(0.0)
+    """
+    Normalized slider value in range `0.0` to `1.0`.
+
+    :attr:`value_normalized` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.0`.
+    """
+
+    value_pos = ObjectProperty((0, 0))
+    """
+    Absolute coordinates `(x, y)` of the thumb center in canvas space.
+
+    :attr:`value_pos` is an :class:`~kivy.properties.ObjectProperty`
+    and defaults to `(0, 0)`.
+    """
+
+    lens_power = NumericProperty(0.08)
+    """
+    Thumb magnification power at the center of the lens.
+
+    :attr:`lens_power` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.08`.
+    """
+
+    bevel_power = NumericProperty(0.15)
+    """
+    Thumb light refraction power at the bevel/edges.
+
+    :attr:`bevel_power` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.15`.
+    """
+
+    glass_color = ColorProperty([1.0, 1.0, 1.0, 0.15])
+    """
+    Thumb tint color of the glass in (r, g, b, a) format.
+
+    :attr:`glass_color` is an :class:`~kivy.properties.ColorProperty`
+    and defaults to `[1.0, 1.0, 1.0, 0.15]`.
+    """
+
+    blur_amount = NumericProperty(3.0)
+    """
+    Thumb amount of background blur applied inside the glass widget.
+
+    :attr:`blur_amount` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `14.0`.
+    """
+
+    _thumb_w = NumericProperty(dp(42))
+    _thumb_h = NumericProperty(dp(28))
+    _thumb_x = NumericProperty(0)
+    _thumb_y = NumericProperty(0)
+
+    def __init__(self, **kwargs):
+        self._touch_dragging = False
+        super().__init__(**kwargs)
+
+        self.bind(
+            value=self._update_value_normalized,
+            min=self._update_value_normalized,
+            max=self._update_value_normalized,
+            value_normalized=self._update_value_pos,
+            size=self._update_value_pos,
+            pos=self._update_value_pos,
+            padding=self._update_value_pos,
+            value_pos=self._update_thumb_layout,
+            lens_power=self._apply_thumb_properties,
+            bevel_power=self._apply_thumb_properties,
+            blur_amount=self._apply_thumb_properties,
+            glass_color=self._apply_thumb_properties,
+            _thumb_w=self._update_thumb_layout,
+            _thumb_h=self._update_thumb_layout,
+        )
+
+        Clock.schedule_once(lambda dt: self._apply_thumb_properties())
+        Clock.schedule_once(lambda dt: self._sync_thumb())
+
+    def on_touch_down(self, touch):
+        if self.disabled or not self.collide_point(*touch.pos):
+            return super().on_touch_down(touch)
+
+        touch.grab(self)
+        self._touch_dragging = True
+        self._update_touch_value(touch)
+
+        if not self.disable_animation:
+            self._animate_press()
+        else:
+            self._sync_thumb_dimensions(pressed=True)
+
+        return True
+
+    def on_touch_move(self, touch):
+        if touch.grab_current is self:
+            self._update_touch_value(touch)
+
+            return True
+
+        return super().on_touch_move(touch)
+
+    def on_touch_up(self, touch):
+        if touch.grab_current is self:
+            touch.ungrab(self)
+            self._touch_dragging = False
+
+            if not self.disable_animation:
+                self._animate_release()
+            else:
+                self._sync_thumb_dimensions(pressed=False)
+
+            return True
+
+        return super().on_touch_up(touch)
+
+    def _update_touch_value(self, touch):
+        """
+        Calculates normalized and discrete slider values based on touch
+        coordinates.
+        """
+
+        if self.orientation == "horizontal":
+            padded_width = self.width - self.padding * 2
+
+            if padded_width <= 0:
+                return
+
+            val_norm = (touch.x - (self.x + self.padding)) / padded_width
+        else:
+            padded_height = self.height - self.padding * 2
+
+            if padded_height <= 0:
+                return
+
+            val_norm = (touch.y - (self.y + self.padding)) / padded_height
+
+        self.value_normalized = max(0.0, min(1.0, val_norm))
+        val = self.min + self.value_normalized * (self.max - self.min)
+
+        if self.step > 0:
+            val = round((val - self.min) / self.step) * self.step + self.min
+
+        self.value = max(self.min, min(self.max, val))
+
+    def _update_value_normalized(self, *args):
+        """
+        Recalculates normalized value on `value`, `min`, or `max` changes.
+        """
+
+        if self.max == self.min:
+            self.value_normalized = 0
+        else:
+            val = max(self.min, min(self.max, self.value))
+            self.value_normalized = (val - self.min) / (self.max - self.min)
+
+    def _update_value_pos(self, *args):
+        """
+        Updates central coordinates (`value_pos`) based on normalized value.
+        """
+
+        if self.orientation == "horizontal":
+            x = (
+                self.x
+                + self.padding
+                + (self.width - self.padding * 2) * self.value_normalized
+            )
+            y = self.y + self.height / 2.0
+        else:
+            x = self.x + self.width / 2.0
+            y = (
+                self.y
+                + self.padding
+                + (self.height - self.padding * 2) * self.value_normalized
+            )
+
+        self.value_pos = (x, y)
+
+    def _update_thumb_layout(self, *args):
+        """
+        Updates bottom-left corner offset of thumb and triggers glass
+        re-render.
+        """
+
+        self._thumb_x = self.value_pos[0] - self._thumb_w / 2.0
+        self._thumb_y = self.value_pos[1] - self._thumb_h / 2.0
+
+        thumb = self.ids.get("ios_thumb")
+
+        if thumb:
+            thumb._sync_glass()
+
+    def _get_normal_size(self):
+        """Returns `(width, height)` tuple for idle state."""
+
+        return self.thumb_width, self.thumb_height
+
+    def _get_expanded_size(self):
+        """Returns `(width, height)` tuple for pressed state."""
+
+        norm_w, norm_h = self._get_normal_size()
+        return (
+            norm_w + self.pressed_expansion_width,
+            norm_h + self.pressed_expansion_height,
+        )
+
+    def _animate_press(self):
+        """
+        Triggers parallel animations for thumb dimension expansion and glass
+        refraction factor.
+        """
+
+        thumb = self.ids.get("ios_thumb")
+
+        if not thumb:
+            return
+
+        Animation.stop_all(self, "_thumb_w", "_thumb_h")
+        Animation.stop_all(thumb, "_press_factor")
+
+        exp_w, exp_h = self._get_expanded_size()
+
+        anim_slider = Animation(
+            _thumb_w=exp_w, _thumb_h=exp_h, d=0.14, t="out_quad"
+        )
+        anim_glass = Animation(_press_factor=1.0, d=0.14, t="out_quad")
+
+        anim_slider.bind(on_progress=lambda *a: thumb._sync_glass())
+
+        anim_slider.start(self)
+        anim_glass.start(thumb)
+
+    def _animate_release(self):
+        """
+        Triggers smooth restoration of thumb dimensions back to idle state.
+        """
+
+        thumb = self.ids.get("ios_thumb")
+
+        if not thumb:
+            return
+
+        Animation.stop_all(self, "_thumb_w", "_thumb_h")
+        Animation.stop_all(thumb, "_press_factor")
+
+        norm_w, norm_h = self._get_normal_size()
+
+        anim_slider = Animation(
+            _thumb_w=norm_w, _thumb_h=norm_h, d=0.2, t="out_quad"
+        )
+        anim_glass = Animation(_press_factor=0.0, d=0.2, t="out_quad")
+
+        anim_slider.bind(on_progress=lambda *a: thumb._sync_glass())
+
+        anim_slider.start(self)
+        anim_glass.start(thumb)
+
+    def _sync_thumb(self):
+        """Synchronizes initial thumb dimensions without animation."""
+
+        self._sync_thumb_dimensions(pressed=False)
+
+    def _sync_thumb_dimensions(self, pressed=False):
+        """
+        Instantly updates thumb dimensions and `_press_factor` without
+        animating.
+        """
+
+        thumb = self.ids.get("ios_thumb")
+
+        if not thumb:
+            return
+
+        Animation.stop_all(self, "_thumb_w", "_thumb_h")
+        Animation.stop_all(thumb, "_press_factor")
+
+        w, h = self._get_expanded_size() if pressed else self._get_normal_size()
+        self._thumb_w = w
+        self._thumb_h = h
+
+        thumb._press_factor = 1.0 if pressed else 0.0
+        thumb._sync_glass()
+
+    def _apply_thumb_properties(self, *args):
+        """
+        Passes custom lens and glass refraction kwargs to the
+        :class:`~IOSSliderThumb` instance."""
+
+        thumb = self.ids.get("ios_thumb")
+
+        if thumb:
+            thumb.lens_power = self.lens_power
+            thumb.bevel_power = self.bevel_power
+            thumb.blur_amount = self.blur_amount
+            thumb.glass_color = self.glass_color
+            thumb._sync_glass()

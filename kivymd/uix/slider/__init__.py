@@ -1,1 +1,6 @@
-from .slider import MDSlider, MDSliderHandle, MDSliderValueLabel  # NOQA F401
+from .slider import (  # NOQA F401
+    IOSSlider,
+    MDSlider,
+    MDSliderHandle,
+    MDSliderValueLabel,
+)

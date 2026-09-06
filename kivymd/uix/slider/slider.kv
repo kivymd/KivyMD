@@ -1,3 +1,5 @@
+# ------------------------------------- MD ------------------------------------
+
 <MDSlider>
     canvas:
         Clear
@@ -208,3 +210,115 @@
     theme_text_color: "Custom"
     text_color: self.theme_cls.onPrimaryColor
     halign: "center"
+
+# ------------------------------------ IOS ------------------------------------
+
+<IOSSliderThumb>
+    size_hint: None, None
+
+    canvas.before:
+        Color:
+            rgba:
+                ( \
+                root._color[0], \
+                root._color[1], \
+                root._color[2], \
+                root._color[3] * (1.0 - root._press_factor) \
+                ) \
+                if root._color else \
+                [1, 1, 1, 1.0 - root._press_factor]
+        SmoothRoundedRectangle:
+            pos: self.pos
+            size: self.size
+            radius: [self.height / 2.0] * 4
+
+
+<IOSSlider>
+    size_hint_y: None
+    height: dp(48)
+
+    canvas:
+        Clear
+        # Inactive Track.
+        Color:
+            rgba:
+                ( \
+                self.theme_cls.surfaceContainerHighestColor \
+                if not self.track_inactive_color else \
+                self.track_inactive_color \
+                ) \
+                if not self.disabled else \
+                self.theme_cls.onSurfaceColor[:-1] + [.12]
+        SmoothRoundedRectangle:
+            size:
+                ( \
+                self.width - self.padding * 2, \
+                self.track_height \
+                ) \
+                if self.orientation == "horizontal" else \
+                ( \
+                self.track_height, \
+                self.height - self.padding * 2 \
+                )
+            pos:
+                ( \
+                self.x + self.padding, \
+                self.y + self.height / 2.0 - self.track_height / 2.0 \
+                ) \
+                if self.orientation == "horizontal" else \
+                ( \
+                self.x + self.width / 2.0 - self.track_height / 2.0, \
+                self.y + self.padding \
+                )
+            radius: [self.track_height / 2.0]
+
+        # Active Track.
+        Color:
+            rgba:
+                ( \
+                self.theme_cls.primaryColor \
+                if not self.track_active_color else \
+                self.track_active_color \
+                ) \
+                if not self.disabled else \
+                self.theme_cls.onSurfaceColor[:-1] + [.38]
+        SmoothRoundedRectangle:
+            size:
+                ( \
+                (self.width - self.padding * 2) * self.value_normalized, \
+                self.track_height \
+                ) \
+                if self.orientation == "horizontal" else \
+                ( \
+                self.track_height, \
+                (self.height - self.padding * 2) * self.value_normalized \
+                )
+            pos:
+                ( \
+                self.x + self.padding, \
+                self.y + self.height / 2.0 - self.track_height / 2.0 \
+                ) \
+                if self.orientation == "horizontal" else \
+                ( \
+                self.x + self.width / 2.0 - self.track_height / 2.0, \
+                self.y + self.padding \
+                )
+            radius: [self.track_height / 2.0]
+
+    IOSSliderThumb:
+        id: ios_thumb
+        size: root._thumb_w, root._thumb_h
+        pos: root._thumb_x, root._thumb_y
+        target_background: root.target_background
+        _color:
+            ( \
+            root.thumb_color_disabled \
+            if root.thumb_color_disabled else \
+            root.theme_cls.onSurfaceColor \
+            ) \
+            if root.disabled else \
+            ( \
+            root.thumb_color \
+            if root.thumb_color else \
+            root.theme_cls.onPrimaryColor \
+            )

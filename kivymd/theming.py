@@ -1245,6 +1245,7 @@ class ThemableBehavior(EventDispatcher):
     def remove_widget(self, widget) -> None:
         if not hasattr(widget, "theme_cls"):
             super().remove_widget(widget)
+
             return
 
         callbacks = widget.theme_cls.get_property_observers("theme_style")
@@ -1254,7 +1255,11 @@ class ThemableBehavior(EventDispatcher):
                 if hasattr(callback, "proxy") and hasattr(
                     callback.proxy, "theme_cls"
                 ):
-                    for property_name in ["theme_style", "primary_palette"]:
+                    for property_name in [
+                        "theme_style",
+                        "primary_palette",
+                        "dynamic_scheme_name",
+                    ]:
                         if widget == callback.proxy:
                             widget.theme_cls.unbind(
                                 **{

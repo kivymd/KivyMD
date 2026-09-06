@@ -88,6 +88,11 @@ Base example
     :align: center
 """
 
+__all__ = (
+    "IOSRulerPicker",
+    "IOSRulerPickerLabel",
+)
+
 from kivy.animation import Animation
 from kivy.clock import Clock
 from kivy.core.text import Label as CoreLabel
@@ -99,11 +104,6 @@ from kivy.uix.widget import Widget
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import DeclarativeBehavior
 from kivymd.uix.label import MDLabel
-
-__all__ = (
-    "IOSRulerPicker",
-    "IOSRulerPickerLabel",
-)
 
 
 class IOSRulerPickerLabel(MDLabel):
@@ -192,29 +192,29 @@ class IOSRulerPicker(DeclarativeBehavior, ThemableBehavior, Widget):
     and defaults to `dp(4)`.
     """
 
-    indicator_color = ColorProperty([1, 1, 1, 1])
+    indicator_color = ColorProperty(None)
     """
     Color of the static center indicator marker in RGBA format.
 
     :attr:`indicator_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `[1, 1, 1, 1]`.
+    and defaults to `None`.
     """
 
-    primary_tick_color = ColorProperty([0.3, 0.3, 0.3, 1])
+    primary_tick_color = ColorProperty(None)
     """
     Color of the ruler tick marks in RGBA format.
 
     :attr:`primary_tick_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `[0.3, 0.3, 0.3, 1]`.
+    and defaults to `None`.
     """
 
-    secondary_tick_color = ColorProperty([0.7, 0.7, 0.7, 1])
+    secondary_tick_color = ColorProperty(None)
     """
     Color of major tick marks located directly above numeric labels in RGBA
     format. Accepts a hex string, color name, or RGBA list.
 
     :attr:`secondary_tick_color` is a :class:`~kivy.properties.ColorProperty`
-    and defaults to `[0.7, 0.7, 0.7, 1]`.
+    and defaults to `None`.
     """
 
     label = ObjectProperty(None, allownone=True)
@@ -268,6 +268,22 @@ class IOSRulerPicker(DeclarativeBehavior, ThemableBehavior, Widget):
             indicator_color=self._update_canvas,
             label=self._on_label_changed,
         )
+
+        self.theme_cls.bind(
+            theme_style=self._on_theme_changed,
+            primary_palette=self._on_theme_changed,
+            dynamic_scheme_name=self._on_theme_changed,
+        )
+
+    def _on_theme_changed(self, *args):
+        if self.indicator_color is None:
+            self.indicator_color = self.theme_cls.onSurfaceColor
+        if self.primary_tick_color is None:
+            self.primary_tick_color = self.theme_cls.outlineColor
+        if self.secondary_tick_color is None:
+            self.secondary_tick_color = self.theme_cls.onSurfaceVariantColor
+
+        self._trigger_update()
 
     def _on_label_changed(self, instance, value):
         if value:
@@ -356,7 +372,13 @@ class IOSRulerPicker(DeclarativeBehavior, ThemableBehavior, Widget):
             self._labels_group.add(lbl_rect_instr)
             self._label_pool.append((lbl_color_instr, lbl_rect_instr))
 
-        self._center_color = Color(*self.indicator_color)
+        self._center_color = Color(
+            *(
+                self.indicator_color
+                if self.indicator_color
+                else self.theme_cls.onSurfaceColor
+            )
+        )
         self._center_rect = RoundedRectangle(
             pos=(0, 0), size=(0, 0), radius=[self.center_indicator_width / 2.0]
         )
@@ -467,13 +489,21 @@ class IOSRulerPicker(DeclarativeBehavior, ThemableBehavior, Widget):
 
         pool_idx = 0
 
-        minor_r, minor_g, minor_b, minor_a = self.primary_tick_color
-        major_r, major_g, major_b, major_a = self.secondary_tick_color
+        minor_r, minor_g, minor_b, minor_a = (
+            self.primary_tick_color
+            if self.primary_tick_color
+            else self.theme_cls.outlineColor
+        )
+        major_r, major_g, major_b, major_a = (
+            self.secondary_tick_color
+            if self.secondary_tick_color
+            else self.theme_cls.onSurfaceVariantColor
+        )
 
         if has_labels and self.label.text_color:
             lr, lg, lb, la = self.label.text_color
         else:
-            lr, lg, lb, la = 0.5, 0.5, 0.5, 1.0
+            lr, lg, lb, la = self.theme_cls.onSurfaceColor
 
         lbl_step = self.label_step if has_labels else 1
 
@@ -543,7 +573,11 @@ class IOSRulerPicker(DeclarativeBehavior, ThemableBehavior, Widget):
             lbl_rect_instr.size = (0, 0)
 
         # Update center indicator marker.
-        self._center_color.rgba = self.indicator_color
+        self._center_color.rgba = (
+            self.indicator_color
+            if self.indicator_color
+            else self.theme_cls.onSurfaceColor
+        )
         self._center_rect.pos = (
             center_x - c_width / 2.0,
             tick_center_y - max_h_center / 2.0,

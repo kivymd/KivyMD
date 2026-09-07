@@ -126,7 +126,6 @@ class MotionDropDownMenuBehavior(MotionBase):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         self.set_scale()
-        # self.set_opacity()
 
     def set_opacity(self) -> None:
         self._opacity = 0
@@ -136,20 +135,42 @@ class MotionDropDownMenuBehavior(MotionBase):
         self._scale_y = 0
 
     def on_dismiss(self) -> None:
+        """Fired when a menu closed."""
+
+        def remove_menu(*args):
+            Window.remove_widget(self)
+
+            if self._scrim:
+                Window.remove_widget(self._scrim)
+
+        if self._scrim:
+            Animation(alpha=0, d=self.hide_duration).start(self._scrim)
+
         anim = Animation(
             _scale_x=0,
             _scale_y=0,
-            # _opacity=0,
             duration=self.hide_duration,
             transition=self.hide_transition,
         )
-        anim.bind(on_complete=lambda *args: Window.remove_widget(self))
+        anim.bind(on_complete=remove_menu)
         anim.start(self)
 
     def on_open(self, *args):
+        """Fired when a menu opened."""
+
+        if self._scrim:
+            self._scrim.alpha = 0  # Сбрасываем в 0 перед анимацией
+            target_alpha = (
+                self.scrim_color[3]
+                if hasattr(self, "scrim_color") and len(self.scrim_color) > 3
+                else 0.5
+            )
+            Animation(alpha=target_alpha, d=self.show_duration).start(
+                self._scrim
+            )
+
         anim = Animation(
             _scale_y=1,
-            # _opacity=1,
             duration=self.show_duration,
             transition=self.show_transition,
         )

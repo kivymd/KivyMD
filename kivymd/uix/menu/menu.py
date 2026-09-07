@@ -1065,6 +1065,7 @@ from kivy.properties import (
 )
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.recycleview import RecycleView
+from kivy.uix.widget import Widget
 
 from kivymd import uix_path
 from kivymd.uix.behaviors import RectangularRippleBehavior, StencilBehavior
@@ -1073,12 +1074,15 @@ from kivymd.uix.boxlayout import MDBoxLayout
 from kivymd.uix.card import MDCard
 from kivymd.uix.label import MDLabel
 
-# from kivymd.uix.list import IRightBody
-
 with open(
     os.path.join(uix_path, "menu", "menu.kv"), encoding="utf-8"
 ) as kv_file:
     Builder.load_string(kv_file.read())
+
+
+class MenuScrim(Widget):
+    color = ColorProperty(None)
+    alpha = NumericProperty(0)
 
 
 class MDMenu(RecycleView):
@@ -1488,6 +1492,15 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
     and defaults to `'[dp(7)]'`.
     """
 
+    scrim_color = ColorProperty([0, 0, 0, 0.5])
+    """
+    Color for scrim in (r, g, b, a) or string format.
+
+    :attr:`scrim_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `[0, 0, 0, 0.5]`.
+    """
+
+    _scrim = ObjectProperty()  # kivymd.uix.menu.menu.MenuScrim object
     _items = []
     _start_coords = []
     _tar_x = 0
@@ -1707,7 +1720,13 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
         """Animate the opening of a menu window."""
 
         self.set_menu_properties()
+
+        if not self._scrim:
+            self._scrim = MenuScrim(color=self.scrim_color)
+
+        Window.add_widget(self._scrim)
         Window.add_widget(self)
+
         self.position = self.adjust_position()
 
         if self.width <= 100:

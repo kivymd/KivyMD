@@ -1,3 +1,12 @@
+<MenuScrim>
+    canvas:
+        Color:
+            rgba: self.color[:-1] + [self.alpha]
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+
 <MDMenu>
     bar_width: 0
     key_viewclass: "viewclass"

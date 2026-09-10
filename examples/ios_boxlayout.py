@@ -3,8 +3,7 @@ from kivy.lang import Builder
 from examples.common_app import CommonApp
 from kivymd.app import MDApp
 
-
-KV = '''
+KV = """
 MDScreen:
     md_bg_color: self.theme_cls.backgroundColor
 
@@ -48,7 +47,7 @@ MDScreen:
         pos_hint: {"top": 0.98}
         x: dp(12)
         on_release: app.get_running_app().open_menu(self)
-'''
+"""
 
 
 class IOSBoxLayoutExampleApp(MDApp, CommonApp):

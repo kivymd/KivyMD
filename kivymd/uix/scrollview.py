@@ -317,6 +317,8 @@ from kivy.uix.scrollview import ScrollView
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
     DeclarativeBehavior,
+)
+from kivymd.uix.behaviors.ios.backgroundcolor_behavior import (
     IOSBackgroundColorBehavior,
 )
 

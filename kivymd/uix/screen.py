@@ -166,6 +166,8 @@ from kivymd.uix import MDAdaptiveWidget
 from kivymd.uix.behaviors import (
     BackgroundColorBehavior,
     DeclarativeBehavior,
+)
+from kivymd.uix.behaviors.ios.backgroundcolor_behavior import (
     IOSBackgroundColorBehavior,
 )
 from kivymd.uix.hero import MDHeroTo

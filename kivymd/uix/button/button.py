@@ -1035,7 +1035,6 @@ from kivy.clock import Clock
 from kivy.lang import Builder
 from kivy.metrics import dp
 from kivy.properties import (
-    BooleanProperty,
     ColorProperty,
     DictProperty,
     NumericProperty,
@@ -1043,7 +1042,6 @@ from kivy.properties import (
     OptionProperty,
     VariableListProperty,
 )
-from kivy.uix.anchorlayout import AnchorLayout
 from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.relativelayout import RelativeLayout

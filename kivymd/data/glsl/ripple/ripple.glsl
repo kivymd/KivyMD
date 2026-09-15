@@ -36,13 +36,12 @@ float sparkles(vec2 uv, float t) {
     float n = triangleNoise(uv);
     float s = 0.0;
     const float PI = 3.14159265359;
-    for (int i = 0; i < 4; ++i) {
-        float fi = float(i);
-        float low = fi * 0.1;
-        float high = low + 0.05;
-        float offset = sin(PI * (t + 0.35 * fi));
-        s += threshold(n + offset, low, high);
-    }
+
+    s += threshold(n + sin(PI * (t + 0.0)),  0.0, 0.05);
+    s += threshold(n + sin(PI * (t + 0.35)), 0.1, 0.15);
+    s += threshold(n + sin(PI * (t + 0.7)),  0.2, 0.25);
+    s += threshold(n + sin(PI * (t + 1.05)), 0.3, 0.35);
+
     return saturate(s) * in_sparkleColor.a;
 }
 

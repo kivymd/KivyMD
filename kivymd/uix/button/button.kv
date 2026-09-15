@@ -410,13 +410,14 @@
     font_style: "Label"
     role: "large"
     markup: True
-    text_color: self.theme_cls.onSurfaceColor
-    adaptive_size: True
+    text_color:
+        self.theme_cls.onSurfaceColor \
+        if self.theme_text_color == "Primary" \
+        else self.text_color
 
 
 <IOSButton>:
     size_hint: None, None
-#    size: self.minimum_size if root.adaptive_size else self.size
     radius:
         root.border_radius \
         if root.border_radius \

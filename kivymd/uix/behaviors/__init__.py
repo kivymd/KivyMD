@@ -13,7 +13,13 @@ from .backgroundcolor_behavior import (
 # flake8: NOQA
 from .declarative_behavior import DeclarativeBehavior
 from .elevation import CommonElevationBehavior
-from .ios import IOSBackgroundColorBehavior, IOSButtonBehavior, IOSGlassBehavior
+from .ios import (
+    IOSBackgroundColorBehavior,
+    IOSButtonBehavior,
+    IOSGlassBehavior,
+    IOSMetaballBehavior,
+    IOSMetaballContainer,
+)
 from .magic_behavior import MagicBehavior
 from .motion_behavior import (
     MotionDialogBehavior,

@@ -1,3 +1,4 @@
 from .backgroundcolor_behavior import IOSBackgroundColorBehavior
 from .button_behavior import IOSButtonBehavior
 from .glass_behavior import IOSGlassBehavior
+from .metaball_behavior import IOSMetaballBehavior, IOSMetaballContainer

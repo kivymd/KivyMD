@@ -337,7 +337,10 @@ class IOSMetaballBehavior:
                 mb.border_radius = list(state["border_radius"])
 
             def _restore_state(
-                anim, widget, hint_to_restore=saved_hint, is_last=(i == len(metaballs) - 1)
+                anim,
+                widget,
+                hint_to_restore=saved_hint,
+                is_last=(i == len(metaballs) - 1),
             ):
                 if not self.is_merged and hint_to_restore:
                     widget.pos_hint = dict(hint_to_restore)

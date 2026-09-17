@@ -161,10 +161,7 @@ from kivy.uix.recyclegridlayout import RecycleGridLayout
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix import MDAdaptiveWidget
-from kivymd.uix.behaviors import (
-    BackgroundColorBehavior,
-    DeclarativeBehavior,
-)
+from kivymd.uix.behaviors import BackgroundColorBehavior, DeclarativeBehavior
 from kivymd.uix.behaviors.ios.backgroundcolor_behavior import (
     IOSBackgroundColorBehavior,
 )

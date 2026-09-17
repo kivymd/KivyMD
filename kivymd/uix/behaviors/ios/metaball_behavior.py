@@ -224,6 +224,7 @@ class IOSMetaballBehavior:
 
         # Reset the press highlight for all buttons.
         for mb in metaballs:
+            self._store_initial_state(mb)
             self._reset_press_state(mb)
 
         active_btn = sender if sender in metaballs else metaballs[0]
@@ -331,7 +332,9 @@ class IOSMetaballBehavior:
             ):
                 if not self.is_merged and saved_hint:
                     widget.pos_hint = dict(saved_hint)
+
                 s_rect = getattr(widget, "_glass_rect", None)
+
                 if s_rect:
                     s_rect.size = (widget.width, widget.height)
                 if is_last:
@@ -404,6 +407,10 @@ class IOSMetaballBehavior:
         """
 
         if widget in self._initial_states:
+            state = self._initial_states[widget]
+            state["width"] = widget.width
+            state["height"] = widget.height
+
             return
 
         pos_hint = dict(widget.pos_hint) if widget.pos_hint else {}

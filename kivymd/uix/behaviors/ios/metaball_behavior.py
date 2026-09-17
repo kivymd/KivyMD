@@ -210,9 +210,6 @@ class IOSMetaballBehavior:
     def animate_merge(self, sender=None) -> None:
         """
         Animates child widgets into a single unified metaball fluid shape.
-
-        :param sender: Widget instance triggering the action
-            (determines Z-order priority).
         """
 
         def _on_merge_complete(anim, widget):
@@ -244,8 +241,9 @@ class IOSMetaballBehavior:
             passive_btn, "center_x", "center_y", "width", "height", "opacity"
         )
 
-        target_center_x = self.x + self.width * 0.5
-        target_center_y = self.y + self.height * 0.5
+        # Merge center - active button.
+        target_center_x = active_btn.center_x
+        target_center_y = active_btn.center_y
 
         active_btn.pos_hint = {}
         passive_btn.pos_hint = {}
@@ -315,23 +313,34 @@ class IOSMetaballBehavior:
             mb.pos_hint = {}
 
             state = self._initial_states.get(mb, {})
-            hint = state.get("pos_hint", {})
-            cx_hint = state.get("center_x_hint", 0.5)
-            cy_hint = state.get("center_y_hint", 0.5)
-
-            target_cx = self.x + self.width * cx_hint
-            target_cy = self.y + self.height * cy_hint
+            saved_hint = state.get("pos_hint", {})
             target_w = state.get("width", mb.width)
             target_h = state.get("height", mb.height)
+
+            # Calculation of reverse coordinates:
+            # If pos_hint had center_x, take it relative to the container.
+            # Otherwise, return exactly to the original x_offset in pixels.
+            cx_hint = state.get("center_x_hint")
+            cy_hint = state.get("center_y_hint")
+
+            if cx_hint is not None:
+                target_cx = self.x + self.width * cx_hint
+            else:
+                target_cx = self.x + state.get("x_offset", 0) + target_w * 0.5
+
+            if cy_hint is not None:
+                target_cy = self.y + self.height * cy_hint
+            else:
+                target_cy = self.y + state.get("y_offset", 0) + target_h * 0.5
 
             if state.get("border_radius"):
                 mb.border_radius = list(state["border_radius"])
 
             def _restore_state(
-                anim, widget, saved_hint=hint, is_last=(i == len(metaballs) - 1)
+                anim, widget, hint_to_restore=saved_hint, is_last=(i == len(metaballs) - 1)
             ):
-                if not self.is_merged and saved_hint:
-                    widget.pos_hint = dict(saved_hint)
+                if not self.is_merged and hint_to_restore:
+                    widget.pos_hint = dict(hint_to_restore)
 
                 s_rect = getattr(widget, "_glass_rect", None)
 
@@ -414,13 +423,19 @@ class IOSMetaballBehavior:
             return
 
         pos_hint = dict(widget.pos_hint) if widget.pos_hint else {}
+
+        # If there is pos_hint, save relative hints
+        # If straight lines x/y are specified, we save the exact offsets in
+        # pixels from the container.
         self._initial_states[widget] = {
-            "center_x_hint": pos_hint.get("center_x", 0.5),
-            "center_y_hint": pos_hint.get("center_y", 0.5),
+            "center_x_hint": pos_hint.get("center_x"),
+            "center_y_hint": pos_hint.get("center_y"),
+            "x_offset": widget.x - self.x,
+            "y_offset": widget.y - self.y,
             "width": widget.width,
             "height": widget.height,
             "pos_hint": pos_hint,
-            "border_radius": list(widget.border_radius),
+            "border_radius": list(getattr(widget, "border_radius", [0] * 4)),
         }
 
     def _get_metaball_children(self) -> list:

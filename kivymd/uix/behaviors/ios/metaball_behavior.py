@@ -199,8 +199,11 @@ class IOSMetaballBehavior:
     def on_separate(self, *args) -> None:
         """Fired when metaball objects successfully finish separating."""
 
-    def toggle_state(self, sender=None) -> None:
+    def toggle_state(self, sender=None) -> None | bool:
         """Toggles state between merged metaballs and separated widgets."""
+
+        if sender.opacity <= 0.001:
+            return False
 
         if self.is_merged:
             self.animate_separate()
@@ -567,6 +570,7 @@ class IOSMetaballBehavior:
             "u_lens_power": float(active_mb.lens_power),
             "u_bevel_power": float(active_mb.bevel_power),
             "u_pressed": float(active_mb._press_factor),
+            "u_container_opacity": float(self.opacity),
             "u_touch_pos": [
                 float(active_mb._touch_pos[0]),
                 float(active_mb._touch_pos[1]),

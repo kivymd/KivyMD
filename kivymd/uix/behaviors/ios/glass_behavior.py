@@ -249,6 +249,14 @@ class IOSGlassBehavior:
     and defaults to `14.0`.
     """
 
+    border_opacity = NumericProperty(0.6)
+    """
+    Opacity of the border outline.
+
+    :attr:`border_opacity` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.6`.
+    """
+
     target_background = ObjectProperty(None, allownone=True)
     """
     Reference to the background widget or layout captured by the glass shader.
@@ -505,6 +513,7 @@ class IOSGlassBehavior:
             blur_amount=self._update_glass_uniforms,
             lens_power=self._update_glass_uniforms,
             bevel_power=self._update_glass_uniforms,
+            border_opacity=self._update_glass_uniforms,
             _press_factor=self._update_glass_uniforms,
             _scale_factor=self._update_glass_uniforms,
             _touch_pos=self._update_glass_uniforms,
@@ -577,6 +586,7 @@ class IOSGlassBehavior:
         if parent is None:
             try:
                 Window.unbind(size=self._on_glass_window_resize)
+                Window.unbind(size=self._update_video_frame)
             except Exception:
                 pass
 
@@ -598,6 +608,16 @@ class IOSGlassBehavior:
 
     def _update_glass_uniforms(self, *args):
         if not hasattr(self, "_glass_rect"):
+            return
+
+        # If the button/container is hidden, collapse the mesh size to 0,
+        # so that the FBO and shader do not physically appear when clicked.
+        if (
+            self.opacity <= 0.001
+            or getattr(self.parent, "opacity", 1.0) <= 0.001
+        ):
+            self._glass_rect.size = (0, 0)
+
             return
 
         self._glass_rect.pos = self.pos
@@ -628,6 +648,7 @@ class IOSGlassBehavior:
         self._glass_rc["u_blur_amount"] = float(self.blur_amount)
         self._glass_rc["u_lens_power"] = float(self.lens_power)
         self._glass_rc["u_bevel_power"] = float(self.bevel_power)
+        self._glass_rc["u_border_opacity"] = float(self.border_opacity)
         self._glass_rc["u_pressed"] = float(self._press_factor)
         self._glass_rc["u_touch_pos"] = [
             float(self._touch_pos[0]),

@@ -26,6 +26,7 @@
  *   - float u_bevel_power    : Edge refraction intensity along the SDF gradient.
  *   - float u_pressed        : Touch press factor (0.0 to 1.0) for interaction.
  *   - vec2 u_touch_pos       : Current touch coordinates on screen.
+ *   - float u_border_opacity : Opacity of the border outline (0.0 to 1.0).
  * ============================================================================
  */
 
@@ -52,6 +53,7 @@ uniform float u_blur_amount;
 // Dynamic uniforms for lens control
 uniform float u_lens_power;
 uniform float u_bevel_power;
+uniform float u_border_opacity;
 
 // ------------------------------------------------------------
 // Signed Distance Field (SDF) for a rounded rectangle.
@@ -373,7 +375,8 @@ void main() {
             topLeftHighlight
             + bottomRightHighlight
             + edgeStroke
-        );
+        )
+        * u_border_opacity;
 
     // --------------------------------------------------------
     // Touch Interaction Highlights.

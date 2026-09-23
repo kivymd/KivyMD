@@ -210,7 +210,10 @@ class IOSMetaballBehavior:
     def toggle_state(self, sender=None) -> None | bool:
         """Toggles state between merged metaballs and separated widgets."""
 
-        if sender.opacity <= 0.001:
+        if sender.opacity <= 0.001 or (
+            isinstance(sender.parent, IOSMetaballContainer)
+            and sender.parent.opacity <= 0.001
+        ):
             return False
 
         if self.is_merged:

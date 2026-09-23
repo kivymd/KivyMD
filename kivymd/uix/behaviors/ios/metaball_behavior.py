@@ -143,6 +143,14 @@ class IOSMetaballBehavior:
     and defaults to `0.2`.
     """
 
+    merge_target = NumericProperty(0)
+    """
+    Index of the target metaball widget towards which others merge.
+
+    :attr:`merge_target` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `0`.
+    """
+
     merge_distance = NumericProperty(dp(12))
     """
     Additional threshold distance added to touch detection before triggering
@@ -222,12 +230,15 @@ class IOSMetaballBehavior:
         if len(metaballs) < 2:
             return
 
-        # Reset the press highlight for all buttons.
         for mb in metaballs:
             self._store_initial_state(mb)
             self._reset_press_state(mb)
 
-        active_btn = sender if sender in metaballs else metaballs[0]
+        if 0 <= self.merge_target < len(metaballs):
+            active_btn = metaballs[self.merge_target]
+        else:
+            active_btn = sender if sender in metaballs else metaballs[0]
+
         passive_btn = (
             metaballs[1] if active_btn is metaballs[0] else metaballs[0]
         )
@@ -248,22 +259,21 @@ class IOSMetaballBehavior:
         target_center_x = active_btn.center_x
         target_center_y = active_btn.center_y
 
+        active_btn.size_hint = (None, None)
+        passive_btn.size_hint = (None, None)
         active_btn.pos_hint = {}
         passive_btn.pos_hint = {}
 
         anim_active = Animation(
             center_x=target_center_x,
             center_y=target_center_y,
-            width=active_btn.width,
-            height=active_btn.height,
             d=self.active_button_merge_duration,
             t=self.active_button_merge_transition,
         )
         anim_passive = Animation(
             center_x=target_center_x,
             center_y=target_center_y,
-            width=active_btn.width,
-            height=active_btn.height,
+            width=0,
             opacity=0.0,
             d=self.passive_button_merge_duration,
             t=self.passive_button_merge_transition,
@@ -548,8 +558,11 @@ class IOSMetaballBehavior:
             if decay < 0.005:
                 self.is_wobbling = False
 
-        b1, b2 = metaballs[0], metaballs[1]
-        active_mb = self._active_btn if self._active_btn in metaballs else b1
+        active_mb = (
+            self._active_btn if self._active_btn in metaballs else metaballs[0]
+        )
+        passive_mb = next(mb for mb in metaballs if mb is not active_mb)
+        b1, b2 = active_mb, passive_mb
 
         wx1, wy1 = b1.to_window(*b1.pos)
         wx2, wy2 = b2.to_window(*b2.pos)

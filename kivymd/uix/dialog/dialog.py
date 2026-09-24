@@ -1072,7 +1072,12 @@ class IOSDialog(
         super().__init__(*args, **kwargs)
         self.opacity = 0
         self.pos_hint = {}
-        self.bind(size=self._recenter)
+        self.bind(
+            size=self._recenter,
+            scale_value_x=self._update_glass_uniforms,
+            scale_value_y=self._update_glass_uniforms,
+            opacity=self._update_glass_uniforms,
+        )
         Window.bind(size=self._on_window_resize)
 
     def add_widget(self, widget, *args, **kwargs):

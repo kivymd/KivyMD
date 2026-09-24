@@ -276,7 +276,7 @@ class IOSMetaballBehavior:
         anim_passive = Animation(
             center_x=target_center_x,
             center_y=target_center_y,
-            width=0,
+            width=active_btn.width,
             opacity=0.0,
             d=self.passive_button_merge_duration,
             t=self.passive_button_merge_transition,

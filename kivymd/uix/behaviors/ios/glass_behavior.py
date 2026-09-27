@@ -586,7 +586,6 @@ class IOSGlassBehavior:
         if parent is None:
             try:
                 Window.unbind(size=self._on_glass_window_resize)
-                Window.unbind(size=self._update_video_frame)
             except Exception:
                 pass
 

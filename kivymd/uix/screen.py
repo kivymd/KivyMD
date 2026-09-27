@@ -174,8 +174,7 @@ class BaseScreen(Screen):
     """
     Base Screen for :class:`~MDScreen` and :class:`~IOSScreen` classes.
 
-    For more information see in the
-    :class:`~kivy.uix.screen.Screen
+    For more information see in the :class:`~kivy.uix.screen.Screen`
     class documentation.
     """
 

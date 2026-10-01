@@ -1595,7 +1595,7 @@ class MDDropdownMenu(MotionDropDownMenuBehavior, StencilBehavior, MDCard):
         Set the target height of the menu depending on the size of each item.
         """
 
-        self.target_height = 0
+        self.target_height = self.header_cls.height if self.header_cls else 0
         for item in self.menu.data:
             self.target_height += item.get("height", self.min_height)
 

@@ -255,16 +255,13 @@ class MDSmartTileImage(RectangularRippleBehavior, ButtonBehavior, FitImage):
     _overlay_container = ObjectProperty()
 
     def on_touch_down(self, touch):
-        if (
-            self.collide_point(touch.x, touch.y)
-            and self._overlay_container._touch_on_container
-        ):
-            return False
-        elif (
-            self.collide_point(touch.x, touch.y)
-            and not self._overlay_container._touch_on_container
-        ):
-            return super().on_touch_down(touch)
+        if self.collide_point(touch.x, touch.y):
+            if (
+                self._overlay_container
+                and self._overlay_container._touch_on_container
+            ):
+                return False
+        return super().on_touch_down(touch)
 
 
 class MDSmartTileOverlayContainer(MDBoxLayout):

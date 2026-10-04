@@ -189,4 +189,7 @@ register("IOSStackLayout", module="kivymd.uix.stacklayout")
 register("IOSSlider", module="kivymd.uix.slider")
 register("IOSRulerPicker", module="kivymd.uix.pickers")
 register("IOSRulerPickerLabel", module="kivymd.uix.pickers")
-register("IOSLiquidDropdownContainer", module="kivymd.uix.behaviors.ios.dropdown_behavior")
+register(
+    "IOSLiquidDropdownContainer",
+    module="kivymd.uix.behaviors.ios.dropdown_behavior",
+)

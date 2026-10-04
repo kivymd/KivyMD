@@ -15,8 +15,11 @@ from .declarative_behavior import DeclarativeBehavior
 from .elevation import CommonElevationBehavior
 from .ios import (
     IOSBackgroundColorBehavior,
+    IOSBaseGlassBehavior,
     IOSButtonBehavior,
     IOSGlassBehavior,
+    IOSLiquidDropdownBehavior,
+    IOSLiquidDropdownContainer,
     IOSMetaballBehavior,
     IOSMetaballContainer,
 )

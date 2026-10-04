@@ -100,7 +100,10 @@ Example
     :align: center
 """
 
-__all__ = ("IOSGlassBehavior",)
+__all__ = (
+    "IOSBaseGlassBehavior",
+    "IOSGlassBehavior",
+)
 
 import os
 
@@ -139,10 +142,11 @@ with open(GLSL_IOS_BUTTON_FS_PATH, encoding="utf-8") as shader_file:
     IOS_BUTTON_FS = shader_file.read()
 
 
-class IOSGlassBehavior:
+class IOSBaseGlassBehavior:
     """
-    Behavior that implements an iOS-style liquid glass effect with blur,
-    refraction, and touch response.
+    Base behavior class that defines common visual and physical properties
+    for iOS-style glassmorphic UI components, including refraction, beveling,
+    blur, and border radius properties.
     """
 
     lens_power = NumericProperty(0.08)
@@ -255,6 +259,16 @@ class IOSGlassBehavior:
 
     :attr:`border_opacity` is an :class:`~kivy.properties.NumericProperty`
     and defaults to `0.6`.
+    """
+
+
+class IOSGlassBehavior(IOSBaseGlassBehavior):
+    """
+    Behavior that implements an iOS-style liquid glass effect with blur,
+    refraction, and touch response.
+
+    For more information see in the :class:`~IOSBaseGlassBehavior`
+    class documentation.
     """
 
     target_background = ObjectProperty(None, allownone=True)
@@ -519,10 +533,14 @@ class IOSGlassBehavior:
             _touch_pos=self._update_glass_uniforms,
         )
         Window.bind(size=self._on_glass_window_resize)
-        Clock.schedule_once(self._on_bg_update, 1)
+
+        self._start_initial_sync()
 
     def on_target_background(self, instance, value):
-        """Fired when the value of the :attr:`target_background` attribute changes."""
+        """
+        Fired when the value of the :attr:`target_background` attribute
+        changes.
+        """
 
         # 1. Detach the old background when changing or clearing it.
         if hasattr(self, "_attached_bg") and self._attached_bg:
@@ -540,12 +558,11 @@ class IOSGlassBehavior:
         if isinstance(value, Video):
             Clock.schedule_interval(self._update_video_frame, 1 / 60)
 
-        def _bind_widget(w):
+        def _bind_widget_tree(w):
             if not hasattr(w, "bind"):
                 return
 
-            # We bind each property SEPARATELY so that the absence of one
-            # doesn't break the others.
+            # We subscribe each widget to changes in key properties.
             for prop in ("scroll_y", "scroll_x", "pos", "size", "texture"):
                 if hasattr(w, prop) or (
                     hasattr(w, "properties") and prop in w.properties()
@@ -562,16 +579,15 @@ class IOSGlassBehavior:
                 except Exception:
                     pass
 
-        # 1. Subscribe to the background itself (ScrollView, FitImage, etc.).
-        _bind_widget(value)
+            # Recursive traversal of all child elements at any depth.
+            if hasattr(w, "children"):
+                for child in w.children:
+                    _bind_widget_tree(child)
 
-        # 2. Adding children
-        #    (AsyncImage inside FitImage, Layout inside ScrollView).
-        if hasattr(value, "children"):
-            for child in value.children:
-                _bind_widget(child)
+        # We sign the entire target_background tree.
+        _bind_widget_tree(value)
 
-        Clock.schedule_once(lambda dt: self._setup_glass_fbo(), 0.4)
+        Clock.schedule_once(lambda dt: self._setup_glass_fbo(), 0)
 
     def _update_video_frame(self, dt):
         """Redraws the FBO every video playback frame."""
@@ -592,6 +608,8 @@ class IOSGlassBehavior:
             Clock.unschedule(self._on_bg_update)
             Clock.unschedule(self._on_bg_update_scheduled)
 
+            self._stop_initial_sync()
+
             if hasattr(self, "_attached_bg") and self._attached_bg:
                 self._unbind_bg_events(self._attached_bg)
                 self._attached_bg = None
@@ -604,6 +622,58 @@ class IOSGlassBehavior:
 
         Clock.unschedule(self._on_bg_update)
         Clock.schedule_once(self._on_bg_update, 0)
+
+    def _start_initial_sync(self):
+        """
+        Performs a short initial FBO synchronization.
+
+        The background widget tree may not have completed its first
+        layout/render pass when the glass widget is created. A few deferred
+        synchronizations allow the FBO to capture the actual background without
+        keeping a permanent redraw loop running during glass animations.
+        """
+
+        if hasattr(self, "_sync_event") and self._sync_event:
+            self._sync_event.cancel()
+            self._sync_event = None
+
+        self._sync_frames = 3
+        self._sync_event = Clock.schedule_interval(
+            self._sync_fbo_on_start, 1 / 60
+        )
+
+    def _sync_fbo_on_start(self, dt):
+        """
+        Synchronizes the background FBO during the initial rendering phase.
+
+        Only a limited number of frames are synchronized. This is required for
+        backgrounds such as ScrollView, whose child layout may become valid only
+        after the first frame.
+        """
+
+        if not self.target_background or not self._fbo:
+            self._stop_initial_sync()
+
+            return
+
+        self._draw_bg_to_fbo(
+            self._fbo,
+            self.target_background,
+        )
+        self._update_glass_uniforms()
+        self._sync_frames -= 1
+
+        if self._sync_frames <= 0:
+            self._stop_initial_sync()
+
+    def _stop_initial_sync(self):
+        """Stops the temporary initial FBO synchronization."""
+
+        if hasattr(self, "_sync_event") and self._sync_event:
+            self._sync_event.cancel()
+            self._sync_event = None
+
+        self._sync_frames = 0
 
     def _update_glass_uniforms(self, *args):
         if not hasattr(self, "_glass_rect"):
@@ -654,51 +724,81 @@ class IOSGlassBehavior:
             float(self._touch_pos[1]),
         ]
 
-        if self._fbo and self.target_background:
-            self._fbo.draw()
-
     def _draw_bg_to_fbo(self, fbo, bg):
         """
-        Background rendering while preserving the original Z-index (layer).
+        Renders ``bg`` into ``fbo`` while excluding this glass widget.
+
+        This allows ``target_background`` to be an ancestor of the glass
+        widget without capturing the glass itself and feeding it back into
+        its own framebuffer texture.
         """
 
-        if not bg or not hasattr(bg, "canvas"):
+        if fbo is None or bg is None or not hasattr(bg, "canvas"):
             return
 
-        # Clearing the FBO before re-rendering.
-        fbo.bind()
-        fbo.clear_color = (0, 0, 0, 0)
-        fbo.clear_buffer()
-        fbo.release()
+        # The current glass widget must not be captured when `bg` is
+        # one of its ancestors.
+        glass_canvas = self.canvas
+        glass_parent = self.parent
 
-        bg_canvas = bg.canvas
-        parent_widget = bg.parent
+        glass_index = -1
 
-        if parent_widget and hasattr(parent_widget, "canvas"):
-            parent_canvas = parent_widget.canvas
+        if glass_parent is not None:
+            try:
+                glass_index = glass_parent.canvas.indexof(glass_canvas)
+            except Exception:
+                glass_index = -1
 
-            if bg_canvas in parent_canvas.children:
-                # 1. We note the exact position of the list in the rendering
-                # queue.
-                index = parent_canvas.children.index(bg_canvas)
+            if glass_index >= 0:
+                glass_parent.canvas.remove(glass_canvas)
 
-                # 2. Rendering to an FBO.
-                parent_canvas.remove(bg_canvas)
+        try:
+            # Clear the framebuffer.
+            fbo.bind()
+
+            try:
+                fbo.clear_color = (0.0, 0.0, 0.0, 0.0)
+                fbo.clear_buffer()
+            finally:
+                fbo.release()
+
+            # Capture the target canvas.
+            #
+            # This is intentionally the same Canvas -> FBO mechanism
+            # used by Kivy's Widget.export_as_image().
+            bg_canvas = bg.canvas
+            bg_parent = bg.parent
+
+            bg_index = -1
+
+            if bg_parent is not None:
+                try:
+                    bg_index = bg_parent.canvas.indexof(bg_canvas)
+                except Exception:
+                    bg_index = -1
+
+                if bg_index >= 0:
+                    bg_parent.canvas.remove(bg_canvas)
+
+            try:
                 fbo.add(bg_canvas)
                 fbo.draw()
+            finally:
                 fbo.remove(bg_canvas)
 
-                # 3. Return the canvas STRICTLY to its original layer
-                # (BENEATH the buttons).
-                parent_canvas.insert(index, bg_canvas)
-            else:
-                fbo.add(bg_canvas)
-                fbo.draw()
-                fbo.remove(bg_canvas)
-        else:
-            fbo.add(bg_canvas)
-            fbo.draw()
-            fbo.remove(bg_canvas)
+                if bg_parent is not None and bg_index >= 0:
+                    bg_parent.canvas.insert(
+                        bg_index,
+                        bg_canvas,
+                    )
+        finally:
+            # Restore the glass canvas exactly where it was.
+            if glass_parent is not None and glass_index >= 0:
+                if glass_canvas not in glass_parent.canvas.children:
+                    glass_parent.canvas.insert(
+                        glass_index,
+                        glass_canvas,
+                    )
 
     def _on_bg_update(self, *args):
         if self.target_background:
@@ -733,18 +833,21 @@ class IOSGlassBehavior:
 
         self._glass_rect.texture = self._fbo.texture
         self._update_glass_uniforms()
+        self._start_initial_sync()
 
     def _on_glass_window_resize(self, instance, size):
         if size[0] > 0 and size[1] > 0:
             self._setup_glass_fbo()
 
     def _unbind_bg_events(self, widget):
-        """Detachment of events from the widget and its children."""
+        """
+        Detachment of events from the widget and its children (recursive).
+        """
 
         if not widget:
             return
 
-        def _unbind_widget(w):
+        def _unbind_widget_tree(w):
             if not hasattr(w, "unbind"):
                 return
 
@@ -763,8 +866,8 @@ class IOSGlassBehavior:
                 except Exception:
                     pass
 
-        _unbind_widget(widget)
+            if hasattr(w, "children"):
+                for child in w.children:
+                    _unbind_widget_tree(child)
 
-        if hasattr(widget, "children"):
-            for child in widget.children:
-                _unbind_widget(child)
+        _unbind_widget_tree(widget)

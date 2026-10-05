@@ -3,6 +3,320 @@ Behaviors/iOS Metaball
 ======================
 
 .. versionadded:: 2.0.1
+
+.. rubric:: Enabling dynamic fluid merging, separation animations, and surface
+    wobble interactions between glass elements.
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/metaball-behavior-preview.png
+    :align: center
+
+- Enables smooth fluid morphing, merging, and separation between adjacent UI elements;
+- Supports interactive surface wobble and jelly-like distortion effects on touch;
+- Powered by real-time GLSL distance-field shaders for organic liquid dynamics;
+- Styled with frosted glass optics, soft shadows, and dynamic refraction effects;
+- Ideal for flexible toolbars, expanding action buttons, and dynamic status badges;
+
+Anatomy
+=======
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/metaball-behavior-anatomy.png
+    :align: center
+
+Example
+-------
+
+.. tabs::
+
+    .. tab:: Declarative python style with KV
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+
+            from kivymd.app import MDApp
+
+            KV = '''
+            MDScreen:
+                id: screen
+
+                FitImage:
+                    id: bg_image
+                    source: "https://picsum.photos/800/600?random=1"
+
+                IOSMetaballContainer:
+                    size_hint: 1, None
+                    height: dp(80)
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    merge_distance: dp(1)
+                    merge_target: 1
+                    viscosity: dp(80)
+
+                    IOSButton:
+                        size: dp(56), dp(56)
+                        adaptive_size: False
+                        border_radius: [dp(28)] * 4
+                        target_background: bg_image
+                        pos_hint: {"center_y": 0.5}
+                        x: dp(300)
+                        on_release: self.parent.toggle_state(sender=self)
+
+                        IOSIconButton:
+                            icon: "filter-variant"
+                            theme_icon_color: "Custom"
+                            icon_color: "white"
+
+                    IOSButton:
+                        spacing: dp(12)
+                        adaptive_height: False
+                        adaptive_width: True
+                        height: dp(56)
+                        target_background: bg_image
+                        pos_hint: {"center_y": 0.5}
+                        x: dp(400)
+                        border_radius: [dp(28)] * 4
+                        on_release: self.parent.toggle_state(sender=self)
+
+                        IOSIconButton:
+                            icon: "filter-variant"
+                            theme_icon_color: "Custom"
+                            icon_color: "white"
+
+                        IOSIconButton:
+                            icon: "dots-horizontal"
+                            theme_icon_color: "Custom"
+                            icon_color: "white"
+            '''
+
+
+            class LiquidGlassDemo(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
+
+
+            if __name__ == "__main__":
+                LiquidGlassDemo().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.behaviors import IOSMetaballContainer
+            from kivymd.uix.button import IOSButton, IOSIconButton
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.fitimage import FitImage
+
+
+            class LiquidGlassDemo(MDApp):
+                def build(self):
+                    bg_image = FitImage(source="https://picsum.photos/800/600?random=1")
+
+                    return MDScreen(
+                        bg_image,
+                        IOSMetaballContainer(
+                            IOSButton(
+                                IOSIconButton(
+                                    icon="filter-variant",
+                                    theme_icon_color="Custom",
+                                    icon_color="white",
+                                ),
+                                size=(dp(56), dp(56)),
+                                adaptive_size=False,
+                                border_radius=[dp(28)] * 4,
+                                target_background=bg_image,
+                                pos_hint={"center_y": 0.5},
+                                x=dp(300),
+                                on_release=lambda x: x.parent.toggle_state(sender=x),
+                            ),
+                            IOSButton(
+                                IOSIconButton(
+                                    icon="filter-variant",
+                                    theme_icon_color="Custom",
+                                    icon_color="white",
+                                ),
+                                IOSIconButton(
+                                    icon="dots-horizontal",
+                                    theme_icon_color="Custom",
+                                    icon_color="white",
+                                ),
+                                spacing=dp(12),
+                                adaptive_height=False,
+                                adaptive_width=True,
+                                height=dp(56),
+                                target_background=bg_image,
+                                pos_hint={"center_y": 0.5},
+                                x=dp(400),
+                                border_radius=[dp(28)] * 4,
+                                on_release=lambda x: x.parent.toggle_state(sender=x)
+                            ),
+                            size_hint=(1, None),
+                            height=dp(80),
+                            pos_hint={"center_x": .5, "center_y": .5},
+                            merge_distance=dp(1),
+                            merge_target=1,
+                            viscosity=dp(80),
+                        ),
+                    )
+
+
+            if __name__ == "__main__":
+                LiquidGlassDemo().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/metaball-behavior-example.gif
+    :align: center
+
+Example with various glass objects
+----------------------------------
+
+.. tabs::
+
+    .. tab:: Declarative python style with KV
+
+        .. code-block:: python
+
+            from kivy.lang import Builder
+
+            from kivymd.app import MDApp
+
+            KV = '''
+            MDScreen:
+
+                FitImage:
+                    id: bg_image
+                    source: "https://picsum.photos/800/600?random=1"
+
+                IOSMetaballContainer:
+                    size_hint: 1, None
+                    height: dp(80)
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    merge_distance: dp(1)
+                    merge_target: 0
+                    viscosity: dp(80)
+
+                    IOSTextField:
+                        blur_amount: 10
+                        target_background: bg_image
+                        hint_text: "Message"
+                        size_hint_x: 0.3
+                        size_hint_y: None
+                        height: dp(56)
+                        pos_hint: {"center_y": 0.5}
+                        x: dp(320)
+
+                        IOSTextFieldLeadingIcon:
+                            icon: "gmail"
+                            theme_icon_color: "Custom"
+                            icon_color: "white"
+
+                        IOSTextFieldTrailingIcon:
+                            icon: "account"
+                            theme_icon_color: "Custom"
+                            icon_color: "white"
+                            on_release: self.parent.parent.toggle_state(sender=self)
+
+                    IOSButton:
+                        spacing: dp(12)
+                        adaptive_height: False
+                        adaptive_width: True
+                        height: dp(56)
+                        target_background: bg_image
+                        pos_hint: {"center_y": 0.5}
+                        x: dp(240)
+                        border_radius: [dp(28)] * 4
+                        on_release: self.parent.toggle_state(sender=self)
+
+                        IOSIconButton:
+                            icon: "filter-variant"
+                            theme_icon_color: "Custom"
+                            icon_color: "white"
+            '''
+
+
+            class LiquidGlassDemo(MDApp):
+                def build(self):
+                    return Builder.load_string(KV)
+
+
+            if __name__ == "__main__":
+                LiquidGlassDemo().run()
+
+    .. tab:: Declarative python style
+
+        .. code-block:: python
+
+            from kivy.metrics import dp
+
+            from kivymd.app import MDApp
+            from kivymd.uix.behaviors import IOSMetaballContainer
+            from kivymd.uix.button import IOSButton, IOSIconButton
+            from kivymd.uix.screen import MDScreen
+            from kivymd.uix.fitimage import FitImage
+            from kivymd.uix.textfield import (
+                IOSTextField, IOSTextFieldLeadingIcon, IOSTextFieldTrailingIcon
+            )
+
+
+            class LiquidGlassDemo(MDApp):
+                def build(self):
+                    bg_image = FitImage(source="https://picsum.photos/800/600?random=1")
+
+                    return MDScreen(
+                        bg_image,
+                        IOSMetaballContainer(
+                            IOSTextField(
+                                IOSTextFieldLeadingIcon(
+                                    icon="gmail",
+                                    theme_icon_color="Custom",
+                                    icon_color="white",
+                                ),
+                                IOSTextFieldTrailingIcon(
+                                    icon="account",
+                                    theme_icon_color="Custom",
+                                    icon_color="white",
+                                    on_release=lambda x: x.parent.parent.toggle_state(sender=x),
+                                ),
+                                blur_amount=10,
+                                target_background=bg_image,
+                                hint_text="Message",
+                                size_hint_x=0.3,
+                                size_hint_y=None,
+                                height=dp(56),
+                                pos_hint={"center_y": 0.5},
+                                x=dp(320),
+                            ),
+                            IOSButton(
+                                IOSIconButton(
+                                    icon="filter-variant",
+                                    theme_icon_color="Custom",
+                                    icon_color="white",
+                                ),
+                                spacing=dp(12),
+                                adaptive_height=False,
+                                adaptive_width=True,
+                                height=dp(56),
+                                target_background=bg_image,
+                                pos_hint={"center_y": 0.5},
+                                x=dp(240),
+                                border_radius=[dp(28)] * 4,
+                                on_release=lambda x: x.parent.toggle_state(sender=x)
+                            ),
+                            size_hint=(1, None),
+                            height=dp(80),
+                            pos_hint={"center_x": .5, "center_y": .5},
+                            merge_distance=dp(1),
+                            merge_target=0,
+                            viscosity=dp(80),
+                        ),
+                    )
+
+
+            if __name__ == "__main__":
+                LiquidGlassDemo().run()
+
+.. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/metaball-behavior-example-with-various-glass-objects.gif
+    :align: center
 """
 
 __all__ = (
@@ -146,6 +460,22 @@ class IOSMetaballBehavior:
     merge_target = NumericProperty(0)
     """
     Index of the target metaball widget towards which others merge.
+
+    .. code-block:: kv
+
+        IOSMetaballContainer:
+            merge_target: 0
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/metaball-behavior-merge-target-0.gif
+        :align: center
+
+    .. code-block:: kv
+
+        IOSMetaballContainer:
+            merge_target: 1
+
+    .. image:: https://github.com/HeaTTheatR/KivyMD-data/raw/master/gallery/kivymddoc/metaball-behavior-merge-target-1.gif
+        :align: center
 
     :attr:`merge_target` is a :class:`~kivy.properties.NumericProperty`
     and defaults to `0`.
@@ -613,6 +943,7 @@ class IOSMetaballBehavior:
         if rc and glass_rect:
             for key, value in shared.items():
                 rc[key] = value
+
             glass_rect.pos = (x1, y1)
             glass_rect.size = (x2 - x1, y2 - y1)
 
@@ -621,6 +952,7 @@ class IOSMetaballBehavior:
         for mb in metaballs:
             if mb is not owner:
                 r = getattr(mb, "_glass_rect", None)
+
                 if r:
                     r.size = (0, 0)
 

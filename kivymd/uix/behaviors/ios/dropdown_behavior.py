@@ -636,11 +636,12 @@ class IOSLiquidDropdownBehavior(IOSBaseGlassBehavior):
         self.is_wobbling = False
         self._trigger_btn = None
         self._dropdown_menu = None
+        self._bound_screen = None
+        self._update_event = None
 
         super().__init__(*args, **kwargs)
 
         Window.bind(size=self._trigger_window_resize)
-        Clock.schedule_interval(self._update_shader_uniforms, 1.0 / 60.0)
 
     def on_open(self, *args) -> None:
         """Default event handler fired when expansion animation finishes."""
@@ -652,12 +653,23 @@ class IOSLiquidDropdownBehavior(IOSBaseGlassBehavior):
         """Cleanup when removing a widget from the layout."""
 
         if parent is None:
-            Clock.unschedule(self._update_shader_uniforms)
+            self._stop_shader_updates()
 
             try:
                 Window.unbind(size=self._trigger_window_resize)
             except Exception:
                 pass
+
+            if self._bound_screen:
+                try:
+                    self._bound_screen.unbind(on_enter=self._on_screen_enter)
+                    self._bound_screen.unbind(on_leave=self._on_screen_leave)
+                except Exception:
+                    pass
+                self._bound_screen = None
+        else:
+            Window.bind(size=self._trigger_window_resize)
+            Clock.schedule_once(lambda dt: self._find_and_bind_screen(), 0)
 
     def on_touch_down(self, touch):
         if self._handle_outside_touch(touch):
@@ -871,6 +883,65 @@ class IOSLiquidDropdownBehavior(IOSBaseGlassBehavior):
 
         return False
 
+    # =========================================================================
+    #
+    # SCREEN LIFECYCLE MANAGEMENT & SHADER UPDATE TIMER
+    #
+    # This set of methods binds the widget to its parent MDScreen and controls
+    # the 60 FPS _update_shader_uniforms loop. It ensures that uniform and
+    # geometry calculations run exclusively when the host screen is active and
+    # visible, completely eliminating CPU/GPU overhead when navigating away or
+    # when the widget is hidden.
+
+    def _find_and_bind_screen(self):
+        current = self.parent
+
+        while current:
+            if hasattr(current, "is_event_type") and current.is_event_type(
+                "on_enter"
+            ):
+                if self._bound_screen != current:
+                    if self._bound_screen:
+                        try:
+                            self._bound_screen.unbind(
+                                on_enter=self._on_screen_enter,
+                                on_leave=self._on_screen_leave,
+                            )
+                        except Exception:
+                            pass
+
+                    self._bound_screen = current
+                    self._bound_screen.bind(
+                        on_enter=self._on_screen_enter,
+                        on_leave=self._on_screen_leave,
+                    )
+
+                    self._start_shader_updates()
+                break
+
+            current = getattr(current, "parent", None)
+        else:
+            self._start_shader_updates()
+
+    def _on_screen_enter(self, screen_instance):
+        self._start_shader_updates()
+
+    def _on_screen_leave(self, screen_instance):
+        self._stop_shader_updates()
+
+    def _start_shader_updates(self):
+        if not self._update_event:
+            self._update_event = Clock.schedule_interval(
+                self._update_shader_uniforms, 1.0 / 60.0
+            )
+
+    def _stop_shader_updates(self):
+        if self._update_event:
+            self._update_event.cancel()
+            self._update_event = None
+
+    # =========================================================================
+
     def _update_shader_uniforms(self, dt) -> None:
         """
         Per-frame loop calculating wobble dynamics, screen-space coordinates,
@@ -879,6 +950,17 @@ class IOSLiquidDropdownBehavior(IOSBaseGlassBehavior):
 
         if not self._trigger_btn or not self._dropdown_menu:
             return
+
+        btn = self._trigger_btn
+        menu = self._dropdown_menu
+        screen = self._bound_screen
+
+        if screen and hasattr(screen, "manager") and screen.manager:
+            # If the manager's currently active screen is not ours, we halt
+            # the calculations.
+            if screen.manager.current_screen != screen:
+                self._stop_shader_updates()
+                return
 
         self.time += dt
 
@@ -892,9 +974,6 @@ class IOSLiquidDropdownBehavior(IOSBaseGlassBehavior):
 
             if decay < 0.001:
                 self.is_wobbling = False
-
-        btn = self._trigger_btn
-        menu = self._dropdown_menu
 
         # Convert widget-local positions to global window space for GLSL.
         wx1, wy1 = btn.to_window(*btn.pos)

@@ -505,6 +505,8 @@ class IOSGlassBehavior(IOSBaseGlassBehavior):
 
     def __init__(self, **kwargs):
         self._attached_bg = None
+        self._bound_screen = None
+
         super().__init__(**kwargs)
 
         self._fbo = None
@@ -605,6 +607,13 @@ class IOSGlassBehavior(IOSBaseGlassBehavior):
             except Exception:
                 pass
 
+            if self._bound_screen:
+                try:
+                    self._bound_screen.unbind(on_enter=self._on_screen_enter)
+                except Exception:
+                    pass
+                self._bound_screen = None
+
             Clock.unschedule(self._on_bg_update)
             Clock.unschedule(self._on_bg_update_scheduled)
 
@@ -613,6 +622,40 @@ class IOSGlassBehavior(IOSBaseGlassBehavior):
             if hasattr(self, "_attached_bg") and self._attached_bg:
                 self._unbind_bg_events(self._attached_bg)
                 self._attached_bg = None
+        else:
+            Clock.schedule_once(lambda dt: self._find_and_bind_screen(), 0)
+
+    def _find_and_bind_screen(self):
+        current = self.parent
+
+        while current:
+            if hasattr(current, "is_event_type") and current.is_event_type(
+                "on_enter"
+            ):
+                if self._bound_screen != current:
+                    if self._bound_screen:
+                        try:
+                            self._bound_screen.unbind(
+                                on_enter=self._on_screen_enter
+                            )
+                        except Exception:
+                            pass
+
+                    self._bound_screen = current
+                    self._bound_screen.bind(on_enter=self._on_screen_enter)
+
+                break
+
+            current = getattr(current, "parent", None)
+
+    def _on_screen_enter(self, screen_instance):
+        if self.target_background:
+            bg_id = id(self.target_background)
+
+            if bg_id in _SHARED_FBOS:
+                del _SHARED_FBOS[bg_id]
+
+        self._setup_glass_fbo()
 
     def _on_bg_update_scheduled(self, *args):
         """

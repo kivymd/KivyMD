@@ -17,12 +17,12 @@ from kivymd.uix.list import (
 )
 from kivymd.uix.scrollview import MDScrollView
 from kivymd.uix.tab import (
+    IOSTabBarButton,
     IOSTabBarHorizontal,
+    IOSTabBarItem,
     IOSTabBarItemIcon,
     IOSTabBarItemText,
-    IOSTabBarItem,
     IOSTabBarLayout,
-    IOSTabBarButton,
 )
 
 KV = """
@@ -77,12 +77,8 @@ class TabBarHorizontal(IOSTabBarHorizontal):
 
         for icon, text in self.ITEMS_DATA:
             item = IOSTabBarItem(
-                IOSTabBarItemIcon(
-                    icon=icon
-                ),
-                IOSTabBarItemText(
-                    text=text
-                ),
+                IOSTabBarItemIcon(icon=icon),
+                IOSTabBarItemText(text=text),
                 inactive_color=inactive_color,
                 active_color=active_color,
             )

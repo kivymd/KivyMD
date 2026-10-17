@@ -46,6 +46,7 @@ uniform vec2 u_pos;
 uniform vec2 u_size;
 varying vec2 tex_coord0;
 uniform vec2 u_touch_pos;
+uniform vec2 u_stretch_factor;
 
 uniform float u_pressed;
 uniform float u_blur_amount;
@@ -201,6 +202,10 @@ void main() {
     vec2 halfSize =
         u_size * 0.5;
 
+    // Apply stretch factor to halfSize for non-uniform scaling
+    vec2 stretchedHalfSize =
+        vec2(halfSize.x * u_stretch_factor.x, halfSize.y * u_stretch_factor.y);
+
     vec2 centeredUV =
         fragCoord - center;
 
@@ -211,7 +216,7 @@ void main() {
     float sdf =
         sdRoundedRect(
             centeredUV,
-            halfSize,
+            stretchedHalfSize,
             u_radius
         );
 
@@ -229,7 +234,7 @@ void main() {
     vec2 grad =
         getSDFGradient(
             centeredUV,
-            halfSize,
+            stretchedHalfSize,
             u_radius
         );
 
@@ -240,8 +245,9 @@ void main() {
     vec2 screenUV =
         fragCoord / iResolution.xy;
 
+    // For normButtonUV, we need to unstretch the UV to get proper normalized coordinates
     vec2 normButtonUV =
-        centeredUV / halfSize;
+        vec2(centeredUV.x / stretchedHalfSize.x, centeredUV.y / stretchedHalfSize.y);
 
     float dist =
         length(normButtonUV);
@@ -256,6 +262,7 @@ void main() {
         * u_lens_power;
 
     // 2. Bevel edge refraction
+    // For heightRef, we need to use the unstretched halfSize to maintain consistent bevel width
     float heightRef =
         min(
             halfSize.x,
@@ -280,12 +287,15 @@ void main() {
         * bevelMask
         * u_bevel_power;
 
+    // Apply stretch factor to the final offset to maintain proper stretching effect
     vec2 finalUVOffset =
         (lensOffset - bevelOffset)
-        * (u_size / iResolution);
+        * (u_size / iResolution)
+        * u_stretch_factor;
 
+    // Counteract the stretch when sampling to properly display the stretched background
     vec2 sampleUV =
-        screenUV - finalUVOffset;
+        screenUV - (finalUVOffset / u_stretch_factor);
 
     // --------------------------------------------------------
     // Background Sampling & Tone Adjustment.
@@ -402,11 +412,15 @@ void main() {
             u_size.y
         ) * 0.85;
 
+    // Adjust touch position for stretching effect
+    vec2 adjustedTouchPos = u_touch_pos;
+    // For the spot highlight, we want it to follow the touch naturally
+    // so we don't apply stretch correction here
     float spot =
         smoothstep(
             lightRadius,
             0.0,
-            length(fragCoord - u_touch_pos)
+            length(fragCoord - adjustedTouchPos)
         );
 
     finalColor =

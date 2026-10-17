@@ -6,3 +6,4 @@ from .dropdown_behavior import (
 )
 from .glass_behavior import IOSBaseGlassBehavior, IOSGlassBehavior
 from .metaball_behavior import IOSMetaballBehavior, IOSMetaballContainer
+from .stretch_behavior import IOSStretchBehavior

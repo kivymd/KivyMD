@@ -1055,6 +1055,7 @@ from kivymd.uix.behaviors import (
     DeclarativeBehavior,
     IOSButtonBehavior,
     IOSGlassBehavior,
+    IOSStretchBehavior,
     RectangularRippleBehavior,
 )
 from kivymd.uix.behaviors.motion_behavior import MotionExtendedFabButtonBehavior
@@ -1704,6 +1705,7 @@ class IOSButtonText(MDLabel):
 class IOSButton(
     DeclarativeBehavior,
     IOSButtonBehavior,
+    IOSStretchBehavior,
     IOSGlassBehavior,
     BoxLayout,
     MDAdaptiveWidget,
@@ -1716,6 +1718,7 @@ class IOSButton(
     For more information, see in the
     :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivymd.uix.behaviors.ios.button_behavior.IOSButtonBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.stretch_behavior.IOSStretchBehavior` and
     :class:`~kivymd.uix.behaviors.ios.glass_behavior.IOSGlassBehavior` and
     :class:`~kivy.uix.boxlayout.BoxLayout` and
     :class:`~kivymd.uix.MDAdaptiveWidget`

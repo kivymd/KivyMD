@@ -499,6 +499,7 @@ class IOSGlassBehavior(IOSBaseGlassBehavior):
     and defaults to `None`.
     """
 
+    _stretch_factor = ListProperty([1.0, 1.0])
     _scale_factor = NumericProperty(1.0)
     _touch_pos = ListProperty([0, 0])
     _press_factor = NumericProperty(0.0)
@@ -765,6 +766,10 @@ class IOSGlassBehavior(IOSBaseGlassBehavior):
         self._glass_rc["u_touch_pos"] = [
             float(self._touch_pos[0]),
             float(self._touch_pos[1]),
+        ]
+        self._glass_rc["u_stretch_factor"] = [
+            float(self._stretch_factor[0]),
+            float(self._stretch_factor[1]),
         ]
 
     def _draw_bg_to_fbo(self, fbo, bg):

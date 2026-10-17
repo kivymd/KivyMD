@@ -22,6 +22,7 @@ from .ios import (
     IOSLiquidDropdownContainer,
     IOSMetaballBehavior,
     IOSMetaballContainer,
+    IOSStretchBehavior,
 )
 from .magic_behavior import MagicBehavior
 from .motion_behavior import (

@@ -137,8 +137,8 @@ class IOSStretchBehavior:
     # Base size (non‑stretched) – used to keep the widget’s bounding box
     # in sync with the visual stretch so that nothing gets clipped.
     _base_size = ListProperty([0, 0])
-    # Flag to prevent recursive calls when adjusting size/pos.
-    # (plain attribute, not a Property, to avoid triggering property machinery)
+    # Flag to prevent recursive calls when adjusting size/pos
+    # (plain attribute, not a Property, to avoid triggering property machinery).
     _syncing_size = False
 
     def __init__(self, **kwargs):

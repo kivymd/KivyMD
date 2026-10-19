@@ -134,9 +134,21 @@ class IOSStretchBehavior:
     _stretch_damping = NumericProperty(
         0.85
     )  # damping factor for returning to normal
+    # Base size (non‑stretched) – used to keep the widget’s bounding box
+    # in sync with the visual stretch so that nothing gets clipped.
+    _base_size = ListProperty([0, 0])
+    # Flag to prevent recursive calls when adjusting size/pos.
+    # (plain attribute, not a Property, to avoid triggering property machinery)
+    _syncing_size = False
 
     def __init__(self, **kwargs):
         self._touch_offset = [0, 0]  # offset between touch and widget center
+        # Initialize base size – will be set on first size assignment.
+        self._base_size = [0, 0]
+        # Initialize sync flag.
+        self._syncing_size = False
+        # Time of last stretch update (to throttle size/pos changes).
+        self._last_stretch_update_time = 0
 
         super().__init__(**kwargs)
 
@@ -144,15 +156,95 @@ class IOSStretchBehavior:
             _stretch_factor=self._update_glass_uniforms,
         )
 
+        # Remove the glass render context from canvas.before so we can insert
+        # our transformation instructions before it, ensuring the stretch
+        # transformation is applied to the glass effect.
+        if hasattr(self, "_glass_rc"):
+            glass_rc = self._glass_rc
+            self.canvas.before.remove(glass_rc)
+        else:
+            glass_rc = None
+
         # Initialize canvas transformation instructions for stretch effect.
         with self.canvas.before:
             self._stretch_push = PushMatrix()
             self._stretch_scale = Scale(1.0, 1.0, 1)
+            # Re-add the glass render context so it is drawn after the
+            # transformation.
+            if glass_rc is not None:
+                self.canvas.before.add(glass_rc)
+
         with self.canvas.after:
             self._stretch_pop = PopMatrix()
 
         # Set initial transformation (identity).
         self._update_stretch_transformation()
+
+    def on_size(self, *args):
+        # Update base size when size changes, unless we are currently adjusting
+        # size for stretch or actively stretching.
+        if not self._syncing_size and not self._is_stretching:
+            self._base_size = list(self.size)
+
+    def _sync_size_to_stretch(self, width=None, height=None, x=None, y=None):
+        """
+        Ensure the widget's bounding box matches the current visual stretch
+        so that Kivy's scissor test does not clip the stretched glass. If
+        width, height, x, y are provided, they are used directly. Otherwise,
+        the size/pos are computed from _base_size and _stretch_factor. Only
+        modifies bounds when stretching is significant enough to prevent
+        interference with tap animations.
+        """
+
+        # Prevent recursive entry.
+        if self._syncing_size:
+            return
+        self._syncing_size = True
+
+        try:
+            if not hasattr(self, "_glass_rect"):
+                return
+
+            # Set base size if not yet set and we are not currently stretching.
+            if self._base_size == [0, 0] and not self._is_stretching:
+                self._base_size = list(self.size)
+
+            if width is None or height is None or x is None or y is None:
+                base_w, base_h = self._base_size
+                sx, sy = self._stretch_factor
+
+                # Desired visual size after stretch.
+                visual_w = base_w * sx
+                visual_h = base_h * sy
+
+                # How much we need to expand on each side to keep the visual
+                # centered.
+                dx = (visual_w - base_w) / 2.0
+                dy = (visual_h - base_h) / 2.0
+
+                width = visual_w
+                height = visual_h
+                x = self.x - dx
+                y = self.y - dy
+
+                # Only modify bounds if stretching is significant enough to
+                # avoid interfering with tap animations. For very small
+                # stretches (tap-like movements), we skip bounds modification
+                # to let ButtonBehavior's scaling animation work smoothly.
+                stretch_threshold = 1.002  # 0.2% stretch threshold
+
+                if sx < stretch_threshold and sy < stretch_threshold:
+                    # Stretch is too small to warrant bounds modification -
+                    # likely just tap-related micro-movements
+                    return
+
+            # Adjust pos and size so the widget's bbox exactly covers the
+            # stretched glass. We modify the actual Kivy properties – this
+            # moves the scissor rectangle.
+            self.size = (width, height)
+            self.pos = (x, y)
+        finally:
+            self._syncing_size = False
 
     def _update_stretch_transformation(self):
         """
@@ -211,12 +303,22 @@ class IOSStretchBehavior:
     def on_touch_up(self, touch):
         """Handle touch up events to reset stretching effect."""
 
-        if self._is_stretching:
+        was_stretching = self._is_stretching
+        if was_stretching:
             self._is_stretching = False
             # Animate back to normal state.
             Clock.schedule_once(lambda dt: self._animate_reset_stretch(), 0.016)
 
-        return super().on_touch_up(touch)
+        # Let superclass handle the touch event.
+        result = super().on_touch_up(touch)
+
+        # Ensure stretching reset happens even if superclass consumes the event.
+        if was_stretching and self._is_stretching:
+            # This shouldn't happen, but just in case
+            self._is_stretching = False
+            Clock.schedule_once(lambda dt: self._animate_reset_stretch(), 0.016)
+
+        return result
 
     def _animate_reset_stretch(self):
         """Animate the stretch factor back to [1.0, 1.0] with damping."""
@@ -232,6 +334,15 @@ class IOSStretchBehavior:
         if abs(new_x - target_x) < 0.01 and abs(new_y - target_y) < 0.01:
             self._stretch_factor = [1.0, 1.0]
             self._press_factor = 0.0
+
+            # Restore original size and position when stretch is finished.
+            if self._base_size != [0, 0]:
+                self.size = tuple(self._base_size)
+                # Re‑center the widget based on the stored base size.
+                # The pos correction applied during stretching is undone
+                # by resetting the size; the pos will be whatever it was
+                # before the first stretch (we keep it as‑is).
+
         else:
             self._stretch_factor = [new_x, new_y]
             # Continue animating.

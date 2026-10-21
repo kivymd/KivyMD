@@ -231,10 +231,12 @@ void main() {
     // Spherical Lens Distortion & Edge Refraction.
     // --------------------------------------------------------
 
-    // Accounting for stretching in screen coordinates for correct background
-    // sampling
     vec2 screenUV =
-        (u_pos + halfSize + centeredUV)
+        (
+            u_pos
+            + halfSize
+            + centeredUV
+        )
         / iResolution;
 
     // For normButtonUV, we need to unstretch the UV to get proper normalized
@@ -412,28 +414,42 @@ void main() {
             u_pressed
         );
 
-    float lightRadius =
-        max(
-            u_size.x,
-            u_size.y
-        ) * 0.85;
+    // Cross-platform calculation of soft highlights, accounting for stretching
+    vec2 touchUV =
+        (
+            u_touch_pos
+            - u_pos
+        )
+        / max(
+            u_size,
+            vec2(0.001)
+        );
 
-    // Calculating the distance to the touch point, accounting for stretching
-    vec2 fragScreenPos =
-        u_pos
-        + halfSize
-        + centeredUV;
+    vec2 aspectCorrection =
+        u_size
+        / max(
+            u_size.y,
+            0.001
+        );
+
+    vec2 stretchedTexCoord =
+        (
+            tex_coord0
+            - 0.5
+        )
+        * safeStretch + 0.5;
 
     float spotDist =
         length(
-            fragScreenPos - u_touch_pos
+            (stretchedTexCoord - touchUV)
+            * aspectCorrection
         );
 
     float spot =
         1.0
         - smoothstep(
             0.0,
-            max(lightRadius, 0.001),
+            0.75,
             spotDist
         );
     spot = clamp(spot, 0.0, 1.0);

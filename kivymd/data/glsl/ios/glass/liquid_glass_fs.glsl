@@ -203,7 +203,6 @@ void main() {
         u_size * 0.5;
 
     // Apply stretch factor to halfSize for non-uniform scaling
-    // (safe from zero division)
     vec2 safeStretch = max(u_stretch_factor, vec2(0.0001));
     vec2 stretchedHalfSize =
         halfSize * safeStretch;
@@ -293,21 +292,10 @@ void main() {
         * (u_size / iResolution)
         * safeStretch;
 
-    // Fix for texture sampling on iOS (accounting for FBO axis orientation)
-    #ifdef GL_ES
-    vec2 sampleUV =
-        vec2(
-            screenUV.x,
-            screenUV.y
-        )
-        - (
-            finalUVOffset
-            / safeStretch
-        );
-    #else
+    // Counteract the stretch when sampling to properly display the stretched
+    // background
     vec2 sampleUV =
         screenUV - (finalUVOffset / safeStretch);
-    #endif
 
     // --------------------------------------------------------
     // Background Sampling & Tone Adjustment.
@@ -427,8 +415,8 @@ void main() {
 
     float lightRadius =
         max(
-            u_size.x,
-            u_size.y
+            halfSize.x * 2.0,
+            halfSize.y * 2.0
         ) * 0.85;
 
     // Adjust touch position for stretching effect

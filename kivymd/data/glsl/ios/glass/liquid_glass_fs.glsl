@@ -409,24 +409,36 @@ void main() {
             u_pressed
         );
 
-    float lightRadius =
-        max(
-            u_size.x,
-            u_size.y
-        ) * 0.85;
+    // Platform-independent calculation of a soft touch-highlight using
+    // normalized widget coordinates
+    vec2 touchUV =
+        (
+            u_touch_pos
+            - u_pos
+        )
+        / max(
+            u_size,
+            vec2(0.001)
+        );
 
-    // Calculating the distance to a touch point using a widget's screen
-    // coordinates
-    vec2 fragScreenPos = u_pos + tex_coord0 * u_size;
+    vec2 aspectCorrection =
+        u_size
+        / max(
+            u_size.y,
+            0.001
+        );
+
     float spotDist =
         length(
-            fragScreenPos - u_touch_pos
+            (tex_coord0 - touchUV)
+            * aspectCorrection
         );
+
     float spot =
         1.0
         - smoothstep(
             0.0,
-            max(lightRadius, 0.001),
+            0.75,
             spotDist
         );
     spot = clamp(spot, 0.0, 1.0);

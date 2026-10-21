@@ -204,7 +204,7 @@ void main() {
 
     // Apply stretch factor to halfSize for non-uniform scaling
     vec2 stretchedHalfSize =
-        vec2(halfSize.x * u_stretch_factor.x, halfSize.y * u_stretch_factor.y);
+        halfSize * u_stretch_factor;
 
     vec2 centeredUV =
         fragCoord - center;

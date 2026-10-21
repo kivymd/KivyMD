@@ -345,7 +345,9 @@ float smin(
  * ========================================================================== */
 
 float mapSDF(
-    vec2 fragCoord
+    vec2 fragCoord,
+    vec2 p_pos, vec2 p_size,
+    vec2 p_pos2, vec2 p_size2
 ) {
     /* ------------------------------------------------------------------------
      * SOURCE BUTTON GEOMETRY
@@ -355,14 +357,14 @@ float mapSDF(
      * Calculate the center of the original button.
      */
     vec2 center1 =
-        u_pos
-        + u_size * 0.5;
+        p_pos
+        + p_size * 0.5;
 
     /*
      * Convert the button size to half-size.
      */
     vec2 halfSize1 =
-        u_size * 0.5;
+        p_size * 0.5;
 
     /*
      * During expansion, the original button gradually shrinks.
@@ -395,14 +397,14 @@ float mapSDF(
      * Calculate the final center of the dropdown menu.
      */
     vec2 targetCenter =
-        u_pos2
-        + u_size2 * 0.5;
+        p_pos2
+        + p_size2 * 0.5;
 
     /*
      * Calculate the final half-size of the dropdown menu.
      */
     vec2 targetHalfSize =
-        u_size2 * 0.5;
+        p_size2 * 0.5;
 
     /*
      * Interpolate the menu center from the trigger button
@@ -577,7 +579,9 @@ float mapSDF(
  * ========================================================================== */
 
 vec2 getSDFGradient(
-    vec2 pos
+    vec2 pos,
+    vec2 p_pos, vec2 p_size,
+    vec2 p_pos2, vec2 p_size2
 ) {
     /*
      * Numerical differentiation step.
@@ -589,15 +593,15 @@ vec2 getSDFGradient(
      * Derivative along the X axis.
      */
     float dx =
-        mapSDF(pos + eps.xy)
-        - mapSDF(pos - eps.xy);
+        mapSDF(pos + eps.xy, p_pos, p_size, p_pos2, p_size2)
+        - mapSDF(pos - eps.xy, p_pos, p_size, p_pos2, p_size2);
 
     /*
      * Derivative along the Y axis.
      */
     float dy =
-        mapSDF(pos + eps.yx)
-        - mapSDF(pos - eps.yx);
+        mapSDF(pos + eps.yx, p_pos, p_size, p_pos2, p_size2)
+        - mapSDF(pos - eps.yx, p_pos, p_size, p_pos2, p_size2);
 
     /*
      * Normalize the resulting gradient to obtain
@@ -712,9 +716,23 @@ void main() {
     vec2 fragCoord =
         gl_FragCoord.xy;
 
-    float retinaScale = (gl_FragCoord.x / iResolution.x > 1.5) ? (gl_FragCoord.x / iResolution.x) : 1.0;
-    if (retinaScale < 1.8) retinaScale = 1.0;
-    vec2 scaledFragCoord = fragCoord / retinaScale;
+    // Cross-platform automatic pixel-scale correction for iOS Retina and Android
+    float pixelScale = (gl_FragCoord.x / iResolution.x > 1.5) ? (gl_FragCoord.x / iResolution.x) : 1.0;
+    if (pixelScale < 1.8) pixelScale = 1.0;
+
+    // Scale all geometry relative to the screen's physical pixels for iOS Retina
+    vec2 scaledFragCoord = fragCoord / pixelScale;
+    vec2 p_pos = u_pos;
+    vec2 p_size = u_size;
+    vec2 p_pos2 = u_pos2;
+    vec2 p_size2 = u_size2;
+
+    if (pixelScale > 1.0) {
+        p_pos *= pixelScale;
+        p_size *= pixelScale;
+        p_pos2 *= pixelScale;
+        p_size2 *= pixelScale;
+    }
 
     /* ------------------------------------------------------------------------
      * SDF
@@ -724,7 +742,7 @@ void main() {
      * Calculate the signed distance to the complete liquid shape.
      */
     float sdf =
-        mapSDF(scaledFragCoord);
+        mapSDF(scaledFragCoord, p_pos, p_size, p_pos2, p_size2);
 
     /*
      * Discard fragments that are sufficiently far outside
@@ -761,7 +779,7 @@ void main() {
      * Calculate the approximate surface normal from the SDF gradient.
      */
     vec2 grad =
-        getSDFGradient(scaledFragCoord);
+        getSDFGradient(scaledFragCoord, p_pos, p_size, p_pos2, p_size2);
 
     /* ------------------------------------------------------------------------
      * SCREEN UV
@@ -786,8 +804,8 @@ void main() {
      */
     vec2 activeCenter =
         mix(
-            u_pos + u_size * 0.5,
-            u_pos2 + u_size2 * 0.5,
+            p_pos + p_size * 0.5,
+            p_pos2 + p_size2 * 0.5,
             u_menu_alpha
         );
 
@@ -797,8 +815,8 @@ void main() {
      */
     vec2 activeHalfSize =
         mix(
-            u_size * 0.5,
-            u_size2 * 0.5,
+            p_size * 0.5,
+            p_size2 * 0.5,
             u_menu_alpha
         );
 
@@ -895,7 +913,7 @@ void main() {
      */
     vec2 finalUVOffset =
         (lensOffset - bevelOffset)
-        * (mix(u_size, u_size2, u_menu_alpha) / iResolution);
+        * (mix(p_size, p_size2, u_menu_alpha) / iResolution);
 
     /*
      * Apply the refraction offset to the framebuffer sample position.
@@ -1116,8 +1134,8 @@ void main() {
          */
         float lightRadius =
             max(
-                u_size.x,
-                u_size.y
+                p_size.x,
+                p_size.y
             )
             *
             0.85;
@@ -1132,7 +1150,7 @@ void main() {
                 0.0,
                 length(
                     scaledFragCoord
-                    - u_touch_pos
+                    - (u_touch_pos / pixelScale)
                 )
             );
 

@@ -711,28 +711,18 @@ vec3 getBlurredColor(
 void main() {
 
     /*
-     * Current fragment position in screen pixels.
+     * Cross-platform position calculation using a bounding box and tex_coord0
+     * to ensure a perfect match on both iOS and Android.
      */
-    vec2 fragCoord =
-        gl_FragCoord.xy;
+    vec2 boxMin = min(u_pos, u_pos2);
+    vec2 boxMax = max(u_pos + u_size, u_pos2 + u_size2);
+    vec2 boxSize = boxMax - boxMin;
 
-    // Cross-platform automatic pixel-scale correction for iOS Retina and Android
-    float pixelScale = (gl_FragCoord.x / iResolution.x > 1.5) ? (gl_FragCoord.x / iResolution.x) : 1.0;
-    if (pixelScale < 1.8) pixelScale = 1.0;
-
-    // Scale all geometry relative to the screen's physical pixels for iOS Retina
-    vec2 scaledFragCoord = fragCoord / pixelScale;
+    vec2 fragCoord = boxMin + tex_coord0 * boxSize;
     vec2 p_pos = u_pos;
     vec2 p_size = u_size;
     vec2 p_pos2 = u_pos2;
     vec2 p_size2 = u_size2;
-
-    if (pixelScale > 1.0) {
-        p_pos *= pixelScale;
-        p_size *= pixelScale;
-        p_pos2 *= pixelScale;
-        p_size2 *= pixelScale;
-    }
 
     /* ------------------------------------------------------------------------
      * SDF
@@ -742,7 +732,7 @@ void main() {
      * Calculate the signed distance to the complete liquid shape.
      */
     float sdf =
-        mapSDF(scaledFragCoord, p_pos, p_size, p_pos2, p_size2);
+        mapSDF(fragCoord, p_pos, p_size, p_pos2, p_size2);
 
     /*
      * Discard fragments that are sufficiently far outside
@@ -779,7 +769,7 @@ void main() {
      * Calculate the approximate surface normal from the SDF gradient.
      */
     vec2 grad =
-        getSDFGradient(scaledFragCoord, p_pos, p_size, p_pos2, p_size2);
+        getSDFGradient(fragCoord, p_pos, p_size, p_pos2, p_size2);
 
     /* ------------------------------------------------------------------------
      * SCREEN UV
@@ -792,7 +782,7 @@ void main() {
      *     (1, 1) -> top-right
      */
     vec2 screenUV =
-        scaledFragCoord / iResolution.xy;
+        fragCoord / iResolution.xy;
 
     /* ------------------------------------------------------------------------
      * ACTIVE GEOMETRY
@@ -831,7 +821,7 @@ void main() {
      * and is used for the central lens effect.
      */
     vec2 normUV =
-        (scaledFragCoord - activeCenter)
+        (fragCoord - activeCenter)
         / max(activeHalfSize, vec2(1.0));
 
     /* ------------------------------------------------------------------------
@@ -1149,8 +1139,8 @@ void main() {
                 lightRadius,
                 0.0,
                 length(
-                    scaledFragCoord
-                    - (u_touch_pos / pixelScale)
+                    fragCoord
+                    - u_touch_pos
                 )
             );
 

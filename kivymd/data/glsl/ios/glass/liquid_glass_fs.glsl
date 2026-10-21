@@ -26,12 +26,12 @@
  *   - float u_bevel_power    : Edge refraction intensity along the SDF gradient.
  *   - float u_pressed        : Touch press factor (0.0 to 1.0) for interaction.
  *   - vec2 u_touch_pos       : Current touch coordinates on screen.
+ *   - vec2 u_stretch_factor  : Used for stretch/squash animations.
  *   - float u_border_opacity : Opacity of the border outline (0.0 to 1.0).
  * ============================================================================
  */
 
 #ifdef GL_ES
-#extension GL_OES_standard_derivatives : enable
 precision mediump float;
 #endif
 
@@ -155,7 +155,7 @@ vec3 getBlurredColor(
 ) {
     vec2 radius =
         vec2(blurAmount)
-        / iResolution;
+        / max(iResolution, vec2(1.0));
 
     const float SAMPLES = 16.0;
     const float GOLDEN_ANGLE = 2.3999632;
@@ -167,7 +167,7 @@ vec3 getBlurredColor(
             sqrt((i + 0.5) / SAMPLES);
 
         float theta =
-            i * GOLDEN_ANGLE;
+            mod(i * GOLDEN_ANGLE, 6.28318530718);
 
         vec2 offset =
             vec2(
@@ -180,7 +180,7 @@ vec3 getBlurredColor(
         col +=
             texture2D(
                 texture0,
-                uv + offset
+                clamp(uv + offset, 0.0, 1.0)
             ).rgb;
     }
 
@@ -220,16 +220,7 @@ void main() {
             u_radius
         );
 
-    if (sdf > 1.5) {
-        discard;
-    }
-
-    float aa =
-        fwidth(sdf);
-
-    if (aa < 0.001) {
-        aa = 1.0;
-    }
+    float aa = 1.0;
 
     vec2 grad =
         getSDFGradient(
@@ -245,9 +236,13 @@ void main() {
     vec2 screenUV =
         fragCoord / iResolution.xy;
 
-    // For normButtonUV, we need to unstretch the UV to get proper normalized coordinates
+    // For normButtonUV, we need to unstretch the UV to get proper normalized
+    // coordinates
     vec2 normButtonUV =
-        vec2(centeredUV.x / stretchedHalfSize.x, centeredUV.y / stretchedHalfSize.y);
+        vec2(
+            centeredUV.x / stretchedHalfSize.x,
+            centeredUV.y / stretchedHalfSize.y
+        );
 
     float dist =
         length(normButtonUV);
@@ -262,7 +257,8 @@ void main() {
         * u_lens_power;
 
     // 2. Bevel edge refraction
-    // For heightRef, we need to use the unstretched halfSize to maintain consistent bevel width
+    // For heightRef, we need to use the unstretched halfSize to maintain
+    // consistent bevel width
     float heightRef =
         min(
             halfSize.x,
@@ -287,13 +283,15 @@ void main() {
         * bevelMask
         * u_bevel_power;
 
-    // Apply stretch factor to the final offset to maintain proper stretching effect
+    // Apply stretch factor to the final offset to maintain proper stretching
+    // effect
     vec2 finalUVOffset =
         (lensOffset - bevelOffset)
         * (u_size / iResolution)
         * u_stretch_factor;
 
-    // Counteract the stretch when sampling to properly display the stretched background
+    // Counteract the stretch when sampling to properly display the stretched
+    // background
     vec2 sampleUV =
         screenUV - (finalUVOffset / u_stretch_factor);
 
@@ -339,10 +337,13 @@ void main() {
             -0.5,
             sdf
         )
-        * smoothstep(
-            0.5,
-            -0.5,
-            sdf
+        * (
+            1.0
+            - smoothstep(
+                -0.5,
+                0.5,
+                sdf
+            )
         );
 
     vec2 lightDir =
@@ -416,12 +417,17 @@ void main() {
     vec2 adjustedTouchPos = u_touch_pos;
     // For the spot highlight, we want it to follow the touch naturally
     // so we don't apply stretch correction here
-    float spot =
-        smoothstep(
-            lightRadius,
-            0.0,
-            length(fragCoord - adjustedTouchPos)
+    float spotDist =
+        length(
+            fragCoord - adjustedTouchPos
         );
+    float spot =
+        1.0 - smoothstep(
+            0.0,
+            max(lightRadius, 0.001),
+            spotDist
+        );
+    spot = clamp(spot, 0.0, 1.0);
 
     finalColor =
         mix(
@@ -437,16 +443,16 @@ void main() {
     // --------------------------------------------------------
 
     float edgeAlpha =
-        smoothstep(
-            aa,
+        1.0 - smoothstep(
             -aa,
+            aa,
             sdf
         );
+    edgeAlpha = clamp(edgeAlpha, 0.0, 1.0);
 
     gl_FragColor =
         vec4(
             finalColor,
             edgeAlpha
-        )
-        * frag_color.a;
+        );
 }

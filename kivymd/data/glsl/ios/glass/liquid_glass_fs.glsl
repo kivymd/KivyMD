@@ -201,10 +201,11 @@ void main() {
     vec2 stretchedHalfSize =
         halfSize * safeStretch;
 
-    // We use tex_coord0 (0.0 -> 1.0) instead of gl_FragCoord, which depends
-    // on Retina
+    // Correct coordinates, accounting for the stretch factor
     vec2 centeredUV =
-        (tex_coord0 - 0.5) * u_size;
+        (tex_coord0 - 0.5)
+        * u_size
+        * safeStretch;
 
     // --------------------------------------------------------
     // Signed Distance Field & Anti-Aliasing (AA).
@@ -230,9 +231,11 @@ void main() {
     // Spherical Lens Distortion & Edge Refraction.
     // --------------------------------------------------------
 
-    // Correct screen-space UVs via widget position and tex_coord0
+    // Accounting for stretching in screen coordinates for correct background
+    // sampling
     vec2 screenUV =
-        (u_pos + tex_coord0 * u_size) / iResolution;
+        (u_pos + halfSize + centeredUV)
+        / iResolution;
 
     // For normButtonUV, we need to unstretch the UV to get proper normalized
     // coordinates
@@ -409,36 +412,28 @@ void main() {
             u_pressed
         );
 
-    // Platform-independent calculation of a soft touch-highlight using
-    // normalized widget coordinates
-    vec2 touchUV =
-        (
-            u_touch_pos
-            - u_pos
-        )
-        / max(
-            u_size,
-            vec2(0.001)
-        );
+    float lightRadius =
+        max(
+            u_size.x,
+            u_size.y
+        ) * 0.85;
 
-    vec2 aspectCorrection =
-        u_size
-        / max(
-            u_size.y,
-            0.001
-        );
+    // Calculating the distance to the touch point, accounting for stretching
+    vec2 fragScreenPos =
+        u_pos
+        + halfSize
+        + centeredUV;
 
     float spotDist =
         length(
-            (tex_coord0 - touchUV)
-            * aspectCorrection
+            fragScreenPos - u_touch_pos
         );
 
     float spot =
         1.0
         - smoothstep(
             0.0,
-            0.75,
+            max(lightRadius, 0.001),
             spotDist
         );
     spot = clamp(spot, 0.0, 1.0);

@@ -88,7 +88,6 @@ uniform sampler2D texture0;
 
 /*
  * Screen / framebuffer resolution in pixels:
- *
  *     x = width
  *     y = height
  */
@@ -105,7 +104,6 @@ uniform vec2 u_pos;
 
 /*
  * Size of the original trigger button:
- *
  *     x = width
  *     y = height
  */
@@ -149,7 +147,6 @@ uniform float u_k;
 
 /*
  * Dropdown expansion progress:
- *
  *     0.0 = closed
  *     1.0 = fully expanded
  */
@@ -171,7 +168,6 @@ uniform float u_time;
 
 /*
  * Glass tint:
- *
  *     rgb = tint color
  *     a   = tint strength
  */
@@ -197,14 +193,12 @@ uniform float u_bevel_power;
  */
 uniform float u_border_opacity;
 
-
 /* ============================================================================
  * TOUCH RESPONSE
  * ========================================================================== */
 
 /*
  * Pressed-state interpolation:
- *
  *     0.0 = released
  *     1.0 = fully pressed
  */
@@ -215,14 +209,14 @@ uniform float u_pressed;
  */
 uniform vec2 u_touch_pos;
 
+varying vec2 tex_coord0;
+
 /* ============================================================================
  * SIGNED DISTANCE FIELD
  * ============================================================================
- *
  * Returns the signed distance from a point to a rounded rectangle.
  *
  * Result:
- *
  *     sdf < 0.0  -> inside the shape
  *     sdf = 0.0  -> exactly on the boundary
  *     sdf > 0.0  -> outside the shape
@@ -300,7 +294,6 @@ float sdRoundedRect(
 /* ============================================================================
  * SMOOTH MINIMUM
  * ============================================================================
- *
  * A regular min(a, b) produces a hard intersection between two SDFs.
  *
  * smin() replaces that hard intersection with a smooth transition,
@@ -333,17 +326,17 @@ float smin(
      */
     return
         mix(b, a, h)
-        - k * h * (1.0 - h);
+        - k * h * (
+            1.0 - h
+        );
 }
 
 /* ============================================================================
  * GLOBAL SDF
  * ============================================================================
- *
  * Builds the complete dropdown geometry.
  *
  * The function:
- *
  *     1. Builds the trigger button SDF.
  *     2. Builds the dropdown menu SDF.
  *     3. Interpolates their positions and sizes.
@@ -574,15 +567,13 @@ float mapSDF(
 /* ============================================================================
  * SDF GRADIENT
  * ============================================================================
- *
  * Approximates the SDF gradient using central differences.
  *
  * The gradient points approximately in the direction of the
  * surface normal and is used for:
- *
- *     - bevel refraction
- *     - procedural lighting
- *     - rim highlights
+ *   - bevel refraction
+ *   - procedural lighting
+ *   - rim highlights
  * ========================================================================== */
 
 vec2 getSDFGradient(
@@ -624,7 +615,6 @@ vec2 getSDFGradient(
 /* ============================================================================
  * GOLDEN ANGLE DISK BLUR
  * ============================================================================
- *
  * Samples the background texture around the current UV coordinate.
  *
  * Samples are distributed using the golden angle to obtain
@@ -722,6 +712,10 @@ void main() {
     vec2 fragCoord =
         gl_FragCoord.xy;
 
+    float retinaScale = (gl_FragCoord.x / iResolution.x > 1.5) ? (gl_FragCoord.x / iResolution.x) : 1.0;
+    if (retinaScale < 1.8) retinaScale = 1.0;
+    vec2 scaledFragCoord = fragCoord / retinaScale;
+
     /* ------------------------------------------------------------------------
      * SDF
      * ---------------------------------------------------------------------- */
@@ -730,7 +724,7 @@ void main() {
      * Calculate the signed distance to the complete liquid shape.
      */
     float sdf =
-        mapSDF(fragCoord);
+        mapSDF(scaledFragCoord);
 
     /*
      * Discard fragments that are sufficiently far outside
@@ -741,7 +735,6 @@ void main() {
     if (sdf > 1.5) {
         discard;
     }
-
 
     /* ------------------------------------------------------------------------
      * ANTI-ALIASING
@@ -768,7 +761,7 @@ void main() {
      * Calculate the approximate surface normal from the SDF gradient.
      */
     vec2 grad =
-        getSDFGradient(fragCoord);
+        getSDFGradient(scaledFragCoord);
 
     /* ------------------------------------------------------------------------
      * SCREEN UV
@@ -781,7 +774,7 @@ void main() {
      *     (1, 1) -> top-right
      */
     vec2 screenUV =
-        fragCoord / iResolution.xy;
+        scaledFragCoord / iResolution.xy;
 
     /* ------------------------------------------------------------------------
      * ACTIVE GEOMETRY
@@ -820,7 +813,7 @@ void main() {
      * and is used for the central lens effect.
      */
     vec2 normUV =
-        (fragCoord - activeCenter)
+        (scaledFragCoord - activeCenter)
         / max(activeHalfSize, vec2(1.0));
 
     /* ------------------------------------------------------------------------
@@ -835,14 +828,15 @@ void main() {
      */
     vec2 lensOffset =
         normUV
-        *
-        (1.0 - smoothstep(
-            0.0,
-            1.5,
-            length(normUV)
-        ))
-        *
-        u_lens_power;
+        * (
+            1.0
+            - smoothstep(
+                0.0,
+                1.5,
+                length(normUV)
+            )
+        )
+        * u_lens_power;
 
     /* ------------------------------------------------------------------------
      * BEVEL REFRACTION
@@ -901,8 +895,7 @@ void main() {
      */
     vec2 finalUVOffset =
         (lensOffset - bevelOffset)
-        *
-        (mix(u_size, u_size2, u_menu_alpha) / iResolution);
+        * (mix(u_size, u_size2, u_menu_alpha) / iResolution);
 
     /*
      * Apply the refraction offset to the framebuffer sample position.
@@ -972,7 +965,10 @@ void main() {
      * Apply the inner bevel shading.
      */
     finalColor *=
-        (1.0 - innerBevel);
+        (
+            1.0
+            - innerBevel
+        );
 
     /* ------------------------------------------------------------------------
      * RIM LIGHT
@@ -1074,14 +1070,12 @@ void main() {
      */
     finalColor +=
         vec3(1.0)
-        *
-        (
+        * (
             topLeftHighlight
             + bottomRightHighlight
             + edgeStroke
         )
-        *
-        u_border_opacity;
+        * u_border_opacity;
 
     /* =========================================================================
      * TOUCH / PRESSED EFFECT
@@ -1137,7 +1131,7 @@ void main() {
                 lightRadius,
                 0.0,
                 length(
-                    fragCoord
+                    scaledFragCoord
                     - u_touch_pos
                 )
             );

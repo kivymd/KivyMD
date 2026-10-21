@@ -203,8 +203,10 @@ void main() {
         u_size * 0.5;
 
     // Apply stretch factor to halfSize for non-uniform scaling
+    // (safe from zero division)
+    vec2 safeStretch = max(u_stretch_factor, vec2(0.0001));
     vec2 stretchedHalfSize =
-        halfSize * u_stretch_factor;
+        halfSize * safeStretch;
 
     vec2 centeredUV =
         fragCoord - center;
@@ -288,12 +290,12 @@ void main() {
     vec2 finalUVOffset =
         (lensOffset - bevelOffset)
         * (u_size / iResolution)
-        * u_stretch_factor;
+        * safeStretch;
 
     // Counteract the stretch when sampling to properly display the stretched
-    // background
+    // background (safe division)
     vec2 sampleUV =
-        screenUV - (finalUVOffset / u_stretch_factor);
+        screenUV - (finalUVOffset / safeStretch);
 
     // --------------------------------------------------------
     // Background Sampling & Tone Adjustment.

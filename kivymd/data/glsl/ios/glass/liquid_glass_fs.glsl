@@ -235,6 +235,7 @@ void main() {
     // Spherical Lens Distortion & Edge Refraction.
     // --------------------------------------------------------
 
+    // Screen correction for iOS (Metal replaces or inverts the buffer)
     vec2 screenUV =
         fragCoord / iResolution.xy;
 
@@ -292,10 +293,21 @@ void main() {
         * (u_size / iResolution)
         * safeStretch;
 
-    // Counteract the stretch when sampling to properly display the stretched
-    // background (safe division)
+    // Fix for texture sampling on iOS (accounting for FBO axis orientation)
+    #ifdef GL_ES
+    vec2 sampleUV =
+        vec2(
+            screenUV.x,
+            screenUV.y
+        )
+        - (
+            finalUVOffset
+            / safeStretch
+        );
+    #else
     vec2 sampleUV =
         screenUV - (finalUVOffset / safeStretch);
+    #endif
 
     // --------------------------------------------------------
     // Background Sampling & Tone Adjustment.
@@ -317,7 +329,8 @@ void main() {
         mix(
             blurredTex,
             u_glass_color.rgb,
-            u_glass_color.a * 0.4
+            u_glass_color.a
+            * 0.4
         );
 
     // --------------------------------------------------------
@@ -331,7 +344,10 @@ void main() {
             sdf
         ) * 0.2;
 
-    finalColor *= (1.0 - innerBevel);
+    finalColor *= (
+        1.0
+        - innerBevel
+    );
 
     float rimMask =
         smoothstep(
@@ -424,7 +440,8 @@ void main() {
             fragCoord - adjustedTouchPos
         );
     float spot =
-        1.0 - smoothstep(
+        1.0
+        - smoothstep(
             0.0,
             max(lightRadius, 0.001),
             spotDist
@@ -445,7 +462,8 @@ void main() {
     // --------------------------------------------------------
 
     float edgeAlpha =
-        1.0 - smoothstep(
+        1.0
+        - smoothstep(
             -aa,
             aa,
             sdf

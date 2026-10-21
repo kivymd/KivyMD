@@ -192,23 +192,19 @@ vec3 getBlurredColor(
 // ------------------------------------------------------------
 
 void main() {
-    vec2 fragCoord =
-        gl_FragCoord.xy;
-
-    vec2 center =
-        u_pos
-        + u_size * 0.5;
-
     vec2 halfSize =
         u_size * 0.5;
 
     // Apply stretch factor to halfSize for non-uniform scaling
+    // (safe from zero division)
     vec2 safeStretch = max(u_stretch_factor, vec2(0.0001));
     vec2 stretchedHalfSize =
         halfSize * safeStretch;
 
+    // We use tex_coord0 (0.0 -> 1.0) instead of gl_FragCoord, which depends
+    // on Retina
     vec2 centeredUV =
-        fragCoord - center;
+        (tex_coord0 - 0.5) * u_size;
 
     // --------------------------------------------------------
     // Signed Distance Field & Anti-Aliasing (AA).
@@ -234,9 +230,9 @@ void main() {
     // Spherical Lens Distortion & Edge Refraction.
     // --------------------------------------------------------
 
-    // Screen correction for iOS (Metal replaces or inverts the buffer)
+    // Correct screen-space UVs via widget position and tex_coord0
     vec2 screenUV =
-        fragCoord / iResolution.xy;
+        (u_pos + tex_coord0 * u_size) / iResolution;
 
     // For normButtonUV, we need to unstretch the UV to get proper normalized
     // coordinates
@@ -293,7 +289,7 @@ void main() {
         * safeStretch;
 
     // Counteract the stretch when sampling to properly display the stretched
-    // background
+    // background (safe division)
     vec2 sampleUV =
         screenUV - (finalUVOffset / safeStretch);
 
@@ -415,17 +411,16 @@ void main() {
 
     float lightRadius =
         max(
-            halfSize.x * 2.0,
-            halfSize.y * 2.0
+            u_size.x,
+            u_size.y
         ) * 0.85;
 
-    // Adjust touch position for stretching effect
-    vec2 adjustedTouchPos = u_touch_pos;
-    // For the spot highlight, we want it to follow the touch naturally
-    // so we don't apply stretch correction here
+    // Calculating the distance to a touch point using a widget's screen
+    // coordinates
+    vec2 fragScreenPos = u_pos + tex_coord0 * u_size;
     float spotDist =
         length(
-            fragCoord - adjustedTouchPos
+            fragScreenPos - u_touch_pos
         );
     float spot =
         1.0

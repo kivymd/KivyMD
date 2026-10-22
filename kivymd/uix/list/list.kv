@@ -8,7 +8,14 @@
     # Divider.
     canvas.after:
         Color:
-            rgba:self.theme_cls.transparentColor
+            rgba:
+                self.theme_cls.transparentColor \
+                if not self.divider else \
+                ( \
+                self.divider_color \
+                if self.divider_color else \
+                self.theme_cls.outlineVariantColor \
+                )
         Line:
             width: 1
             points: self.x ,self.y, self.x + self.width, self.y

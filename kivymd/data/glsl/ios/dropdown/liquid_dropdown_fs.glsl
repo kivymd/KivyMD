@@ -76,7 +76,7 @@ float smin(
     if (k <= 0.0001) return min(a, b);
     float h =
         clamp(
-            0.5 + 0.5 * (b - a) / k,
+            0.5 + 0.5 * (b - a) / max(k, 0.0001),
             0.0,
             1.0
         );
@@ -144,52 +144,10 @@ float mapSDF(
             currentRadius
         );
 
-    vec2 activeCenter =
-        mix(
-            center1,
-            targetCenter,
-            u_menu_alpha
-        );
-
-    vec2 dir =
-        fragCoord - activeCenter;
-
-    float angle =
-        atan(dir.y, dir.x);
-
-    float snapIntensity =
-        smoothstep(
-            0.0,
-            1.0,
-            sin(u_menu_alpha * 3.14159265)
-        )
-        *
-        smoothstep(
-            u_k,
-            0.0,
-            u_k * 0.5
-        );
-
-    float ripple =
-        sin(angle * 5.0 + u_time * 30.0)
-        * cos(angle * 3.0 + u_time * 20.0);
-
-    float totalWobble =
-        u_wobble
-        + snapIntensity * 0.8;
-
-    float dropWobble =
-        ripple
-        * totalWobble
-        * 8.0;
-
-    sdf1 += dropWobble;
-    sdf2 += dropWobble;
-
     if (u_menu_alpha >= 0.999) return sdf2;
     if (u_menu_alpha <= 0.001) return sdf1;
 
-    return smin(sdf1, sdf2, u_k);
+    return smin(sdf1, sdf2, max(u_k, 0.001));
 }
 
 vec2 getSDFGradient(
@@ -246,7 +204,7 @@ vec3 getBlurredColor(
         col +=
             texture2D(
                 texture0,
-                uv + offset
+                clamp(uv + offset, 0.0, 1.0)
             ).rgb;
     }
 
@@ -271,8 +229,9 @@ void main() {
             fragCoord
         );
 
+    vec2 safeResolution = max(iResolution, vec2(0.001));
     vec2 screenUV =
-        fragCoord / iResolution.xy;
+        fragCoord / safeResolution;
 
     vec2 activeCenter =
         mix(
@@ -290,7 +249,7 @@ void main() {
 
     vec2 normUV =
         (fragCoord - activeCenter)
-        / max(activeHalfSize, vec2(1.0));
+        / max(activeHalfSize, vec2(0.001));
 
     float dist =
         length(normUV);
@@ -326,7 +285,7 @@ void main() {
 
     vec2 finalUVOffset =
         (lensOffset - bevelOffset)
-        * (mix(u_size, u_size2, u_menu_alpha) / iResolution);
+        * (mix(u_size, u_size2, u_menu_alpha) / safeResolution);
 
     vec2 sampleUV =
         screenUV - finalUVOffset;

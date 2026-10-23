@@ -758,8 +758,6 @@ class IOSLiquidDropdownBehavior(IOSBaseGlassBehavior):
 
         self.is_open = True
         # Trigger immediate wobble wave right as motion starts.
-        self.is_wobbling = True
-        self.wobble_time = 0.0
 
         # Hide native button graphic while custom liquid canvas renders
         # transition.
@@ -776,6 +774,8 @@ class IOSLiquidDropdownBehavior(IOSBaseGlassBehavior):
             """Reveal menu UI elements after liquid body settles."""
 
             self._dropdown_menu.disabled = False
+            self.is_wobbling = True
+            self.wobble_time = 0.0
 
             Animation(
                 opacity=1.0,
@@ -820,14 +820,15 @@ class IOSLiquidDropdownBehavior(IOSBaseGlassBehavior):
 
         self.is_open = False
         # Trigger immediate wobble wave upon snapping back.
-        self.is_wobbling = True
-        self.wobble_time = 0.0
 
         self._dropdown_menu.disabled = True
         self._dropdown_menu.opacity = 0.0
 
         def _on_close_complete(anim, widget):
             """Restore original trigger button visibility when collapsed."""
+
+            self.is_wobbling = True
+            self.wobble_time = 0.0
 
             if self._dropdown_menu and self._dropdown_menu.parent:
                 self.remove_widget(self._dropdown_menu)

@@ -100,10 +100,23 @@ from kivy.graphics import Color, InstructionGroup, Rectangle, RoundedRectangle
 from kivy.metrics import dp, sp
 from kivy.properties import ColorProperty, NumericProperty, ObjectProperty
 from kivy.uix.widget import Widget
+from kivy.utils import platform
 
 from kivymd.theming import ThemableBehavior
 from kivymd.uix.behaviors import DeclarativeBehavior
 from kivymd.uix.label import MDLabel
+
+# Initialization of the native haptic feedback generator for iOS.
+_haptic_generator = None
+if platform == "ios":
+    try:
+        from pyobjus import autoclass
+
+        UISelectionFeedbackGenerator = autoclass("UISelectionFeedbackGenerator")
+        _haptic_generator = UISelectionFeedbackGenerator.alloc().init()
+        _haptic_generator.prepare()
+    except Exception:
+        pass
 
 
 class IOSRulerPickerLabel(MDLabel):
@@ -255,12 +268,23 @@ class IOSRulerPicker(DeclarativeBehavior, ThemableBehavior, Widget):
         self._labels_group = InstructionGroup()
         self._indicator_group = InstructionGroup()
 
+        super().__init__(*args, **kwargs)
+
+        self._touch_active = False
+        self._velocity = 0
+        self._last_touch_x = 0
+        self._scroll_event = None
+        self._snap_anim = None
+        self._max_touch_delta = dp(40)
+        self._last_vibrated_step = (
+            round((self.value - self.min) / self.step) if self.step else 0
+        )
+
         self._setup_graphics_pool()
 
         self.bind(
             pos=self._update_canvas,
             size=self._update_canvas,
-            value=self._update_canvas,
             step=self._update_canvas,
             division_distance=self._update_canvas,
             primary_tick_color=self._update_canvas,
@@ -294,6 +318,29 @@ class IOSRulerPicker(DeclarativeBehavior, ThemableBehavior, Widget):
                 formatter=self._trigger_update,
             )
         self._trigger_update()
+
+    def on_value(self, instance, value):
+        """
+        Fired a native iOS vibration when the discrete step of the ruler
+        is changed.
+        """
+
+        if not hasattr(self, "_tick_pool"):
+            return
+
+        self._update_canvas()
+
+        if platform == "ios" and _haptic_generator:
+            try:
+                current_step = (
+                    round((value - self.min) / self.step) if self.step else 0
+                )
+                if self._last_vibrated_step != current_step:
+                    self._last_vibrated_step = current_step
+                    _haptic_generator.prepare()
+                    _haptic_generator.selectionChanged()
+            except Exception:
+                pass
 
     def add_widget(self, widget, *args, **kwargs):
         if isinstance(widget, IOSRulerPickerLabel):

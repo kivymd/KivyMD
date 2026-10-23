@@ -1,21 +1,48 @@
+/*
+ * ============================================================================
+ * Liquid Glass Dropdown Fragment Shader
+ * ============================================================================
+ *
+ * Cross-platform iOS-style liquid glass rendering.
+ *
+ * Features:
+ *   - Rounded rectangle signed distance fields.
+ *   - Smooth union between button and dropdown menu.
+ *   - Animated liquid deformation.
+ *   - Golden-angle background blur.
+ *   - Lens refraction and bevel displacement.
+ *   - Directional rim lighting.
+ *   - Touch tint and radial highlight.
+ *   - Cross-platform-safe smoothstep transitions.
+ *
+ * Coordinate convention:
+ *   u_pos, u_pos2, u_size, u_size2 and iResolution must use the same
+ *   coordinate space as gl_FragCoord.
+ *
+ * ============================================================================
+ */
+
 #ifdef GL_ES
-precision mediump float;
+precision highp float;
 #endif
 
 varying vec4 frag_color;
-uniform vec4 u_radius;
-uniform vec4 u_radius2;
-uniform vec4 u_glass_color;
+varying vec2 tex_coord0;
 
 uniform sampler2D texture0;
 
 uniform vec2 iResolution;
+
 uniform vec2 u_pos;
 uniform vec2 u_size;
 uniform vec2 u_pos2;
 uniform vec2 u_size2;
-varying vec2 tex_coord0;
+
 uniform vec2 u_touch_pos;
+
+uniform vec4 u_radius;
+uniform vec4 u_radius2;
+uniform vec4 u_glass_color;
 
 uniform float u_pressed;
 uniform float u_blur_amount;
@@ -28,24 +55,34 @@ uniform float u_lens_power;
 uniform float u_bevel_power;
 uniform float u_border_opacity;
 
+const float PI = 3.14159265359;
+const float TWO_PI = 6.28318530718;
+const float GOLDEN_ANGLE = 2.39996323;
+const float EPSILON = 0.0001;
+const float AA_WIDTH = 1.5;
+const float BLUR_SAMPLES = 16.0;
+
+
+// ============================================================================
+// Rounded rectangle SDF
+// ============================================================================
+
 float sdRoundedRect(
     vec2 pos,
     vec2 halfSize,
     vec4 cornerRadius
 ) {
-    float maxRadius =
-        min(
-            halfSize.x,
-            halfSize.y
-        );
+    halfSize = max(halfSize, vec2(0.0));
 
-    cornerRadius =
-        min(
-            cornerRadius,
-            vec4(maxRadius)
-        );
+    float maxRadius = min(halfSize.x, halfSize.y);
 
-    float r =
+    cornerRadius = clamp(
+        cornerRadius,
+        vec4(0.0),
+        vec4(maxRadius)
+    );
+
+    float radius =
         (pos.x > 0.0)
             ? ((pos.y > 0.0)
                 ? cornerRadius.y
@@ -54,384 +91,406 @@ float sdRoundedRect(
                 ? cornerRadius.x
                 : cornerRadius.w);
 
-    vec2 q =
-        abs(pos)
-        - halfSize
-        + r;
+    vec2 q = abs(pos) - halfSize + radius;
 
     return
-        min(
-            max(q.x, q.y),
-            0.0
-        )
-        + length(max(q, 0.0))
-        - r;
+        min(max(q.x, q.y), 0.0)
+        + length(max(q, vec2(0.0)))
+        - radius;
 }
+
+
+// ============================================================================
+// Smooth minimum
+// ============================================================================
 
 float smin(
     float a,
     float b,
     float k
 ) {
-    if (k <= 0.0001) return min(a, b);
-    float h =
-        clamp(
-            0.5 + 0.5 * (b - a) / max(k, 0.0001),
-            0.0,
-            1.0
-        );
-    return
-        mix(b, a, h)
-        - k * h * (1.0 - h);
+    if (k <= EPSILON) {
+        return min(a, b);
+    }
+
+    float h = clamp(
+        0.5 + 0.5 * (b - a) / k,
+        0.0,
+        1.0
+    );
+
+    return mix(b, a, h) - k * h * (1.0 - h);
 }
 
-float mapSDF(
-    vec2 fragCoord
-) {
-    vec2 center1 =
-        u_pos
-        + u_size * 0.5;
 
-    vec2 halfSize1 =
-        u_size * 0.5;
+// ============================================================================
+// Liquid shape SDF
+// ============================================================================
 
-    vec2 currentButtonHalfSize =
-        mix(
-            halfSize1,
-            vec2(0.0),
-            u_menu_alpha
-        );
+float mapSDF(vec2 fragCoord) {
+    float menuAlpha = clamp(u_menu_alpha, 0.0, 1.0);
 
-    float sdf1 =
-        sdRoundedRect(
-            fragCoord - center1,
-            currentButtonHalfSize,
-            u_radius
-        );
+    vec2 center1 = u_pos + u_size * 0.5;
+    vec2 halfSize1 = max(u_size * 0.5, vec2(0.0));
 
-    vec2 targetCenter =
-        u_pos2
-        + u_size2 * 0.5;
+    float sdf1 = sdRoundedRect(
+        fragCoord - center1,
+        halfSize1,
+        u_radius
+    );
 
-    vec2 targetHalfSize =
-        u_size2 * 0.5;
+    vec2 targetCenter = u_pos2 + u_size2 * 0.5;
+    vec2 targetHalfSize = max(u_size2 * 0.5, vec2(0.0));
 
-    vec2 currentMenuCenter =
-        mix(
-            center1,
-            targetCenter,
-            u_menu_alpha
-        );
+    vec2 currentMenuCenter = mix(
+        center1,
+        targetCenter,
+        menuAlpha
+    );
 
-    vec2 currentMenuHalfSize =
-        mix(
-            halfSize1 * 0.2,
-            targetHalfSize,
-            u_menu_alpha
-        );
+    vec2 currentMenuHalfSize = mix(
+        halfSize1 * 0.2,
+        targetHalfSize,
+        menuAlpha
+    );
 
-    vec4 currentRadius =
-        mix(
-            u_radius,
-            u_radius2,
-            u_menu_alpha
-        );
+    vec4 currentRadius = mix(
+        u_radius,
+        u_radius2,
+        menuAlpha
+    );
 
-    float sdf2 =
-        sdRoundedRect(
-            fragCoord - currentMenuCenter,
-            currentMenuHalfSize,
-            currentRadius
-        );
+    float sdf2 = sdRoundedRect(
+        fragCoord - currentMenuCenter,
+        currentMenuHalfSize,
+        currentRadius
+    );
 
-    if (u_menu_alpha >= 0.999) return sdf2;
-    if (u_menu_alpha <= 0.001) return sdf1;
+    vec2 dir = fragCoord - currentMenuCenter;
 
-    return smin(sdf1, sdf2, max(u_k, 0.001));
+    // Avoid unstable angle calculations at the shape center.
+    if (dot(dir, dir) < EPSILON * EPSILON) {
+        dir = vec2(EPSILON, 0.0);
+    }
+
+    float angle = atan(dir.y, dir.x);
+
+    // Smoothstep edges must be strictly increasing.
+    // This factor increases as the liquid blend parameter approaches zero.
+    float transition =
+        sin(clamp(u_menu_alpha, 0.0, 1.0) * PI);
+
+    float transitionIntensity =
+        transition * transition;
+
+    float ripple =
+        sin(angle * 5.0 + u_time * 30.0)
+        * (-cos(angle * 3.0 + u_time * 20.0));
+
+    float totalWobble =
+        u_wobble
+        + ripple * transitionIntensity * 0.8;
+
+    float dropWobble =
+        -totalWobble;
+
+    sdf1 += dropWobble;
+    sdf2 += dropWobble;
+
+    if (menuAlpha >= 0.999) {
+        return sdf2;
+    }
+
+    if (menuAlpha <= 0.001) {
+        return sdf1;
+    }
+
+    return smin(sdf1, sdf2, max(u_k, 0.0));
 }
 
-vec2 getSDFGradient(
-    vec2 pos
-) {
-    vec2 eps =
-        vec2(0.5, 0.0);
+
+// ============================================================================
+// SDF normal
+// ============================================================================
+
+vec2 getSDFGradient(vec2 pos) {
+    const float EPS = 0.5;
 
     float dx =
-        mapSDF(pos + eps.xy)
-        -
-        mapSDF(pos - eps.xy);
+        mapSDF(pos + vec2(EPS, 0.0))
+        - mapSDF(pos - vec2(EPS, 0.0));
 
     float dy =
-        mapSDF(pos + eps.yx)
-        -
-        mapSDF(pos - eps.yx);
+        mapSDF(pos + vec2(0.0, EPS))
+        - mapSDF(pos - vec2(0.0, EPS));
 
-    return
-        normalize(
-            vec2(dx, dy)
-            + vec2(0.0001)
-        );
+    vec2 gradient = vec2(dx, dy);
+    float gradientLength = length(gradient);
+
+    if (gradientLength < EPSILON) {
+        return vec2(0.0, 1.0);
+    }
+
+    return gradient / gradientLength;
 }
+
+
+// ============================================================================
+// Golden-angle disk blur
+// ============================================================================
 
 vec3 getBlurredColor(
     vec2 uv,
     float blurAmount
 ) {
-    vec2 radius =
-        vec2(blurAmount)
-        / max(iResolution, vec2(1.0));
+    vec2 resolution = max(iResolution, vec2(1.0));
 
-    const float SAMPLES = 16.0;
-    const float GOLDEN_ANGLE = 2.3999632;
+    vec2 radius = vec2(max(blurAmount, 0.0)) / resolution;
 
-    vec3 col = vec3(0.0);
+    vec3 color = vec3(0.0);
 
-    for (float i = 0.0; i < SAMPLES; i += 1.0) {
-        float r =
-            sqrt((i + 0.5) / SAMPLES);
+    for (float i = 0.0; i < BLUR_SAMPLES; i += 1.0) {
+        float r = sqrt((i + 0.5) / BLUR_SAMPLES);
 
-        float theta =
-            mod(i * GOLDEN_ANGLE, 6.28318530718);
+        float theta = i * GOLDEN_ANGLE;
 
-        vec2 offset =
-            vec2(
-                cos(theta),
-                sin(theta)
-            )
-            * r
-            * radius;
+        vec2 offset = vec2(
+            cos(theta),
+            sin(theta)
+        ) * r * radius;
 
-        col +=
-            texture2D(
-                texture0,
-                clamp(uv + offset, 0.0, 1.0)
-            ).rgb;
+        vec2 sampleUV = clamp(
+            uv + offset,
+            vec2(0.0),
+            vec2(1.0)
+        );
+
+        color += texture2D(texture0, sampleUV).rgb;
     }
 
-    return col / SAMPLES;
+    return color / BLUR_SAMPLES;
 }
 
+
+// ============================================================================
+// Fragment shader
+// ============================================================================
+
 void main() {
-    vec2 fragCoord =
-        gl_FragCoord.xy;
+    /*
+     * Use one coordinate convention on every backend.
+     *
+     * GL_FRAGMENT_PRECISION_HIGH is not a platform identifier and must not
+     * control the direction of the Y axis.
+     *
+     * All geometry uniforms must be supplied in this same coordinate space.
+     */
+    vec2 fragCoord = gl_FragCoord.xy;
 
-    float sdf =
-        mapSDF(fragCoord);
+    vec2 resolution = max(iResolution, vec2(1.0));
 
-    float aa = 1.5;
+    float sdf = mapSDF(fragCoord);
 
-    if (sdf > aa) {
+    // Discard pixels outside the shape before expensive blur calculations.
+    if (sdf > AA_WIDTH) {
         discard;
     }
 
-    vec2 grad =
-        getSDFGradient(
-            fragCoord
-        );
+    vec2 grad = getSDFGradient(fragCoord);
 
-    vec2 safeResolution = max(iResolution, vec2(0.001));
-    vec2 screenUV =
-        fragCoord / safeResolution;
+    vec2 screenUV = fragCoord / resolution;
 
-    vec2 activeCenter =
-        mix(
-            u_pos + u_size * 0.5,
-            u_pos2 + u_size2 * 0.5,
-            u_menu_alpha
-        );
+    float menuAlpha = clamp(u_menu_alpha, 0.0, 1.0);
 
-    vec2 activeHalfSize =
+    vec2 center1 = u_pos + u_size * 0.5;
+    vec2 center2 = u_pos2 + u_size2 * 0.5;
+
+    vec2 activeCenter = mix(
+        center1,
+        center2,
+        menuAlpha
+    );
+
+    vec2 activeHalfSize = max(
         mix(
             u_size * 0.5,
             u_size2 * 0.5,
-            u_menu_alpha
-        );
+            menuAlpha
+        ),
+        vec2(EPSILON)
+    );
 
-    vec2 normUV =
-        (fragCoord - activeCenter)
-        / max(activeHalfSize, vec2(0.001));
+    // ------------------------------------------------------------------------
+    // Lens refraction
+    // ------------------------------------------------------------------------
 
-    float dist =
-        length(normUV);
+    vec2 normUV = (fragCoord - activeCenter) / activeHalfSize;
+
+    float dist = length(normUV);
 
     vec2 lensOffset =
         normUV
         * (1.0 - smoothstep(0.0, 1.5, dist))
         * u_lens_power;
 
-    float heightRef =
-        min(
-            activeHalfSize.x,
-            activeHalfSize.y
-        );
+    // ------------------------------------------------------------------------
+    // Bevel refraction
+    // ------------------------------------------------------------------------
 
-    float bevelWidth =
-        min(
-            24.0,
-            heightRef * 0.4
-        );
+    float heightRef = min(
+        activeHalfSize.x,
+        activeHalfSize.y
+    );
 
-    float bevelMask =
-        smoothstep(
-            -bevelWidth,
-            0.0,
-            sdf
-        );
+    float bevelWidth = max(
+        min(24.0, heightRef * 0.4),
+        EPSILON
+    );
+
+    float bevelMask = smoothstep(
+        -bevelWidth,
+        0.0,
+        sdf
+    );
 
     vec2 bevelOffset =
         grad
         * bevelMask
         * u_bevel_power;
 
+    vec2 activeSize = max(
+        mix(u_size, u_size2, menuAlpha),
+        vec2(EPSILON)
+    );
+
     vec2 finalUVOffset =
         (lensOffset - bevelOffset)
-        * (mix(u_size, u_size2, u_menu_alpha) / safeResolution);
+        * (activeSize / resolution);
 
-    vec2 sampleUV =
-        screenUV - finalUVOffset;
+    vec2 sampleUV = screenUV - finalUVOffset;
 
-    vec3 blurredTex =
-        getBlurredColor(
-            sampleUV,
-            u_blur_amount
-        );
+    // ------------------------------------------------------------------------
+    // Background blur and glass tint
+    // ------------------------------------------------------------------------
 
-    blurredTex =
-        pow(
-            blurredTex,
-            vec3(0.88)
-        )
-        * 1.15;
+    vec3 blurredTex = getBlurredColor(
+        sampleUV,
+        u_blur_amount
+    );
 
-    vec3 finalColor =
-        mix(
-            blurredTex,
-            u_glass_color.rgb,
-            u_glass_color.a
-        );
+    blurredTex = pow(
+        max(blurredTex, vec3(0.0)),
+        vec3(0.88)
+    ) * 1.15;
 
-    float innerBevel =
-        smoothstep(
-            -heightRef * 0.35,
-            0.0,
-            sdf
-        )
-        * 0.2;
+    vec3 finalColor = mix(
+        blurredTex,
+        u_glass_color.rgb,
+        clamp(u_glass_color.a, 0.0, 1.0)
+    );
 
-    finalColor *=
-        (1.0 - innerBevel);
+    // ------------------------------------------------------------------------
+    // Inner bevel shadow
+    // ------------------------------------------------------------------------
+
+    float innerBevel = smoothstep(
+        -heightRef * 0.35,
+        0.0,
+        sdf
+    ) * 0.2;
+
+    finalColor *= 1.0 - innerBevel;
+
+    // ------------------------------------------------------------------------
+    // Rim highlights
+    // ------------------------------------------------------------------------
 
     float rimMask =
         smoothstep(-3.0, -0.5, sdf)
         *
-        smoothstep(0.5, -0.5, sdf);
+        (1.0 - smoothstep(-0.5, 0.5, sdf));
 
-    vec2 lightDir =
-        normalize(
-            vec2(-0.5, 0.85)
-        );
+    vec2 lightDir = normalize(vec2(-0.5, 0.85));
 
-    float NdotL =
-        dot(
-            grad,
-            lightDir
-        );
+    float NdotL = dot(grad, lightDir);
 
     float topLeftHighlight =
-        pow(
-            max(0.0, NdotL),
-            2.2
-        )
-        *
-        rimMask
-        *
-        1.1;
+        pow(max(0.0, NdotL), 2.2)
+        * rimMask
+        * 1.1;
 
     float bottomRightHighlight =
-        pow(
-            max(0.0, -NdotL),
-            3.0
-        )
-        *
-        rimMask
-        *
-        0.75;
+        pow(max(0.0, -NdotL), 3.0)
+        * rimMask
+        * 0.75;
 
     float edgeStroke =
-        smoothstep(
-            -1.2,
-            0.0,
-            sdf
-        )
-        *
-        0.25;
+        smoothstep(-1.2, 0.0, sdf)
+        * 0.25;
 
     finalColor +=
         vec3(1.0)
-        *
-        (
+        * (
             topLeftHighlight
             + bottomRightHighlight
             + edgeStroke
         )
-        *
-        u_border_opacity;
+        * u_border_opacity;
 
-    if (u_pressed > 0.001) {
-        vec3 pressedGlassColor =
-            mix(
-                finalColor,
-                vec3(0.25, 0.55, 1.0),
-                0.25
-            );
+    // ------------------------------------------------------------------------
+    // Touch tint and radial highlight
+    // ------------------------------------------------------------------------
 
-        finalColor =
-            mix(
-                finalColor,
-                pressedGlassColor,
-                u_pressed
-            );
+    float pressed = clamp(u_pressed, 0.0, 1.0);
 
-        float lightRadius =
-            max(
-                u_size.x,
-                u_size.y
-            )
-            *
-            0.85;
+    vec3 pressedGlassColor = mix(
+        finalColor,
+        vec3(0.25, 0.55, 1.0),
+        0.25
+    );
 
-        float spot =
-            smoothstep(
-                lightRadius,
-                0.0,
-                length(
-                    fragCoord
-                    - u_touch_pos
-                )
-            );
+    finalColor = mix(
+        finalColor,
+        pressedGlassColor,
+        pressed
+    );
 
-        finalColor =
-            mix(
-                finalColor,
-                vec3(1.0),
-                spot
-                * u_pressed
-                * 0.35
-            );
-    }
+    float lightRadius = max(
+        max(u_size.x, u_size.y) * 0.85,
+        EPSILON
+    );
 
-    float edgeAlpha =
-        smoothstep(
-            aa,
-            -aa,
-            sdf
-        );
+    float touchDistance = length(
+        fragCoord - u_touch_pos
+    );
 
-    gl_FragColor =
-        vec4(
-            finalColor,
-            edgeAlpha
-        )
-        *
-        frag_color.a;
+    // Avoid reversed smoothstep edges.
+    float spot = 1.0 - smoothstep(
+        0.0,
+        lightRadius,
+        touchDistance
+    );
+
+    finalColor = mix(
+        finalColor,
+        vec3(1.0),
+        spot * pressed * 0.35
+    );
+
+    // ------------------------------------------------------------------------
+    // Antialiased edge alpha
+    // ------------------------------------------------------------------------
+
+    float edgeAlpha = 1.0 - smoothstep(
+        -AA_WIDTH,
+        AA_WIDTH,
+        sdf
+    );
+
+    edgeAlpha = clamp(edgeAlpha, 0.0, 1.0);
+
+    gl_FragColor = vec4(
+        finalColor,
+        edgeAlpha * frag_color.a
+    );
 }

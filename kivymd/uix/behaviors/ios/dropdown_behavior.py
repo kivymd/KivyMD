@@ -270,7 +270,6 @@ Menu example
                         self.dropdown_container.toggle_dropdown()
 
 
-
             class LiquidGlassDropdownDemo(MDApp):
                 def build(self):
                     return Builder.load_string(KV)
@@ -672,19 +671,42 @@ class IOSLiquidDropdownBehavior(IOSBaseGlassBehavior):
             Clock.schedule_once(lambda dt: self._find_and_bind_screen(), 0)
 
     def on_touch_down(self, touch):
-        if self._handle_outside_touch(touch):
+        if not self.is_open:
+            if self._trigger_btn and self._trigger_btn.collide_point(
+                *touch.pos
+            ):
+                return super().on_touch_down(touch)
+
+            return False
+
+        menu_hit = self._dropdown_menu and self._dropdown_menu.collide_point(
+            *touch.pos
+        )
+        btn_hit = self._trigger_btn and self._trigger_btn.collide_point(
+            *touch.pos
+        )
+
+        if menu_hit or btn_hit:
+            super().on_touch_down(touch)
+
             return True
 
-        return super().on_touch_down(touch)
+        self.close()
+
+        return True
 
     def on_touch_move(self, touch):
-        if self._handle_outside_touch(touch):
+        if self.is_open:
+            super().on_touch_move(touch)
+
             return True
 
         return super().on_touch_move(touch)
 
     def on_touch_up(self, touch):
-        if self._handle_outside_touch(touch):
+        if self.is_open:
+            super().on_touch_up(touch)
+
             return True
 
         return super().on_touch_up(touch)

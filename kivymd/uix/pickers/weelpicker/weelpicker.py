@@ -388,7 +388,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.relativelayout import RelativeLayout
 
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import DeclarativeBehavior
+from kivymd.uix.behaviors import DeclarativeBehavior, IOSNativeBehavior
 from kivymd.uix.label import MDLabel
 
 
@@ -506,13 +506,14 @@ class IOSWheelPickerLabel(MDLabel):
         self.scale_inst.origin = self.center
 
 
-class IOSWheelPickerColumn(ThemableBehavior, RelativeLayout):
+class IOSWheelPickerColumn(ThemableBehavior, IOSNativeBehavior, RelativeLayout):
     """
     Implements a 3D cylindrical wheel column widget for pickers, supporting
     smooth inertial touch scrolling, label pooling, and selection highlighting.
 
     For more information, see in the
     :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.native_behavior.IOSNativeBehavior` and
     :class:`~kivy.uix.relativelayout.RelativeLayout`
     classes documentation.
 
@@ -646,6 +647,8 @@ class IOSWheelPickerColumn(ThemableBehavior, RelativeLayout):
         self.scroll_offset = float(
             (self.selected_value - self.range_min) % self.n_items
         )
+
+        self._last_vibrated_step = int(round(self.scroll_offset))
 
         self._anim = None
         self._last_touch_y = 0
@@ -843,6 +846,12 @@ class IOSWheelPickerColumn(ThemableBehavior, RelativeLayout):
 
         if not self.label_pool or self.height <= 10:
             return
+
+        current_step = int(round(self.scroll_offset))
+
+        if self._last_vibrated_step != current_step:
+            self._last_vibrated_step = current_step
+            self.trigger_haptic_feedback()
 
         half_height = self.height / 2.0
         max_visible_dist = self.item_height * (self.visible_count / 2.0)

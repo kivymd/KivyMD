@@ -51,9 +51,7 @@ Example
         Example().run()
 """
 
-__all__ = (
-    "IOSNativeBehavior",
-)
+__all__ = ("IOSNativeBehavior",)
 
 from kivy.utils import platform
 

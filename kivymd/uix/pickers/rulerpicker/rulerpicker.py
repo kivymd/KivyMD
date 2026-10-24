@@ -100,23 +100,10 @@ from kivy.graphics import Color, InstructionGroup, Rectangle, RoundedRectangle
 from kivy.metrics import dp, sp
 from kivy.properties import ColorProperty, NumericProperty, ObjectProperty
 from kivy.uix.widget import Widget
-from kivy.utils import platform
 
 from kivymd.theming import ThemableBehavior
-from kivymd.uix.behaviors import DeclarativeBehavior
+from kivymd.uix.behaviors import DeclarativeBehavior, IOSNativeBehavior
 from kivymd.uix.label import MDLabel
-
-# Initialization of the native haptic feedback generator for iOS.
-_haptic_generator = None
-if platform == "ios":
-    try:
-        from pyobjus import autoclass
-
-        UISelectionFeedbackGenerator = autoclass("UISelectionFeedbackGenerator")
-        _haptic_generator = UISelectionFeedbackGenerator.alloc().init()
-        _haptic_generator.prepare()
-    except Exception:
-        pass
 
 
 class IOSRulerPickerLabel(MDLabel):
@@ -137,7 +124,9 @@ class IOSRulerPickerLabel(MDLabel):
     """
 
 
-class IOSRulerPicker(DeclarativeBehavior, ThemableBehavior, Widget):
+class IOSRulerPicker(
+    DeclarativeBehavior, ThemableBehavior, IOSNativeBehavior, Widget
+):
     """
     An iOS-style ruler picker widget that allows users to select numeric values
     by scrolling a visual ruler.
@@ -145,6 +134,7 @@ class IOSRulerPicker(DeclarativeBehavior, ThemableBehavior, Widget):
     For more information, see in the
     :class:`~kivymd.uix.behaviors.declarative_behavior.DeclarativeBehavior` and
     :class:`~kivymd.theming.ThemableBehavior` and
+    :class:`~kivymd.uix.behaviors.ios.native_behavior.IOSNativeBehavior` and
     :class:`~kivy.uix.widget.Widget`
     classes documentation.
     """
@@ -321,7 +311,7 @@ class IOSRulerPicker(DeclarativeBehavior, ThemableBehavior, Widget):
 
     def on_value(self, instance, value):
         """
-        Fired a native iOS vibration when the discrete step of the ruler
+        Fires native iOS haptic feedback when the discrete step of the ruler
         is changed.
         """
 
@@ -329,18 +319,7 @@ class IOSRulerPicker(DeclarativeBehavior, ThemableBehavior, Widget):
             return
 
         self._update_canvas()
-
-        if platform == "ios" and _haptic_generator:
-            try:
-                current_step = (
-                    round((value - self.min) / self.step) if self.step else 0
-                )
-                if self._last_vibrated_step != current_step:
-                    self._last_vibrated_step = current_step
-                    _haptic_generator.prepare()
-                    _haptic_generator.selectionChanged()
-            except Exception:
-                pass
+        self.check_and_trigger_haptic(value)
 
     def add_widget(self, widget, *args, **kwargs):
         if isinstance(widget, IOSRulerPickerLabel):

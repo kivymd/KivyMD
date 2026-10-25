@@ -28,6 +28,8 @@
  *   - vec2 u_touch_pos       : Current touch coordinates on screen.
  *   - vec2 u_stretch_factor  : Used for stretch/squash animations.
  *   - float u_border_opacity : Opacity of the border outline (0.0 to 1.0).
+ *   - float u_wobble         : Teardrop wobble deformation intensity factor.
+ *   - vec2 u_velocity        : Widget movement velocity vector for directional distortion.
  * ============================================================================
  */
 
@@ -47,6 +49,8 @@ uniform vec2 u_size;
 varying vec2 tex_coord0;
 uniform vec2 u_touch_pos;
 uniform vec2 u_stretch_factor;
+uniform float u_wobble;
+uniform vec2 u_velocity;
 
 uniform float u_pressed;
 uniform float u_blur_amount;
@@ -192,20 +196,59 @@ vec3 getBlurredColor(
 // ------------------------------------------------------------
 
 void main() {
-    vec2 halfSize =
-        u_size * 0.5;
+    vec2 halfSize = u_size * 0.5;
 
-    // Apply stretch factor to halfSize for non-uniform scaling
-    // (safe from zero division)
-    vec2 safeStretch = max(u_stretch_factor, vec2(0.0001));
+    vec2 safeStretch =
+        max(
+            u_stretch_factor,
+            vec2(0.0001)
+        );
+
     vec2 stretchedHalfSize =
         halfSize * safeStretch;
 
-    // Correct coordinates, accounting for the stretch factor
     vec2 centeredUV =
         (tex_coord0 - 0.5)
         * u_size
         * safeStretch;
+
+    // Fluid teardrop/metaball stretch.
+    vec2 normUV =
+        centeredUV
+        / max(
+            halfSize,
+            vec2(0.001)
+        );
+
+    // The nonlinear asymmetric tail of the drop in the direction of the velocity.
+    float gelWobbleX =
+        u_velocity.x
+        * (
+            1.0
+            - normUV.y
+            * normUV.y
+        )
+        * (
+            1.0
+            + normUV.x
+            * 1.2
+        );
+
+    float gelWobbleY =
+        u_velocity.y
+        * (
+            1.0
+            - normUV.x
+            * normUV.x
+        )
+        * (
+            1.0
+            + normUV.y
+            * 1.2
+        );
+
+    centeredUV.x += gelWobbleX * 40.0;
+    centeredUV.y += gelWobbleY * 40.0;
 
     // --------------------------------------------------------
     // Signed Distance Field & Anti-Aliasing (AA).
@@ -437,7 +480,8 @@ void main() {
             tex_coord0
             - 0.5
         )
-        * safeStretch + 0.5;
+        * safeStretch
+        + 0.5;
 
     float spotDist =
         length(
@@ -476,9 +520,12 @@ void main() {
         );
     edgeAlpha = clamp(edgeAlpha, 0.0, 1.0);
 
+    // The final pixel transparency depends both on the button edges (edgeAlpha)
+    // and on the glass alpha (u_glass_color.a).
     gl_FragColor =
         vec4(
             finalColor,
             edgeAlpha
+            // * u_glass_color.a
         );
 }

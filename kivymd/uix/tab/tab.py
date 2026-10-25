@@ -2279,7 +2279,7 @@ class IOSTabBarButton(IOSButton):
         size_hint = kwargs.pop("size_hint", (None, None))
         size = kwargs.pop("size", (dp(65), dp(65)))
         border_radius = kwargs.pop("border_radius", [dp(32.5)] * 4)
-        glass_color = kwargs.pop("glass_color", [1.0, 1.0, 1.0, 0.18])
+        glass_color = kwargs.pop("glass_color", [1.0, 1.0, 1.0, 0.35])
         blur_amount = kwargs.pop("blur_amount", 6.0)
 
         super().__init__(*args, **kwargs)
@@ -2402,7 +2402,7 @@ class IOSTabBarIndicator(DeclarativeBehavior, IOSGlassBehavior, Widget):
     def __init__(self, *args, **kwargs):
         kwargs.setdefault("size_hint", (None, None))
         kwargs.setdefault("border_radius", [dp(28)] * 4)
-        kwargs.setdefault("glass_color", [1.0, 1.0, 1.0, 0.28])
+        kwargs.setdefault("glass_color", [1.0, 1.0, 1.0, 0.75])
         kwargs.setdefault("blur_amount", 0.0)
 
         super().__init__(*args, **kwargs)
@@ -2467,7 +2467,6 @@ class IOSTabBarItem(DeclarativeBehavior, ButtonBehavior, BoxLayout):
 
         self._configure_layout()
 
-        # Привязываем обновление цвета на изменение любых связанных свойств
         self.bind(
             active=self._update_colors,
             active_color=self._update_colors,
@@ -2600,21 +2599,80 @@ class IOSBaseTabBar(ThemableBehavior, IOSButtonBehavior, FloatLayout):
     and defaults to `dp(4)`.
     """
 
+    stiffness = NumericProperty(180.0)
+    """
+    If a custom value is specified for the `stiffness` parameter, the spring
+    stiffness coefficient (tension) will be used for the liquid tab indicator:
+
+    .. code-block:: kv
+
+        IOSTabBarHorizontal:
+            stiffness: 200.0
+
+    :attr:`stiffness` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `180.0`.
+    """
+
+    damping = NumericProperty(22.0)
+    """
+    If a custom value is specified for the `damping` parameter, the damping
+    factor of the spring oscillation will be used to stabilize the movement:
+
+    .. code-block:: kv
+
+        IOSTabBarHorizontal:
+            damping: 25.0
+
+    :attr:`damping` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `22.0`.
+    """
+
+    bleed = NumericProperty(36.0)
+    """
+    If a custom value is specified for the `bleed` parameter, the allowed
+    overshoot distance (in pixels) beyond the first and last tabs will be used:
+
+    .. code-block:: kv
+
+        IOSTabBarHorizontal:
+            bleed: 12.0
+
+    :attr:`bleed` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `36.0`.
+    """
+
+    indicator_color = ColorProperty([1.0, 1.0, 1.0, 0.75])
+    """
+    Indicator_color.
+
+    :attr:`indicator_color` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `[1.0, 1.0, 1.0, 0.75]`.
+    """
+
     def __init__(self, **kwargs):
         self.register_event_type("on_tab_switch")
 
         kwargs.setdefault("size_hint", (None, None))
         kwargs.setdefault("border_radius", [dp(32)] * 4)
-        kwargs.setdefault("glass_color", [1.0, 1.0, 1.0, 0.18])
+        kwargs.setdefault("glass_color", [1.0, 1.0, 1.0, 0.35])
         kwargs.setdefault("blur_amount", 6.0)
 
         self._animating = False
+        self._is_dragging = False
+
+        self._spring_pos = [0.0, 0.0]
+        self._spring_vel = [0.0, 0.0]
+        self._spring_size = [0.0, 0.0]
+        self._target_pos = [0.0, 0.0]
+        self._target_size = [0.0, 0.0]
+        self._target_radius = [0.0] * 4
+        self._spring_clock = None
 
         super().__init__(**kwargs)
 
         self.indicator = IOSTabBarIndicator(
             target_background=self.target_background,
-            glass_color=[1.0, 1.0, 1.0, 0.28],
+            glass_color=self.indicator_color,
             blur_amount=6.0,
             size=(0, 0),
             pos=(0, 0),
@@ -2641,6 +2699,61 @@ class IOSBaseTabBar(ThemableBehavior, IOSButtonBehavior, FloatLayout):
     def on_tab_switch(self, item, index):
         """Event handler fired when a tab is selected."""
 
+    def on_touch_down(self, touch):
+        if not self.collide_point(*touch.pos):
+            return super().on_touch_down(touch)
+
+        touch.grab(self)
+        self._is_dragging = True
+        self._update_drag_position(
+            touch.x if isinstance(self, IOSTabBarHorizontal) else touch.y
+        )
+
+        return True
+
+    def on_touch_move(self, touch):
+        if touch.grab_current == self:
+            self._update_drag_position(
+                touch.x if isinstance(self, IOSTabBarHorizontal) else touch.y
+            )
+
+            return True
+
+        return super().on_touch_move(touch)
+
+    def on_touch_up(self, touch):
+        if touch.grab_current == self:
+            touch.ungrab(self)
+            self._is_dragging = False
+
+            items = self.get_tab_items()
+
+            if items:
+                coord = (
+                    touch.x
+                    if isinstance(self, IOSTabBarHorizontal)
+                    else touch.y
+                )
+                closest_item = min(
+                    items,
+                    key=lambda item: abs(
+                        (
+                            item.center_x
+                            if isinstance(self, IOSTabBarHorizontal)
+                            else item.center_y
+                        )
+                        - coord
+                    ),
+                )
+                target_index = items.index(closest_item)
+                self.select_tab(target_index)
+            else:
+                self._animate_indicator(animated=True, expanded=False)
+
+            return True
+
+        return super().on_touch_up(touch)
+
     def _on_padding_change(self, instance, value):
         if hasattr(self, "items_box"):
             self.items_box.padding = value
@@ -2661,7 +2774,132 @@ class IOSBaseTabBar(ThemableBehavior, IOSButtonBehavior, FloatLayout):
     def _on_item_release(self, item):
         self.select_tab(item)
 
+    def _update_spring_physics(self, dt):
+        """
+        Updates the spring physics simulation for the liquid tab indicator on
+        each clock tick. Handles target chasing, velocity damping, boundary
+        clipping with overshoot (`bleed`), squash-and-stretch deformations,
+        and automatic tab switching upon intersection.
+        """
+
+        items = self.get_tab_items()
+
+        if items:
+            is_horizontal = isinstance(self, IOSTabBarHorizontal)
+            ind_center = (
+                self.indicator.center_x
+                if is_horizontal
+                else self.indicator.center_y
+            )
+
+            closest_item = min(
+                items,
+                key=lambda item: abs(
+                    (item.center_x if is_horizontal else item.center_y)
+                    - ind_center
+                ),
+            )
+            closest_index = items.index(closest_item)
+
+            if closest_index != self.current_index:
+                self.current_index = closest_index
+                self.current_item = closest_item
+                for idx, item in enumerate(items):
+                    item.active = idx == closest_index
+                self.dispatch("on_tab_switch", closest_item, closest_index)
+
+        if dt > 0.1:
+            dt = 0.1
+
+        is_horizontal = isinstance(self, IOSTabBarHorizontal)
+
+        for i in range(2):
+            force = (
+                self.stiffness * (self._target_pos[i] - self._spring_pos[i])
+                - self.damping * self._spring_vel[i]
+            )
+            self._spring_vel[i] += force * dt
+            self._spring_pos[i] += self._spring_vel[i] * dt
+
+        # Controlled indicator extension with account for overlap beyond the
+        # edges.
+        if items:
+            if is_horizontal:
+                min_limit = items[0].x - self.bleed
+                max_limit = items[-1].right - self._spring_size[0] + self.bleed
+                self._spring_pos[0] = max(
+                    min_limit, min(self._spring_pos[0], max_limit)
+                )
+            else:
+                min_limit = items[0].y - self.bleed
+                max_limit = items[-1].top - self._spring_size[1] + self.bleed
+                self._spring_pos[1] = max(
+                    min_limit, min(self._spring_pos[1], max_limit)
+                )
+
+        main_vel = self._spring_vel[0] if is_horizontal else self._spring_vel[1]
+
+        stretch = min(0.2, abs(main_vel) * 0.001)
+
+        if is_horizontal:
+            target_w = self._target_size[0]
+            target_h = self._target_size[1] * max(0.9, 1.0 - stretch * 0.2)
+        else:
+            target_w = self._target_size[0] * max(0.9, 1.0 - stretch * 0.2)
+            target_h = self._target_size[1]
+
+        self._spring_size[0] += (target_w - self._spring_size[0]) * min(
+            1.0, dt * 14.0
+        )
+        self._spring_size[1] += (target_h - self._spring_size[1]) * min(
+            1.0, dt * 14.0
+        )
+
+        self.indicator.pos = tuple(self._spring_pos)
+        self.indicator.size = tuple(self._spring_size)
+        self.indicator.border_radius = self._target_radius
+
+        sx = self._spring_size[0] / max(self._target_size[0], 1.0)
+        sy = self._spring_size[1] / max(self._target_size[1], 1.0)
+
+        try:
+            self.indicator.canvas["u_stretch_factor"] = (sx, sy)
+            self.indicator.canvas["u_velocity"] = (
+                self._spring_vel[0] * 0.0015,
+                self._spring_vel[1] * 0.0015,
+            )
+        except Exception:
+            pass
+
+        pos_diff = max(
+            abs(self._target_pos[0] - self._spring_pos[0]),
+            abs(self._target_pos[1] - self._spring_pos[1]),
+        )
+        vel_diff = max(abs(self._spring_vel[0]), abs(self._spring_vel[1]))
+
+        if pos_diff < 0.3 and vel_diff < 0.3 and not self._is_dragging:
+            self._spring_pos = list(self._target_pos)
+            self._spring_size = list(self._target_size)
+            self.indicator.pos = tuple(self._spring_pos)
+            self.indicator.size = tuple(self._spring_size)
+            try:
+                self.indicator.canvas["u_stretch_factor"] = (1.0, 1.0)
+                self.indicator.canvas["u_velocity"] = (0.0, 0.0)
+            except Exception:
+                pass
+
+            self._animating = False
+            self._spring_clock = None
+
+            return False
+
     def _snap_indicator_to_current(self):
+        """
+        Immediately snaps the liquid indicator position, dimensions, and
+        physics state to the current active tab geometry without running any
+        transition animations.
+        """
+
         if not self._check_first_layout_done():
             return
 
@@ -2669,38 +2907,130 @@ class IOSBaseTabBar(ThemableBehavior, IOSButtonBehavior, FloatLayout):
         if tw <= 0 or th <= 0:
             return
 
+        if self._spring_clock:
+            Clock.unschedule(self._spring_clock)
+            self._spring_clock = None
+
+        self._animating = False
         self.indicator.border_radius = radius
         self.indicator.pos = (tx, ty)
         self.indicator.size = (tw, th)
+        self._spring_pos = [tx, ty]
+        self._spring_size = [tw, th]
+        self._spring_vel = [0.0, 0.0]
 
-    def _animate_indicator(self, animated=True, *args):
+        try:
+            self.indicator.canvas["u_stretch_factor"] = (1.0, 1.0)
+        except Exception:
+            pass
+
+    def _animate_indicator(self, animated=True, expanded=False, *args):
+        """
+        Animates or instantly moves the liquid indicator to match the target
+        tab geometry. Manages spring physics clock triggering, glass color
+        fading, and expansion state.
+        """
+
         if not self._check_first_layout_done():
             return
 
-        tx, ty, tw, th, radius = self._get_indicator_geometry()
+        tx, ty, tw, th, radius = self._get_indicator_geometry(expanded=expanded)
+
         if tw <= 0 or th <= 0:
             return
 
+        target_alpha = 0.35 if expanded else 0.75
+        current_color = list(self.indicator.glass_color)
+        current_color[3] = target_alpha
+
+        Animation.stop_all(self.indicator)
+
         if not animated:
-            Animation.stop_all(self.indicator)
+            if self._spring_clock:
+                Clock.unschedule(self._spring_clock)
+                self._spring_clock = None
+
             self._animating = False
             self.indicator.border_radius = radius
             self.indicator.pos = (tx, ty)
             self.indicator.size = (tw, th)
+            self.indicator.glass_color = current_color
+            self._spring_pos = [tx, ty]
+            self._spring_size = [tw, th]
+            self._spring_vel = [0.0, 0.0]
+
+            try:
+                self.indicator.canvas["u_stretch_factor"] = (1.0, 1.0)
+            except Exception:
+                pass
+
         else:
-            Animation.stop_all(self.indicator)
+            self._target_pos = [tx, ty]
+            self._target_size = [tw, th]
+            self._target_radius = radius
             self._animating = True
-            anim = Animation(
-                pos=(tx, ty),
-                size=(tw, th),
-                border_radius=radius,
-                d=0.25,
-                t="out_cubic",
-            )
-            anim.bind(on_complete=self._on_anim_complete)
+
+            if not self._spring_clock:
+                if self._spring_pos == [0.0, 0.0] and all(
+                    p > 0 for p in self.indicator.pos
+                ):
+                    self._spring_pos = list(self.indicator.pos)
+                    self._spring_size = list(self.indicator.size)
+
+                self._spring_clock = Clock.schedule_interval(
+                    self._update_spring_physics, 0
+                )
+
+            anim = Animation(glass_color=current_color, d=0.25, t="out_cubic")
             anim.start(self.indicator)
 
+    def _update_drag_position(self, coord):
+        """
+        Updates the target position of the liquid indicator based on touch
+        drag coordinates, forcing the indicator into an expanded state and
+        activating the spring physics loop.
+        """
+
+        if not self._check_first_layout_done():
+            return
+
+        is_horizontal = isinstance(self, IOSTabBarHorizontal)
+        kwargs = {"expanded": True}
+
+        if is_horizontal:
+            kwargs["custom_x"] = coord
+        else:
+            kwargs["custom_y"] = coord
+
+        tx, ty, tw, th, radius = self._get_indicator_geometry(**kwargs)
+
+        if tw <= 0 or th <= 0:
+            return
+
+        current_color = list(self.indicator.glass_color)
+        current_color[3] = 0.35
+
+        self._target_pos = [tx, ty]
+        self._target_size = [tw, th]
+        self._target_radius = radius
+        self.indicator.glass_color = current_color
+
+        if not self._spring_clock:
+            if self._spring_pos == [0.0, 0.0]:
+                self._spring_pos = list(self.indicator.pos)
+                self._spring_size = list(self.indicator.size)
+
+            self._spring_clock = Clock.schedule_interval(
+                self._update_spring_physics, 0
+            )
+
     def _select_tab(self, index_or_item):
+        """
+        Selects a target tab by its index or instance, updates active states
+        across all tab items, and sets up internal tracking for the current
+        active item and index.
+        """
+
         items = self.get_tab_items()
 
         if not items:
@@ -2788,26 +3118,42 @@ class IOSTabBarHorizontal(DeclarativeBehavior, IOSGlassBehavior, IOSBaseTabBar):
     def do_layout(self, *largs):
         super().do_layout(*largs)
 
-        if not self._animating:
+        if not self._animating and not self._is_dragging:
             self._snap_indicator_to_current()
 
-    def _get_indicator_geometry(self):
-        if not self.current_item or self.current_item.width <= 0:
+    def _get_indicator_geometry(self, expanded=False, custom_x=None):
+        items = self.get_tab_items()
+
+        if not items:
             return 0, 0, 0, 0, [0] * 4
 
-        item = self.current_item
+        if custom_x is not None:
+            min_x = items[0].x
+            max_x = items[-1].right
+            cx = max(min_x, min(custom_x, max_x))
+            item = min(items, key=lambda i: abs(i.center_x - cx))
+        else:
+            if not self.current_item or self.current_item.width <= 0:
+                return 0, 0, 0, 0, [0] * 4
+
+            item = self.current_item
+            cx = item.center_x
+
         target_h = item.height
+        scale = 1.25 if expanded else 1.0
 
         if getattr(item, "has_text", False):
-            target_w = item.width
-            target_x = item.x
-            target_y = item.y
-            radius = [target_h / 2] * 4
+            target_w = item.width * scale if expanded else item.width
+            target_h = target_h * scale if expanded else target_h
+            target_x = cx - target_w / 2
+            target_y = item.center_y - target_h / 2 if expanded else item.y
         else:
-            target_w = target_h
-            target_x = item.center_x - target_w / 2
-            target_y = item.y
-            radius = [target_h / 2] * 4
+            target_w = target_h * scale if expanded else target_h
+            target_h = target_h * scale if expanded else target_h
+            target_x = cx - target_w / 2
+            target_y = item.center_y - target_h / 2 if expanded else item.y
+
+        radius = [target_h / 2] * 4
 
         return target_x, target_y, target_w, target_h, radius
 
@@ -2885,7 +3231,7 @@ class IOSTabBarVertical(DeclarativeBehavior, IOSGlassBehavior, IOSBaseTabBar):
     def do_layout(self, *largs):
         super().do_layout(*largs)
 
-        if not self._animating:
+        if not self._animating and not self._is_dragging:
             tx, ty, tw, th, radius = self._get_indicator_geometry()
 
             if (
@@ -2905,17 +3251,31 @@ class IOSTabBarVertical(DeclarativeBehavior, IOSGlassBehavior, IOSBaseTabBar):
     def _show_indicator(self, dt):
         self.indicator.opacity = 1.0
 
-    def _get_indicator_geometry(self):
-        if not self.current_item or self.current_item.height <= 0:
+    def _get_indicator_geometry(self, expanded=False, custom_y=None):
+        items = self.get_tab_items()
+
+        if not items:
             return 0, 0, 0, 0, [0] * 4
 
-        item = self.current_item
+        if custom_y is not None:
+            min_y = items[-1].y
+            max_y = items[0].top
+            cy = max(min_y, min(custom_y, max_y))
+            item = min(items, key=lambda i: abs(i.center_y - cy))
+        else:
+            if not self.current_item or self.current_item.height <= 0:
+                return 0, 0, 0, 0, [0] * 4
+
+            item = self.current_item
+            cy = item.center_y
+
         size = min(item.width, item.height)
-        target_w = size
-        target_h = size
+        scale = 1.25 if expanded else 1.0
+        target_w = size * scale if expanded else size
+        target_h = size * scale if expanded else size
         target_x = item.center_x - target_w / 2
-        target_y = item.center_y - target_h / 2
-        radius = [size / 2] * 4
+        target_y = cy - target_h / 2
+        radius = [target_h / 2] * 4
 
         return target_x, target_y, target_w, target_h, radius
 

@@ -15,7 +15,7 @@ class TabBarHorizontal(IOSTabBarHorizontal):
 
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
-        #self.glass_color = [0.0, 0.0, 0.0, 0.1]
+        # self.glass_color = [0.0, 0.0, 0.0, 0.1]
 
     def on_display_mode(self, instance, value):
         self._update_widgets()

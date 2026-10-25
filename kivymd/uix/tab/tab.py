@@ -2627,7 +2627,7 @@ class IOSBaseTabBar(ThemableBehavior, IOSButtonBehavior, FloatLayout):
     and defaults to `22.0`.
     """
 
-    bleed = NumericProperty(36.0)
+    bleed = NumericProperty(8.0)
     """
     If a custom value is specified for the `bleed` parameter, the allowed
     overshoot distance (in pixels) beyond the first and last tabs will be used:
@@ -2638,15 +2638,55 @@ class IOSBaseTabBar(ThemableBehavior, IOSButtonBehavior, FloatLayout):
             bleed: 12.0
 
     :attr:`bleed` is a :class:`~kivy.properties.NumericProperty`
-    and defaults to `36.0`.
+    and defaults to `8.0`.
+    """
+
+    indicator_scale = NumericProperty(1.45)
+    """
+    Magnification scale of the liquid glass indicator relative to the size
+    of the active tab item.
+
+    For example, to make the indicator slightly larger when expanded:
+
+    .. code-block:: kv
+
+        IOSTabBarHorizontal:
+            indicator_scale: 1.6
+
+    :attr:`indicator_scale` is a :class:`~kivy.properties.NumericProperty`
+    and defaults to `1.45`.
     """
 
     indicator_color = ColorProperty([1.0, 1.0, 1.0, 0.75])
     """
-    Indicator_color.
+    Indicator color.
 
     :attr:`indicator_color` is a :class:`~kivy.properties.ColorProperty`
     and defaults to `[1.0, 1.0, 1.0, 0.75]`.
+    """
+
+    indicator_blur = NumericProperty(10.0)
+    """
+    Indicator blur.
+
+    :attr:`indicator_blur` is a :class:`~kivy.properties.ColorProperty`
+    and defaults to `10.0`.
+    """
+
+    indicator_lens_power = NumericProperty(0.08)
+    """
+    Magnification power at the center of the lens.
+
+    :attr:`indicator_lens_power` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.08`.
+    """
+
+    indicator_bevel_power = NumericProperty(0.15)
+    """
+    Light refraction power at the bevel/edges.
+
+    :attr:`indicator_bevel_power` is an :class:`~kivy.properties.NumericProperty`
+    and defaults to `0.15`.
     """
 
     def __init__(self, **kwargs):
@@ -2673,7 +2713,9 @@ class IOSBaseTabBar(ThemableBehavior, IOSButtonBehavior, FloatLayout):
         self.indicator = IOSTabBarIndicator(
             target_background=self.target_background,
             glass_color=self.indicator_color,
-            blur_amount=6.0,
+            blur_amount=self.indicator_blur,
+            lens_power=self.indicator_lens_power,
+            bevel_power=self.indicator_bevel_power,
             size=(0, 0),
             pos=(0, 0),
         )
@@ -2709,7 +2751,7 @@ class IOSBaseTabBar(ThemableBehavior, IOSButtonBehavior, FloatLayout):
             touch.x if isinstance(self, IOSTabBarHorizontal) else touch.y
         )
 
-        return True
+        return super().on_touch_down(touch)
 
     def on_touch_move(self, touch):
         if touch.grab_current == self:
@@ -2825,20 +2867,21 @@ class IOSBaseTabBar(ThemableBehavior, IOSButtonBehavior, FloatLayout):
         # edges.
         if items:
             if is_horizontal:
-                min_limit = items[0].x - self.bleed
-                max_limit = items[-1].right - self._spring_size[0] + self.bleed
+                lo = min(i.center_x for i in items) - self.bleed
+                hi = max(i.center_x for i in items) + self.bleed
                 self._spring_pos[0] = max(
-                    min_limit, min(self._spring_pos[0], max_limit)
+                    lo - self._spring_size[0] / 2,
+                    min(self._spring_pos[0], hi - self._spring_size[0] / 2),
                 )
             else:
-                min_limit = items[0].y - self.bleed
-                max_limit = items[-1].top - self._spring_size[1] + self.bleed
+                lo = min(i.center_y for i in items) - self.bleed
+                hi = max(i.center_y for i in items) + self.bleed
                 self._spring_pos[1] = max(
-                    min_limit, min(self._spring_pos[1], max_limit)
+                    lo - self._spring_size[1] / 2,
+                    min(self._spring_pos[1], hi - self._spring_size[1] / 2),
                 )
 
         main_vel = self._spring_vel[0] if is_horizontal else self._spring_vel[1]
-
         stretch = min(0.2, abs(main_vel) * 0.001)
 
         if is_horizontal:
@@ -2951,10 +2994,12 @@ class IOSBaseTabBar(ThemableBehavior, IOSButtonBehavior, FloatLayout):
                 self._spring_clock = None
 
             self._animating = False
+
             self.indicator.border_radius = radius
             self.indicator.pos = (tx, ty)
             self.indicator.size = (tw, th)
             self.indicator.glass_color = current_color
+
             self._spring_pos = [tx, ty]
             self._spring_size = [tw, th]
             self._spring_vel = [0.0, 0.0]
@@ -2968,6 +3013,7 @@ class IOSBaseTabBar(ThemableBehavior, IOSButtonBehavior, FloatLayout):
             self._target_pos = [tx, ty]
             self._target_size = [tw, th]
             self._target_radius = radius
+
             self._animating = True
 
             if not self._spring_clock:
@@ -3013,6 +3059,7 @@ class IOSBaseTabBar(ThemableBehavior, IOSButtonBehavior, FloatLayout):
         self._target_pos = [tx, ty]
         self._target_size = [tw, th]
         self._target_radius = radius
+
         self.indicator.glass_color = current_color
 
         if not self._spring_clock:
@@ -3140,7 +3187,7 @@ class IOSTabBarHorizontal(DeclarativeBehavior, IOSGlassBehavior, IOSBaseTabBar):
             cx = item.center_x
 
         target_h = item.height
-        scale = 1.25 if expanded else 1.0
+        scale = self.indicator_scale if expanded else 1.0
 
         if getattr(item, "has_text", False):
             target_w = item.width * scale if expanded else item.width
@@ -3270,11 +3317,14 @@ class IOSTabBarVertical(DeclarativeBehavior, IOSGlassBehavior, IOSBaseTabBar):
             cy = item.center_y
 
         size = min(item.width, item.height)
-        scale = 1.25 if expanded else 1.0
+        scale = self.indicator_scale if expanded else 1.0
+
         target_w = size * scale if expanded else size
         target_h = size * scale if expanded else size
+
         target_x = item.center_x - target_w / 2
         target_y = cy - target_h / 2
+
         radius = [target_h / 2] * 4
 
         return target_x, target_y, target_w, target_h, radius

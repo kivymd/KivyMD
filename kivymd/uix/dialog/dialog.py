@@ -1080,6 +1080,9 @@ class IOSDialog(
         )
         Window.bind(size=self._on_window_resize)
 
+    def on_parent(self, instance, parent):
+        pass
+
     def add_widget(self, widget, *args, **kwargs):
         if isinstance(widget, IOSDialogTitle):
             self.ids.title_container.add_widget(widget)

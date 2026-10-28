@@ -121,6 +121,7 @@ from kivy.properties import (
     StringProperty,
 )
 from kivy.uix.behaviors import ToggleButtonBehavior
+from kivy.metrics import dp
 
 from kivymd import glsl_path
 from kivymd.animation import MDAnimationTransition
@@ -698,7 +699,7 @@ class M3CommonRipple(CommonRipple):
         self._phase = 0.0
         self.ripple_pos = (0, 0)
         # TODO: Remove group also deallocates it from mem?
-        self.fbo = Fbo(size=[50] * 2, group="m3_ripple_behavior")
+        self.fbo = Fbo(size=[dp(1)] * 2, group="m3_ripple_behavior")
         self.set_shader(self.fbo)
 
         with self.fbo:
@@ -716,7 +717,7 @@ class M3CommonRipple(CommonRipple):
 
     @staticmethod
     def _clamp_size(width, height):
-        return max(width, 1.0), max(height, 1.0)
+        return max(width, dp(1.0)), max(height, dp(1.0))
 
     def set_shader(self, obj):
         global RIPPLE_FS_STRING
@@ -952,7 +953,7 @@ class M3CommonRipple(CommonRipple):
                 child.pos = self.pos
 
         if self.fbo.size != self.size:
-            self.fbo.size = self.size
+            self.fbo.size = self._clamp_size(*self.size)
 
         if self.rect.size != self.size:
             self.rect.size = self.size
